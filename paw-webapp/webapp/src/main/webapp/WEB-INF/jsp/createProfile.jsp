@@ -1,7 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Crear Perfil</title>
@@ -31,7 +31,7 @@
                         <label for="small-input2" class="block mb-2 text-sm font-medium text-gray-900 ">Mail</label>
                         <input type="text" id="small-input2" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
                     </div>
-                    <div class="ml-3 col-span-3">
+                    <div class="ml-3 col-span-2">
                         <label for="small-input3" class="block mb-2 text-sm font-medium text-gray-900 ">Zona</label>
                         <input type="text" id="small-input3" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
                     </div>
