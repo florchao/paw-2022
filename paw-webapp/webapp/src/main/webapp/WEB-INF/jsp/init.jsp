@@ -2,17 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Hogar</title>
 </head>
 <body>
-    <nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 dark:bg-violet-500">
+    <nav class="absolute w-full px-2 sm:px-4 py-2.5 bg-violet-500">
         <div class="container flex flex-row items-center mx-auto">
             <!-- La imagen tiene que estar en una carpeta assets -->
-            <img src="/docs/images/logo.svg" class="mr-3 h-6 sm:h-9">
-            <span class="text-xl font-semibold whitespace-nowrap dark:text-white">Hogar</span>
+<%--            <img src="/docs/images/logo.svg" class="mr-3 h-6 sm:h-9">--%>
+            <span class="text-xl font-semibold whitespace-nowrap text-white">Hogar</span>
         </div>
     </nav>
     <div class="grid grid-cols-2 gap-4 pt-16 h-screen">
@@ -38,7 +38,7 @@
 
         </div>
         <div class="pt-8">
-            <img src="index_image.jpg">
+            <img src="<c:url value='../../public/index_image.jpg'/>" alt="primera foto">
         </div>
     </div>
 </body>
