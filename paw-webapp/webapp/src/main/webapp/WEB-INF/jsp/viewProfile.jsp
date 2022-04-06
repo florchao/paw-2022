@@ -25,13 +25,17 @@
                             <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                         </div>
                     </div>
-                    <div class="ml-3 col-span-3">
+                    <div class="ml-3 col-start-3 col-span-2">
                         <span class="text-2xl font-semibold whitespace-nowrap">Sol Konfederak</span>
                     </div>
-                    <div class="ml-3 col-span-3 row-span-3">
+                    <div class="ml-3 col-start-3 col-span-2 row-span-3">
                         <h1 class="block mb-2 text-sm font-medium text-gray-900 ">Zona</h1>
                         <h1 class="block mb-2 text-sm font-medium text-gray-600 "> San Martin</h1>
                     </div>
+                    <div class="ml-3 col-start-5 row-span-3">
+                        <button type="button" class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">CONECTAR</button>
+                    </div>
+
                 </div>
                 <div>
                     <h1 class="pb-3">Experiencia</h1>
