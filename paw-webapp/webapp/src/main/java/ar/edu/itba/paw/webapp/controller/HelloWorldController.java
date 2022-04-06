@@ -21,9 +21,25 @@ public class HelloWorldController {
     }
 
     @RequestMapping("/")
-    public ModelAndView helloWorld(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
-        final ModelAndView mav = new ModelAndView("index");
-        mav.addObject("user", us.getUserById(userId).orElseThrow(UserNotFoundException::new));
+    public ModelAndView helloWorld() {
+        final ModelAndView mav = new ModelAndView("init");
+        return mav;
+    }
+
+    @RequestMapping("/buscarEmpleadas")
+    public ModelAndView searchPage() {
+        final ModelAndView mav = new ModelAndView("searchPage");
+        return mav;
+    }
+
+    @RequestMapping("/crearPerfil")
+    public ModelAndView createProfile() {
+        final ModelAndView mav = new ModelAndView("createProfile");
+        return mav;
+    }
+    @RequestMapping("/verPerfil")
+    public ModelAndView viewProfile() {
+        final ModelAndView mav = new ModelAndView("viewProfile");
         return mav;
     }
 
