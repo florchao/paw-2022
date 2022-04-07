@@ -12,6 +12,18 @@ public class User {
         this.password = password;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public long getId() {
         return id;
     }
