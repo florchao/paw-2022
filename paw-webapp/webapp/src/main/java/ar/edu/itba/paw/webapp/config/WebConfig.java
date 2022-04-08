@@ -1,11 +1,15 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -20,6 +24,9 @@ import java.util.Properties;
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
 @Configuration
 public class WebConfig {
+
+    @Value("classpath:schema.sql")
+    private Resource schemaSql;
 
     @Bean
     public ViewResolver viewResolver() {
@@ -37,9 +44,6 @@ public class WebConfig {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 
         ds.setDriverClass(org.postgresql.Driver.class);
-//        ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2022a-02");
-//        ds.setUsername("paw-2022a-02");
-//        ds.setPassword("z5ae8uDIw");
         ds.setUrl("jdbc:postgresql://localhost/paw");
         ds.setUsername("root");
         ds.setPassword("root");
@@ -63,5 +67,19 @@ public class WebConfig {
                     }
                 });
         return session;
+    }
+
+    @Bean
+    public DataSourceInitializer dataSourceInitializer(final DataSource ds){
+        final DataSourceInitializer dsi = new DataSourceInitializer();
+        dsi.setDataSource(ds);
+        dsi.setDatabasePopulator(databasePopulator());
+        return dsi;
+    }
+
+    private DatabasePopulator databasePopulator(){
+        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
+        dbp.addScript(schemaSql);
+        return dbp;
     }
 }

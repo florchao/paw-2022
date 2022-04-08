@@ -28,14 +28,6 @@ public class EmployeeJdbcDao implements EmployeeDao{
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("Employee")
                 .usingGeneratedKeyColumns("employeeId");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS employee(" +
-                "employeeID INT," +
-                "name TEXT," +
-                "location TEXT," +
-                "availability TEXT," +
-                "FOREIGN KEY (employeeID) REFERENCES users(userId) ON DELETE CASCADE," +
-                "PRIMARY KEY (employeeID)" +
-                ")");
     }
 
     @Override
