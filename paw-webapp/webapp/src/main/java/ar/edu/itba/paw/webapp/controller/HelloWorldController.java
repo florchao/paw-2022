@@ -26,8 +26,19 @@ public class HelloWorldController {
         return mav;
     }
 
+    @RequestMapping(value = "/redirectSearch", method = RequestMethod.GET)
+    public ModelAndView redirectSearch() {
+        return new ModelAndView("redirect:/buscarEmpleadas");
+    }
+
+    @RequestMapping(value = "/redirectCreateProfile", method = RequestMethod.GET)
+    public ModelAndView redirectCreateProfile() {
+        return new ModelAndView("redirect:/crearPerfil");
+    }
+
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage() {
+
         final ModelAndView mav = new ModelAndView("searchPage");
         return mav;
     }
