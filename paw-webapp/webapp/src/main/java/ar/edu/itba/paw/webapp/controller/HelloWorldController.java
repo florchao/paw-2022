@@ -1,24 +1,22 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HelloWorldController {
-
-    private UserService us;
-
     @Autowired
-    public HelloWorldController(final UserService us) {
-        this.us = us;
-    }
+    private UserService us;
+    @Autowired
+    private MailingService ms;
+
 
     @RequestMapping("/")
     public ModelAndView helloWorld() {
@@ -70,8 +68,14 @@ public class HelloWorldController {
     @RequestMapping("/chau")
     public ModelAndView goodbyeWorld() {
         final ModelAndView mav = new ModelAndView("byebye");
-        mav.addObject("user", us.getUserById(1).orElseThrow(UserNotFoundException::new));
+        ms.sendMail();
+//        mav.addObject("user", us.getUserById(1).orElseThrow(UserNotFoundException::new));
         return mav;
+    }
+
+    @RequestMapping(value = "/contactEmployee", method = RequestMethod.GET)
+    public ModelAndView contactEmployee() {
+        return new ModelAndView("redirect:/chau");
     }
 
     @RequestMapping("/create")
