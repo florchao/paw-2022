@@ -16,30 +16,30 @@
     </div>
 </nav>
 
-<div class="grid grid-cols-5">
-    <div class="grid grid-rows-6">
-        <div class="grid content-start bg-purple-300 row-start-2 row-end-6 pt-5 rounded-r-2xl">
-            <h1 class="pl-2 font-semibold  text-gray-500">Filtrar</h1>
-            <div id="accordion-open" data-accordion="open">
-                <h2 id="accordion-open-heading-1">
-                    <button type="button" class="flex justify-between items-center p-5 w-full text-left text-gray-500" data-accordion-target="#accordion-open-body-1" aria-expanded="false" aria-controls="accordion-open-body-1">
-                        <span class="flex items-center">Habilidades</span>
-                    </button>
-                </h2>
-                <h2 id="accordion-open-heading-2">
-                    <button type="button" class="flex justify-between items-center p-5 w-full text-left text-gray-500 " data-accordion-target="#accordion-open-body-1" aria-expanded="false" aria-controls="accordion-open-body-1">
-                        <span class="flex items-center">Jornada</span>
-                    </button>
-                </h2>
-                <h2 id="accordion-open-heading-3">
-                    <button type="button" class="flex justify-between items-center p-5 w-full text-left text-gray-500 " data-accordion-target="#accordion-open-body-1" aria-expanded="false" aria-controls="accordion-open-body-1">
-                        <span class="flex items-center">Zona</span>
-                    </button>
-                </h2>
-            </div>
-        </div>
-    </div>
-    <div class="grid content-start col-span-4 h-screen overflow-auto pl-5 pr-5">
+<%--<div class="grid grid-cols-5">--%>
+<%--    <div class="grid grid-rows-6">--%>
+<%--        <div class="grid content-start bg-purple-300 row-start-2 row-end-6 pt-5 rounded-r-2xl">--%>
+<%--            <h1 class="pl-2 font-semibold  text-gray-500">Filtrar</h1>--%>
+<%--            <div id="accordion-open" data-accordion="open">--%>
+<%--                <h2 id="accordion-open-heading-1">--%>
+<%--                    <button type="button" class="flex justify-between items-center p-5 w-full text-left text-gray-500" data-accordion-target="#accordion-open-body-1" aria-expanded="false" aria-controls="accordion-open-body-1">--%>
+<%--                        <span class="flex items-center">Habilidades</span>--%>
+<%--                    </button>--%>
+<%--                </h2>--%>
+<%--                <h2 id="accordion-open-heading-2">--%>
+<%--                    <button type="button" class="flex justify-between items-center p-5 w-full text-left text-gray-500 " data-accordion-target="#accordion-open-body-1" aria-expanded="false" aria-controls="accordion-open-body-1">--%>
+<%--                        <span class="flex items-center">Jornada</span>--%>
+<%--                    </button>--%>
+<%--                </h2>--%>
+<%--                <h2 id="accordion-open-heading-3">--%>
+<%--                    <button type="button" class="flex justify-between items-center p-5 w-full text-left text-gray-500 " data-accordion-target="#accordion-open-body-1" aria-expanded="false" aria-controls="accordion-open-body-1">--%>
+<%--                        <span class="flex items-center">Zona</span>--%>
+<%--                    </button>--%>
+<%--                </h2>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+    <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
         <a href="#" class="flex flex-col items-center bg-white rounded-lg border shadow-md  mt-20 mb-5 md:flex-row md:max-w-full hover:bg-gray-100 ">
             <img class="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" src="/docs/images/blog/image-4.jpg" alt="">
             <div class="flex flex-col justify-between p-4 leading-normal">
@@ -82,6 +82,6 @@
         </a>
 
     </div>
-</div>
+<%--</div>--%>
 </body>
 </html>

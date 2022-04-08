@@ -10,12 +10,9 @@ import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
-    private final EmployeeDao employeeDao;
 
     @Autowired
-    public EmployeeServiceImpl(final EmployeeDao employeeDao){
-        this.employeeDao = employeeDao;
-    }
+    private EmployeeDao employeeDao;
 
     @Override
     public Optional<Employee> getEmployeeById(long id) {
