@@ -44,4 +44,9 @@ public class Employee {
     public void setAvailability(String availability) {
         this.availability = availability;
     }
+
+    @Override
+    public String toString() {
+        return getId() + " - " + getName() + " - " + getLocation() + " - " + getAvailability();
+    }
 }

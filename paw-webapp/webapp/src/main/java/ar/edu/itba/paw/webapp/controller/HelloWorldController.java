@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.service.EmployeeService;
 
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloWorldController {
 
+    @Autowired
     private UserService us;
 
     @Autowired
-    public HelloWorldController(final UserService us) {
-        this.us = us;
-    }
+    private EmployeeService es;
+
+//    @Autowired
+//    public HelloWorldController(final UserService us) {
+//        this.us = us;
+//    }
 
     @RequestMapping("/")
     public ModelAndView helloWorld() {
@@ -38,7 +43,7 @@ public class HelloWorldController {
 
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage() {
-
+        System.out.println(es.getEmployees().get());
         final ModelAndView mav = new ModelAndView("searchPage");
         return mav;
     }

@@ -19,7 +19,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    private static final RowMapper<Employee> ROW_MAPPER = (rs, rowNum) ->
+    private static final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, rowNum) ->
             new Employee(rs.getString("name"), rs.getString("location"), rs.getLong("employeeID"), rs.getString("availability"));
 
     @Autowired
@@ -40,11 +40,17 @@ public class EmployeeJdbcDao implements EmployeeDao{
 
     @Override
     public Optional<Employee> getEmployeeById(long id) {
-        List<Employee> query = jdbcTemplate.query("SELECT * FROM employee WHERE employeeID = ?", new Object[] {id}, ROW_MAPPER);
+        List<Employee> query = jdbcTemplate.query("SELECT * FROM employee WHERE employeeID = ?", new Object[] {id}, EMPLOYEE_ROW_MAPPER);
         return query.stream().findFirst();
     }
 
     @Override
+    public Optional<List<Employee>> getEmployees() {
+        List<Employee> query = jdbcTemplate.query("SELECT employeeid,name,location,availability FROM employee", new Object[] {}, EMPLOYEE_ROW_MAPPER);
+        return Optional.of(query);
+    }
+
+        @Override
     public Employee create(String name, String location, String availability) {
        final Map<String, Object> employeeData = new HashMap<>();
        employeeData.put("name", name);
