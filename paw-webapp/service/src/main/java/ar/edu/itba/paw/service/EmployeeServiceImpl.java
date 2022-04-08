@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 public class EmployeeServiceImpl implements EmployeeService{
-    private final EmployeeDao employeeDao;
 
     @Autowired
-    public EmployeeServiceImpl(final EmployeeDao employeeDao){
-        this.employeeDao = employeeDao;
-    }
+    private EmployeeDao employeeDao;
 
     @Override
     public Optional<Employee> getEmployeeById(long id) {

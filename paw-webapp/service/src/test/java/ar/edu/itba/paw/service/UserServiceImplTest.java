@@ -61,4 +61,16 @@ public class UserServiceImplTest {
         Assert.assertFalse(maybeUser.isPresent());
     }
 
+    @Test
+    public  void testGetUserById(){
+
+        Mockito.when(mockDao.create(Mockito.eq(USERNAME), Mockito.eq(PASSWORD)))
+                .thenReturn(new User(1, USERNAME, PASSWORD));
+
+        Optional<User> maybeUser = userService.getUserById(1);
+
+        Assert.assertNotNull(maybeUser);
+        Assert.assertFalse(maybeUser.isPresent());
+    }
+
 }
