@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users (
                 userId INTEGER IDENTITY PRIMARY KEY,
-                username varchar(100) UNIQUE NOT NULL
+                email varchar(100) UNIQUE NOT NULL
 --                 password varchar (100) NOT NULL
 );
 
@@ -14,12 +14,12 @@ CREATE TABLE IF NOT EXISTS employee(
 );
 
 CREATE TABLE IF NOT EXISTS  experiences (
-                experiencesID SERIAL,
+                experiencesID INTEGER IDENTITY PRIMARY KEY,
                 employeeID INT,
-                title TEXT,
+                title varchar(1000),
                 since DATE,
                 until DATE,
-                description TEXT,
-                FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
-                PRIMARY KEY (experiencesID)
+                description varchar(1000),
+                FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE
+
 );
