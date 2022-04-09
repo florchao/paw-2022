@@ -2,7 +2,7 @@ package ar.edu.itba.paw.model;
 
 import java.sql.Time;
 
-public class Experiences {
+public class Experience {
     private long id;
     private long employeeId;
     private String title;
@@ -10,7 +10,7 @@ public class Experiences {
     private Time until;
     private String description;
 
-    public Experiences(long id, long employeeId, String title, Time since, Time until, String description) {
+    public Experience(long id, long employeeId, String title, Time since, Time until, String description) {
         this.id = id;
         this.employeeId = employeeId;
         this.title = title;
@@ -65,5 +65,9 @@ public class Experiences {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String toString() {
+        return getId()+" - "+getEmployeeId() +" - "+getTitle()+" - "+getSince()+" - "+getUntil()+" - "+getDescription();
     }
 }
