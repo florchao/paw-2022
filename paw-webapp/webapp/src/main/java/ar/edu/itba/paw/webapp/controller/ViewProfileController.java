@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
@@ -35,6 +36,7 @@ public class ViewProfileController {
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
         final ModelAndView mav = new ModelAndView("viewProfile");
         mav.addObject("user", userService.getUserById(userId));
+        mav.addObject("employee", employeeService.getEmployeeById(userId));
         return mav;
     }
 }

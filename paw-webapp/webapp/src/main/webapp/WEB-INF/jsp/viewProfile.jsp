@@ -1,5 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -26,11 +28,11 @@
                         </div>
                     </div>
                     <div class="ml-3 col-span-2">
-                        <span class="text-2xl font-semibold whitespace-nowrap">Sol Konfederak</span>
+                        <span class="text-2xl font-semibold whitespace-nowrap"><c:out value="${employee.get().name}"/></span>
                     </div>
                     <div class="ml-3 col-span-2">
                         <h1 class="block mb-2 text-sm font-medium text-gray-900 ">Zona</h1>
-                        <h1 class="block mb-2 text-sm font-medium text-gray-600 "> San Martin</h1>
+                        <h1 class="block mb-2 text-sm font-medium text-gray-600 "> <c:out value="${employee.get().location}"/></h1>
                     </div>
                     <div class="ml-3 col-start-5 row-span-3">
                         <form:form method="GET" action="/contactRedirect">

@@ -31,8 +31,6 @@ public class ExploreController {
     public ModelAndView searchPage() {
         List<Employee> list = employeeService.getEmployees().get();
 
-        System.out.println(employeeService.getEmployees().get());
-        System.out.println(experienceService.getAllExperiences().get());
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
 
