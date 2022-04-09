@@ -4,7 +4,7 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 # Ignore WebConfig file
-paw-webapp/webapp/src/main/java/ar/edu/itba/paw/webapp/config/WebConfig.java
+WebConfig.java
 
 # Node artifact files
 node_modules/
