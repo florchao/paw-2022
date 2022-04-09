@@ -13,7 +13,7 @@ public class ContactForm {
     private String name;
 
     @NotBlank
-    @Email(regexp = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")
+    @Email(regexp = "\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+")
     // source: https://www.w3resource.com/javascript/form/email-validation.php
     private String email;
 

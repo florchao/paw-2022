@@ -8,6 +8,7 @@ import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.service.EmployeeService;
 
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,6 +72,19 @@ public class HelloWorldController {
         return new ModelAndView("redirect:/verPerfil");
     }
 
+    @RequestMapping("/contacto")
+    public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form) {
+        final ModelAndView mav = new ModelAndView("contactForm2");
+        return mav;
+    }
+
+    @RequestMapping(value = "/contactEmployee", method = {RequestMethod.POST})
+    public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form,final BindingResult errors) {
+        if(errors.hasErrors())
+            return contactPage(form);
+        return new ModelAndView("redirect:/contacto");
+    }
+
     @RequestMapping("/verPerfil")
     public ModelAndView viewProfile() {
         final ModelAndView mav = new ModelAndView("viewProfile");
@@ -98,20 +112,11 @@ public class HelloWorldController {
         return mav;
     }
 
-//    @RequestMapping(value = "/contactEmployee", method = RequestMethod.GET)
-//    public ModelAndView contactEmployee() {
-//        return new ModelAndView("redirect:/chau");
-//    }
-
-    @RequestMapping("/contactForm")
-    public ModelAndView contactForm() {
-        final ModelAndView mav = new ModelAndView("contactForm");
-        return mav;
-    }
-
-    @RequestMapping(value = "/contactEmployee", method = RequestMethod.GET)
+    @RequestMapping(value = "/contactRedirect", method = RequestMethod.GET)
     public ModelAndView contactEmployee() {
-        return new ModelAndView("redirect:/contactForm");
+        return new ModelAndView("redirect:/contacto");
     }
+
+
 
 }
