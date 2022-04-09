@@ -31,10 +31,10 @@ public class ViewProfileController {
         return mav;
     }
 
-    @RequestMapping("/profile/{userId}")
+    @RequestMapping("/verPerfil/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
-        final ModelAndView mav = new ModelAndView("profile");
-        mav.addObject("user", userService.getUserById(userId).orElseThrow(UserNotFoundException::new));
+        final ModelAndView mav = new ModelAndView("viewProfile");
+        mav.addObject("user", userService.getUserById(userId));
         return mav;
     }
 }
