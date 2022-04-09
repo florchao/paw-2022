@@ -67,7 +67,7 @@ public class HelloWorldController {
         if(errors.hasErrors())
             return createProfile(form);
         long id = 1;
-        final Employee employee = es.create(form.getName(), form.getLocation(), id, form.getAvailability());
+        final Employee employee = employeeService.create(form.getName(), form.getLocation(), id, form.getAvailability());
         return new ModelAndView("redirect:/viewProfile");
     }
 
