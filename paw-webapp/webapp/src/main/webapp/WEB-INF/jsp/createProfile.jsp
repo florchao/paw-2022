@@ -19,7 +19,7 @@
     <c:url value="/createEmployee" var="postPath"/>
     <form:form modelAttribute="employeeForm" action="${postPath}" method="post">
     <div class="grid grid-cols-6">
-        <div class=" grid grid-row-4 col-span-4 col-start-2 h-screen">
+        <div class=" grid grid-row-4 col-span-4 col-start-2 h-full">
             <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24">
                 <div class="grid grid-cols-5 gap-6">
                     <div class="row-span-3 col-span-2 m-6">
@@ -78,9 +78,6 @@
                             <textarea id="experience4" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-violet-300 focus:ring-violet-500 focus:border-violet-500"></textarea>
                         </div>
                     </div>
-                </div>
-                <div class="flex justify-center">
-                    <button type="button" class="text-violet-900 text-3xl focus:outline-none h-14 w-5/6 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">+</button>
                 </div>
                 <div>
                     <h1 class="pb-3 pt-3">Habilidades</h1>
