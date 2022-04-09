@@ -98,9 +98,20 @@ public class HelloWorldController {
         return mav;
     }
 
+//    @RequestMapping(value = "/contactEmployee", method = RequestMethod.GET)
+//    public ModelAndView contactEmployee() {
+//        return new ModelAndView("redirect:/chau");
+//    }
+
+    @RequestMapping("/contactForm")
+    public ModelAndView contactForm() {
+        final ModelAndView mav = new ModelAndView("contactForm");
+        return mav;
+    }
+
     @RequestMapping(value = "/contactEmployee", method = RequestMethod.GET)
     public ModelAndView contactEmployee() {
-        return new ModelAndView("redirect:/chau");
+        return new ModelAndView("redirect:/contactForm");
     }
 
 }
