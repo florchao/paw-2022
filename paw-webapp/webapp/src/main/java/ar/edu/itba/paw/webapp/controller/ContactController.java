@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -28,6 +29,13 @@ public class ContactController {
 
     @Autowired
     private MailingService mailingService;
+
+    @RequestMapping(value = "/contactRedirect", method = RequestMethod.GET)
+    public ModelAndView contactRedirect(@RequestParam("userId") Long id) {
+        final ModelAndView mav = new ModelAndView("redirect:/contacto");
+        mav.addObject("user",userService.getUserById(id));
+        return mav;
+    }
 
     @RequestMapping("/contacto")
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form) {
@@ -48,10 +56,5 @@ public class ContactController {
         mailingService.sendMail();
 //        mav.addObject("user", userService.getUserById(1).orElseThrow(UserNotFoundException::new));
         return mav;
-    }
-
-    @RequestMapping(value = "/contactRedirect", method = RequestMethod.GET)
-    public ModelAndView contactEmployee() {
-        return new ModelAndView("redirect:/contacto");
     }
 }
