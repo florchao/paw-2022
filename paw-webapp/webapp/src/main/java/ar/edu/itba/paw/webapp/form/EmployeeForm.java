@@ -16,9 +16,11 @@ public class EmployeeForm {
     @Size(max = 100)
     private String name;
 
+    private long experienceYears;
+
     private List<Experience> experiencesList;
 
-    @Pattern(regexp = "[a-zA-z\\s]+")
+    @Pattern(regexp = "[a-z A-z\\s]+")
     @Size(max = 100)
     private String location;
 
@@ -60,6 +62,14 @@ public class EmployeeForm {
 
     public String getHabilities() {
         return habilities;
+    }
+
+    public void setExperienceYears(long experienceYears) {
+        this.experienceYears = experienceYears;
+    }
+
+    public long getExperienceYears() {
+        return experienceYears;
     }
 
     public void setHabilities(String habilities) {
