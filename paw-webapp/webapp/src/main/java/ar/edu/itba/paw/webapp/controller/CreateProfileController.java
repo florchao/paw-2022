@@ -39,6 +39,9 @@ public class CreateProfileController {
 
     @RequestMapping(value = "/createEmployee", method = {RequestMethod.POST})
     public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors){
+        System.out.println(form.getHabilities());
+        System.out.println(form.getAvailability());
+        System.out.println(form.getExperienceYears());
         if(errors.hasErrors())
             return createProfile(form);
         final User u = userService.create(form.getMail());
