@@ -10,10 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Time;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
 
 @Repository
 public class ExperienceJdbcDao implements ExperienceDao {
@@ -21,7 +19,7 @@ public class ExperienceJdbcDao implements ExperienceDao {
     private final SimpleJdbcInsert jdbcInsert;
 
     private static final RowMapper<Experience> EXPERIENCE_ROW_MAPPER = (rs, rowNum) ->
-            new Experience(rs.getLong("experiencesid"), rs.getLong("employeeid"), rs.getString("title"), rs.getTime("since"), rs.getTime("until"), rs.getString("description"));
+            new Experience(rs.getLong("experiencesid"), rs.getLong("employeeid"), rs.getString("title"), rs.getDate("since"), rs.getDate("until"), rs.getString("description"));
 
     @Autowired
     public ExperienceJdbcDao(final DataSource ds){
@@ -38,7 +36,7 @@ public class ExperienceJdbcDao implements ExperienceDao {
     }
 
     @Override
-    public Experience create(long employeeId, String title, Time since, Time until, String description) {
+    public Experience create(long employeeId, String title, Date since, Date until, String description) {
         final Map<String, Object> experienceData = new HashMap<>();
         experienceData.put("employeeid", employeeId);
         experienceData.put("title", title);
