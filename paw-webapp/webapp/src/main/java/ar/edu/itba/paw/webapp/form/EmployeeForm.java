@@ -18,7 +18,7 @@ public class EmployeeForm {
 
     private List<Experience> experiencesList;
 
-    @Pattern(regexp = "[a-zA-z]+")
+    @Pattern(regexp = "[a-zA-z\\s]+")
     @Size(max = 100)
     private String location;
 
