@@ -21,23 +21,23 @@
     <div class="grid grid-cols-6">
         <div class=" grid grid-row-4 col-span-4 col-start-2 h-screen">
             <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24">
-                <div class="grid grid-cols-5 justify-center content-center">
-                    <div class="row-span-3 col-span-3 ml-6 mr-6 mb-6">
+                <div class="grid grid-cols-5 gap-6">
+                    <div class="row-span-3 col-span-2 m-6">
                         <div class="overflow-hidden bg-gray-100 rounded-full">
                             <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                         </div>
                     </div>
-                    <div class="ml-3 col-span-2">
+                    <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                         <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900 ">Nombre y Apellido</form:label>
                         <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                         <form:errors path="name" element="p"/>
                     </div>
-                    <div class="ml-3 col-span-2">
+                    <div class="ml-3 col-span-3 w-4/5 justify-self-center">
                         <form:label path="mail" class="block mb-2 text-sm font-medium text-gray-900 ">Mail</form:label>
                         <form:input path="mail" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                         <form:errors path="mail" element="p"/>
                     </div>
-                    <div class="ml-3 col-span-2">
+                    <div class="ml-3 col-span-3 w-4/5 justify-self-center">
                         <form:label path="location" class="block mb-2 text-sm font-medium text-gray-900 ">Zona</form:label>
                         <form:input type="text" path="location" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                         <form:errors path="location" element="p"/>
@@ -64,14 +64,14 @@
                         </div>
                         <div class="ml-3 col-span-2">
                             <label for="experience2" class="block mb-2 text-sm font-medium text-gray-900 ">Duración</label>
-                            <input type="text" id="experience2" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
+                            <input type="date" id="experience2" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
                         </div>
                         <div class="self-end justify-self-center">
                             <h1>hasta</h1>
                         </div>
                         <div class="ml-3 self-end justify-self-center col-span-2 w-full">
                             <label for="experience3"></label>
-                            <input id="experience3" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
+                            <input id="experience3" type="date" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
                         </div>
                         <div class="ml-3 col-span-6">
                             <label for="experience4" class="block mb-2 text-sm font-medium text-gray-900 ">Descripción</label>
@@ -86,7 +86,7 @@
                     <h1 class="pb-3 pt-3">Habilidades</h1>
                 </div>
                 <div class="flex flex-wrap">
-                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Cocinar</button>
+                    <form:button path="habilities" value = "cocinar" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" />Concinar
                     <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Planchar</button>
                     <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Cuidado de niños</button>
                     <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Cuidado de mayores</button>
