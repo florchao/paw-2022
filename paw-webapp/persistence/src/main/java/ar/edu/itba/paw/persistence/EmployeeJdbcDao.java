@@ -37,7 +37,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
 
     @Override
     public Optional<List<Employee>> getEmployees() {
-        List<Employee> query = jdbcTemplate.query("SELECT employeeid,name,location,availability FROM employee", new Object[] {}, EMPLOYEE_ROW_MAPPER);
+        List<Employee> query = jdbcTemplate.query("SELECT * FROM employee", new Object[] {}, EMPLOYEE_ROW_MAPPER);
         return Optional.of(query);
     }
 

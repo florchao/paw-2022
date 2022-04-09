@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.service.EmployeeService;
@@ -19,13 +20,16 @@ import javax.validation.Valid;
 @Controller
 public class HelloWorldController {
     @Autowired
-    private UserService us;
+    private UserService userService;
 
     @Autowired
-    private EmployeeService es;
+    private EmployeeService employeeService;
 
     @Autowired
-    private MailingService ms;
+    private ExperienceService experienceService;
+
+    @Autowired
+    private MailingService mailingService;
 
 
     @RequestMapping("/")
@@ -46,7 +50,8 @@ public class HelloWorldController {
 
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage() {
-        System.out.println(es.getEmployees().get());
+        System.out.println(employeeService.getEmployees().get());
+        System.out.println(experienceService.getAllExperiences().get());
         final ModelAndView mav = new ModelAndView("searchPage");
         return mav;
     }
@@ -61,11 +66,8 @@ public class HelloWorldController {
     public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors){
         if(errors.hasErrors())
             return createProfile(form);
-        final User u = us.create(form.getMail());
-        System.out.println(u.getUsername());
-        System.out.println(u.getId());
-        final Employee employee = es.create(form.getName(), form.getLocation(), u.getId(), form.getAvailability());
-        System.out.println(employee);
+        final User u = userService.create(form.getMail());
+        final Employee employee = employeeService.create(form.getName(), form.getLocation(), u.getId(), form.getAvailability());
         return new ModelAndView("redirect:/verPerfil");
     }
 
@@ -84,15 +86,15 @@ public class HelloWorldController {
     @RequestMapping("/profile/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
         final ModelAndView mav = new ModelAndView("profile");
-        mav.addObject("user", us.getUserById(userId).orElseThrow(UserNotFoundException::new));
+        mav.addObject("user", userService.getUserById(userId).orElseThrow(UserNotFoundException::new));
         return mav;
     }
 
     @RequestMapping("/chau")
     public ModelAndView goodbyeWorld() {
         final ModelAndView mav = new ModelAndView("byebye");
-        ms.sendMail();
-//        mav.addObject("user", us.getUserById(1).orElseThrow(UserNotFoundException::new));
+        mailingService.sendMail();
+//        mav.addObject("user", userService.getUserById(1).orElseThrow(UserNotFoundException::new));
         return mav;
     }
 

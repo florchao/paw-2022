@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.model.Experiences;
+import ar.edu.itba.paw.model.Experience;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -16,7 +16,7 @@ public class EmployeeForm {
     @Size(max = 100)
     private String name;
 
-    private List<Experiences> experiencesList;
+    private List<Experience> experiencesList;
 
     @Pattern(regexp = "[a-zA-z]+")
     @Size(max = 100)
@@ -50,11 +50,11 @@ public class EmployeeForm {
         this.name = name;
     }
 
-    public List<Experiences> getExperiencesList() {
+    public List<Experience> getExperiencesList() {
         return experiencesList;
     }
 
-    public void setExperiencesList(List<Experiences> experiencesList) {
+    public void setExperiencesList(List<Experience> experiencesList) {
         this.experiencesList = experiencesList;
     }
 

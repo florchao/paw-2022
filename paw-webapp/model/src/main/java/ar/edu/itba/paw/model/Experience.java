@@ -1,16 +1,16 @@
 package ar.edu.itba.paw.model;
 
-import java.sql.Time;
+import java.sql.Date;
 
-public class Experiences {
+public class Experience {
     private long id;
     private long employeeId;
     private String title;
-    private Time since;
-    private Time until;
+    private Date since;
+    private Date until;
     private String description;
 
-    public Experiences(long id, long employeeId, String title, Time since, Time until, String description) {
+    public Experience(long id, long employeeId, String title, Date since, Date until, String description) {
         this.id = id;
         this.employeeId = employeeId;
         this.title = title;
@@ -43,19 +43,19 @@ public class Experiences {
         this.title = title;
     }
 
-    public Time getSince() {
+    public Date getSince() {
         return since;
     }
 
-    public void setSince(Time since) {
+    public void setSince(Date since) {
         this.since = since;
     }
 
-    public Time getUntil() {
+    public Date getUntil() {
         return until;
     }
 
-    public void setUntil(Time until) {
+    public void setUntil(Date until) {
         this.until = until;
     }
 
@@ -65,5 +65,9 @@ public class Experiences {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String toString() {
+        return getId()+" - "+getEmployeeId() +" - "+getTitle()+" - "+getSince()+" - "+getUntil()+" - "+getDescription();
     }
 }
