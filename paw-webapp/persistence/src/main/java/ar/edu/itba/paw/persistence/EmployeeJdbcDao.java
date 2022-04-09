@@ -26,8 +26,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
     public EmployeeJdbcDao(final DataSource ds){
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(ds)
-                .withTableName("Employee")
-                .usingGeneratedKeyColumns("employeeId");
+                .withTableName("Employee");
     }
 
     @Override
@@ -42,9 +41,10 @@ public class EmployeeJdbcDao implements EmployeeDao{
         return Optional.of(query);
     }
 
-        @Override
-    public Employee create(String name, String location, String availability) {
+    @Override
+    public Employee create(long id, String name, String location, String availability) {
        final Map<String, Object> employeeData = new HashMap<>();
+       employeeData.put("employeeID", id);
        employeeData.put("name", name);
        employeeData.put("location", location);
        employeeData.put("availability", availability);

@@ -12,7 +12,7 @@ public class EmployeeForm {
     @Pattern(regexp = "[\\w-_.]+@([\\w]+.)+[\\w]{2,4}")
     private String mail;
 
-    @Pattern(regexp = "[a-zA-z]+")
+    @Pattern(regexp = "[a-zA-z\\s]+")
     @Size(max = 100)
     private String name;
 

@@ -20,14 +20,14 @@ public class UserJdbcDao implements UserDao{
     private final SimpleJdbcInsert jdbcInsert;
 
     private static final RowMapper<User> ROW_MAPPER = (rs, rowNum) ->
-            new User(rs.getLong("userId"), rs.getString("username"), rs.getString("password"));
+            new User(rs.getLong("userid"), rs.getString("username"));
 
     @Autowired
     public UserJdbcDao(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("Users")
-                .usingGeneratedKeyColumns("userId");
+                .usingGeneratedKeyColumns("userid");
     }
 
     @Override
@@ -38,13 +38,15 @@ public class UserJdbcDao implements UserDao{
     }
 
     @Override
-    public User create(String username, String password) {
+    public User create(String username) {
+        System.out.println(username);
         final Map<String, Object> userData = new HashMap<>();
-        userData.put("username", username);
-        userData.put("password", password);
+        userData.put("email", username);
+        //userData.put("password", password);
+        System.out.println(userData.get("email"));
+        Number userId = jdbcInsert.executeAndReturnKey(userData);
 
-        int userId = jdbcInsert.execute(userData);
-        return new User(userId, username, password);
+        return new User(userId.longValue(), username);
     }
 
     // TODO:

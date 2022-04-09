@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
                 userId SERIAL PRIMARY KEY,
-                username TEXT UNIQUE NOT NULL,
-                password TEXT NOT NULL
+                username TEXT UNIQUE NOT NULL
+--                 password TEXT NOT NULL
                 );
 
 CREATE TABLE IF NOT EXISTS employee(

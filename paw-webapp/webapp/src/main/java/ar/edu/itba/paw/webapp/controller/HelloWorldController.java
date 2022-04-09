@@ -61,9 +61,12 @@ public class HelloWorldController {
     public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors){
         if(errors.hasErrors())
             return createProfile(form);
-        long id = 1;
-        final Employee employee = es.create(form.getName(), form.getLocation(), id, form.getAvailability());
-        return new ModelAndView("redirect:/viewProfile");
+        final User u = us.create(form.getMail());
+        System.out.println(u.getUsername());
+        System.out.println(u.getId());
+        final Employee employee = es.create(form.getName(), form.getLocation(), u.getId(), form.getAvailability());
+        System.out.println(employee);
+        return new ModelAndView("redirect:/verPerfil");
     }
 
     @RequestMapping("/verPerfil")

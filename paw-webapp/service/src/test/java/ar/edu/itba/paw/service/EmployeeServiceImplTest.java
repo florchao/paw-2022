@@ -31,7 +31,7 @@ public class EmployeeServiceImplTest {
     @Test
     public void testCreate(){
 
-        Mockito.when(mockDao.create(Mockito.eq(NAME), Mockito.eq(LOCATION), Mockito.eq(AVAILABILITY)))
+        Mockito.when(mockDao.create(Mockito.eq(ID), Mockito.eq(NAME), Mockito.eq(LOCATION), Mockito.eq(AVAILABILITY)))
                 .thenReturn(new Employee(NAME, LOCATION,ID,  AVAILABILITY));
 
         Optional<Employee> maybeEmployee = Optional.ofNullable(employeeService.create(NAME, LOCATION, ID, AVAILABILITY));
@@ -58,7 +58,7 @@ public class EmployeeServiceImplTest {
     @Test
     public  void testGetUserById(){
 
-        Mockito.when(mockDao.create(Mockito.eq(NAME), Mockito.eq(LOCATION), Mockito.eq(AVAILABILITY)))
+        Mockito.when(mockDao.create(Mockito.eq(ID), Mockito.eq(NAME), Mockito.eq(LOCATION), Mockito.eq(AVAILABILITY)))
                 .thenReturn(new Employee(NAME, LOCATION, ID, AVAILABILITY));
 
         Optional<Employee> maybeUser = employeeService.getEmployeeById(1);

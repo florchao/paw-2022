@@ -28,22 +28,22 @@ public class UserServiceImplTest {
     @Test
     public void testCreate(){
 
-        Mockito.when(mockDao.create(Mockito.eq(USERNAME), Mockito.eq(PASSWORD)))
-                .thenReturn(new User(1, USERNAME, PASSWORD));
+        Mockito.when(mockDao.create(Mockito.eq(USERNAME)))
+                .thenReturn(new User(1, USERNAME));
 
-        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, PASSWORD));
+        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME));
 
         Assert.assertNotNull(maybeUser);
         Assert.assertTrue(maybeUser.isPresent());
         Assert.assertEquals(USERNAME, maybeUser.get().getUsername());
-        Assert.assertEquals(PASSWORD, maybeUser.get().getPassword());
+        //Assert.assertEquals(PASSWORD, maybeUser.get().getPassword());
     }
 
     @Test
     public void testCreateEmptyPassword(){
 
 
-        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, ""));
+        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME));
 
         Assert.assertNotNull(maybeUser);
         Assert.assertFalse(maybeUser.isPresent());
@@ -53,9 +53,9 @@ public class UserServiceImplTest {
     public void testCreateAlreadyExists(){
 
         Mockito.when(mockDao.getUserById(Mockito.eq(ID)))
-                .thenReturn(Optional.of(new User(1, USERNAME, PASSWORD)));
+                .thenReturn(Optional.of(new User(1, USERNAME)));
 
-        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, PASSWORD));
+        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME));
 
         Assert.assertNotNull(maybeUser);
         Assert.assertFalse(maybeUser.isPresent());
@@ -64,8 +64,8 @@ public class UserServiceImplTest {
     @Test
     public  void testGetUserById(){
 
-        Mockito.when(mockDao.create(Mockito.eq(USERNAME), Mockito.eq(PASSWORD)))
-                .thenReturn(new User(1, USERNAME, PASSWORD));
+        Mockito.when(mockDao.create(Mockito.eq(USERNAME)))
+                .thenReturn(new User(1, USERNAME));
 
         Optional<User> maybeUser = userService.getUserById(1);
 
