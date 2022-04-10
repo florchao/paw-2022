@@ -10,65 +10,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+    <jsp:include page="components/navbarInit.jsp"/>
     <c:url value="/contactEmployee/${id}" var="postPath"/>
-    <form:form modelAttribute="contactForm" action="${postPath}" method="post">
-    <div class="block p-6 rounded-lg shadow-lg bg-white max-w-md">
-        <div class="form-group mb-6">
-            <form:label path="name">Nombre</form:label>
-            <form:input path="name" type="text" class="form-control block
-                w-full
-                px-3
-                py-1.5
-                text-base
-                font-normal
-                text-gray-700
-                bg-white bg-clip-padding
-                border border-solid border-gray-300
-                rounded
-                transition
-                ease-in-out
-                m-0
-                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"/>
-            <form:errors path="name"/>
-        </div>
-        <div class="form-group mb-6">
-            <form:label path="email">Email</form:label>
-            <form:input path="email" type="email" class="form-control block
-                w-full
-                px-3
-                py-1.5
-                text-base
-                font-normal
-                text-gray-700
-                bg-white bg-clip-padding
-                border border-solid border-gray-300
-                rounded
-                transition
-                ease-in-out
-                m-0
-                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"/>
-        </div>
-        <div class="form-group mb-6">
-            <form:label path="content">Mensaje</form:label>
-            <form:textarea path="content" rows="3" class="
-                        form-control
-                        block
-                        w-full
-                        px-3
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding
-                        border border-solid border-gray-300
-                        rounded
-                        transition
-                        ease-in-out
-                        m-0
-                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" />
-        </div>
+    <div class="flex justify-center">
+        <form:form modelAttribute="contactForm" action="${postPath}" method="post">
+            <div class="block p-6 rounded-lg shadow-lg bg-white max-w-md">
+                <div class="form-group mb-6">
+                    <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900">Nombre</form:label>
+                    <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                    <form:errors path="name"/>
+                </div>
+                <div class="form-group mb-6">
+                    <form:label path="email" class="block mb-2 text-sm font-medium text-gray-900">Email</form:label>
+                    <form:input path="email" type="email" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                    <form:errors path="email" element="p"/>
+                </div>
+                <div class="form-group mb-6">
+                    <form:label path="content" class="block mb-2 text-sm font-medium text-gray-900">Mensaje</form:label>
+                    <form:textarea path="content" rows="3" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500" />
+                    <form:errors path="content" element="p"/>
+                </div>
 
-        <button type="submit" class="
+                <button type="submit" class="
           w-full
           px-6
           py-2.5
@@ -86,8 +49,10 @@
           transition
           duration-150
           ease-in-out">Enviar
-        </button>
+                </button>
+            </div>
+        </form:form>
     </div>
-    </form:form>
+
 </body>
 </html>
