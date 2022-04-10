@@ -4,14 +4,18 @@ CREATE TABLE IF NOT EXISTS users (
 --                 password TEXT NOT NULL
                 );
 
-CREATE TABLE IF NOT EXISTS employee(
-                employeeID INT,
-                name TEXT,
-                location TEXT,
-                availability TEXT,
-                FOREIGN KEY (employeeID) REFERENCES users(userId) ON DELETE CASCADE,
-                PRIMARY KEY (employeeID)
-                );
+create table employee(
+    employeeID INT,
+    name TEXT,
+    location TEXT,
+    availability TEXT,
+    experienceYears INT,
+    abilities TEXT,
+    FOREIGN KEY (employeeID) REFERENCES users(userID) ON DELETE CASCADE,
+    PRIMARY KEY (employeeID)
+
+);
+
 
 CREATE TABLE IF NOT EXISTS  experiences (
                 experiencesID SERIAL PRIMARY KEY,
