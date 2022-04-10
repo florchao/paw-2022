@@ -29,10 +29,9 @@
                         <h1 class="block mb-2 text-sm font-medium text-gray-600 "> <c:out value="${employee.location}"/></h1>
                     </div>
                     <div class="ml-3 col-start-5 row-span-3">
-                        <form:form method="GET" action="/contactRedirect">
-                            <input type="hidden" name="userId" value="${user.id}">
-                            <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">CONECTAR</button>
-                        </form:form>
+                            <a href="/contacto/${user.id}">
+                                <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">CONECTAR</button>
+                            </a>
                     </div>
 
                 </div>

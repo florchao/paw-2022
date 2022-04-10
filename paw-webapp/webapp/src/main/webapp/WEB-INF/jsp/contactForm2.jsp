@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <c:url value="/contactEmployee" var="postPath"/>
+    <c:url value="/contactEmployee/${id}" var="postPath"/>
     <form:form modelAttribute="contactForm" action="${postPath}" method="post">
     <div class="block p-6 rounded-lg shadow-lg bg-white max-w-md">
         <div class="form-group mb-6">
@@ -67,6 +67,7 @@
                         m-0
                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" />
         </div>
+
         <button type="submit" class="
           w-full
           px-6

@@ -3,13 +3,11 @@ package ar.edu.itba.paw.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class MailingServiceImpl implements MailingService{
@@ -21,38 +19,31 @@ public class MailingServiceImpl implements MailingService{
     }
 
     @Override
-    public void sendMail(){
+    public void sendMail(String replyTo, String to, String name, String message) {
         try {
+            MimeMessage mimeMessage = new MimeMessage(session);
 
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("hogarempleos22@gmail.com"));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse("solkonfe@gmail.com"));
-            message.setSubject("Testing Subject");
-            message.setText("Test Mail");
-
-            Transport.send(message);
-
-            System.out.println("Done");
-
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            String SERVER_MAIL = "hogarempleos22@gmail.com";
+            String from = String.format("\"%s\" <%s>", replyTo.substring(0, replyTo.indexOf('@')), SERVER_MAIL);
+            mimeMessage.setFrom(new InternetAddress(from));
+            mimeMessage.setReplyTo(new Address[]{new InternetAddress(replyTo)});
+            String subject = "¡"+ name + " quiere contactarse con vos!";
+            sendEmail(mimeMessage, Collections.singletonList(to), subject, message);
+        } catch (MessagingException mex) {
+            throw new RuntimeException(mex.getMessage());
         }
     }
 
-//    private final String SERVER_MAIL = "mpvcampus@gmail.com";
-//
-//    @Override
-//    public void sendEmail(String replyTo, String to, String subject, String content, String contentType) {
-//        try {
-//            MimeMessage message = new MimeMessage(session);
-//
-//            String from = String.format("\"%s\" <%s>", replyTo.substring(0, replyTo.indexOf('@')), SERVER_MAIL);
-//            message.setFrom(new InternetAddress(from));
-//            message.setReplyTo(new Address[]{new InternetAddress(replyTo)});
-//            sendEmail(message, Collections.singletonList(to), subject, content, contentType);
-//        } catch (MessagingException mex) {
-//            throw new RuntimeException(mex.getMessage());
-//        }
-//    }
+    private void sendEmail(Message mimeMessage, List<String> to, String subject, String message) {
+        try {
+            for (String destination : to) {
+                mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(destination));
+            }
+            mimeMessage.setSubject(subject);
+            mimeMessage.setContent(message, "text/plain");
+            Transport.send(mimeMessage);
+        } catch (MessagingException mex) {
+            throw new RuntimeException(mex.getMessage());
+        }
+    }
 }
