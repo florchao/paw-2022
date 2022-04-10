@@ -11,7 +11,7 @@
 <body>
     <jsp:include page="components/navbar.jsp"/>
     <c:choose>
-        <c:when test="${EmployeeList.size() < 10}">
+        <c:when test="${EmployeeList.size() == 0}">
             <div class = "grid grid-row-6 content-center justify-center h-screen">
                 <div class = "grid justify-items-center">
                     <img src="<c:url value='../../public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
