@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
 --                 password TEXT NOT NULL
                 );
 
-create table employee(
+create table if not exists employee(
     employeeID INT,
     name TEXT,
     location TEXT,
