@@ -12,11 +12,11 @@
     <jsp:include page="components/navbar.jsp"/>
 
     <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
-<%--        <c:if test="${EmployeeList.size() == 0}">--%>
-<%--            <div>--%>
-<%--                <p class="text-3xl font-semibold text-purple-700">No hay empleadas registradas</p>--%>
-<%--            </div>--%>
-<%--        </c:if>--%>
+        <c:if test="${EmployeeList.size() == 0}">>
+            <div>
+                <p class="text-3xl font-semibold text-purple-700">No hay empleadas registradas</p>
+            </div>
+        </c:if>
         <c:forEach var="employee" items="${EmployeeList}">
             <c:set var="employee" value="${employee}" scope="request"/>
             <jsp:include page="components/employeeCardComponent.jsp">
