@@ -10,21 +10,28 @@
 </head>
 <body>
     <jsp:include page="components/navbar.jsp"/>
-
-    <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
-        <c:if test="${EmployeeList.size() == 0}">>
-            <div>
-                <p class="text-3xl font-semibold text-purple-700">No hay empleadas registradas</p>
+    <c:choose>
+        <c:when test="${EmployeeList.size() < 10}">
+            <div class = "grid grid-row-6 content-center justify-center h-screen">
+                <div class = "grid justify-items-center">
+                    <img src="<c:url value='../../public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
+                    <p class="text-3xl font-semibold text-purple-700">No hay empleadas registradas</p>
+                </div>
             </div>
-        </c:if>
-        <c:forEach var="employee" items="${EmployeeList}">
-            <c:set var="employee" value="${employee}" scope="request"/>
-            <jsp:include page="components/employeeCardComponent.jsp">
-                <jsp:param name="name" value="${employee.name}"/>
-                <jsp:param name="location" value="${employee.location}"/>
-                <jsp:param name="id" value="${employee.id}"/>
-            </jsp:include>
-        </c:forEach>
-    </div>
+        </c:when>
+        <c:otherwise>
+            <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
+                <c:forEach var="employee" items="${EmployeeList}">
+                    <c:set var="employee" value="${employee}" scope="request"/>
+                    <jsp:include page="components/employeeCardComponent.jsp">
+                        <jsp:param name="name" value="${employee.name}"/>
+                        <jsp:param name="location" value="${employee.location}"/>
+                        <jsp:param name="id" value="${employee.id}"/>
+                    </jsp:include>
+                </c:forEach>
+            </div>
+        </c:otherwise>
+    </c:choose>
+
 </body>
 </html>
