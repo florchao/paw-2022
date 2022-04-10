@@ -41,44 +41,44 @@
             <%--            <div>--%>
             <%--                <h1 class="pb-3">Experiencia</h1>--%>
             <%--            </div>--%>
-<%--            <div class="grid grid-flow-row-dense grid-cols-2 gap-4">--%>
-<%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-<%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-<%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-<%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-<%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-<%--                    </div>--%>
-<%--                </a>--%>
-<%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-<%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-<%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-<%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-<%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-<%--                    </div>--%>
-<%--                </a>--%>
-<%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-<%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-<%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-<%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-<%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-<%--                    </div>--%>
-<%--                </a>--%>
-<%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-<%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-<%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-<%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-<%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-<%--                    </div>--%>
-<%--                </a>--%>
-<%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-<%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-<%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-<%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-<%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-<%--                    </div>--%>
-<%--                </a>--%>
+            <%--            <div class="grid grid-flow-row-dense grid-cols-2 gap-4">--%>
+            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
+            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
+            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
+            <%--                    </div>--%>
+            <%--                </a>--%>
+            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
+            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
+            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
+            <%--                    </div>--%>
+            <%--                </a>--%>
+            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
+            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
+            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
+            <%--                    </div>--%>
+            <%--                </a>--%>
+            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
+            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
+            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
+            <%--                    </div>--%>
+            <%--                </a>--%>
+            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
+            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
+            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
+            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
+            <%--                    </div>--%>
+            <%--                </a>--%>
 
-<%--            </div>--%>
+            <%--            </div>--%>
             <div>
                 <h1 class="pb-3 pt-3 font-semibold">Habilidades</h1>
                 <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
@@ -97,4 +97,5 @@
             </div>
         </div>
     </div>
+</div>
 </body>
