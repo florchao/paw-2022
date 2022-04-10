@@ -53,10 +53,10 @@ public class EmployeeJdbcDao implements EmployeeDao{
        employeeData.put("name", name);
        employeeData.put("location", location);
        employeeData.put("availability", availability);
-        employeeData.put("experienceYears", experienceYears);
+       employeeData.put("experienceYears", experienceYears);
        employeeData.put("abilities", abilities);
 
-       int employeeId = jdbcInsert.execute(employeeData);
-       return new Employee(name, location, employeeId, availability, experienceYears, abilities);
+       jdbcInsert.execute(employeeData);
+       return new Employee(name, location, id, availability, experienceYears, abilities);
     }
 }
