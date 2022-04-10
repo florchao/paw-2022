@@ -45,6 +45,9 @@ public class ViewProfileController {
         }
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
         if(employee.isPresent()){
+            System.out.println("++++");
+            System.out.println(employee);
+            System.out.println("++++");
             mav.addObject("employee", employee.get());
         }
 

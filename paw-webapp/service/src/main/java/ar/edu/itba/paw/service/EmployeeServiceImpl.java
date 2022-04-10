@@ -5,6 +5,8 @@ import ar.edu.itba.paw.persistence.EmployeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +18,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Optional<Employee> getEmployeeById(long id) {
-        return employeeDao.getEmployeeById(id);
+        Employee employee = (employeeDao.getEmployeeById(id)).get();
+        List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.getAvailability().split(",")));
+        List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.getAbilities().split(",")));
+        Employee aux = new Employee(employee.getName(), employee.getLocation(), id, availabilityArr, employee.getExperienceYears(), abilitiesArr);
+        System.out.println(aux);
+        System.out.println(availabilityArr);
+        System.out.println(abilitiesArr);
+        System.out.println("-----------");
+        return Optional.of(aux);
     }
 
     @Override

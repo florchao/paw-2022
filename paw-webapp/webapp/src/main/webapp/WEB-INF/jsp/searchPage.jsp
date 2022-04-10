@@ -21,6 +21,7 @@
         </c:when>
         <c:otherwise>
             <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
+                <div class="my-8 w-full"></div>
                 <c:forEach var="employee" items="${EmployeeList}">
                     <c:set var="employee" value="${employee}" scope="request"/>
                     <jsp:include page="components/employeeCardComponent.jsp">
