@@ -11,13 +11,7 @@
     <title>Ver Perfil</title>
 </head>
 <body>
-<nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 dark:bg-violet-500">
-    <div class="container flex flex-row items-center mx-auto">
-        <!-- La imagen tiene que estar en una carpeta assets -->
-        <img src="/docs/images/logo.svg" class="mr-3 h-6 sm:h-9">
-        <span class="text-xl font-semibold whitespace-nowrap dark:text-white">Hogar</span>
-    </div>
-</nav>
+<jsp:include page="components/navbar.jsp"/>
 <div class="grid grid-cols-6">
         <div class=" grid grid-row-4 col-span-4 col-start-2 h-screen">
             <div class=" bg-gray-200 rounded-t-3xl overflow-auto p-5 mt-24">

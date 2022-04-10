@@ -10,13 +10,7 @@
     <title>Hogar</title>
 </head>
 <body>
-    <nav class="absolute w-full px-2 sm:px-4 py-2.5 bg-violet-500">
-        <div class="container flex flex-row items-center mx-auto">
-            <!-- La imagen tiene que estar en una carpeta assets -->
-<%--            <img src="/docs/images/logo.svg" class="mr-3 h-6 sm:h-9">--%>
-            <span class="text-xl font-semibold whitespace-nowrap text-white">Hogar</span>
-        </div>
-    </nav>
+    <jsp:include page="components/navbar.jsp"/>
     <div class="grid grid-cols-2 gap-4 pt-16 h-screen">
         <div class="grid grid-rows-2 gap-4 pl-8">
             <div class="grid content-center">
