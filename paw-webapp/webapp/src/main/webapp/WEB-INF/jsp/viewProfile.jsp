@@ -11,14 +11,28 @@
     <title>Ver Perfil</title>
 </head>
 <body>
-<nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 dark:bg-violet-500">
-    <div class="container flex flex-row items-center mx-auto">
-        <!-- La imagen tiene que estar en una carpeta assets -->
-        <img src="/docs/images/logo.svg" class="mr-3 h-6 sm:h-9">
-        <span class="text-xl font-semibold whitespace-nowrap dark:text-white">Hogar</span>
-    </div>
-</nav>
+<jsp:include page="components/navbar.jsp"/>
 <div class="grid grid-cols-6">
+        <div class=" grid grid-row-4 col-span-4 col-start-2 h-screen">
+            <div class=" bg-gray-200 rounded-t-3xl overflow-auto p-5 mt-24">
+                <div class="grid grid-cols-5 justify-center">
+                    <div class="row-span-3 col-span-2 ml-10 mr-6 mb-6">
+                        <div class="overflow-hidden w-48 bg-gray-100 rounded-full">
+                            <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </div>
+                    <div class="ml-3 col-span-2">
+                        <span class="text-2xl font-semibold whitespace-nowrap"><c:out value="${employee.name}"/></span>
+                    </div>
+                    <div class="ml-3 col-span-2">
+                        <h1 class="block mb-2 text-sm font-medium text-gray-900 ">Zona</h1>
+                        <h1 class="block mb-2 text-sm font-medium text-gray-600 "> <c:out value="${employee.location}"/></h1>
+                    </div>
+                    <div class="ml-3 col-start-5 row-span-3">
+                            <a href="/contacto/${user.id}">
+                                <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">CONECTAR</button>
+                            </a>
+                    </div>
     <div class=" grid grid-row-4 col-span-4 col-start-2 h-screen">
         <div class=" bg-gray-200 rounded-t-3xl overflow-auto p-5 mt-24">
             <div class="grid grid-cols-5 justify-center">

@@ -2,6 +2,8 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.sql.Time;
@@ -16,6 +18,7 @@ public class EmployeeForm {
     @Size(max = 100)
     private String name;
 
+    @DecimalMin("1")
     private long experienceYears;
 
     private List<Experience> experiencesList;
@@ -24,8 +27,10 @@ public class EmployeeForm {
     @Size(max = 100)
     private String location;
 
+    @NotNull
     private String abilities;
 
+    @NotNull
     private String availability;
 
     public String getMail() {
