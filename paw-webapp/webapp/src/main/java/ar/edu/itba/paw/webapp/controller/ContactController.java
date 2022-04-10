@@ -44,7 +44,7 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/contactEmployee", method = {RequestMethod.POST})
-    public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors) {
+    public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @RequestParam("userId") Long id) {
         if(errors.hasErrors())
             return contactPage(form);
         return new ModelAndView("redirect:/contacto");

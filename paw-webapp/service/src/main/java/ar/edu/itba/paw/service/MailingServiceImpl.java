@@ -9,6 +9,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Collections;
 
 @Service
 public class MailingServiceImpl implements MailingService{
@@ -38,4 +39,20 @@ public class MailingServiceImpl implements MailingService{
             throw new RuntimeException(e);
         }
     }
+
+//    private final String SERVER_MAIL = "mpvcampus@gmail.com";
+//
+//    @Override
+//    public void sendEmail(String replyTo, String to, String subject, String content, String contentType) {
+//        try {
+//            MimeMessage message = new MimeMessage(session);
+//
+//            String from = String.format("\"%s\" <%s>", replyTo.substring(0, replyTo.indexOf('@')), SERVER_MAIL);
+//            message.setFrom(new InternetAddress(from));
+//            message.setReplyTo(new Address[]{new InternetAddress(replyTo)});
+//            sendEmail(message, Collections.singletonList(to), subject, content, contentType);
+//        } catch (MessagingException mex) {
+//            throw new RuntimeException(mex.getMessage());
+//        }
+//    }
 }
