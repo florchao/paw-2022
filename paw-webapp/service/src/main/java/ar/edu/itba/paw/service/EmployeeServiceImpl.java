@@ -20,9 +20,9 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Employee create(String name, String location, long id, String availability) {
+    public Employee create(String name, String location, long id, String availability, long experienceYears, String abilities) {
         //TODO: validate name, location, id, etc
-        return employeeDao.create(id, name, location, availability);
+        return employeeDao.create(id, name, location, availability, experienceYears, abilities);
     }
 
     @Override

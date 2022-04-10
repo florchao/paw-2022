@@ -5,12 +5,16 @@ public class Employee {
     private String location;
     private long id;
     private String availability;
+    private long experienceYears;
+    private String abilities;
 
-    public Employee(String name, String location, long id, String availability) {
+    public Employee(String name, String location, long id, String availability, long experienceYears, String abilities) {
         this.name = name;
         this.location = location;
         this.id = id;
         this.availability = availability;
+        this.experienceYears = experienceYears;
+        this.abilities = abilities;
     }
 
     public String getName() {
@@ -35,6 +39,22 @@ public class Employee {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getExperienceYears() {
+        return experienceYears;
+    }
+
+    public void setExperienceYears(long experienceYears) {
+        this.experienceYears = experienceYears;
+    }
+
+    public String getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(String abilities) {
+        this.abilities = abilities;
     }
 
     public String getAvailability() {

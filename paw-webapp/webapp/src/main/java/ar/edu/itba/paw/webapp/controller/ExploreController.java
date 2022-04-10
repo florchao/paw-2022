@@ -30,10 +30,8 @@ public class ExploreController {
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage() {
         List<Employee> list = employeeService.getEmployees().get();
-
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
-
         return mav;
 
     }

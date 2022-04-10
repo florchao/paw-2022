@@ -24,7 +24,7 @@ public class EmployeeForm {
     @Size(max = 100)
     private String location;
 
-    private String habilities;
+    private String abilities;
 
     private String availability;
 
@@ -60,8 +60,8 @@ public class EmployeeForm {
         this.experiencesList = experiencesList;
     }
 
-    public String getHabilities() {
-        return habilities;
+    public String getAbilities() {
+        return abilities;
     }
 
     public void setExperienceYears(long experienceYears) {
@@ -72,8 +72,8 @@ public class EmployeeForm {
         return experienceYears;
     }
 
-    public void setHabilities(String habilities) {
-        this.habilities = habilities;
+    public void setAbilities(String abilities) {
+        this.abilities = abilities;
     }
 
     public String getAvailability() {

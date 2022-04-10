@@ -20,7 +20,12 @@ public class EmployeeJdbcDao implements EmployeeDao{
     private final SimpleJdbcInsert jdbcInsert;
 
     private static final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, rowNum) ->
-            new Employee(rs.getString("name"), rs.getString("location"), rs.getLong("employeeID"), rs.getString("availability"));
+            new Employee(rs.getString("name"),
+                    rs.getString("location"),
+                    rs.getLong("employeeID"),
+                    rs.getString("availability"),
+                    rs.getLong("experienceYears"),
+                    rs.getString("abilities"));
 
     @Autowired
     public EmployeeJdbcDao(final DataSource ds){
@@ -42,14 +47,16 @@ public class EmployeeJdbcDao implements EmployeeDao{
     }
 
     @Override
-    public Employee create(long id, String name, String location, String availability) {
+    public Employee create(long id, String name, String location, String availability, long experienceYears, String abilities) {
        final Map<String, Object> employeeData = new HashMap<>();
        employeeData.put("employeeID", id);
        employeeData.put("name", name);
        employeeData.put("location", location);
        employeeData.put("availability", availability);
+        employeeData.put("experienceYears", experienceYears);
+       employeeData.put("abilities", abilities);
 
        int employeeId = jdbcInsert.execute(employeeData);
-       return new Employee(name, location, employeeId, availability);
+       return new Employee(name, location, employeeId, availability, experienceYears, abilities);
     }
 }
