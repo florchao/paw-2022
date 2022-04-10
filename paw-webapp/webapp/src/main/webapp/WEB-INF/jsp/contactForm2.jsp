@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>contactForm2</title>
@@ -12,7 +12,8 @@
 <body>
     <jsp:include page="components/navbarInit.jsp"/>
     <c:url value="/contactEmployee/${id}" var="postPath"/>
-    <div class="flex justify-center">
+    <div class="grid grid-cols-4">
+        <div: class = "my-20 col-start-2 col-span-2 h-full"
         <form:form modelAttribute="contactForm" action="${postPath}" method="post">
             <div class="block p-6 rounded-lg shadow-lg bg-white max-w-md">
                 <div class="form-group mb-6">
