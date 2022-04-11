@@ -16,29 +16,29 @@
     <div class = "grid h-full w-full">
         <div class="grid justify-items-center mx-6">
             <p class="text-xl font-semibold text-purple-700 mb-5">
-                Formulario para contactarse con <c:out value="${name}"/>
+                <spring:message code="contactForm2.title" arguments="${name}"/>
             </p>
         </div>
 
         <form:form modelAttribute="contactForm" action="${postPath}" method="post">
-            <div class="block p-6 col-span-2 rounded-lg shadow-lg bg-white">
+            <div class="block p-6 rounded-lg shadow-lg bg-white max-w-md">
                 <div class="form-group mb-6">
-                    <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900">Nombre</form:label>
+                    <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.name"/></form:label>
                     <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                     <form:errors path="name"/>
                 </div>
                 <div class="form-group mb-6">
-                    <form:label path="email" class="block mb-2 text-sm font-medium text-gray-900">Email</form:label>
+                    <form:label path="email" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.mail"/></form:label>
                     <form:input path="email" type="email" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                     <form:errors path="email" element="p"/>
                 </div>
                 <div class="form-group mb-6">
-                    <form:label path="content" class="block mb-2 text-sm font-medium text-gray-900">Mensaje</form:label>
+                    <form:label path="content" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.message"/></form:label>
                     <form:textarea path="content" rows="3" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500" />
                     <form:errors path="content" element="p"/>
                 </div>
 
-                <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Enviar</button>
+                <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="contactForm2.send"/></button>
             </div>
         </form:form>
     </div>

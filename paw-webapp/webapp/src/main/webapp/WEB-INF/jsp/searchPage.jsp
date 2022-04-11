@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -9,13 +11,15 @@
     <title>Buscar</title>
 </head>
 <body>
-    <jsp:include page="components/navbar.jsp"/>
+<jsp:include page="components/navbar.jsp">
+    <jsp:param name="currentUrl" value="seachPage"/>
+</jsp:include>
     <c:choose>
         <c:when test="${EmployeeList.size() == 0}">
             <div class = "grid content-center justify-center h-screen">
                 <div class = "grid justify-items-center">
                     <img src="<c:url value='../../public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
-                    <p class="text-3xl font-semibold text-purple-700">No hay empleadas registradas</p>
+                    <p class="text-3xl font-semibold text-purple-700"><spring:message code="searchPage.noEmployees"/></p>
                 </div>
             </div>
         </c:when>
