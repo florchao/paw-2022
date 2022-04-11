@@ -10,7 +10,9 @@
     <title>Hogar</title>
 </head>
 <body>
-    <jsp:include page="components/navbarInit.jsp"/>
+<jsp:include page="components/navbar.jsp">
+    <jsp:param name="currentUrl" value="init"/>
+</jsp:include>
     <div class="grid grid-cols-2 gap-4 pt-16 h-screen">
         <div class="grid grid-rows-2 gap-4 pl-8">
             <div class="grid content-center">

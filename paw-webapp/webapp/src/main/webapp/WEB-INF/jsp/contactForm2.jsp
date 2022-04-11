@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <jsp:include page="components/navbarInit.jsp"/>
+    <jsp:include page="components/navbar.jsp"/>
     <c:url value="/contactEmployee/${id}" var="postPath"/>
     <div class="grid grid-cols-4">
         <div: class = "my-20 col-start-2 col-span-2 h-full">

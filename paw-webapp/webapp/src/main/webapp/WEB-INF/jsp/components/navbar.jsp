@@ -8,11 +8,12 @@
     <title>navbar</title>
 </head>
 <body>
-    <nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 dark:bg-violet-500">
-        <div class="h-30 grid grid-cols-3 space-between">
-            <a href ="/" class = "flex items-center mx-8">
-                <img src="<c:url value='../../../public/hogar.png'/>" alt="logo" class="mr-3 h-6 sm:h-9">
-            </a>
+<nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 dark:bg-violet-500">
+    <div class="h-30 grid grid-cols-3 space-between">
+        <a href ="/" class = "flex items-center mx-8">
+            <img src="<c:url value='../../../public/hogar.png'/>" alt="logo" class="mr-3 h-6 sm:h-9">
+        </a>
+        <c:if test="${!param.currentUrl.equals('init')}">
             <div class="h-30 grid grid-cols-2 col-start-3">
                 <a href="/redirectSearch" class = "flex items-center justify-items-end">
                     <c:choose>
@@ -35,7 +36,8 @@
                     </c:choose>
                 </a>
             </div>
-        </div>
-    </nav>
+        </c:if>
+    </div>
+</nav>
 </body>
 </html>
