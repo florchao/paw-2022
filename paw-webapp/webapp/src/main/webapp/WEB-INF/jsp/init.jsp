@@ -15,7 +15,7 @@
         <div class="grid grid-rows-2 gap-4 pl-8">
             <div class="grid content-center">
                 <h3 class="text-3xl font-semibold text-purple-700">¡Bienvenido a Hogar!</h3>
-                <h3 class="text-2xl text-purple-700">Un lugar para conectarse y econtrar lo que estas buscando.</h3>
+                <h3 class="text-2xl text-purple-700">Un lugar para conectarse y encontrar lo que estas buscando.</h3>
             </div>
             <div class="flex flex-col">
                 <div class="grid">
