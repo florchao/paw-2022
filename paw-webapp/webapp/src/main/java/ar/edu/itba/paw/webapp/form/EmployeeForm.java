@@ -18,12 +18,12 @@ public class EmployeeForm {
     @Size(max = 100)
     private String name;
 
-    @DecimalMin("1")
+    @DecimalMin("0")
     private long experienceYears;
 
     private List<Experience> experiencesList;
 
-    @Pattern(regexp = "[a-z A-z\\s]+")
+    @Pattern(regexp = "[a-z A-z\\s0-9,]+")
     @Size(max = 100)
     private String location;
 
