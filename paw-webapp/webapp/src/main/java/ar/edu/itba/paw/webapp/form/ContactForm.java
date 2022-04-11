@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class ContactForm {
 
     @Size(min = 6, max = 100)
-    @Pattern(regexp = "[a-zA-Z0-9]+")
+    @Pattern(regexp = "[a-zA-Z\\s]+")
     private String name;
 
     @NotBlank

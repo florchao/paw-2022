@@ -39,7 +39,7 @@ public class ContactController {
 
     @RequestMapping("/contacto/{id}")
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
-        final ModelAndView mav = new ModelAndView("contactForm2");
+        final ModelAndView mav = new ModelAndView("contactForm");
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         employee.ifPresent(value -> {mav.addObject("name", value.getName()); System.out.println(employee.get().getName());});
         return mav;

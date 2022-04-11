@@ -1,17 +1,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 
 <html>
 <head>
-    <title>contactForm2</title>
+    <title>Contacto</title>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<jsp:include page="components/navbarInit.jsp"/>
-<c:url value="/contactEmployee/${id}" var="postPath"/>
+<jsp:include page="components/navbar.jsp"/>
+<c:url value="/contactarEmpleado/${id}" var="postPath"/>
 <div class="grid content-center justify-center h-screen">
     <div class = "grid h-full w-full">
         <div class="grid justify-items-center mx-6">
