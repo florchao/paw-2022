@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -18,20 +20,20 @@
                 <a href="/redirectSearch" class = "flex items-center justify-items-end">
                     <c:choose>
                         <c:when test="${param.currentUrl.equals('seachPage')}">
-                            <span class="text-m whitespace-nowrap font-semibold text-violet-900">Buscar Empleada</span>
+                            <span class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.searchEmployee"/></span>
                         </c:when>
                         <c:otherwise>
-                            <span class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white">Buscar Empleada</span>
+                            <span class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.searchEmployee"/></span>
                         </c:otherwise>
                     </c:choose>
                 </a>
                 <a href="/redirectCreateProfile" class = "flex items-center justify-items-end">
                     <c:choose>
                         <c:when test="${param.currentUrl.equals('createProfile')}">
-                            <span class="text-m whitespace-nowrap font-semibold text-violet-900">Crear Perfil</span>
+                            <span class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.createProfile"/></span>
                         </c:when>
                         <c:otherwise>
-                            <span class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white">Crear Perfil</span>
+                            <span class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.createProfile"/></span>
                         </c:otherwise>
                     </c:choose>
                 </a>
