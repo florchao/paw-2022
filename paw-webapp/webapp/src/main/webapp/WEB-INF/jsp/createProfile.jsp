@@ -32,7 +32,7 @@
                     <div class="ml-3 col-span-3 w-4/5 justify-self-center">
                         <form:label path="mail" for="mail" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employeeForm.label.mail"/></form:label>
                         <form:input path="mail" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                        <form:errors path="mail" element="p"/>
+                        <form:errors path="mail" element="p" cssClass="error_message"/>
                     </div>
                     <div class="ml-3 col-span-3 w-4/5 justify-self-center">
                         <form:label path="location" for="location" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employeeForm.label.location"/></form:label>
@@ -92,6 +92,7 @@
                     <form:checkbox path="abilities" value = "Cuidado de mayores" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /><spring:message code="employeeForm.abilities.older"/>
                     <form:checkbox path="abilities" value = "Cuidadoss especiales" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /><spring:message code="employeeForm.abilities.specialNeeds"/>
                     <form:checkbox path="abilities" value = "Cuidado de mascotas" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /><spring:message code="employeeForm.abilities.pets"/>
+                    <form:errors path="abilities" element="p" cssClass="error_message"/>
 <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Planchar</button>--%>
 <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Cuidado de niños</button>--%>
 <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Cuidado de mayores</button>--%>
@@ -106,6 +107,7 @@
                     <form:checkbox path="availability" value="Media jornada" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"/><spring:message code="employeeForm.availability.half"/>
                     <form:checkbox path="availability" value="Jornada completa" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"/><spring:message code="employeeForm.availability.complete"/>
                     <form:checkbox path="availability" value="Con cama" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"/><spring:message code="employeeForm.availability.bed"/>
+                    <form:errors path="availability" element="p"/>
 <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Media jornada</button>--%>
 <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Jornada completa</button>--%>
 <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Con cama</button>--%>
