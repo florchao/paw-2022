@@ -9,7 +9,9 @@
     <title>Buscar</title>
 </head>
 <body>
-    <jsp:include page="components/navbar.jsp"/>
+<jsp:include page="components/navbar.jsp">
+    <jsp:param name="currentUrl" value="seachPage"/>
+</jsp:include>
     <c:choose>
         <c:when test="${EmployeeList.size() == 0}">
             <div class = "grid grid-row-6 content-center justify-center h-screen">

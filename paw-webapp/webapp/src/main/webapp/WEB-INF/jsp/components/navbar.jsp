@@ -15,10 +15,24 @@
             </a>
             <div class="h-30 grid grid-cols-2 col-start-3">
                 <a href="/redirectSearch" class = "flex items-center justify-items-end">
-                     <span class="text-m whitespace-nowrap dark:text-white">Buscar Empleadas</span>
+                    <c:choose>
+                        <c:when test="${param.currentUrl.equals('seachPage')}">
+                            <span class="text-m whitespace-nowrap font-semibold text-violet-900">Buscar Empleada</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="text-m whitespace-nowrap font-semibold text-white">Buscar Empleada</span>
+                        </c:otherwise>
+                    </c:choose>
                 </a>
                 <a href="/redirectCreateProfile" class = "flex items-center justify-items-end">
-                     <span class="text-m whitespace-nowrap dark:text-white">Crear Perfil</span>
+                    <c:choose>
+                        <c:when test="${param.currentUrl.equals('createProfile')}">
+                            <span class="text-m whitespace-nowrap font-semibold text-violet-900">Crear Perfil</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="text-m whitespace-nowrap font-semibold text-white">Crear Perfil</span>
+                        </c:otherwise>
+                    </c:choose>
                 </a>
             </div>
         </div>

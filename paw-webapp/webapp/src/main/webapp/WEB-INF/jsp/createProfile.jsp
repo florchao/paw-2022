@@ -9,7 +9,9 @@
     <title>Crear Perfil</title>
 </head>
 <body>
-    <jsp:include page="components/navbar.jsp"/>
+<jsp:include page="components/navbar.jsp">
+    <jsp:param name="currentUrl" value="createProfile"/>
+</jsp:include>
     <c:url value="/createEmployee" var="postPath"/>
     <form:form modelAttribute="employeeForm" action="${postPath}" method="post">
     <div class="grid grid-cols-6">
