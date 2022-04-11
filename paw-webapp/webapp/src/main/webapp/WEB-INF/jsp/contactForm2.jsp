@@ -13,7 +13,10 @@
     <jsp:include page="components/navbarInit.jsp"/>
     <c:url value="/contactEmployee/${id}" var="postPath"/>
     <div class="grid grid-cols-4">
-        <div: class = "my-20 col-start-2 col-span-2 h-full"
+        <div: class = "my-20 col-start-2 col-span-2 h-full">
+            <p class="text-xl font-semibold text-purple-700 my-5">
+                Formulario para contactarse con  <c:out value="${name}"/>
+            </p>
         <form:form modelAttribute="contactForm" action="${postPath}" method="post">
             <div class="block p-6 rounded-lg shadow-lg bg-white max-w-md">
                 <div class="form-group mb-6">
@@ -32,25 +35,7 @@
                     <form:errors path="content" element="p"/>
                 </div>
 
-                <button type="submit" class="
-          w-full
-          px-6
-          py-2.5
-          bg-purple-700
-          text-white
-          font-medium
-          text-xs
-          leading-tight
-          uppercase
-          rounded
-          shadow-md
-          hover:bg-purple-500 hover:shadow-lg
-          focus:bg-purple-500 focus:shadow-lg focus:outline-none focus:ring-0
-          active:bg-purple-500 active:shadow-lg
-          transition
-          duration-150
-          ease-in-out">Enviar
-                </button>
+                <button type="submit" class="w-full px-6 py-2.5 bg-purple-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-purple-500 hover:shadow-lg focus:bg-purple-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-500 active:shadow-lg transition duration-150 ease-in-out">Enviar</button>
             </div>
         </form:form>
     </div>

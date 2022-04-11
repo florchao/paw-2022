@@ -39,7 +39,8 @@ public class ContactController {
     @RequestMapping("/contacto/{id}")
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
         final ModelAndView mav = new ModelAndView("contactForm2");
-        System.out.println(id);
+        mav.addObject("name", employeeService.getEmployeeById(id).get().getName());
+        System.out.println(employeeService.getEmployeeById(id).get().getName());
         return mav;
     }
 
