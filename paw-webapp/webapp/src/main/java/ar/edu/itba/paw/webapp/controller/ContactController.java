@@ -44,7 +44,7 @@ public class ContactController {
         return mav;
     }
 
-    @RequestMapping(value = "/contactEmployee/{id}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/contactarEmpleado/{id}", method = {RequestMethod.POST})
     public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) {
         if(errors.hasErrors())
             return contactPage(form, id);
