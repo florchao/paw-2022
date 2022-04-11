@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
 
-import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,11 +51,19 @@ public class UserJdbcDaoTest {
 
     @Test
     public void testGetById(){
+
         final Optional<User> user = userJdbcDao.getUserById(1);
 
         Assert.assertNotNull(user);
         Assert.assertFalse(user.isPresent());
 
+    }
+
+    @Test
+    public void testGetAll(){
+        final List<User> list = userJdbcDao.getAll(1);
+
+        Assert.assertNotNull(list);
     }
 
 
