@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-<html>
+<html lang="es">
 <head>
     <title>Contacto</title>
     <meta charset="ISO-8859-1">
