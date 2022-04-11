@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.ExperienceService;
@@ -39,8 +40,8 @@ public class ContactController {
     @RequestMapping("/contacto/{id}")
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
         final ModelAndView mav = new ModelAndView("contactForm2");
-        mav.addObject("name", employeeService.getEmployeeById(id).get().getName());
-        System.out.println(employeeService.getEmployeeById(id).get().getName());
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        employee.ifPresent(value -> {mav.addObject("name", value.getName()); System.out.println(employee.get().getName());});
         return mav;
     }
 
@@ -49,9 +50,7 @@ public class ContactController {
         if(errors.hasErrors())
             return contactPage(form, id);
         Optional<User> user = userService.getUserById(id);
-        if(user.isPresent()){
-            mailingService.sendMail(form.getEmail(), user.get().getUsername(), form.getName(), form.getContent());
-        }
+        user.ifPresent(value -> mailingService.sendMail(form.getEmail(), value.getUsername(), form.getName(), form.getContent()));
         return new ModelAndView("redirect:/verPerfil/"+id);
     }
 }
