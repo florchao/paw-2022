@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -25,16 +26,16 @@
                     <span class="text-2xl font-semibold whitespace-nowrap"><c:out value="${employee.name}"/></span>
                 </div>
                 <div class="ml-3 col-span-2">
-                    <h1 class="block mb-2 font-medium text-gray-900 font-semibold">Zona</h1>
+                    <h1 class="block mb-2 font-medium text-gray-900 font-semibold"><spring:message code="viewProfile.location"/></h1>
                     <h1 class="block mb-2 text-sm font-medium text-gray-600"> <c:out value="${employee.location}"/></h1>
                 </div>
                 <div class="ml-3 col-span-2">
-                    <h1 class="block mb-2 font-medium text-gray-900 font-semibold">Años de experiencia</h1>
+                    <h1 class="block mb-2 font-medium text-gray-900 font-semibold"><spring:message code="viewProfile.experience"/></h1>
                     <h1 class="block mb-2 text-sm font-medium text-gray-600 "> <c:out value="${employee.experienceYears}"/></h1>
                 </div>
                 <div class="ml-3 col-start-5 row-span-3">
                     <a href="/contacto/${user.id}">
-                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">CONECTAR</button>
+                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.connect"/></button>
                     </a>
                 </div>
             </div>
@@ -80,7 +81,7 @@
 
             <%--            </div>--%>
             <div>
-                <h1 class="pb-3 pt-3 font-semibold">Habilidades</h1>
+                <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.abilities"/></h1>
                 <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
                     <c:forEach var="ability" items="${employee.abilitiesArr}">
                         <li><c:out value="${ability}"/></li>
@@ -88,7 +89,7 @@
                 </ul>
             </div>
             <div>
-                <h1 class="pb-3 pt-3 font-semibold">Posible Jornada</h1>
+                <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.availability"/></h1>
                 <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
                     <c:forEach var="availability" items="${employee.availabilityArr}">
                         <li><c:out value="${availability}"/></li>
