@@ -21,7 +21,7 @@
                             <span class="text-m whitespace-nowrap font-semibold text-violet-900">Buscar Empleada</span>
                         </c:when>
                         <c:otherwise>
-                            <span class="text-m whitespace-nowrap font-semibold text-white">Buscar Empleada</span>
+                            <span class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white">Buscar Empleada</span>
                         </c:otherwise>
                     </c:choose>
                 </a>
@@ -31,7 +31,7 @@
                             <span class="text-m whitespace-nowrap font-semibold text-violet-900">Crear Perfil</span>
                         </c:when>
                         <c:otherwise>
-                            <span class="text-m whitespace-nowrap font-semibold text-white">Crear Perfil</span>
+                            <span class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white">Crear Perfil</span>
                         </c:otherwise>
                     </c:choose>
                 </a>
