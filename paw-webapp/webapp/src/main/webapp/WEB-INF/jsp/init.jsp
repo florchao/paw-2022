@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,22 +16,22 @@
     <div class="grid grid-cols-2 gap-4 pt-16 h-screen">
         <div class="grid grid-rows-2 gap-4 pl-8">
             <div class="grid content-center">
-                <h3 class="text-3xl font-semibold text-purple-700">¡Bienvenido a Hogar!</h3>
-                <h3 class="text-2xl text-purple-700">Un lugar para conectarse y encontrar lo que estas buscando.</h3>
+                <h3 class="text-3xl font-semibold text-purple-700"><spring:message code="init.title"/></h3>
+                <h3 class="text-2xl text-purple-700"><spring:message code="init.description"/></h3>
             </div>
             <div class="flex flex-col">
                 <div class="grid">
                     <div class="pb-4 grid col-start-2 col-span-2">
                         <form:form method="GET" action="/redirectSearch">
                             <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
-                                Buscar Empleadas
+                                <spring:message code="init.employee"/>
                             </button>
                         </form:form>
                     </div>
                     <div class="grid col-start-2 col-span-2">
                         <form:form method="GET" action="/redirectCreateProfile">
                             <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
-                                Crear Perfil
+                                <spring:message code="init.profile"/>
                             </button>
                         </form:form>
                     </div>
