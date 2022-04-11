@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.*;
 import java.sql.Time;
@@ -11,12 +13,14 @@ public class EmployeeForm {
     @Pattern(regexp = "[\\w-_.]+@([\\w]+.)+[\\w]{2,4}")
     private String mail;
 
-    @Pattern(regexp = "[a-zA-z\\s]+")
+    @Pattern(regexp = "[a-zA-z\\s]+|^$")
+    @NotBlank
     @Size(max = 100)
     private String name;
 
     @DecimalMin("0")
     @DecimalMax("100")
+    @NumberFormat
     private long experienceYears;
 
     private List<Experience> experiencesList;
