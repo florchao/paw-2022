@@ -49,7 +49,7 @@ public class UserJdbcDao implements UserDao{
         return new User(userId.longValue(), username);
     }
 
-    // TODO:
+    @Override
     public List<User> getAll(int page) {
         return jdbcTemplate.query("SELECT * FROM Users LIMIT 10 OFFSET ?", new Object[] {(page - 1) * 10}, ROW_MAPPER);
     }

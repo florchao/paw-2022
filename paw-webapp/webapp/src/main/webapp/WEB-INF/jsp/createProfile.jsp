@@ -117,7 +117,7 @@
             </div>
             </div>
         <div class="mt-5 col-start-2 col-span-4 row-span-3">
-            <input type="submit" value="Crear Perfil" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"/>
+            <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="employeeForm.button"/></button>
         </div>
         </div>
         </form:form>
