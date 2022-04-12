@@ -44,7 +44,7 @@
 
         </div>
         <div class="pt-8">
-            <img src="<c:url value='../../public/indexImage.jpg'/>" alt="primera foto">
+            <img src="<c:url value='/public/indexImage.jpg'/>" alt="primera foto">
         </div>
     </div>
 </body>
