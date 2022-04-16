@@ -34,6 +34,11 @@ public class MailingServiceImpl implements MailingService{
         }
     }
 
+    @Override
+    public void contact(String replyTo, String to, String name, String message) {
+        sendMail(replyTo, to, name, message);
+    }
+
     private void sendEmail(Message mimeMessage, List<String> to, String subject, String message) {
         try {
             for (String destination : to) {

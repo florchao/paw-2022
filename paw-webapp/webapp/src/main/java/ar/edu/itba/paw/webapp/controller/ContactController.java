@@ -50,7 +50,7 @@ public class ContactController {
         if(errors.hasErrors())
             return contactPage(form, id);
         Optional<User> user = userService.getUserById(id);
-        user.ifPresent(value -> mailingService.sendMail(form.getEmail(), value.getUsername(), form.getName(), form.getContent()));
+        user.ifPresent(value -> mailingService.contact(form.getEmail(), value.getUsername(), form.getName(), form.getContent()));
         return new ModelAndView("redirect:/verPerfil/"+id);
     }
 }
