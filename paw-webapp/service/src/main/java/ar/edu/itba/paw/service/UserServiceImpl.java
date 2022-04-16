@@ -3,6 +3,7 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistence.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,6 +13,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -24,7 +28,7 @@ public class UserServiceImpl implements UserService{
         // TODO: validate username / password
         // TODO: send email validation mail
         // TODO: ...
-        return userDao.create(username, password);
+        return userDao.create(username, passwordEncoder.encode(password));
     }
 
     @Override
