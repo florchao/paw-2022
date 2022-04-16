@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
                 userId INTEGER IDENTITY PRIMARY KEY,
-                email varchar(100) UNIQUE NOT NULL
---                 password varchar (100) NOT NULL
+                email varchar(100) UNIQUE NOT NULL,
+                password varchar (100) NOT NULL
 );
 
 create table if not exists employee(

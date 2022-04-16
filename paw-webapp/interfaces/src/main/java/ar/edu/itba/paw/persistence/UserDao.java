@@ -10,5 +10,6 @@ public interface UserDao {
 
     List<User> getAll(int page);
     Optional<User> getUserById(long id);
-    User create(String username);
+    User create(String username, String password);
+    Optional<User> getUserByUsername(String username);
 }
