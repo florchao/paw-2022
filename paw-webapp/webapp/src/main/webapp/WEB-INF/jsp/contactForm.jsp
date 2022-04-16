@@ -8,21 +8,36 @@
     <title>Contacto</title>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../public/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+<div class="area absolute">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
 <jsp:include page="components/navbar.jsp"/>
 <c:url value="/contactarEmpleado/${id}" var="postPath"/>
 <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
     <div class = "col-start-3 col-span-3 grid h-full w-full">
         <div class="grid justify-items-center mx-6">
-            <p class="text-xl font-semibold text-purple-700 mb-5">
+            <p class="text-xl font-semibold text-white mb-5">
                 <spring:message code="contactForm2.title" arguments="${name}"/>
             </p>
         </div>
 
         <form:form modelAttribute="contactForm" action="${postPath}" method="post">
-            <div class="block p-6 rounded-lg shadow-lg bg-white">
+            <div class="block p-6 rounded-3xl shadow-lg bg-gray-200">
                 <div class="form-group mb-6">
                     <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.name"/></form:label>
                     <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
