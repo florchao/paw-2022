@@ -3,13 +3,13 @@ package ar.edu.itba.paw.model;
 public class User {
     private long id;
     private String username;
-    //private String password;
+    private String password;
 
-    public User(long id, String username) {
+    public User(long id, String username, String password) {
         super();
         this.id = id;
         this.username = username;
-        //this.password = password;
+        this.password = password;
     }
 
     public void setId(long id) {
@@ -20,9 +20,9 @@ public class User {
         this.username = username;
     }
 
-    //public void setPassword(String password) {
-//        this.password = password;
-//    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public long getId() {
         return id;
@@ -32,7 +32,7 @@ public class User {
         return username;
     }
 
-//    public String getPassword() {
-//        return password;
-//    }
+    public String getPassword() {
+        return password;
+    }
 }

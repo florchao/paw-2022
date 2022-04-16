@@ -49,6 +49,11 @@ public class InitController {
         return new ModelAndView("redirect:/crearPerfil");
     }
 
+    @RequestMapping("/login")
+    public ModelAndView login(){
+        return new ModelAndView("login");
+    }
+
 //    @ExceptionHandler(UserNotFoundException.class)
 //    @ResponseStatus(code = HttpStatus.NOT_FOUND)
 //    public ModelAndView noSuchUser() {

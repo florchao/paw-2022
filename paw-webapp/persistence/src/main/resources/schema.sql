@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
                 userId SERIAL PRIMARY KEY,
-                email TEXT UNIQUE NOT NULL
---                 password TEXT NOT NULL
+                email TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL
                 );
 
 create table if not exists employee(

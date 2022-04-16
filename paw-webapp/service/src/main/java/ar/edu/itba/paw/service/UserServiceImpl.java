@@ -20,10 +20,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User create(String username) {
+    public User create(String username, String password) {
         // TODO: validate username / password
         // TODO: send email validation mail
         // TODO: ...
-        return userDao.create(username);
+        return userDao.create(username, password);
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userDao.getUserByUsername(username);
     }
 }
