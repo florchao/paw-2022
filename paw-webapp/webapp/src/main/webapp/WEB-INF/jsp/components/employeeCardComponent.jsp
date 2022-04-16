@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +14,9 @@
         <div class="flex flex-col justify-between p-4 leading-normal">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-black"><c:out value="${param.name}"/></h5>
             <p class="mb-3 font-normal text-gray-400"><c:out value="${param.location}"/></p>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><c:out value="${param.years}"/></p>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><spring:message code="employeeCardComponent.experience" htmlEscape="true"
+                               arguments="${param.years}"/>
+            </p>
         </div>
     </a>
 </body>
