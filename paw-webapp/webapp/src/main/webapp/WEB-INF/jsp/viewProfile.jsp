@@ -8,14 +8,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/../../../public/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Ver Perfil</title>
 </head>
 <body>
+<div class="area absolute">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
 <jsp:include page="components/navbar.jsp"/>
 <div class="grid grid-cols-6">
-    <div class=" grid grid-row-4 col-span-4 col-start-2 h-screen">
-        <div class=" bg-gray-200 rounded-t-3xl overflow-auto p-5 mt-24">
+    <div class=" grid grid-row-4 col-span-4 col-start-2">
+        <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
                 <div class="row-span-3 col-span-2 ml-10 mr-6 mb-6">
                     <div class="overflow-hidden w-48 bg-gray-100 rounded-full">
