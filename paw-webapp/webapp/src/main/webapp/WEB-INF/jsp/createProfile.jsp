@@ -6,20 +6,34 @@
 <head>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../public/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Crear Perfil</title>
 </head>
 <body>
+<div class="area absolute">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="createProfile"/>
 </jsp:include>
 <c:url value="/createEmployee" var="postPath"/>
-<div class = "h-screen overflow-auto">
+<div class = "h-screen overflow-auto pb-5">
     <form:form modelAttribute="employeeForm" action="${postPath}" method="post">
         <div class="grid grid-cols-6">
-            <div class="grid grid-row-4 col-span-4 col-start-2 mt-24">
-                <div class="bg-gray-200 rounded-3xl p-5">
+            <div class="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
+                <div class="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                     <div class="grid grid-cols-5 gap-6">
                         <div class="row-span-4 col-span-2 m-6">
                             <div class="overflow-hidden bg-gray-100 rounded-full">
@@ -88,12 +102,30 @@
                         <h1 class="pb-3 pt-3 font-bold"><spring:message code="employeeForm.abilities"/></h1>
                     </div>
                     <div class="flex flex-wrap">
-                        <div><form:checkbox path="abilities" value = "Cocinar" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /> <spring:message code="employeeForm.abilities.cook"/></div>
-                        <div><form:checkbox path="abilities" value = "Planchar" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /><spring:message code="employeeForm.abilities.iron"/></div>
-                        <div><form:checkbox path="abilities" value = "Cuidado de menores" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /><spring:message code="employeeForm.abilities.young"/></div>
-                        <div><form:checkbox path="abilities" value = "Cuidado de mayores" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /><spring:message code="employeeForm.abilities.older"/></div>
-                        <div><form:checkbox path="abilities" value = "Cuidadoss especiales" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /><spring:message code="employeeForm.abilities.specialNeeds"/></div>
-                        <div><form:checkbox path="abilities" value = "Cuidado de mascotas" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" /><spring:message code="employeeForm.abilities.pets"/></div>
+                        <div>
+                            <form:label path="abilities" for="cocinar-cb" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"> <spring:message code="employeeForm.abilities.cook"/> </form:label>
+                            <form:checkbox path="abilities" id="cocinar-cb" value = "Cocinar"/>
+                        </div>
+                        <div>
+                            <form:label path="abilities" for="planchar-cb" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="employeeForm.abilities.iron"/> </form:label>
+                            <form:checkbox path="abilities" id="planchar-cb" value = "Planchar" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" />
+                        </div>
+                        <div>
+                            <form:label path="abilities" for="menores-cb" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="employeeForm.abilities.young"/> </form:label>
+                            <form:checkbox path="abilities" id="menores-cb" value = "Cuidado de menores" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" />
+                        </div>
+                        <div>
+                            <form:label path="abilities" for="mayores-cb" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="employeeForm.abilities.older"/> </form:label>
+                            <form:checkbox path="abilities" id="mayores-cb" value = "Cuidado de mayores" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" />
+                        </div>
+                        <div>
+                            <form:label path="abilities" for="especiales-cb" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="employeeForm.abilities.specialNeeds"/> </form:label>
+                            <form:checkbox path="abilities" id="especiales-cb" value = "Cuidadoss especiales" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" />
+                        </div>
+                        <div>
+                            <form:label path="abilities" for="mascotas-cb" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="employeeForm.abilities.pets"/> </form:label>
+                            <form:checkbox path="abilities" id="mascotas-cb" value = "Cuidado de mascotas" class="ml-8 mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2" />
+                        </div>
                             <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Planchar</button>--%>
                             <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Cuidado de niños</button>--%>
                             <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Cuidado de mayores</button>--%>
@@ -115,13 +147,20 @@
                             <%--                    <button type="button" class="h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Con cama</button>--%>
                     </div>
                     <form:errors path="availability" element="p" cssStyle="color: red"/>
+                    <div class="mt-5 col-start-2 col-span-4 row-span-3">
+                        <button type="submit" onclick="doPrint()" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="employeeForm.button"/></button>
+                    </div>
                 </div>
-            </div>
-            <div class="mt-5 col-start-2 col-span-4 row-span-3">
-                <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="employeeForm.button"/></button>
             </div>
         </div>
     </form:form>
 </div>
 </body>
 </html>
+
+<script>
+    function toggle(elem){
+        const hola = elem.target;
+        hola.getAttribute('path');
+    }
+</script>
