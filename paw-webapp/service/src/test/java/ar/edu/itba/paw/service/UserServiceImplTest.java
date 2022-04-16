@@ -13,7 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class UserServiceImplTest {
     private static final String PASSWORD = "passwordpassword";
     private static final String USERNAME = "username";

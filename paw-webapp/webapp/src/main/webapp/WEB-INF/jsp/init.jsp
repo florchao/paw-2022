@@ -12,6 +12,8 @@
     <title>Hogar</title>
 </head>
 <body>
+<c:url value="/redirectSearch" var = "search"/>
+<c:url value="/redirectCreateProfile" var = "createProfile"/>
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="init"/>
 </jsp:include>
@@ -24,14 +26,14 @@
             <div class="flex flex-col">
                 <div class="grid">
                     <div class="pb-4 grid col-start-2 col-span-2">
-                        <form:form method="GET" action="/redirectSearch">
+                        <form:form method="get" action="${search}">
                             <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
                                 <spring:message code="init.employee"/>
                             </button>
                         </form:form>
                     </div>
                     <div class="grid col-start-2 col-span-2">
-                        <form:form method="GET" action="/redirectCreateProfile">
+                        <form:form method="get" action="${createProfile}">
                             <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
                                 <spring:message code="init.profile"/>
                             </button>
@@ -42,7 +44,7 @@
 
         </div>
         <div class="pt-8">
-            <img src="<c:url value='../../public/indexImage.jpg'/>" alt="primera foto">
+            <img src="<c:url value='/public/indexImage.jpg'/>" alt="primera foto">
         </div>
     </div>
 </body>
