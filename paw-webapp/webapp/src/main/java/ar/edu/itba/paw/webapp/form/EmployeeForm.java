@@ -20,7 +20,7 @@ public class EmployeeForm {
 
     @DecimalMin("0")
     @DecimalMax("100")
-    @NumberFormat
+    @NumberFormat(style = NumberFormat.Style.NUMBER)
     private long experienceYears;
 
     private List<Experience> experiencesList;
