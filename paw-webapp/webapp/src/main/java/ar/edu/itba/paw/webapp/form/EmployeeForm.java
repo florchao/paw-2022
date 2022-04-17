@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -10,10 +11,11 @@ import java.util.List;
 
 public class EmployeeForm {
 
-    @Pattern(regexp = "[\\w-_.]+@([\\w]+.)+[\\w]{2,4}")
+    @Email(regexp = "[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}")
+    @NotBlank
     private String mail;
 
-    @Pattern(regexp = "[a-zA-z\\s]+|^$")
+    @Pattern(regexp = "[a-zA-z\\s']+|^$")
     @NotBlank
     @Size(max = 100)
     private String name;
