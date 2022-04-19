@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Buscar</title>
+    <title><spring:message code="searchPage.title"/></title>
 </head>
 <body>
 <div class="area absolute">

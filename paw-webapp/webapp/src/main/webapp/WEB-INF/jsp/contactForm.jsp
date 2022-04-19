@@ -5,7 +5,7 @@
 
 <html lang="es">
 <head>
-    <title>Contacto</title>
+    <title><spring:message code="contactForm.title"/></title>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/css/style.css">
