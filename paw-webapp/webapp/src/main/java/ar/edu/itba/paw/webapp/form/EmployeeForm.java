@@ -12,7 +12,6 @@ import java.util.List;
 public class EmployeeForm {
 
     @Email(regexp = "[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}")
-    @NotBlank
     private String mail;
 
     @Pattern(regexp = "[a-zA-z\\s']+|^$")
