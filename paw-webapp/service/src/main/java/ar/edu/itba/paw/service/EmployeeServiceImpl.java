@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,32 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Optional<List<Employee>> getEmployees() {
         return employeeDao.getEmployees();
+    }
+
+    @Override
+    public Optional<List<Employee>> getFilteredEmployees(
+            long experienceYears,
+            String location,
+            List<Experience> experiences,
+            String availability,
+            String abilities
+    ) {
+        System.out.println("getEmployees pero filtrados!");
+        System.out.println("---------");
+        System.out.println(experienceYears);
+        System.out.println(location);
+        System.out.println(experiences);
+        System.out.println(availability);
+        System.out.println(abilities);
+        System.out.println("---------");
+        List<String> availabilityList = new ArrayList<>();
+        if (availability != null) {
+            availabilityList = Arrays.asList(availability.split(","));
+        }
+        List<String> abilitiesList= new ArrayList<>();
+        if (abilities != null) {
+            abilitiesList = Arrays.asList(abilities.split(","));
+        }
+        return employeeDao.getFilteredEmployees(experienceYears,location,experiences, availabilityList,abilitiesList);
     }
 }
