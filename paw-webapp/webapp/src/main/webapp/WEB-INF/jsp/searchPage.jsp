@@ -44,11 +44,11 @@
             <div class="my-8 w-full"></div>
             <div class="grid grid-cols-4">
                 <div class="col-span-1 bg-red-300 mr-8 h-screen">
-<%--                    <c:url value="/filterEmployees" var="postPath"/>--%>
-<%--                    <form:form modelAttribute="filterBy" action="${postPath}" method="post">--%>
-<%--                        <form:checkbox path="abilities" value="Cuidado de menores"/>--%>
-<%--                        <button type="submit">Filtrar</button>--%>
-<%--                    </form:form>--%>
+                    <c:url value="/filterEmployees" var="postPath"/>
+                    <form:form modelAttribute="filterBy" action="${postPath}" method="post">
+                        <form:checkbox path="abilities" value="Cuidado de menores"/>
+                        <button type="submit">Filtrar</button>
+                    </form:form>
                 </div>
                 <div class="col-span-3 col-start-2 mt-8">
 <%--                    <div class="bg-green-300 flex justify-end">--%>
@@ -58,7 +58,7 @@
 <%--                            <div class="dropdown-content">--%>
 <%--                                    &lt;%&ndash;                                <c:url value="/filterEmployees" var="postPath"/>&ndash;%&gt;--%>
 <%--                                <form method="post" action="/filterEmployees">--%>
-<%--                                    <input type="submit" value="Filtrar"/>--%>
+<%--                                    <button type="submit" value="Filtrar"/>--%>
 <%--                                </form>--%>
 <%--                                <a href="#">Link 2</a>--%>
 <%--                                <a href="#">Link 3</a>--%>

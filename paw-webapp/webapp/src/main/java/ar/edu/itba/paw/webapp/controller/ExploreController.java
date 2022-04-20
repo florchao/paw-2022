@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
+import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Filter;
 
 @Controller
 public class ExploreController {
@@ -39,7 +41,7 @@ public class ExploreController {
     public String order;
 
     @RequestMapping("/buscarEmpleadas")
-    public ModelAndView searchPage(@ModelAttribute("filterBy") EmployeeForm employeeForm, @RequestParam(value = "filterBoolean", required = false) Boolean filter) {
+    public ModelAndView searchPage(@ModelAttribute("filterBy") FilterForm employeeForm, @RequestParam(value = "filterBoolean", required = false) Boolean filter) {
         List<Employee> list;
         if (filter != null) {
             System.out.println("me meti!");
@@ -63,10 +65,15 @@ public class ExploreController {
 
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.POST})
 //    public ModelAndView filterEmployees(@Valid @ModelAttribute("filterForm") final EmployeeForm form, RedirectAttributes redirectAttributes) {
-    public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") EmployeeForm form, RedirectAttributes redirectAttributes) {
+    public ModelAndView filterEmployees(@ModelAttribute("filterBy") FilterForm form, RedirectAttributes redirectAttributes) {
         System.out.println("entre al filterEmployees!");
-        form.setAbilities("Cocinar,Cuidado de mascotas");
+//        FilterForm form = new FilterForm();
+//        form.setAbilities("Cocinar,Cuidado de mascotas");
         redirectAttributes.addFlashAttribute("filterBy", form);
+        redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
+        redirectAttributes.addAttribute("location", form.getLocation());
+        redirectAttributes.addAttribute("availability", form.getAvailability());
+        redirectAttributes.addAttribute("abilities", form.getAbilities());
         redirectAttributes.addAttribute("filterBoolean", true);
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
