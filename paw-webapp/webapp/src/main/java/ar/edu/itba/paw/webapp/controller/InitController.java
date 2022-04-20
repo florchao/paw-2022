@@ -49,6 +49,11 @@ public class InitController {
         return new ModelAndView("redirect:/crearPerfil");
     }
 
+    @RequestMapping(value = "/redirectContacts", method = RequestMethod.GET)
+    public ModelAndView redirectContacts() {
+        return new ModelAndView("redirect:/contactos");
+    }
+
     @RequestMapping("/login")
     public ModelAndView login(){
         return new ModelAndView("login");

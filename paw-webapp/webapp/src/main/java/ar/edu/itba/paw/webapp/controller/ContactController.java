@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.*;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -45,12 +47,20 @@ public class ContactController {
         return mav;
     }
 
+    @RequestMapping("/contactos")
+    public ModelAndView contactsPage() {
+        List<Contact> list = contactService.getAllContacts().get();
+        final ModelAndView mav = new ModelAndView("contacts");
+        mav.addObject("ContactList", list);
+        return mav;
+    }
+
     @RequestMapping(value = "/contactarEmpleado/{id}", method = {RequestMethod.POST})
     public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) {
         if(errors.hasErrors())
             return contactPage(form, id);
         Optional<User> user = userService.getUserById(id);
-        user.ifPresent(value -> contactService.contact(form.getEmail(), value.getUsername(), form.getName(), form.getContent()));
+        user.ifPresent(value -> contactService.contact(value, form.getContent(), form.getName()));
         return new ModelAndView("redirect:/verPerfil/"+id);
     }
 }
