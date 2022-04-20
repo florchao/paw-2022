@@ -27,3 +27,13 @@ CREATE TABLE IF NOT EXISTS  experiences (
                 FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE
 
 );
+
+CREATE TABLE IF NOT EXISTS  experiences (
+    employeeID INT,
+    employerID INT,
+    message varchar(1000),
+    created DATE,
+    FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
+    FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
+    PRIMARY KEY(employeeID, employerID)
+);

@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -19,6 +20,7 @@ public class MailingServiceImpl implements MailingService{
     }
 
     @Override
+    @Async
     public void sendMail(String replyTo, String to, String name, String message) {
         try {
             MimeMessage mimeMessage = new MimeMessage(session);
@@ -32,11 +34,6 @@ public class MailingServiceImpl implements MailingService{
         } catch (MessagingException mex) {
             throw new RuntimeException(mex.getMessage());
         }
-    }
-
-    @Override
-    public void contact(String replyTo, String to, String name, String message) {
-        sendMail(replyTo, to, name, message);
     }
 
     private void sendEmail(Message mimeMessage, List<String> to, String subject, String message) {

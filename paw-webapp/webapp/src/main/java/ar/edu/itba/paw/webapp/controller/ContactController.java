@@ -2,10 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.service.EmployeeService;
-import ar.edu.itba.paw.service.ExperienceService;
-import ar.edu.itba.paw.service.MailingService;
-import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +27,9 @@ public class ContactController {
     @Autowired
     private MailingService mailingService;
 
+    @Autowired
+    private ContactService contactService;
+
 //    @RequestMapping(value = "/contactRedirect", method = RequestMethod.GET)
 //    public ModelAndView contactRedirect(@RequestParam("userId") Long id) {
 //        final ModelAndView mav = new ModelAndView("redirect:/contacto");
@@ -50,7 +50,7 @@ public class ContactController {
         if(errors.hasErrors())
             return contactPage(form, id);
         Optional<User> user = userService.getUserById(id);
-        user.ifPresent(value -> mailingService.contact(form.getEmail(), value.getUsername(), form.getName(), form.getContent()));
+        user.ifPresent(value -> contactService.contact(form.getEmail(), value.getUsername(), form.getName(), form.getContent()));
         return new ModelAndView("redirect:/verPerfil/"+id);
     }
 }
