@@ -54,10 +54,6 @@ public class InitController {
         return new ModelAndView("login");
     }
 
-    @RequestMapping("/register")
-    public ModelAndView register(){
-        return new ModelAndView("register");
-    }
 
 //    @ExceptionHandler(UserNotFoundException.class)
 //    @ResponseStatus(code = HttpStatus.NOT_FOUND)

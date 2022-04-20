@@ -14,7 +14,7 @@
 <jsp:include page="components/navbar.jsp"/>
 <c:url value="/register" var="registerUrl"/>
 <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
-        <form modelAttribute="register" class="col-span-3 col-start-3" action="${registerUrl}" method="post" enctype = "application/x-www-form-urlencoded">
+        <form modelAttribute="registerForm" class="col-span-3 col-start-3" action="${registerUrl}" method="post" enctype = "application/x-www-form-urlencoded">
             <div class="block p-6 rounded-lg shadow-lg bg-white">
                 <div class="form-group mb-6">
                     <label for="mail"><spring:message code="register.mail"/> </label>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group mb-6">
                     <label for="password"><spring:message code="register.password"/></label>
-                    <input id="password" name="j_password" type="password"/>
+                    <input id="password" name="password" type="password"/>
                 </div>
                     <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"> <spring:message code="register.button"/></button>
                  </div>
