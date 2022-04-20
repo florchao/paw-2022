@@ -14,7 +14,7 @@
 <jsp:include page="components/navbar.jsp"/>
 <c:url value="/register" var="registerUrl"/>
 <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
-        <form modelAttribute="login" class="col-span-3 col-start-3" action="${registerUrl}" method="post" enctype = "application/x-www-form-urlencoded">
+        <form modelAttribute="register" class="col-span-3 col-start-3" action="${registerUrl}" method="post" enctype = "application/x-www-form-urlencoded">
             <div class="block p-6 rounded-lg shadow-lg bg-white">
                 <div class="form-group mb-6">
                     <label for="mail"><spring:message code="register.mail"/> </label>
