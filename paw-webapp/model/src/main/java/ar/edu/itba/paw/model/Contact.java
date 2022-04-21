@@ -5,6 +5,7 @@ import java.util.Date;
 public class Contact {
     public long employeeID;
     public long employerID;
+    public String employer;
     public String contactMessage;
     public Date created;
 
@@ -13,6 +14,21 @@ public class Contact {
         this.employerID = employerID;
         this.contactMessage = message;
         this.created = created;
+    }
+
+    public Contact(long employeeID, String employer, String message, Date created) {
+        this.employeeID = employeeID;
+        this.employer = employer;
+        this.contactMessage = message;
+        this.created = created;
+    }
+
+    public String getEmployer() {
+        return employer;
+    }
+
+    public void setEmployer(String employer) {
+        this.employer = employer;
     }
 
     public long getEmployeeID() {
