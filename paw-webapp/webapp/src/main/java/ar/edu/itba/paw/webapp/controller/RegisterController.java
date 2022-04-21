@@ -32,7 +32,7 @@ public class RegisterController {
     private MailingService mailingService;
 
     @RequestMapping("/registrarse")
-    public ModelAndView register(){
+    public ModelAndView register(@ModelAttribute("register") final RegisterForm form){
         return new ModelAndView("register");
     }
 
@@ -44,9 +44,8 @@ public class RegisterController {
         System.out.println(form.getPassword());
         if (errors.hasErrors()){
             System.out.println("ERROR");
-            return register();
+            return register(form);
         }
-
         final User u = userService.create(form.getMail(), form.getPassword());
         System.out.println(u.toString());
         return new ModelAndView("redirect:/crearPerfil");

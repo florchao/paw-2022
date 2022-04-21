@@ -33,12 +33,12 @@
             <form modelAttribute="login" class="col-span-3 col-start-3" action="${loginUrl}" method="post" enctype = "application/x-www-form-urlencoded">
                 <div class="block p-6 rounded-lg shadow-lg bg-white">
                     <div class="form-group mb-6 grid grid-cols-6">
-                        <label for="username" class="text-sm font-medium text-gray-900">Username: </label>
-                        <input id="username" name="j_username" type="text" class=" col-span-5"/>
+                        <label for="username" class="text-sm font-medium text-gray-900"><spring:message code="login.mail"/></label>
+                        <input id="username" name="j_username" type="text" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                     </div>
                     <div class="form-group mb-6 grid grid-cols-6">
-                        <label for="password" class="text-sm font-medium text-gray-900">Password: </label>
-                        <input id="password" name="j_password" type="password" class=" col-span-5"/>
+                        <label for="password" class="text-sm font-medium text-gray-900"><spring:message code="login.password"/></label>
+                        <input id="password" name="j_password" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                     </div>
                      <div class="form-group mb-6">
                         <label class="text-sm font-medium text-gray-900">
