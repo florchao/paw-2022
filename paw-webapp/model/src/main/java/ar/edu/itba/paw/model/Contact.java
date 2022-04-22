@@ -26,6 +26,14 @@ public class Contact {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getEmployer() {
         return employer;
     }
