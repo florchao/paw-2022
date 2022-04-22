@@ -12,7 +12,7 @@ public interface ContactService {
 
     Optional<List<Contact>> getAllContacts();
 
-    Contact create(long employeeId, long employerId, Date created, String contactMessage);
+    Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber);
 
-    void contact(User to, String message, String name);
+    void contact(User to, String message, String name, String phoneNumber);
 }

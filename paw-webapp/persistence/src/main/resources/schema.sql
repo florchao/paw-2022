@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS  contact (
                 employeeID INT,
                 employerID INT,
                 message TEXT,
+                phone TEXT,
                 created DATE,
                 FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
                 FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,

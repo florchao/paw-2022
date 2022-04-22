@@ -7,20 +7,23 @@ public class Contact {
     public long employerID;
     public String employer;
     public String contactMessage;
+    public String phoneNumber;
     public Date created;
 
-    public Contact(long employeeID, long employerID, String message, Date created) {
+    public Contact(long employeeID, long employerID, String message, String phoneNumber, Date created) {
         this.employeeID = employeeID;
         this.employerID = employerID;
         this.contactMessage = message;
         this.created = created;
+        this.phoneNumber = phoneNumber;
     }
 
-    public Contact(long employeeID, String employer, String message, Date created) {
+    public Contact(long employeeID, String employer, String message, String phoneNumber, Date created) {
         this.employeeID = employeeID;
         this.employer = employer;
         this.contactMessage = message;
         this.created = created;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmployer() {

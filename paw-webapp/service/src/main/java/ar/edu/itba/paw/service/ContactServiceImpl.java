@@ -35,18 +35,18 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public Contact create(long employeeId, long employerId, Date created, String contactMessage) {
-        return contactDao.create(employeeId, employerId, created, contactMessage);
+    public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
+        return contactDao.create(employeeId, employerId, created, contactMessage, phoneNumber);
     }
 
     @Override
-    public void contact(User to, String message, String name) {
+    public void contact(User to, String message, String name, String phoneNumber) {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> optional = userService.findByUsername(principal.getUsername());
         if(optional.isPresent()) {
             User from = optional.get();
-            create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message);
-            mailingService.sendMail(from.getUsername(), to.getUsername(), name, message);
+            create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber);
+            mailingService.sendMail(from.getUsername(), to.getUsername(), name);
         }
         //mailingService.sendMail(replyTo, to, name, message);
 

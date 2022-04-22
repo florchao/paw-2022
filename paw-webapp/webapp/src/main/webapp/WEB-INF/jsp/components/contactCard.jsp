@@ -25,7 +25,7 @@
     <div class="flex flex-col items-center pb-10">
         <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
         <h5 class="mb-1 text-xl font-medium text-gray-900"><c:out value="${param.name}"/></h5>
-        <span class="text-sm text-gray-500 px-5"><c:out value="${param.message}"/></span>
+        <span class="flex flex-wrap text-sm text-gray-500 px-5" style="width:18rem; display:inline-block; word-wrap: break-word;"><c:out value="${param.message}"/></span>
 
     </div>
 </div>

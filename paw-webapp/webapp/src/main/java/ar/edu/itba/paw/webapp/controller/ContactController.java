@@ -60,7 +60,7 @@ public class ContactController {
         if(errors.hasErrors())
             return contactPage(form, id);
         Optional<User> user = userService.getUserById(id);
-        user.ifPresent(value -> contactService.contact(value, form.getContent(), form.getName()));
+        user.ifPresent(value -> contactService.contact(value, form.getContent(), form.getName(), form.getPhone()));
         return new ModelAndView("redirect:/verPerfil/"+id);
     }
 }

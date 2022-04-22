@@ -21,10 +21,10 @@ public class ContactJdbcDao implements ContactDao{
     private final SimpleJdbcInsert jdbcInsert;
 
     private static final RowMapper<Contact> CONTACT_ROW_MAPPER = (rs, rowNum) ->
-            new Contact(rs.getLong("employeeid"), rs.getLong("employerid"), rs.getString("message"), rs.getDate("created"));
+            new Contact(rs.getLong("employeeid"), rs.getLong("employerid"), rs.getString("message"), rs.getString("phone"), rs.getDate("created"));
 
     private static final RowMapper<Contact> CONTACT_NAME_ROW_MAPPER = (rs, rowNum) ->
-            new Contact(rs.getLong("employeeid"), rs.getString("email"), rs.getString("message"), rs.getDate("created"));
+            new Contact(rs.getLong("employeeid"), rs.getString("email"), rs.getString("message"), rs.getString("phone"), rs.getDate("created"));
 
     @Autowired
     public ContactJdbcDao(final DataSource ds){
@@ -40,14 +40,15 @@ public class ContactJdbcDao implements ContactDao{
     }
 
     @Override
-    public Contact create(long employeeId, long employerId, Date created, String contactMessage) {
+    public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
         final Map<String, Object> contactData = new HashMap<>();
         contactData.put("employeeid", employeeId);
         contactData.put("employerid", employerId);
         contactData.put("created", created);
         contactData.put("message", contactMessage);
+        contactData.put("phone", phoneNumber);
 
         jdbcInsert.execute(contactData);
-        return new Contact(employeeId, employerId, contactMessage, created);
+        return new Contact(employeeId, employerId, contactMessage, phoneNumber, created);
     }
 }
