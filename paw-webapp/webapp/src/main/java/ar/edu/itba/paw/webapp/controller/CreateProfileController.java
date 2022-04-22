@@ -7,6 +7,7 @@ import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
+import ar.edu.itba.paw.webapp.form.EmployerForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -45,4 +46,12 @@ public class CreateProfileController {
         final Employee employee = employeeService.create(form.getName(), form.getLocation(), u.getId(), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
         return new ModelAndView("redirect:/verPerfil/"+employee.getId());
     }
+
+    @RequestMapping("/crearPerfilEmpleador")
+    public ModelAndView createProfileEmployer(@ModelAttribute("employerForm") final EmployerForm form) {
+        final ModelAndView mav = new ModelAndView("createProfileEmployer");
+        return mav;
+    }
+
+
 }
