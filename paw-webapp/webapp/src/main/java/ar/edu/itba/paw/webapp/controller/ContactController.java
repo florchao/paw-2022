@@ -51,7 +51,6 @@ public class ContactController {
     public ModelAndView contactsPage() {
         List<Contact> list = contactService.getAllContacts().get();
         final ModelAndView mav = new ModelAndView("contacts");
-        System.out.println(list.get(1).getPhoneNumber());
         mav.addObject("ContactList", list);
         return mav;
     }

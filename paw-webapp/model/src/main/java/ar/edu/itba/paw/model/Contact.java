@@ -73,4 +73,5 @@ public class Contact {
     public void setCreated(Date created) {
         this.created = created;
     }
+
 }
