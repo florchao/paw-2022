@@ -50,9 +50,19 @@
                     <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"> <spring:message code="login.button"/></button>
                      </div>
                     <div class="form-group mb-6">
-                        <p class="text-sm font-medium text-gray-900"><spring:message code="create.account"/> <form:form method="get" action="${createProfile}">
-                                                                    <a class="text-violet-900" href="#"><spring:message code="login.register"/></a>
-                                                                    </form:form>
+                        <p class="text-sm font-medium text-gray-900">
+                            <spring:message code="create.account"/>
+                            <form:form method="get" action="${createProfile}">
+                            <a class="text-violet-900" href="<c:url value="/registrarse"/>"><spring:message code="login.register"/></a>
+                            </form:form>
+                        </p>
+                    </div>
+                    <div class="form-group mb-6 grid grid-cols-6">
+                        <p class="text-sm font-medium text-gray-900 col-span-2">
+                            <spring:message code="login.nopassword"/>
+                            <form:form method="get" action="${setPassword}">
+                            <a class="text-violet-800" href="<c:url value="/nuevaContrasena"/>"><spring:message code="login.setPassword"/></a>
+                            </form:form>
                         </p>
                     </div>
                 </div>
