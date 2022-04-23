@@ -1,22 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.service.EmployeeService;
 
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.form.ContactForm;
-import ar.edu.itba.paw.webapp.form.EmployeeForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
 
 @Controller
 public class InitController {
@@ -47,6 +39,11 @@ public class InitController {
     @RequestMapping(value = "/redirectCreateProfile", method = RequestMethod.GET)
     public ModelAndView redirectCreateProfile() {
         return new ModelAndView("redirect:/crearPerfil");
+    }
+
+    @RequestMapping(value = "/redirectContacts", method = RequestMethod.GET)
+    public ModelAndView redirectContacts() {
+        return new ModelAndView("redirect:/contactos");
     }
 
     @RequestMapping("/login")

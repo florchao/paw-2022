@@ -13,6 +13,7 @@
 <body>
 <c:url value="/redirectSearch" var = "search"/>
 <c:url value="/redirectCreateProfile" var = "createProfile"/>
+<c:url value="/redirectContacts" var = "contacts"/>
 <c:url value="/" var = "home"/>
 <nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5" style="background-color: #ac70ff">
     <div class="h-12 grid grid-cols-3 space-between">
@@ -43,6 +44,18 @@
                             </c:when>
                             <c:otherwise>
                                 <button class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.createProfile"/></button>
+                            </c:otherwise>
+                        </c:choose>
+                    </form:form>
+                </div>
+                <div class = "flex items-center justify-items-end">
+                    <form:form method="get" action="${contacts}">
+                        <c:choose>
+                            <c:when test="${param.currentUrl.equals('contactos')}">
+                                <button class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contacts"/></button>
+                            </c:when>
+                            <c:otherwise>
+                                <button class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contacts"/></button>
                             </c:otherwise>
                         </c:choose>
                     </form:form>

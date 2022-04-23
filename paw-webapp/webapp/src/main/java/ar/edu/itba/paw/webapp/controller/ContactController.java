@@ -1,11 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.service.EmployeeService;
-import ar.edu.itba.paw.service.ExperienceService;
-import ar.edu.itba.paw.service.MailingService;
-import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,6 +29,9 @@ public class ContactController {
     @Autowired
     private MailingService mailingService;
 
+    @Autowired
+    private ContactService contactService;
+
 //    @RequestMapping(value = "/contactRedirect", method = RequestMethod.GET)
 //    public ModelAndView contactRedirect(@RequestParam("userId") Long id) {
 //        final ModelAndView mav = new ModelAndView("redirect:/contacto");
@@ -45,12 +47,20 @@ public class ContactController {
         return mav;
     }
 
+    @RequestMapping("/contactos")
+    public ModelAndView contactsPage() {
+        List<Contact> list = contactService.getAllContacts().get();
+        final ModelAndView mav = new ModelAndView("contacts");
+        mav.addObject("ContactList", list);
+        return mav;
+    }
+
     @RequestMapping(value = "/contactarEmpleado/{id}", method = {RequestMethod.POST})
     public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) {
         if(errors.hasErrors())
             return contactPage(form, id);
         Optional<User> user = userService.getUserById(id);
-        user.ifPresent(value -> mailingService.contact(form.getEmail(), value.getUsername(), form.getName(), form.getContent()));
+        user.ifPresent(value -> contactService.contact(value, form.getContent(), form.getName(), form.getPhone()));
         return new ModelAndView("redirect:/verPerfil/"+id);
     }
 }

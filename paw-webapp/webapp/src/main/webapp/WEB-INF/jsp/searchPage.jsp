@@ -127,7 +127,7 @@
                         </div>
                     </form:form>
                 </div>
-                <div class="col-span-3 col-start-2 mt-8">
+                <div class="col-span-3 col-start-2">
 <%--                    <div class="bg-green-300 flex justify-end">--%>
 <%--                        <h1 class="font-semibold">Ordenar por</h1>--%>
 <%--                        <div class="dropdown">--%>
@@ -142,7 +142,7 @@
 <%--                            </div>--%>
 <%--                        </div>--%>
 <%--                    </div>--%>
-                    <p class="text-3xl font-semibold text-violet-900 my-3 mb-4"><spring:message code="searchPage.searchEmployees"/></p>
+                    <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="searchPage.searchEmployees"/></p>
                     <c:choose>
                         <c:when test="${EmployeeList.size() == 0}">
                             <div class = "grid content-center justify-center h-5/6 mt-16">

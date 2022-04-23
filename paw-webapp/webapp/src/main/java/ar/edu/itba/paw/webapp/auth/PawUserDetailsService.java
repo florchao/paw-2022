@@ -28,14 +28,17 @@ public class PawUserDetailsService implements UserDetailsService {
     private Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
     @Override
-    public UserDetails loadUserByUsername(final String username)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final Optional<User> user = us.findByUsername(username);
         if (!user.isPresent()) {
             throw new UsernameNotFoundException("No user by the name " + username);
         }
+
+        if(Objects.equals(user.get().getPassword(), "pepe") || user.get().getPassword() == null){
+            System.out.println();
+        }
         String password = user.get().getPassword();
-        if(Objects.equals(user.get().getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
+        if(BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
             password = passwordEncoder.encode(user.get().getPassword());
             user.get().setPassword(password);
             us.update(user.get().getId(), username);
