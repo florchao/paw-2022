@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean update(long id, String username) {
-        return userDao.update(id, findByUsername(username));
+    public boolean update(String username, String password) {
+        return userDao.update(username, password);
     }
 }

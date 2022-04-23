@@ -62,10 +62,9 @@ public class UserJdbcDao implements UserDao{
     }
 
     @Override
-    public boolean update(long id, Optional<User> user) {
+    public boolean update(String username, String password) {
         return jdbcTemplate.update("UPDATE users " +
-                " SET email = ?, " +
-                "password = ?" +
-                " WHERE userId = ?;", user.get().getUsername(),user.get().getPassword(), id) == 1;
+                " SET password = ? " +
+                " WHERE email = ?;", password, username) == 1;
     }
 }

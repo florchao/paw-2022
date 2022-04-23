@@ -42,9 +42,10 @@ public class NewPasswordController {
             System.out.println("ERROR");
             return newPassword(form);
         }
+        System.out.println("hola");
         System.out.println(userService.findByUsername(form.getMail()).get().getId());
         System.out.println(form.getPassword());
-        final boolean u = userService.update(userService.findByUsername(form.getMail()).get().getId(), form.getPassword());
+        final boolean u = userService.update(form.getMail(), form.getPassword());
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 }
