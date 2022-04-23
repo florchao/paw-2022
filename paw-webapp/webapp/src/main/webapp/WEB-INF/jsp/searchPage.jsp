@@ -54,7 +54,7 @@
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.cook"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                     <form:checkbox path="abilities" value="Cocinar"/>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.iron"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                     <form:checkbox path="abilities" value="Planchar"/>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.pets"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                     <form:checkbox path="abilities" value="Cuidado de mascotas"/>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.older"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                 <form:checkbox path="abilities" value="Cuidado de mayores"/>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.pets"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                     <form:checkbox path="abilities" value="Cuidado de mascotas"/>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.specialNeeds"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                     <form:checkbox path="abilities" value="Cuidados especiales"/>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                 <div class="col-span-3">
                                     <form:label path="availability"><spring:message code="searchPage.availability.half"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                     <form:checkbox path="availability" value="Media jornada"/>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                 <div class="col-span-3">
                                     <form:label path="availability"><spring:message code="searchPage.availability.complete"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                     <form:checkbox path="availability" value="Jornada completa"/>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                 <div class="col-span-3">
                                     <form:label path="availability"><spring:message code="searchPage.availability.bed"/></form:label>
                                 </div>
-                                <div class="col-start-4 col-span-1">
+                                <div class="col-start-4 col-span-1 ml-2">
                                     <form:checkbox path="availability" value="Con cama"/>
                                 </div>
                             </div>
@@ -142,6 +142,7 @@
 <%--                            </div>--%>
 <%--                        </div>--%>
 <%--                    </div>--%>
+                    <p class="text-3xl font-semibold text-violet-900 my-3 mb-4"><spring:message code="searchPage.searchEmployees"/></p>
                     <c:choose>
                         <c:when test="${EmployeeList.size() == 0}">
                             <div class = "grid content-center justify-center h-5/6 mt-16">
