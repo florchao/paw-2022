@@ -13,9 +13,9 @@ public class ContactForm {
     @Size(max = 100)
     private String name;
 
-    @Email(regexp = "\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+")
+    @Pattern(regexp = "[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
     // source: https://www.w3resource.com/javascript/form/email-validation.php
-    private String email;
+    private String phone;
 
     @NotBlank
     private String content;
@@ -27,12 +27,12 @@ public class ContactForm {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getContent() {
