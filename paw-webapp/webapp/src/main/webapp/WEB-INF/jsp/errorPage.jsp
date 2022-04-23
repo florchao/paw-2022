@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>"Error"</title>
+  <title>Error</title>
 </head>
 <body>
 <div class = "grid content-center justify-center h-screen">
