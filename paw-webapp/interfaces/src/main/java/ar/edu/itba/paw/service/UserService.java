@@ -10,4 +10,6 @@ public interface UserService {
     User create(String username, String password);
 
     Optional<User> findByUsername(String username);
+
+    boolean update(long id, String username);
 }

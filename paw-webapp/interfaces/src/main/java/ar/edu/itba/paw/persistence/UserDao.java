@@ -12,4 +12,5 @@ public interface UserDao {
     Optional<User> getUserById(long id);
     User create(String username, String password);
     Optional<User> getUserByUsername(String username);
+    boolean update(long id, Optional<User> user);
 }

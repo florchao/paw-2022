@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -30,24 +31,18 @@ public class PawUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
         final Optional<User> user = us.findByUsername(username);
-        if (user == null) {
+        if (!user.isPresent()) {
             throw new UsernameNotFoundException("No user by the name " + username);
         }
-       // if(!BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
-            //TODO update user password in db
-        //}
-
-        //Es para usuarios que no tienen contraseña hasheada
         String password = user.get().getPassword();
-        if(!BCRYPT_PATTERN.matcher(password).matches()){
-            //TODO update user password in db
-            password = passwordEncoder.encode(password);
+        if(Objects.equals(user.get().getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
+            password = passwordEncoder.encode(user.get().getPassword());
+            user.get().setPassword(password);
+            us.update(user.get().getId(), username);
         }
-
-
-            final Collection<? extends GrantedAuthority> authorities = Arrays.asList(
-                    new SimpleGrantedAuthority("ROLE_USER"),
-                    new SimpleGrantedAuthority("ROLE_ADMIN"));
-            return new org.springframework.security.core.userdetails.User(username, password, authorities);
+                final Collection<? extends GrantedAuthority> authorities = Arrays.asList(
+                        new SimpleGrantedAuthority("ROLE_USER"),
+                        new SimpleGrantedAuthority("ROLE_ADMIN"));
+                return new org.springframework.security.core.userdetails.User(username, password, authorities);
         }
     }

@@ -60,4 +60,12 @@ public class UserJdbcDao implements UserDao{
 
         return query.stream().findFirst();
     }
+
+    @Override
+    public boolean update(long id, Optional<User> user) {
+        return jdbcTemplate.update("UPDATE users " +
+                " SET email = ?, " +
+                "password = ?" +
+                " WHERE userId = ?;", user.get().getUsername(),user.get().getPassword(), id) == 1;
+    }
 }

@@ -37,12 +37,7 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = {RequestMethod.POST})
     public ModelAndView registerUser(@Valid @ModelAttribute("register") final RegisterForm form, final BindingResult errors){
-        System.out.println("MAIL");
-        System.out.println(form.getMail());
-        System.out.println("PASSWORD");
-        System.out.println(form.getPassword());
         if (errors.hasErrors()){
-            System.out.println("ERROR");
             return register(form);
         }
         final User u = userService.create(form.getMail(), form.getPassword());

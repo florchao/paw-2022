@@ -35,4 +35,9 @@ public class UserServiceImpl implements UserService{
     public Optional<User> findByUsername(String username) {
         return userDao.getUserByUsername(username);
     }
+
+    @Override
+    public boolean update(long id, String username) {
+        return userDao.update(id, findByUsername(username));
+    }
 }
