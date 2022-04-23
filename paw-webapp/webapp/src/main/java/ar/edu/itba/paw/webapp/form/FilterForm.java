@@ -16,14 +16,12 @@ public class FilterForm {
 
     private List<Experience> experiencesList;
 
-    @Pattern(regexp = "[a-z A-z\\s0-9,]+")
+    @Pattern(regexp = "[a-z A-z\\s0-9,]+|")
     @Size(max = 100)
     private String location;
 
-    @NotNull
     private String abilities;
 
-    @NotNull
     private String availability;
 
     public String getLocation() {

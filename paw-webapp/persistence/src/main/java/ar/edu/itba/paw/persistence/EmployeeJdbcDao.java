@@ -50,26 +50,30 @@ public class EmployeeJdbcDao implements EmployeeDao{
     @Override
     public Optional<List<Employee>> getFilteredEmployees(long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities) {
         System.out.println("en jdbcDao para filtered");
+        System.out.println(experienceYears);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM employee where ");
         if (experienceYears > 0) {
-            stringBuilder.append("experienceYears = " + experienceYears);
-            stringBuilder.append("and ");
+            stringBuilder.append("experienceYears >= " + experienceYears);
+            stringBuilder.append(" and ");
         }
         if (location != null) {
-            stringBuilder.append("availability like \'%" + location + "%\'");
-            stringBuilder.append("and");
+            stringBuilder.append("location like '%" + location + "%' ");
+            stringBuilder.append(" and ");
         }
         // TODO Aca iria lo mismo pero para experienceList
         for (String av : availability) {
-            stringBuilder.append("availability like \'%" + av + "%\'");
-            stringBuilder.append("and ");
+            stringBuilder.append("availability like '%" + av + "%'");
+            stringBuilder.append(" and ");
         }
         for (String ability : abilities) {
-            stringBuilder.append("abilities like \'%" + ability + "%\'");
-            stringBuilder.append("and ");
+            stringBuilder.append("abilities like '%" + ability + "%'");
+            stringBuilder.append(" and ");
         }
-        stringBuilder.setLength(stringBuilder.length() - 4);
+        stringBuilder.setLength(stringBuilder.length() - 5);
+        System.out.println("-------------");
+        System.out.println(stringBuilder.toString());
+        System.out.println("-------------");
         List<Employee> query = jdbcTemplate.query(stringBuilder.toString(), new Object[] {}, EMPLOYEE_ROW_MAPPER);
         return Optional.of(query);
     }

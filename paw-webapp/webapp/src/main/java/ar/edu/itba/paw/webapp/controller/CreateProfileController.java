@@ -42,7 +42,7 @@ public class CreateProfileController {
         if(errors.hasErrors())
             return createProfile(form);
         final User u = userService.create(form.getMail(), "pepe");
-        final Employee employee = employeeService.create(form.getName(), form.getLocation(), u.getId(), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
+        final Employee employee = employeeService.create(form.getName(), form.getLocation().toLowerCase(), u.getId(), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
         return new ModelAndView("redirect:/verPerfil/"+employee.getId());
     }
 }

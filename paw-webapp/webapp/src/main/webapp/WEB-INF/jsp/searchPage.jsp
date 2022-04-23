@@ -30,24 +30,101 @@
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="seachPage"/>
 </jsp:include>
-<c:choose>
-    <c:when test="${EmployeeList.size() == 0}">
-        <div class = "grid content-center justify-center h-screen">
-            <div class = "grid justify-items-center">
-                <img src="<c:url value='/public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
-                <p class="text-3xl font-semibold text-purple-700"><spring:message code="searchPage.noEmployees"/></p>
-            </div>
-        </div>
-    </c:when>
-    <c:otherwise>
         <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
             <div class="my-8 w-full"></div>
             <div class="grid grid-cols-4">
-                <div class="col-span-1 bg-red-300 mr-8 h-screen">
+                <div class="col-span-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 absolute" >
                     <c:url value="/filterEmployees" var="postPath"/>
                     <form:form modelAttribute="filterBy" action="${postPath}" method="post">
-                        <form:checkbox path="abilities" value="Cuidado de menores"/>
-                        <button type="submit">Filtrar</button>
+                        <div class="flex flex-col">
+                            <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.experienceYears"/></h1>
+                            <div>
+                                <form:input type="number" path="experienceYears" cssStyle="border-radius: 5px; padding-left: 5px"/>
+<%--                                   TODO arreglar el codigo de error --%>
+                                <form:errors path="experienceYears" element="p" cssStyle="color:red"/>
+                            </div>
+                            <h1 class="font-semibold mt-4"><spring:message code="searchPage.label.location"/></h1>
+                            <div>
+                                <form:input type="text" path="location" cssStyle="border-radius: 5px; padding-left: 5px"/>
+                                    <%--TODO arreglar el codigo de error --%>
+                                <form:errors path="location" element="p" cssStyle="color:red"/>
+                            </div>
+                            <h1 class="font-semibold mt-4"><spring:message code="searchPage.abilities"/></h1>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="abilities"><spring:message code="searchPage.abilities.cook"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                    <form:checkbox path="abilities" value="Cocinar"/>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="abilities"><spring:message code="searchPage.abilities.iron"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                    <form:checkbox path="abilities" value="Planchar"/>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="abilities"><spring:message code="searchPage.abilities.pets"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                    <form:checkbox path="abilities" value="Cuidado de mascotas"/>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="abilities"><spring:message code="searchPage.abilities.older"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                <form:checkbox path="abilities" value="Cuidado de mayores"/>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="abilities"><spring:message code="searchPage.abilities.pets"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                    <form:checkbox path="abilities" value="Cuidado de mascotas"/>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="abilities"><spring:message code="searchPage.abilities.specialNeeds"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                    <form:checkbox path="abilities" value="Cuidados especiales"/>
+                                </div>
+                            </div>
+                            <h1 class="font-semibold mt-4"><spring:message code="employeeForm.availability"/></h1>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="availability"><spring:message code="searchPage.availability.half"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                    <form:checkbox path="availability" value="Media jornada"/>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="availability"><spring:message code="searchPage.availability.complete"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                    <form:checkbox path="availability" value="Jornada completa"/>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4">
+                                <div class="col-span-3">
+                                    <form:label path="availability"><spring:message code="searchPage.availability.bed"/></form:label>
+                                </div>
+                                <div class="col-start-4 col-span-1">
+                                    <form:checkbox path="availability" value="Con cama"/>
+                                </div>
+                            </div>
+                            <button type="submit" class="mt-4 border shadow-md border-purple-500/75 text-lg w-full focus:outline-none text-purple-900 bg-purple-500 bg-opacity-30 hover:bg-purple-700 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Filtrar</button>
+                        </div>
                     </form:form>
                 </div>
                 <div class="col-span-3 col-start-2 mt-8">
@@ -65,20 +142,30 @@
 <%--                            </div>--%>
 <%--                        </div>--%>
 <%--                    </div>--%>
-                    <c:forEach var="employee" items="${EmployeeList}">
-                        <c:set var="employee" value="${employee}" scope="request"/>
-                        <jsp:include page="components/employeeCardComponent.jsp">
-                        <jsp:param name="name" value="${employee.name}"/>
-                        <jsp:param name="location" value="${employee.location}"/>
-                        <jsp:param name="id" value="${employee.id}"/>
-                        <jsp:param name = "years" value = "${employee.experienceYears}"/>
-                    </jsp:include>
-                    </c:forEach>
+                    <c:choose>
+                        <c:when test="${EmployeeList.size() == 0}">
+                            <div class = "grid content-center justify-center h-5/6 mt-16">
+                                <div class = "grid justify-items-center">
+                                    <img src="<c:url value='/public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
+                                    <p class="text-3xl font-semibold text-purple-700"><spring:message code="searchPage.noEmployees"/></p>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="employee" items="${EmployeeList}">
+                                <c:set var="employee" value="${employee}" scope="request"/>
+                                <jsp:include page="components/employeeCardComponent.jsp">
+                                    <jsp:param name="name" value="${employee.name}"/>
+                                    <jsp:param name="location" value="${employee.location}"/>
+                                    <jsp:param name="id" value="${employee.id}"/>
+                                    <jsp:param name = "years" value = "${employee.experienceYears}"/>
+                                </jsp:include>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
-    </c:otherwise>
-</c:choose>
 
 </body>
 </html>

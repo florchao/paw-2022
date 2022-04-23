@@ -10,6 +10,7 @@ import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,11 +65,12 @@ public class ExploreController {
     }
 
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.POST})
-//    public ModelAndView filterEmployees(@Valid @ModelAttribute("filterForm") final EmployeeForm form, RedirectAttributes redirectAttributes) {
-    public ModelAndView filterEmployees(@ModelAttribute("filterBy") FilterForm form, RedirectAttributes redirectAttributes) {
-        System.out.println("entre al filterEmployees!");
-//        FilterForm form = new FilterForm();
-//        form.setAbilities("Cocinar,Cuidado de mascotas");
+    public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
+        if (errors.hasErrors()) {
+            System.out.println("me meti en error");
+            return searchPage(form, false);
+        }
+        System.out.println("filtrar!");
         redirectAttributes.addFlashAttribute("filterBy", form);
         redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
         redirectAttributes.addAttribute("location", form.getLocation());
