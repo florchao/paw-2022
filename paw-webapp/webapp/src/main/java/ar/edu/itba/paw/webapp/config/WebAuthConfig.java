@@ -40,7 +40,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/", "/crearPerfil", "/createEmployee", "/registrarse", "/register", "/buscarEmpleadas",
                         "/verPerfil/{userId}", "/verPerfil").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/**" ).authenticated()
+                .antMatchers("/**",   "/verPerfil/{userId}", "/verPerfil","/buscarEmpleadas").authenticated()
                 .and().formLogin()
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
@@ -49,7 +49,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe()
                 .rememberMeParameter("j_rememberme")
                 .userDetailsService(userDetailsService)
-                .key("mysupersecretketthatnobodyknowsabout ") // no hacer esto, crear una aleatoria segura suficiente mente grande y colocarla bajo src/main/resources
+                .key("19f1ba81f376bd6e6a84fbaa06022a1c6dffcc4702116248cc18e7b317002ed8114ee13f36839d496d144ac43c17a2f88b65b9096f7d1956f43a3e9c97eddb258b63a7af73903a54acf397311e3eae0ee2e6cbee213f8f4b29156969ea6848e1014261c3391ff679d25a263aa5a4f63d62c3586ed34106cdf04011ed7b014131dac0e22ac1c07171983dc1d02bcd23a7f04cda2ef21764417d4b7754a4629f02") // no hacer esto, crear una aleatoria segura suficiente mente grande y colocarla bajo src/main/resources
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
                 .and().logout()
                 .logoutUrl("/logout")
