@@ -95,21 +95,23 @@
             <%--                </a>--%>
 
             <%--            </div>--%>
-            <div>
-                <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.abilities"/></h1>
-                <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                    <c:forEach var="ability" items="${employee.abilitiesArr}">
-                        <li><c:out value="${ability}"/></li>
-                    </c:forEach>
-                </ul>
-            </div>
-            <div>
-                <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.availability"/></h1>
-                <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                    <c:forEach var="availability" items="${employee.availabilityArr}">
-                        <li><c:out value="${availability}"/></li>
-                    </c:forEach>
-                </ul>
+            <div class="grid grid-cols-2">
+                <div class="col-span-1">
+                    <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.abilities"/></h1>
+                    <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
+                        <c:forEach var="ability" items="${employee.abilitiesArr}">
+                            <li><c:out value="${ability}"/></li>
+                        </c:forEach>
+                    </ul>
+                </div>
+                <div class="col-span-1 col-start-2">
+                    <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.availability"/></h1>
+                    <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
+                        <c:forEach var="availability" items="${employee.availabilityArr}">
+                            <li><c:out value="${availability}"/></li>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
