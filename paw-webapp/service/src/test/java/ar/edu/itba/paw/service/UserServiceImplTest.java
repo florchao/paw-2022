@@ -31,7 +31,7 @@ public class UserServiceImplTest {
         Mockito.when(mockDao.create(Mockito.eq(USERNAME), Mockito.eq(PASSWORD)))
                 .thenReturn(new User(1, USERNAME, PASSWORD));
 
-        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, PASSWORD));
+        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, PASSWORD, PASSWORD));
 
         Assert.assertNotNull(maybeUser);
         Assert.assertTrue(maybeUser.isPresent());
@@ -43,7 +43,7 @@ public class UserServiceImplTest {
     public void testCreateEmptyPassword(){
 
 
-        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, PASSWORD));
+        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, PASSWORD, PASSWORD));
 
         Assert.assertNotNull(maybeUser);
         Assert.assertFalse(maybeUser.isPresent());
@@ -55,7 +55,7 @@ public class UserServiceImplTest {
         Mockito.when(mockDao.getUserById(Mockito.eq(ID)))
                 .thenReturn(Optional.of(new User(1, USERNAME, PASSWORD)));
 
-        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, PASSWORD));
+        Optional<User> maybeUser = Optional.ofNullable(userService.create(USERNAME, PASSWORD, PASSWORD));
 
         Assert.assertNotNull(maybeUser);
         Assert.assertFalse(maybeUser.isPresent());
