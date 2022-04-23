@@ -28,7 +28,8 @@
         <li></li>
         <li></li>
     </ul>
-</div class="grid grid-cols-7 content-center">
+</div>
+<div class="grid grid-cols-7 content-center">
         <form modelAttribute="registerForm" class="col-span-3 col-start-3" action="${registerUrl}" method="post" enctype = "application/x-www-form-urlencoded">
             <div class="block p-6 rounded-lg shadow-lg bg-white">
                 <div class="form-group mb-6 grid grid-cols-6">
@@ -49,10 +50,9 @@
                  <div>
                     <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"> <spring:message code="register.button"/></button>
                   </div>
-                  </div>
             </div>
         </form>
-    </div>
+</div>
 </div>
 </body>
 </html>
