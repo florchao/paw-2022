@@ -35,7 +35,7 @@ public class ContactJdbcDao implements ContactDao{
 
     @Override
     public Optional<List<Contact>> getAllContacts(long id) {
-        List<Contact> query = jdbcTemplate.query("SELECT employeeid, email, message, phone, created FROM contact JOIN users ON employerId=userId WHERE employeeID = ?", new Object[] {id}, CONTACT_NAME_ROW_MAPPER);
+        List<Contact> query = jdbcTemplate.query("SELECT employeeid, email, message, phone, created FROM contact JOIN users ON employerId=userId WHERE employeeID = ? ORDER BY created DESC ", new Object[] {id}, CONTACT_NAME_ROW_MAPPER);
         return Optional.of(query);
     }
 

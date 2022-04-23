@@ -27,7 +27,7 @@
     </ul>
 </div>
 <jsp:include page="components/navbar.jsp"/>
-<c:url value="/nuevaContrasena" var="newpassurl"/>
+<c:url value="/newPassword" var="newpassurl"/>
 <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
     <form:form modelAttribute="newPasswordForm" class="col-span-3 col-start-3" action="${newpassurl}" method="post" enctype = "application/x-www-form-urlencoded">
         <div class="block p-6 rounded-lg shadow-lg bg-white">

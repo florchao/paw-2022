@@ -13,5 +13,5 @@ public interface UserService {
 
     Optional<User> findByUsername(String username);
 
-    boolean update(long id, String username);
+    boolean update(String username, String password);
 }

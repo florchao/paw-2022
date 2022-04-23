@@ -25,7 +25,7 @@ public class PawUserDetailsService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
+    private final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
@@ -33,15 +33,15 @@ public class PawUserDetailsService implements UserDetailsService {
         if (!user.isPresent()) {
             throw new UsernameNotFoundException("No user by the name " + username);
         }
-
-        if(Objects.equals(user.get().getPassword(), "pepe") || user.get().getPassword() == null){
-            System.out.println();
-        }
         String password = user.get().getPassword();
-        if(BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
+        System.out.print("password: ");
+        System.out.println(password);
+        System.out.println(BCRYPT_PATTERN.matcher(user.get().getPassword()).matches());
+        if(Objects.equals(user.get().getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
             password = passwordEncoder.encode(user.get().getPassword());
-            user.get().setPassword(password);
-            us.update(user.get().getId(), username);
+            System.out.print("encripted password ");
+            System.out.println(password);
+            us.update(username, password);
         }
                 final Collection<? extends GrantedAuthority> authorities = Arrays.asList(
                         new SimpleGrantedAuthority("ROLE_USER"),
