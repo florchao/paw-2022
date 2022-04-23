@@ -42,7 +42,11 @@ public class CreateProfileController {
     public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors){
         if(errors.hasErrors())
             return createProfile(form);
-        final User u = userService.create(form.getMail(), "pepe");
+
+        // esta linea no deberia ir tiene que recibir por el path el user id
+        final User u = userService.create(form.getMail(), "pepe", "pepe");
+        //
+
         final Employee employee = employeeService.create(form.getName(), form.getLocation().toLowerCase(), u.getId(), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
         return new ModelAndView("redirect:/verPerfil/"+employee.getId());
     }

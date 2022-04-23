@@ -1,11 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.PassMatchException;
+import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
+import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -37,11 +40,25 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = {RequestMethod.POST})
     public ModelAndView registerUser(@Valid @ModelAttribute("register") final RegisterForm form, final BindingResult errors){
+
+        ModelAndView mav = new ModelAndView("register");
+
         if (errors.hasErrors()){
             return register(form);
         }
-        final User u = userService.create(form.getMail(), form.getPassword());
-        System.out.println(u.toString());
+
+        try{
+            final User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword());
+            System.out.println(u.toString());
+        }catch (UserFoundException uaeEx){
+            mav.addObject("message", "An account for that username/email already exists.");
+            return mav;
+        }catch (PassMatchException psEx){
+            mav.addObject("message", "Passwords don't match");
+            return mav;
+        }
+
+        // aca deberia redireccionar a crear perfil de empleado o empleador + el user id que creo
         return new ModelAndView("redirect:/crearPerfil");
     }
 
