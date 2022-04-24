@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService{
         // TODO: validate username / password
         // TODO: send email validation mail
         // TODO: ...
-        if (findByUsername(username) != null) {
+        if (findByUsername(username).isPresent()) {
             throw new UserFoundException("There is an account with that email address: "
                     + username);
         }
