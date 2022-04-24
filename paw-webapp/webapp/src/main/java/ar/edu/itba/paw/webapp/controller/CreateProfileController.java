@@ -1,17 +1,16 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.service.EmployeeService;
-import ar.edu.itba.paw.service.ExperienceService;
-import ar.edu.itba.paw.service.MailingService;
-import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
 import ar.edu.itba.paw.webapp.form.EmployerForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,35 +26,43 @@ public class CreateProfileController {
     private EmployeeService employeeService;
 
     @Autowired
+    private EmployerService employerService;
+
+    @Autowired
     private ExperienceService experienceService;
 
     @Autowired
     private MailingService mailingService;
 
-    @RequestMapping("/crearPerfil")
-    public ModelAndView createProfile(@ModelAttribute("employeeForm") final EmployeeForm form) {
+    @RequestMapping("/crearPerfil/{userID}")
+    public ModelAndView createProfile(@ModelAttribute("employeeForm") final EmployeeForm form, @PathVariable String userID) {
         final ModelAndView mav = new ModelAndView("createProfile");
         return mav;
     }
 
-    @RequestMapping(value = "/createEmployee", method = {RequestMethod.POST})
-    public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors){
+    @RequestMapping(value = "/createEmployee/{userID}", method = {RequestMethod.POST})
+    public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors, @PathVariable String userID){
         if(errors.hasErrors())
-            return createProfile(form);
+            return createProfile(form, userID);
 
-        // esta linea no deberia ir tiene que recibir por el path el user id
-        final User u = userService.create(form.getMail(), "pepe", "pepe");
-        //
-
-        final Employee employee = employeeService.create(form.getName(), form.getLocation().toLowerCase(), u.getId(), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
+        final Employee employee = employeeService.create(form.getName(), form.getLocation().toLowerCase(), Long.parseLong(userID), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
         return new ModelAndView("redirect:/verPerfil/"+employee.getId());
     }
 
-    @RequestMapping("/crearPerfilEmpleador")
-    public ModelAndView createProfileEmployer(@ModelAttribute("employerForm") final EmployerForm form) {
+    @RequestMapping("/crearPerfilEmpleador/{userID}")
+    public ModelAndView createProfileEmployer(@ModelAttribute("employerForm") final EmployerForm form, @PathVariable String userID) {
         final ModelAndView mav = new ModelAndView("createProfileEmployer");
         return mav;
     }
 
+    @RequestMapping(value = "/createEmployer/{userID}", method = {RequestMethod.POST})
+    public ModelAndView createEmployer(@Valid @ModelAttribute("employerForm") final EmployerForm form, final BindingResult errors, @PathVariable String userID){
+        if(errors.hasErrors())
+            return createProfileEmployer(form, userID);
+        String name = form.getName() + " " + form.getLastname();
+        System.out.println(userID);
+        final Employer employer = employerService.create(name, Long.parseLong(userID));
+        return new ModelAndView("redirect:/buscarEmpleadas");
+    }
 
 }

@@ -16,6 +16,14 @@ create table if not exists employee(
 
 );
 
+create table if not exists employer(
+    employerID INT,
+    name varchar(100),
+    FOREIGN KEY (employerID) REFERENCES users(userID) ON DELETE CASCADE,
+    PRIMARY KEY (employerID)
+
+);
+
 
 CREATE TABLE IF NOT EXISTS  experiences (
                 experiencesID INTEGER IDENTITY PRIMARY KEY,
@@ -28,7 +36,7 @@ CREATE TABLE IF NOT EXISTS  experiences (
 
 );
 
-CREATE TABLE IF NOT EXISTS  experiences (
+CREATE TABLE IF NOT EXISTS contact (
     employeeID INT,
     employerID INT,
     message varchar(1000),

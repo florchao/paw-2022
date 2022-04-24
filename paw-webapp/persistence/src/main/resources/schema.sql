@@ -16,6 +16,13 @@ create table if not exists employee(
 
 );
 
+create table if not exists employer(
+    employerID INT,
+    name TEXT,
+    FOREIGN KEY (employerID) REFERENCES users(userID) ON DELETE CASCADE,
+    PRIMARY KEY (employerID)
+);
+
 
 CREATE TABLE IF NOT EXISTS  experiences (
                 experiencesID SERIAL PRIMARY KEY,
