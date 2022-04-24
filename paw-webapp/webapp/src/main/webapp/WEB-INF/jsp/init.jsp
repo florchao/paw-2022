@@ -9,6 +9,7 @@
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="init.page"/></title>
 </head>
 <body>

@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/../../../public/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="viewProfile.title"/></title>
 </head>
 <body>
@@ -95,21 +96,23 @@
             <%--                </a>--%>
 
             <%--            </div>--%>
-            <div>
-                <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.abilities"/></h1>
-                <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                    <c:forEach var="ability" items="${employee.abilitiesArr}">
-                        <li><c:out value="${ability}"/></li>
-                    </c:forEach>
-                </ul>
-            </div>
-            <div>
-                <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.availability"/></h1>
-                <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                    <c:forEach var="availability" items="${employee.availabilityArr}">
-                        <li><c:out value="${availability}"/></li>
-                    </c:forEach>
-                </ul>
+            <div class="grid grid-cols-2">
+                <div class="col-span-1">
+                    <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.abilities"/></h1>
+                    <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
+                        <c:forEach var="ability" items="${employee.abilitiesArr}">
+                            <li><c:out value="${ability}"/></li>
+                        </c:forEach>
+                    </ul>
+                </div>
+                <div class="col-span-1 col-start-2">
+                    <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.availability"/></h1>
+                    <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
+                        <c:forEach var="availability" items="${employee.availabilityArr}">
+                            <li><c:out value="${availability}"/></li>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
