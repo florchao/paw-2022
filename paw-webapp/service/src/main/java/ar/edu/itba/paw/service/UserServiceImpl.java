@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService{
         if(!password.equals(confPassword)){
             throw new PassMatchException("Passwords don't match");
         }
+        System.out.println("EN SERVICE POR LLAMAR A DAO");
         return userDao.create(username, passwordEncoder.encode(password));
     }
 

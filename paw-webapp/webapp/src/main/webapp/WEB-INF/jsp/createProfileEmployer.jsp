@@ -29,7 +29,7 @@
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="createProfileEmployer"/>
 </jsp:include>
-<c:url value="/createEmployer" var="postPath"/>
+<c:url value="/createEmployer/${userID}" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">
     <form:form modelAttribute="employerForm" action="${postPath}" method="post">
         <div class="grid grid-cols-6">
