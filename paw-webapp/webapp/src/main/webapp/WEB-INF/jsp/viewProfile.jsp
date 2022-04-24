@@ -39,11 +39,11 @@
                     </div>
                 </div>
                 <div class="ml-3 col-span-2">
-                    <span class="text-2xl font-semibold whitespace-nowrap"><c:out value="${employee.name}"/></span>
+                    <p class="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden"><c:out value="${employee.name}"/></p>
                 </div>
                 <div class="ml-3 col-span-2">
                     <h1 class="block mb-2 font-medium text-gray-900 font-semibold"><spring:message code="viewProfile.location"/></h1>
-                    <h1 class="block mb-2 text-sm font-medium text-gray-600"> <c:out value="${employee.location}"/></h1>
+                    <h1 class="block mb-2 text-sm font-medium text-gray-600 text-ellipsis overflow-hidden"> <c:out value="${employee.location}"/></h1>
                 </div>
                 <div class="ml-3 col-span-2">
                     <h1 class="block mb-2 font-medium text-gray-900 font-semibold"><spring:message code="viewProfile.experience"/></h1>
