@@ -11,9 +11,6 @@ import java.util.List;
 
 public class EmployeeForm {
 
-    @Email(regexp = "[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}")
-    private String mail;
-
     @Pattern(regexp = "[a-zA-z\\s']+|^$")
     @NotBlank
     @Size(max = 100)
@@ -36,20 +33,12 @@ public class EmployeeForm {
     @NotNull
     private String availability;
 
-    public String getMail() {
-        return mail;
-    }
-
     public String getLocation() {
         return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public String getName() {

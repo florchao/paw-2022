@@ -47,11 +47,6 @@
                             <form:errors path="name" element="p" cssStyle="color:red"/>
                         </div>
                         <div class="ml-3 col-span-3 w-4/5 justify-self-center">
-                            <form:label path="mail" for="mail" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employeeForm.label.mail"/></form:label>
-                            <form:input path="mail" type="email" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                            <form:errors path="mail" element="p" cssStyle="color:red"/>
-                        </div>
-                        <div class="ml-3 col-span-3 w-4/5 justify-self-center">
                             <form:label path="location" for="location" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employeeForm.label.location"/></form:label>
                             <form:input type="text" path="location" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                             <form:errors path="location" element="p" cssStyle="color:red"/>
