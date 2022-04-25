@@ -52,10 +52,10 @@
             <div class="form-group grid grid-cols-6 mb-6">
                 <form:label path="role" class="col-span-1 text-sm font-medium text-gray-900"><spring:message code="register.role"/></form:label>
                 <div class="col-span-2">
-                    <form:radiobutton path="role" value="Empleador"/> Empleador
+                    <form:radiobutton path="role" value="Empleador"/> <spring:message code="register.employer"/>
                 </div>
                 <div class="col-span-2">
-                    <form:radiobutton path="role" value="Empleada"/> Empleada
+                    <form:radiobutton path="role" value="Empleada"/> <spring:message code="register.employee"/>
                 </div>
                 <form:errors path="role" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
             </div>
