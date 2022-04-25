@@ -47,10 +47,9 @@ public class RegisterController {
             return register(form);
         }
         try{
-            System.out.println("INTENTADO");
-            final User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword());
-            System.out.println("TERMINE");
-            if(form.getRole().equals("Empleada"))
+            int role = form.getRole().equals("Empleada")? 1 : 2;
+            final User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword(), role);
+            if(role == 1)
                 return new ModelAndView("redirect:/crearPerfil/"+ u.getId());
             else
                 return new ModelAndView("redirect:/crearPerfilEmpleador/" + u.getId());

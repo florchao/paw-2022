@@ -20,7 +20,7 @@ public class UserJdbcDao implements UserDao{
     private final SimpleJdbcInsert jdbcInsert;
 
     private static final RowMapper<User> ROW_MAPPER = (rs, rowNum) ->
-            new User(rs.getLong("userid"), rs.getString("email"), rs.getString("password"));
+            new User(rs.getLong("userid"), rs.getString("email"), rs.getString("password"), rs.getInt("role"));
 
     @Autowired
     public UserJdbcDao(final DataSource ds) {
@@ -38,15 +38,14 @@ public class UserJdbcDao implements UserDao{
     }
 
     @Override
-    public User create(String username, String password) {
-        System.out.println("EN DAO");
+    public User create(String username, String password, int role) {
         final Map<String, Object> userData = new HashMap<>();
         userData.put("email", username);
         userData.put("password", password);
-        System.out.println(userData.get("email"));
+        userData.put("role", role);
         Number userId = jdbcInsert.executeAndReturnKey(userData);
 
-        return new User(userId.longValue(), username, password);
+        return new User(userId.longValue(), username, password, role);
     }
 
     @Override

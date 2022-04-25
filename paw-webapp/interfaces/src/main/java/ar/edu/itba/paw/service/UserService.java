@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface UserService {
     Optional<User> getUserById(long id);
 
-    User create(String username, String password, String confirmPassword) throws UserFoundException, PassMatchException;
+    User create(String username, String password, String confirmPassword, int role) throws UserFoundException, PassMatchException;
 
     Optional<User> findByUsername(String username);
 

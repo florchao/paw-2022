@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User create(String username, String password, String confPassword) throws UserFoundException, PassMatchException {
+    public User create(String username, String password, String confPassword, int role) throws UserFoundException, PassMatchException {
         // TODO: validate username / password
         // TODO: send email validation mail
         // TODO: ...
@@ -39,8 +39,7 @@ public class UserServiceImpl implements UserService{
         if(!password.equals(confPassword)){
             throw new PassMatchException("Passwords don't match");
         }
-        System.out.println("EN SERVICE POR LLAMAR A DAO");
-        return userDao.create(username, passwordEncoder.encode(password));
+        return userDao.create(username, passwordEncoder.encode(password), role);
     }
 
     @Override

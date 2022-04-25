@@ -24,7 +24,7 @@ public class ContactJdbcDao implements ContactDao{
             new Contact(rs.getLong("employeeid"), rs.getLong("employerid"), rs.getString("message"), rs.getString("phone"), rs.getDate("created"));
 
     private static final RowMapper<Contact> CONTACT_NAME_ROW_MAPPER = (rs, rowNum) ->
-            new Contact(rs.getLong("employeeid"), rs.getString("email"), rs.getString("message"), rs.getString("phone"), rs.getDate("created"));
+            new Contact(rs.getLong("employeeid"), rs.getString("email"), rs.getString("name"), rs.getString("message"), rs.getString("phone"), rs.getDate("created"));
 
     @Autowired
     public ContactJdbcDao(final DataSource ds){
@@ -35,7 +35,7 @@ public class ContactJdbcDao implements ContactDao{
 
     @Override
     public Optional<List<Contact>> getAllContacts(long id) {
-        List<Contact> query = jdbcTemplate.query("SELECT employeeid, email, message, phone, created FROM contact JOIN users ON employerId=userId WHERE employeeID = ? ORDER BY created DESC ", new Object[] {id}, CONTACT_NAME_ROW_MAPPER);
+        List<Contact> query = jdbcTemplate.query("SELECT employeeid, name, email, message, phone, created FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ? ORDER BY created DESC ", new Object[] {id}, CONTACT_NAME_ROW_MAPPER);
         return Optional.of(query);
     }
 

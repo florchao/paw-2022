@@ -23,6 +23,7 @@ import java.util.Optional;
 public class UserJdbcDaoTest {
     private static final String PASSWORD = "Password";
     private static final String USERNAME = "Username";
+    private static final int ROLE = 1;
 
     @Autowired
     DataSource dataSource;
@@ -40,7 +41,7 @@ public class UserJdbcDaoTest {
 
     @Test
     public void testCreate(){
-        final User user = userJdbcDao.create(USERNAME, PASSWORD);
+        final User user = userJdbcDao.create(USERNAME, PASSWORD, ROLE);
 
         Assert.assertNotNull(user);
         Assert.assertEquals(USERNAME, user.getUsername());

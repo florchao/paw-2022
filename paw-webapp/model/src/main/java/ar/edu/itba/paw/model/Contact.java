@@ -5,6 +5,7 @@ import java.util.Date;
 public class Contact {
     public long employeeID;
     public long employerID;
+    public String email;
     public String employer;
     public String contactMessage;
     public String phoneNumber;
@@ -18,8 +19,9 @@ public class Contact {
         this.phoneNumber = phoneNumber;
     }
 
-    public Contact(long employeeID, String employer, String message, String phoneNumber, Date created) {
+    public Contact(long employeeID, String email, String employer, String message, String phoneNumber, Date created) {
         this.employeeID = employeeID;
+        this.email = email;
         this.employer = employer;
         this.contactMessage = message;
         this.created = created;
@@ -74,4 +76,11 @@ public class Contact {
         this.created = created;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
