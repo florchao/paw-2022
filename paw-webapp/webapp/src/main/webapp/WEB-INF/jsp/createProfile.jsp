@@ -116,7 +116,7 @@
                         </div>
                         <div>
                             <form:label path="abilities" for="especiales-cb" id = "especiales-label" onclick="setColor('especiales-label');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.specialNeeds"/></form:label>
-                            <form:checkbox path="abilities" id="especiales-cb" value = "Cuidadoss especiales" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="abilities" id="especiales-cb" value = "Cuidados especiales" cssStyle="visibility: hidden"/>
                         </div>
                         <div>
                             <form:label path="abilities" for="mascotas-cb" id = "mascotas-label" onclick="setColor('mascotas-label');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.pets"/></form:label>

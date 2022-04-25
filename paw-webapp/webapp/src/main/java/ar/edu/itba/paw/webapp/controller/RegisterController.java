@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -54,10 +55,10 @@ public class RegisterController {
             else
                 return new ModelAndView("redirect:/crearPerfilEmpleador/" + u.getId());
         }catch (UserFoundException uaeEx){
-            mav.addObject("message", "An account for that username/email already exists.");
+            mav.addObject("UserError", "An account for that username/email already exists.");
             return mav;
         }catch (PassMatchException psEx){
-            mav.addObject("message", "Passwords don't match");
+            mav.addObject("PasswordError", "Passwords don't match");
             return mav;
         }
 
