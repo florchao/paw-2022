@@ -62,6 +62,14 @@
             <div>
                 <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"> <spring:message code="register.button"/></button>
             </div>
+            <div class="form-group mb-6">
+                <p class="text-sm font-medium text-gray-900">
+                    <spring:message code="register.login"/>
+                    <form:form method="get" action="${createProfile}">
+                    <a class="text-violet-900" href="<c:url value="/login"/>"><spring:message code="register.log"/></a>
+                    </form:form>
+                </p>
+            </div>
         </div>
     </form:form>
 </div>
