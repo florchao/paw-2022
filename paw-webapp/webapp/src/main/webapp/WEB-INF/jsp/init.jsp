@@ -13,8 +13,8 @@
     <title><spring:message code="init.page"/></title>
 </head>
 <body>
-<c:url value="/redirectSearch" var = "search"/>
-<c:url value="/redirectCreateProfile" var = "createProfile"/>
+<c:url value="/buscarEmpleadas" var = "search"/>
+<c:url value="/registrarse" var = "createProfile"/>
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="init"/>
 </jsp:include>
