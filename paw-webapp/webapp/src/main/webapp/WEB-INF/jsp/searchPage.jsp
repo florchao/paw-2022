@@ -93,10 +93,10 @@
                             </div>
                             <div class="grid grid-cols-4">
                                 <div class="col-span-3">
-                                    <form:label path="abilities"><spring:message code="searchPage.abilities.pets"/></form:label>
+                                    <form:label path="abilities"><spring:message code="searchPage.abilities.young"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="abilities" value="Cuidado de mascotas"/>
+                                    <form:checkbox path="abilities" value="Cuidado de menores"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4">
