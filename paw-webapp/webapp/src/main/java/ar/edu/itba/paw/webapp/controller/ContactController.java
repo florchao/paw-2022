@@ -58,7 +58,7 @@ public class ContactController {
 
     @RequestMapping(value = "/contactarEmpleado/{id}", method = {RequestMethod.POST})
     public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) {
-        ModelAndView mav = new ModelAndView("contactForm");
+        ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+id);
         if(errors.hasErrors())
             return contactPage(form, id);
         Optional<User> user = userService.getUserById(id);
@@ -67,9 +67,7 @@ public class ContactController {
         }
         catch (ContactExistsException contactException){
             mav.addObject("ContactError", contactException.getMessage());
-            mav.addObject("id", id);
-            return mav;
         }
-        return new ModelAndView("redirect:/verPerfil/"+id);
+        return mav;
     }
 }
