@@ -11,10 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Component
@@ -34,18 +31,18 @@ public class PawUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("No user by the name " + username);
         }
         String password = user.get().getPassword();
-        System.out.print("password: ");
-        System.out.println(password);
-        System.out.println(BCRYPT_PATTERN.matcher(user.get().getPassword()).matches());
         if(Objects.equals(user.get().getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
             password = passwordEncoder.encode(user.get().getPassword());
-            System.out.print("encripted password ");
-            System.out.println(password);
             us.update(username, password);
         }
-                final Collection<? extends GrantedAuthority> authorities = Arrays.asList(
-                        new SimpleGrantedAuthority("ROLE_USER"),
-                        new SimpleGrantedAuthority("ROLE_ADMIN"));
-                return new org.springframework.security.core.userdetails.User(username, password, authorities);
-        }
+        final Collection<GrantedAuthority> authorities = new ArrayList<>();
+        System.out.println(user.get().getRole());
+        if(user.get().getRole() == 1)
+            authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
+        else
+            authorities.add(new SimpleGrantedAuthority("EMPLOYER"));
+        org.springframework.security.core.userdetails.User uuuu = new org.springframework.security.core.userdetails.User(username, password, authorities);
+        System.out.println(uuuu.getAuthorities());
+        return new org.springframework.security.core.userdetails.User(username, password, authorities);
     }
+}

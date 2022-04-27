@@ -29,7 +29,7 @@
 </ul>
 </div>
 <jsp:include page="components/navbar.jsp">
-    <jsp:param name="currentUrl" value="seachPage"/>
+    <jsp:param name="currentUrl" value="searchPage"/>
 </jsp:include>
         <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
             <div class="my-8 w-full"></div>

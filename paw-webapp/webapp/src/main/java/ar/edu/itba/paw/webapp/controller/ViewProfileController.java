@@ -8,11 +8,14 @@ import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Controller
@@ -32,6 +35,13 @@ public class ViewProfileController {
     @RequestMapping("/verPerfil")
     public ModelAndView viewProfile() {
         final ModelAndView mav = new ModelAndView("viewProfile");
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> user = userService.findByUsername(principal.getUsername());
+        if(user.isPresent()){
+            mav.addObject("user", user.get());
+            Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
+            employee.ifPresent(value -> mav.addObject("employee", value));
+        }
         return mav;
     }
 
@@ -39,15 +49,9 @@ public class ViewProfileController {
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
         final ModelAndView mav = new ModelAndView("viewProfile");
         Optional<User> user = userService.getUserById(userId);
-        if(user.isPresent()){
-            mav.addObject("user", user.get());
-
-        }
+        user.ifPresent(value -> mav.addObject("user", value));
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
         if(employee.isPresent()){
-            System.out.println("++++");
-            System.out.println(employee);
-            System.out.println("++++");
             mav.addObject("employee", employee.get());
         }
 

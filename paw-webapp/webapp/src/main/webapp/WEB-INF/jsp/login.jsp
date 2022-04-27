@@ -29,7 +29,6 @@
 </div>
     <jsp:include page="components/navbar.jsp"/>
     <c:url value="/login" var="loginUrl"/>
-    <c:url value="/redirectCreateProfile" var = "createProfile"/>
     <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
             <form modelAttribute="login" class="col-span-3 col-start-3" action="${loginUrl}" method="post" enctype = "application/x-www-form-urlencoded">
                 <div class="block p-6 rounded-lg shadow-lg bg-white">
@@ -53,17 +52,13 @@
                     <div class="form-group mb-6">
                         <p class="text-sm font-medium text-gray-900">
                             <spring:message code="create.account"/>
-                            <form:form method="get" action="${createProfile}">
                             <a class="text-violet-900" href="<c:url value="/registrarse"/>"><spring:message code="login.register"/></a>
-                            </form:form>
                         </p>
                     </div>
                     <div class="form-group mb-6 grid grid-cols-6">
                         <p class="text-sm font-medium text-gray-900 col-span-2">
                             <spring:message code="login.nopassword"/>
-                            <form:form method="get" action="${setPassword}">
                             <a class="text-violet-800" href="<c:url value="/nuevaContrasena"/>"><spring:message code="login.setPassword"/></a>
-                            </form:form>
                         </p>
                     </div>
                 </div>

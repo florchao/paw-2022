@@ -27,7 +27,9 @@
         <li></li>
     </ul>
 </div>
-<jsp:include page="components/navbar.jsp"/>
+<jsp:include page="components/navbar.jsp">
+    <jsp:param name="currentUrl" value="register"/>
+</jsp:include>
 <c:url value="/register" var="registerUrl"/>
 <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
     <form:form modelAttribute="registerForm" class="col-span-3 col-start-3" action="${registerUrl}" method="post" enctype = "application/x-www-form-urlencoded">

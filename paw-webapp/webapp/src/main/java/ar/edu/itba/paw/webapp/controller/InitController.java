@@ -36,9 +36,9 @@ public class InitController {
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 
-    @RequestMapping(value = "/redirectCreateProfile", method = RequestMethod.GET)
+    @RequestMapping(value = "/redirectRegister", method = RequestMethod.GET)
     public ModelAndView redirectCreateProfile() {
-        return new ModelAndView("redirect:/crearPerfil");
+        return new ModelAndView("redirect:/registrarse");
     }
 
     @RequestMapping(value = "/redirectContacts", method = RequestMethod.GET)

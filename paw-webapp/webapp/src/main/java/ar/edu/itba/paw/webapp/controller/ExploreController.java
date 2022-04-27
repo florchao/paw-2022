@@ -5,10 +5,11 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
-import ar.edu.itba.paw.webapp.form.EmployeeForm;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,10 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Filter;
 
 @Controller
 public class ExploreController {
@@ -44,6 +45,10 @@ public class ExploreController {
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage(@ModelAttribute("filterBy") FilterForm employeeForm, @RequestParam(value = "filterBoolean", required = false) Boolean filter) {
         List<Employee> list;
+        Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
+            return new ModelAndView("redirect:/contactos");
+//
         if (filter != null) {
             System.out.println("me meti!");
             list = employeeService.getFilteredEmployees(
