@@ -26,6 +26,8 @@ public class ContactJdbcDao implements ContactDao{
     private static final RowMapper<Contact> CONTACT_NAME_ROW_MAPPER = (rs, rowNum) ->
             new Contact(rs.getLong("employeeid"), rs.getString("email"), rs.getString("name"), rs.getString("message"), rs.getString("phone"), rs.getDate("created"));
 
+    private static final RowMapper<Boolean> CONTACT_EXISTS_ROW_MAPPER = (rs, rowNum) -> rs.getBoolean("exists");
+
     @Autowired
     public ContactJdbcDao(final DataSource ds){
         jdbcTemplate = new JdbcTemplate(ds);
@@ -50,5 +52,12 @@ public class ContactJdbcDao implements ContactDao{
 
         jdbcInsert.execute(contactData);
         return new Contact(employeeId, employerId, contactMessage, phoneNumber, created);
+    }
+
+    @Override
+    public Optional<Boolean> existsContact(long employeeId, long employerId) {
+        List<Boolean> query = jdbcTemplate.query("SELECT EXISTS(SELECT * FROM contact WHERE employeeid = ? AND employerid = ?)", new Object[] {employeeId,employerId}, CONTACT_EXISTS_ROW_MAPPER);
+
+        return query.stream().findFirst();
     }
 }

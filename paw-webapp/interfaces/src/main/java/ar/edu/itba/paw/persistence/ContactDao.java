@@ -13,4 +13,6 @@ public interface ContactDao {
     Optional<List<Contact>> getAllContacts(long userId);
 
     Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber);
+
+    Optional<Boolean> existsContact(long employeeId, long employerId);
 }
