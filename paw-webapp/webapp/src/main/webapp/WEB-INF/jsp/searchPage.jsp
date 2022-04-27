@@ -10,6 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript">
+        function validateExpYears() {
+            var el = document.getElementById('expYears');
+            if (el.value ==="") {
+                el.value=0;
+            }
+        }
+    </script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="searchPage.title"/></title>
 </head>
@@ -40,7 +48,7 @@
                         <div class="flex flex-col">
                             <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.experienceYears"/></h1>
                             <div>
-                                <form:input type="number" path="experienceYears" cssStyle="border-radius: 5px; padding-left: 5px"/>
+                                <form:input type="tel" id="expYears" onchange="validateExpYears()" path="experienceYears" cssStyle="border-radius: 5px; padding-left: 5px"/>
 <%--                                   TODO arreglar el codigo de error --%>
                                 <form:errors path="experienceYears" element="p" cssStyle="color:red"/>
                             </div>
