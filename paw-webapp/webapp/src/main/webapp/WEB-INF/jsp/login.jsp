@@ -41,12 +41,17 @@
                         <label for="password" class="text-sm font-medium text-gray-900"><spring:message code="login.password"/></label>
                         <input id="password" name="j_password" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                     </div>
+                    <div class="form-group mb-6">
+                                            <p class="text-sm font-normal text-red-500">
+                                                <c:if test="${param.error}"> <spring:message code="login.error"/> </c:if>
+                                            </p>
+                                        </div>
                      <div class="form-group mb-6">
                         <label class="text-sm font-medium text-gray-900">
                         <input name="j_rememberme" type="checkbox"/>
                         <spring:message code="remember_me"/>
                         </label>
-                        </div>
+                     </div>
                     <div class="form-group mb-6">
                     <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"> <spring:message code="login.button"/></button>
                      </div>

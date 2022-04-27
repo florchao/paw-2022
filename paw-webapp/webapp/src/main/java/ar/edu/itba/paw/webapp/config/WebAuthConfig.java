@@ -47,7 +47,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
                 .defaultSuccessUrl("/buscarEmpleadas", false)
-                .loginPage("/login")
+                .loginPage("/login").failureUrl("/login?error=true") //en el model and view chequeas si el param es false
                 .and().rememberMe()
                 .rememberMeParameter("j_rememberme")
                 .userDetailsService(userDetailsService)
