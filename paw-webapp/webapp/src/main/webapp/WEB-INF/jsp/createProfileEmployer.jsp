@@ -62,17 +62,3 @@
 </div>
 </body>
 </html>
-
-<script>
-
-    function setColor(btn) {
-        let property = document.getElementById(btn);
-        if (property.style.backgroundColor === 'rgb(255, 255, 255)' || property.style.backgroundColor === '') {
-            property.style.backgroundColor = "#c4b5fd";
-            window.sessionStorage.setItem(btn, "#c4b5fd");
-        }
-        else {
-            property.style.backgroundColor = "#ffffff";
-        }
-    }
-</script>

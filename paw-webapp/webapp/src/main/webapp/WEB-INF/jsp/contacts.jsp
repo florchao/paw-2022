@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
@@ -34,7 +35,7 @@
 </jsp:include>
 <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
 <div class="my-8 w-full"></div>
-<p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="contacts.myContacts"/></p>
+    <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="contacts.myContacts"/></p>
     <c:choose>
         <c:when test="${ContactList.size() == 0}">
             <div class = "grid content-center justify-center h-5/6 mt-16">
@@ -49,15 +50,15 @@
                 <div class="my-10 w-full"></div>
                 <c:forEach var="contact" items="${ContactList}">
                     <c:set var="contact" value="${contact}" scope="request"/>
-                    <a href="#${contact.employer.split(" ")[0]}" rel="modal:open" class=" transition hover:scale-105">
+                    <a href="#${contact.email.replaceAll("[@.]*", "")}" rel="modal:open" class=" transition hover:scale-105">
                         <jsp:include page="components/contactCard.jsp">
                             <jsp:param name="name" value="${contact.employer}"/>
                             <jsp:param name="message" value="${contact.message}"/>
                             <jsp:param name = "date" value = "${contact.created}"/>
                         </jsp:include>
-
                     </a>
-                    <div id="${contact.employer.split(" ")[0]}" class="modal w-fit">
+
+                    <div id="${contact.email.replaceAll("[@.]*", "")}" class="modal w-fit">
                         <div class="flex grid grid-cols-3 items-center py-8 w-fit">
                             <img class="col-span-1 mb-3 w-24 h-24 rounded-full shadow-lg" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
                             <div class="col-span-2 row-span-2">
@@ -78,6 +79,7 @@
             </div>
         </c:otherwise>
     </c:choose>
-    </div>
+</div>
+
 </body>
 </html>
