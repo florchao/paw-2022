@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.ContactExistsException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +58,18 @@ public class ContactController {
 
     @RequestMapping(value = "/contactarEmpleado/{id}", method = {RequestMethod.POST})
     public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) {
+        ModelAndView mav = new ModelAndView("contactForm");
         if(errors.hasErrors())
             return contactPage(form, id);
         Optional<User> user = userService.getUserById(id);
-        user.ifPresent(value -> contactService.contact(value, form.getContent(), form.getName(), form.getPhone()));
+        try{
+            user.ifPresent(value -> contactService.contact(value, form.getContent(), form.getName(), form.getPhone()));
+        }
+        catch (ContactExistsException contactException){
+            mav.addObject("ContactError", contactException.getMessage());
+            mav.addObject("id", id);
+            return mav;
+        }
         return new ModelAndView("redirect:/verPerfil/"+id);
     }
 }
