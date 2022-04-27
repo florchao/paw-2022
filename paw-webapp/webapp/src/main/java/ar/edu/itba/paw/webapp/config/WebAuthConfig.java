@@ -37,8 +37,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .invalidSessionUrl("/login")
                 .and().authorizeRequests()
-                .antMatchers("/buscarEmpleadas","/verPerfil/{userId}", "/filterEmployees").permitAll()
-                .antMatchers("/login", "/", "/crearPerfil/{userID}", "/createEmployee/{userID}", "/registrarse", "/register",
+                .antMatchers("/buscarEmpleadas","/verPerfil/{userId}", "/", "/filterEmployees").permitAll()
+                .antMatchers("/login", "/crearPerfil/{userID}", "/createEmployee/{userID}", "/registrarse", "/register",
                         "/nuevaContrasena", "/newPassword",
                         "/crearPerfilEmpleador/{userID}", "/createEmployer/{userID}").anonymous()
                 .antMatchers("/contactos", "/verPerfil").hasAuthority("EMPLOYEE")
@@ -47,7 +47,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin()
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
-                .defaultSuccessUrl("/buscarEmpleadas", false)
+                .defaultSuccessUrl("/afterLogin", false)
                 .loginPage("/login").failureUrl("/login?error=true") //en el model and view chequeas si el param es false
                 .and().rememberMe()
                 .rememberMeParameter("j_rememberme")

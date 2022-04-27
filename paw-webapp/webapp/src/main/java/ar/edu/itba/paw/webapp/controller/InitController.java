@@ -6,9 +6,14 @@ import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.service.EmployeeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collection;
 
 @Controller
 public class InitController {
@@ -27,8 +32,21 @@ public class InitController {
 
     @RequestMapping("/")
     public ModelAndView helloWorld() {
-        final ModelAndView mav = new ModelAndView("init");
-        return mav;
+        Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
+            return new ModelAndView("redirect:/contactos");
+        if(auth.contains(new SimpleGrantedAuthority("EMPLOYER")))
+            return new ModelAndView("redirect:/buscarEmpleadas");
+        return new ModelAndView("init");
+    }
+
+
+    @RequestMapping("/afterLogin")
+    public ModelAndView afterLogin() {
+        Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
+            return new ModelAndView("redirect:/contactos");
+        return new ModelAndView("redirect:/buscarEmpleadas");
     }
 
     @RequestMapping(value = "/redirectSearch", method = RequestMethod.GET)

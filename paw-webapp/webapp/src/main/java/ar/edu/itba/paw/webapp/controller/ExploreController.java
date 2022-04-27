@@ -45,10 +45,6 @@ public class ExploreController {
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage(@ModelAttribute("filterBy") FilterForm employeeForm, @RequestParam(value = "filterBoolean", required = false) Boolean filter) {
         List<Employee> list;
-        Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
-            return new ModelAndView("redirect:/contactos");
-//
         if (filter != null) {
             System.out.println("me meti!");
             list = employeeService.getFilteredEmployees(
