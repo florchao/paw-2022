@@ -23,7 +23,7 @@
         </form:form>
         </div>
         <c:if test="${!param.currentUrl.equals('init')}">
-            <div class="grid grid-cols-2 col-start-3">
+            <div class="grid grid-cols-3 col-start-3">
                 <sec:authorize access="!isAuthenticated()">
                     <div class = "flex items-center justify-items-end">
                         <c:choose>
@@ -50,7 +50,6 @@
                     </form:form>
                 </div>
                 </sec:authorize>
-
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
                 <div class = "flex items-center justify-items-end">
                     <form:form method="get" action="${contacts}">
@@ -78,6 +77,11 @@
                         </c:choose>
                     </form:form>
                 </div>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+                    <div class = "flex items-center justify-items-end">
+                        <a href="<c:url value="/logout"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.logout"/></a>
+                    </div>
                 </sec:authorize>
             </div>
         </c:if>
