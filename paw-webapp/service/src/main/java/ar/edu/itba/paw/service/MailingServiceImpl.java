@@ -57,7 +57,7 @@ public class MailingServiceImpl implements MailingService{
                     "<h1 style=\"color: #a78bfa;\">&iexcl;%s te ha enviado un mensaje!</h1>\n" +
                     "<p>Te envi&oacute; su informaci&oacute;n que s&oacute;lo tu puedes ver para que se puedan conectar.</p>\n" +
                     "<p>Para ver este y todos tus otros mensajes</p>\n" +
-                    "  <a href=\"http://localhost:8080/contactos\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
+                    "  <a href=\"http://pawserver.it.itba.edu.ar/paw-2022a-02/contactos\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
                     "        onmouseout=\"mouseout()\" style=\"color: #581c87; background-color: #a78bfa;\n" +
                     "  padding: 14px 40px;\n" +
                     "  border-radius: 8px;\n" +
