@@ -50,6 +50,18 @@
                     </form:form>
                 </div>
                 </sec:authorize>
+                <sec:authorize access="hasAuthority('EMPLOYER')">
+                    <div class = "flex items-center justify-items-end">
+                            <c:choose>
+                                <c:when test="${param.currentUrl.equals('createJob')}">
+                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.searchEmployee"/></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="<c:url value="/crearTrabajo"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.searchEmployee"/></a>
+                                </c:otherwise>
+                            </c:choose>
+                    </div>
+                </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
                 <div class = "flex items-center justify-items-end">
                     <form:form method="get" action="${contacts}">

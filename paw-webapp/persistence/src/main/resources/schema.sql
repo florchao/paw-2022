@@ -46,3 +46,15 @@ CREATE TABLE IF NOT EXISTS  contact (
                 FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
                 PRIMARY KEY (employeeID, employerID)
     );
+
+create table if not exists jobs(
+    jobID SERIAL PRIMARY KEY,
+    employerID INT,
+    title TEXT,
+    location TEXT,
+    availability TEXT,
+    experienceYears INT,
+    abilities TEXT,
+    description TEXT,
+    FOREIGN KEY (employerID) REFERENCES employer(employerID) ON DELETE CASCADE
+);
