@@ -3,6 +3,7 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.UserDao;
 import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Optional<User> getUserById(long id) {
-        return userDao.getUserById(id);
+        Optional<User> user = userDao.getUserById(id);
+        if(!user.isPresent()){
+            throw new UserNotFoundException("User " + id + " not found");
+        }
+        return user;
     }
 
     @Override

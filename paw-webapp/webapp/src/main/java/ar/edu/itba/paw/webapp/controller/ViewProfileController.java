@@ -48,8 +48,18 @@ public class ViewProfileController {
     @RequestMapping("/verPerfil/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
         final ModelAndView mav = new ModelAndView("viewProfile");
-        Optional<User> user = userService.getUserById(userId);
+        ModelAndView errorPage = new ModelAndView("errorPage");
+
+        Optional<User> user;
+        try{
+            user = userService.getUserById(userId);
+        }
+        catch (UserNotFoundException uex){
+            errorPage.addObject("errorMsg", uex.getMessage());
+            return errorPage;
+        }
         user.ifPresent(value -> mav.addObject("user", value));
+
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
         if(employee.isPresent()){
             mav.addObject("employee", employee.get());
