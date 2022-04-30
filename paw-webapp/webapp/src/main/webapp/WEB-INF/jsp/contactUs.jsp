@@ -5,7 +5,7 @@
 
 <html lang="es">
 <head>
-    <title><spring:message code="contactForm.title"/></title>
+    <title><spring:message code="contactUs.title"/></title>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
@@ -26,31 +26,31 @@
         <li></li>
         <li></li>
     </ul>
-</div>
-<jsp:include page="components/navbar.jsp"/>
-<c:url value="/contactarEmpleado/${id}" var="postPath"/>
+<jsp:include page="components/navbar.jsp">
+   <jsp:param name="currentUrl" value="contactUs"/>
+</jsp:include>
 <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
     <div class = "col-start-3 col-span-3 grid h-full w-full">
         <div class="grid justify-items-center mx-6">
             <p class="text-xl font-semibold text-white mb-5">
-                <spring:message code="contactForm2.contactForm2title" arguments="${name}"/>
+                <spring:message code="contactUs.title" arguments="${name}"/>
             </p>
         </div>
 
-        <form:form modelAttribute="contactForm" action="${postPath}" method="post">
+        <form:form modelAttribute="contactUsForm" action="${postPath}" method="post">
             <div class="block p-6 rounded-3xl shadow-lg bg-gray-200">
                 <div class="form-group mb-6">
-                    <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.name"/></form:label>
+                    <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactUs.name"/></form:label>
                     <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                     <form:errors path="name" element="p" cssStyle="color: red"/>
                 </div>
                 <div class="form-group mb-6">
-                    <form:label path="phone" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.mail"/></form:label>
-                    <form:input path="phone" type="tel" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                    <form:errors path="phone" element="p" cssStyle="color: red"/>
+                    <form:label path="mail" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactUs.mail"/></form:label>
+                    <form:input path="mail" type="tel" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                    <form:errors path="mail" element="p" cssStyle="color: red"/>
                 </div>
                 <div class="form-group mb-6">
-                    <form:label path="content" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.message"/></form:label>
+                    <form:label path="content" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactUs.message"/></form:label>
                     <form:textarea path="content" rows="3" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500" />
                     <form:errors path="content" element="p" cssStyle="color: red"/>
                 </div>
