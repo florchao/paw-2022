@@ -43,6 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Optional<List<Employee>> getFilteredEmployees(
+            String name,
             long experienceYears,
             String location,
             List<Experience> experiences,
@@ -65,6 +66,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(experienceYears,location,experiences, availabilityList,abilitiesList);
+        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList);
     }
 }

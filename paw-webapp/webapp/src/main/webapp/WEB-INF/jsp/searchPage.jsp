@@ -44,7 +44,7 @@
             <div class="grid grid-cols-4">
                 <div class="col-span-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 absolute" >
                     <c:url value="/filterEmployees" var="postPath"/>
-                    <form:form modelAttribute="filterBy" action="${postPath}" method="post">
+                    <form:form modelAttribute="filterBy" action="${postPath}" method="get">
                         <div class="flex flex-col">
                             <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.experienceYears"/></h1>
                             <div>

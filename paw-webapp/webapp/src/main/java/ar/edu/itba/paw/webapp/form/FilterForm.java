@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.*;
@@ -8,6 +9,11 @@ import java.sql.Time;
 import java.util.List;
 
 public class FilterForm {
+
+    @Pattern(regexp = "[a-zA-z\\s']+|^$")
+    @NotBlank
+    @Size(max = 100)
+    private String name;
 
     @DecimalMin("0")
     @DecimalMax("100")
@@ -23,6 +29,14 @@ public class FilterForm {
     private String abilities;
 
     private String availability;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getLocation() {
         return location;
