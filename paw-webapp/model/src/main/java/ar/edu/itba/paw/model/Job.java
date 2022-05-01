@@ -10,8 +10,10 @@ public class Job {
     private String availability;
     private long experienceYears;
     private String abilities;
+    private String description;
+    private String employerName;
 
-    public Job(String title, String location, long jobId, long employerId, String availability, long experienceYears, String abilities) {
+    public Job(String title, String location, long jobId, long employerId, String availability, long experienceYears, String abilities, String description) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
@@ -19,6 +21,18 @@ public class Job {
         this.availability = availability;
         this.experienceYears = experienceYears;
         this.abilities = abilities;
+        this.description = description;
+    }
+
+    public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description, String employerName) {
+        this.title = title;
+        this.location = location;
+        this.jobId = jobId;
+        this.availability = availability;
+        this.experienceYears = experienceYears;
+        this.abilities = abilities;
+        this.description = description;
+        this.employerName = employerName;
     }
 
     public String getTitle() {
@@ -75,5 +89,21 @@ public class Job {
 
     public void setAbilities(String abilities) {
         this.abilities = abilities;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getEmployerName() {
+        return employerName;
+    }
+
+    public void setEmployerName(String employerName) {
+        this.employerName = employerName;
     }
 }

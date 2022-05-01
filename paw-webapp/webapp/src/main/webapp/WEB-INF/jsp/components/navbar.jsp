@@ -16,16 +16,16 @@
 <c:url value="/redirectContacts" var = "contacts"/>
 <c:url value="/" var = "home"/>
 <nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5" style="background-color: #ac70ff">
-    <div class="h-12 grid grid-cols-3 space-between">
+    <div class="h-12 grid grid-cols-5 space-between">
         <div class = "flex items-center mx-8">
         <form:form method="get" action="${home}">
             <button><img src="<c:url value='/public/hogar.png'/>" alt="logo" class="mr-3 h-9"></button>
         </form:form>
         </div>
         <c:if test="${!param.currentUrl.equals('init')}">
-            <div class="grid grid-cols-3 col-start-3">
+            <div class="grid grid-cols-3 items-center justify-items-center col-span-2 col-start-4">
                 <sec:authorize access="!isAuthenticated()">
-                    <div class = "flex items-center justify-items-end">
+                    <div class = "items-center ">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('register')}">
                                 <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.register"/></p>
@@ -37,7 +37,7 @@
                     </div>
                 </sec:authorize>
                 <sec:authorize access="!isAuthenticated() || hasAuthority('EMPLOYER')">
-                <div class = "flex col-start-2 items-center justify-items-end">
+                <div class = "items-center">
                     <form:form method="get" action="${search}">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('searchPage')}">
@@ -51,19 +51,19 @@
                 </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYER')">
-                    <div class = "flex items-center justify-items-end">
+                    <div class = "items-center">
                             <c:choose>
                                 <c:when test="${param.currentUrl.equals('createJob')}">
-                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.searchEmployee"/></p>
+                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.jobs"/></p>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="<c:url value="/crearTrabajo"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.searchEmployee"/></a>
+                                    <a href="<c:url value="/trabajos"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.jobs"/></a>
                                 </c:otherwise>
                             </c:choose>
                     </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
-                <div class = "flex items-center justify-items-end">
+                <div class = "items-center">
                     <form:form method="get" action="${contacts}">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('contactos')}">
@@ -77,7 +77,7 @@
                 </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
-                <div class = "flex items-center justify-items-end">
+                <div class = "items-center">
                     <form:form method="get" action="${contacts}">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('verPerfil')}">
@@ -91,7 +91,7 @@
                 </div>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
-                    <div class = "flex items-center justify-items-end">
+                    <div class = "items-center">
                         <a href="<c:url value="/logout"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.logout"/></a>
                     </div>
                 </sec:authorize>

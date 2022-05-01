@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,19 +21,19 @@ public class JobJdbcDao implements JobDao{
 
     private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
             new Job(rs.getString("title"), rs.getString("location"),
-                    rs.getLong("jobid"), rs.getLong("employerid"),
+                    rs.getLong("jobid"),
                     rs.getString("availability"), rs.getLong("experienceYears"),
-                    rs.getString("abilities"));
+                    rs.getString("abilities"), rs.getString("description"), rs.getString("name"));
 
     @Autowired
     public JobJdbcDao(final DataSource ds){
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(ds)
-                .withTableName("job").usingGeneratedKeyColumns("jobid");
+                .withTableName("jobs").usingGeneratedKeyColumns("jobid");
     }
 
     @Override
-    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities) {
+    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
         final Map<String, Object> jobData = new HashMap<>();
         jobData.put("employerid", employerId);
         jobData.put("title", title);
@@ -42,14 +41,16 @@ public class JobJdbcDao implements JobDao{
         jobData.put("availability", availability);
         jobData.put("experienceYears", experienceYears);
         jobData.put("abilities", abilities);
-        //TODO: agregar desription desde el controller que me lo olvidee
+        jobData.put("description", description);
         Number jobId = jdbcInsert.executeAndReturnKey(jobData);
-        return new Job(title, location, jobId.longValue(), employerId, availability, experienceYears, abilities);
+        return new Job(title, location, jobId.longValue(), employerId, availability, experienceYears, abilities, description);
     }
 
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
-        List<Job> query = jdbcTemplate.query("SELECT * WHERE employerID = ?", new Object[] {employerID}, JOB_ROW_MAPPER);
+        List<Job> query = jdbcTemplate.query("SELECT title, location, jobid, availability, experienceYears, " +
+                "abilities, description, name  FROM jobs NATURAL JOIN employer WHERE employerID = ?",
+                new Object[] {employerID}, JOB_ROW_MAPPER);
         return Optional.of(query);
     }
 }

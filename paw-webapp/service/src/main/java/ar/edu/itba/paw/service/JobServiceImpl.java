@@ -14,8 +14,8 @@ public class JobServiceImpl implements JobService{
     JobDao jobDao;
 
     @Override
-    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities) {
-        return jobDao.create(title, location, employerId, availability, experienceYears, abilities);
+    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
+        return jobDao.create(title, location, employerId, availability, experienceYears, abilities, description);
     }
 
     @Override

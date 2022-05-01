@@ -7,7 +7,14 @@
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript">
+        function validateExpYears() {
+            var el = document.getElementById('expYears');
+            if (el.value ==="") {
+                el.value=0;
+            }
+        }
+    </script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="createJob.title"/></title>
 </head>
@@ -47,8 +54,8 @@
                             <form:errors path="location" element="p" cssStyle="color:red"/>
                         </div>
                         <div class="ml-3 col-span-3 w-4/5 justify-self-center">
-                            <form:label path="experienceYears" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="jobForm.label.experienceYears"/></form:label>
-                            <form:input type="number" path="experienceYears" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                            <form:label path="experienceYears" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="jobForm.label.experienceYears"/></form:label>
+                            <form:input type="number" path="experienceYears" id="expYears" onchange="validateExpYears()" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                             <form:errors path="experienceYears" element="p" cssStyle="color:red"/>
                         </div>
                         <div class="ml-3 col-span-3 w-4/5 justify-self-center">
