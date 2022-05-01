@@ -13,5 +13,5 @@ public interface EmployeeDao {
 
     Optional<List<Employee>> getEmployees();
 
-    Optional<List<Employee>> getFilteredEmployees(long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities);
+    Optional<List<Employee>> getFilteredEmployees(String name, long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities);
 }

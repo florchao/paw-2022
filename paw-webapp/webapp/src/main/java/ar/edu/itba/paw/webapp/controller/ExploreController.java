@@ -43,7 +43,11 @@ public class ExploreController {
     public ModelAndView searchPage(@ModelAttribute("filterBy") FilterForm employeeForm, @RequestParam(value = "filterBoolean", required = false) Boolean filter) {
         List<Employee> list = new ArrayList<>();
         if (filter != null) {
+            System.out.println("-----------");
+            System.out.println(employeeForm.getName());
+            System.out.println("-----------");
             for (Employee employee : employeeService.getFilteredEmployees(
+                    employeeForm.getName(),
                     employeeForm.getExperienceYears(),
                     employeeForm.getLocation(),
                     employeeForm.getExperiencesList(),
@@ -76,18 +80,17 @@ public class ExploreController {
 
     }
 
-    @RequestMapping(value = "/filterEmployees", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
             System.out.println("me meti en error");
             return searchPage(form, false);
         }
-        System.out.println("filtrar!");
         redirectAttributes.addFlashAttribute("filterBy", form);
-        redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
-        redirectAttributes.addAttribute("location", form.getLocation());
-        redirectAttributes.addAttribute("availability", form.getAvailability());
-        redirectAttributes.addAttribute("abilities", form.getAbilities());
+//        redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
+//        redirectAttributes.addAttribute("location", form.getLocation());
+//        redirectAttributes.addAttribute("availability", form.getAvailability());
+//        redirectAttributes.addAttribute("abilities", form.getAbilities());
         redirectAttributes.addAttribute("filterBoolean", true);
         return new ModelAndView("redirect:/buscarEmpleadas");
     }

@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>navbar</title>
 </head>
 <body>
@@ -23,6 +24,19 @@
         </form:form>
         </div>
         <c:if test="${!param.currentUrl.equals('init')}">
+            <c:if test="${param.currentUrl.equals('searchPage')}">
+                <c:url value="/filterEmployees" var="postPath"/>
+                <div class="col-start-2 ">
+                    <div class="search-box">
+                        <form:form modelAttribute="filterBy" action="${postPath}" method="get">
+                            <form:input type="text" path="name" cssStyle="border-radius: 5px;"/>
+                            <button type="submit"><i class="fa fa-search"></i></button>
+
+                        </form:form>
+
+                    </div>
+                </div>
+            </c:if>
             <div class="grid grid-cols-3 col-start-3">
                 <sec:authorize access="!isAuthenticated()">
                     <div class = "flex items-center justify-items-end">
@@ -38,9 +52,16 @@
                 </sec:authorize>
                 <sec:authorize access="!isAuthenticated() || hasAuthority('EMPLOYER')">
                 <div class = "flex col-start-2 items-center justify-items-end">
+
                     <form:form method="get" action="${search}">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('searchPage')}">
+
+<%--                                <div class="search-box">--%>
+<%--                                    <button class="btn-search"><i class="fas fa-search"></i></button>--%>
+<%--                                    <input type="text" class="input-search" placeholder="Type to Search...">--%>
+<%--                                </div>--%>
+
                                 <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.searchEmployee"/></p>
                             </c:when>
                             <c:otherwise>
@@ -89,3 +110,73 @@
 </nav>
 </body>
 </html>
+
+<%--<style>--%>
+<%--    /**{*/--%>
+<%--    /*    box-sizing: border-box;*/--%>
+<%--    /*}*/--%>
+<%--    /*body{*/--%>
+<%--    /*    margin: 0px;*/--%>
+<%--    /*    padding: 0px;*/--%>
+<%--    /*    width: 100vw;*/--%>
+<%--    /*    height: 100vh;*/--%>
+<%--    /*    display: flex;*/--%>
+<%--    /*    justify-content: center;*/--%>
+<%--    /*    align-items: center;*/--%>
+<%--    /*    background-color: #130f40;*/--%>
+<%--    /*}*/--%>
+<%--    .search-box{--%>
+<%--        width: fit-content;--%>
+<%--        height: fit-content;--%>
+<%--        position: relative;--%>
+<%--    }--%>
+<%--    .input-search{--%>
+<%--        height: 50px;--%>
+<%--        width: 50px;--%>
+<%--        border-style: none;--%>
+<%--        padding: 10px;--%>
+<%--        font-size: 18px;--%>
+<%--        letter-spacing: 2px;--%>
+<%--        outline: none;--%>
+<%--        border-radius: 25px;--%>
+<%--        transition: all .5s ease-in-out;--%>
+<%--        background-color: #22a6b3;--%>
+<%--        padding-right: 40px;--%>
+<%--        color:#fff;--%>
+<%--    }--%>
+<%--    .input-search::placeholder{--%>
+<%--        color:rgba(255,255,255,.5);--%>
+<%--        font-size: 18px;--%>
+<%--        letter-spacing: 2px;--%>
+<%--        font-weight: 100;--%>
+<%--    }--%>
+<%--    .btn-search{--%>
+<%--        width: 50px;--%>
+<%--        height: 50px;--%>
+<%--        border-style: none;--%>
+<%--        font-size: 20px;--%>
+<%--        font-weight: bold;--%>
+<%--        outline: none;--%>
+<%--        cursor: pointer;--%>
+<%--        border-radius: 50%;--%>
+<%--        position: absolute;--%>
+<%--        right: 0px;--%>
+<%--        color:#ffffff ;--%>
+<%--        background-color:transparent;--%>
+<%--        pointer-events: painted;--%>
+<%--    }--%>
+<%--    .btn-search:focus ~ .input-search{--%>
+<%--        width: 300px;--%>
+<%--        border-radius: 0px;--%>
+<%--        background-color: transparent;--%>
+<%--        border-bottom:1px solid rgba(255,255,255,.5);--%>
+<%--        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);--%>
+<%--    }--%>
+<%--    .input-search:focus{--%>
+<%--        width: 300px;--%>
+<%--        border-radius: 0px;--%>
+<%--        background-color: transparent;--%>
+<%--        border-bottom:1px solid rgba(255,255,255,.5);--%>
+<%--        transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);--%>
+<%--    }--%>
+<%--</style>--%>
