@@ -45,7 +45,7 @@ public class CreateProfileController {
         if(errors.hasErrors())
             return createProfile(form, userID);
 
-        final Employee employee = employeeService.create(form.getName(), form.getLocation().toLowerCase(), Long.parseLong(userID), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
+        final Employee employee = employeeService.create(form.getName().toLowerCase(), form.getLocation().toLowerCase(), Long.parseLong(userID), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
         return new ModelAndView("redirect:/verPerfil/"+employee.getId());
     }
 
@@ -61,7 +61,7 @@ public class CreateProfileController {
             return createProfileEmployer(form, userID);
         String name = form.getName() + " " + form.getLastname();
         System.out.println(userID);
-        final Employer employer = employerService.create(name, Long.parseLong(userID));
+        final Employer employer = employerService.create(name.toLowerCase(), Long.parseLong(userID));
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 
