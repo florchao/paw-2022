@@ -20,10 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ExploreController {
@@ -44,24 +41,38 @@ public class ExploreController {
 
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage(@ModelAttribute("filterBy") FilterForm employeeForm, @RequestParam(value = "filterBoolean", required = false) Boolean filter) {
-        List<Employee> list;
+        List<Employee> list = new ArrayList<>();
         if (filter != null) {
-            System.out.println("me meti!");
-            list = employeeService.getFilteredEmployees(
+            for (Employee employee : employeeService.getFilteredEmployees(
                     employeeForm.getExperienceYears(),
                     employeeForm.getLocation(),
                     employeeForm.getExperiencesList(),
                     employeeForm.getAvailability(),
                     employeeForm.getAbilities()
-            ).get();
+            ).get()) {
+                list.add(firstWordsToUpper(employee));
+            }
         } else {
-            list = employeeService.getEmployees().get();
+            for (Employee employee : employeeService.getEmployees().get()) {
+                list.add(firstWordsToUpper(employee));
+            }
         }
         System.out.println(employeeForm.getExperienceYears());
 
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
         return mav;
+
+    }
+
+    Employee firstWordsToUpper(Employee employee) {
+        StringBuilder finalName = new StringBuilder();
+        for (String word : employee.getName().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        employee.setName(finalName.toString());
+        return employee;
 
     }
 

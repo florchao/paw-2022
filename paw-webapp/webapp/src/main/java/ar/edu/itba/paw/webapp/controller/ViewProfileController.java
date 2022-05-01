@@ -51,10 +51,20 @@ public class ViewProfileController {
         Optional<User> user = userService.getUserById(userId);
         user.ifPresent(value -> mav.addObject("user", value));
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
-        if(employee.isPresent()){
-            mav.addObject("employee", employee.get());
-        }
+
+        employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
 
         return mav;
+    }
+
+    Employee firstWordsToUpper(Employee employee) {
+        StringBuilder finalName = new StringBuilder();
+        for (String word : employee.getName().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        employee.setName(finalName.toString());
+        return employee;
+
     }
 }
