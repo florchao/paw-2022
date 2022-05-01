@@ -48,7 +48,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
     }
 
     @Override
-    public Optional<List<Employee>> getFilteredEmployees(String name, long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities) {
+    public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities) {
         System.out.println("en jdbcDao para filtered");
         System.out.println(experienceYears);
         StringBuilder stringBuilder = new StringBuilder();
@@ -57,7 +57,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
             stringBuilder.append("name like '%" + name.toLowerCase() + "%'");
             stringBuilder.append(" and ");
         }
-        if (experienceYears > 0) {
+        if (experienceYears != null && experienceYears.intValue() > 0) {
             stringBuilder.append("experienceYears >= " + experienceYears);
             stringBuilder.append(" and ");
         }

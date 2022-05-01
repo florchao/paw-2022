@@ -11,7 +11,6 @@ import java.util.List;
 public class FilterForm {
 
     @Pattern(regexp = "[a-zA-z\\s']+|^$")
-    @NotBlank
     @Size(max = 100)
     private String name;
 

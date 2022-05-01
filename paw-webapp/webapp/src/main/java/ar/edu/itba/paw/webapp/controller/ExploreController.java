@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
@@ -40,28 +41,25 @@ public class ExploreController {
     public String order;
 
     @RequestMapping("/buscarEmpleadas")
-    public ModelAndView searchPage(@ModelAttribute("filterBy") FilterForm employeeForm, @RequestParam(value = "filterBoolean", required = false) Boolean filter) {
+    public ModelAndView searchPage(
+            @ModelAttribute("filterBy") FilterForm employeeForm,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "experienceYears", required = false) Long experienceYears,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "availability", required = false) String availability,
+            @RequestParam(value = "abilities", required = false) String abilities) {
         List<Employee> list = new ArrayList<>();
-        if (filter != null) {
-            System.out.println("-----------");
-            System.out.println(employeeForm.getName());
-            System.out.println("-----------");
-            for (Employee employee : employeeService.getFilteredEmployees(
-                    employeeForm.getName(),
-                    employeeForm.getExperienceYears(),
-                    employeeForm.getLocation(),
-                    employeeForm.getExperiencesList(),
-                    employeeForm.getAvailability(),
-                    employeeForm.getAbilities()
-            ).get()) {
-                list.add(firstWordsToUpper(employee));
-            }
-        } else {
-            for (Employee employee : employeeService.getEmployees().get()) {
-                list.add(firstWordsToUpper(employee));
-            }
+        System.out.println("-----------");
+        System.out.println(name);
+        System.out.println(experienceYears);
+        System.out.println(location);
+        System.out.println(availability);
+        System.out.println(abilities);
+        System.out.println("-----------");
+        List<Experience> experiencesList = null;
+        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities).get()) {
+            list.add(firstWordsToUpper(employee));
         }
-        System.out.println(employeeForm.getExperienceYears());
 
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
@@ -84,14 +82,16 @@ public class ExploreController {
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
             System.out.println("me meti en error");
-            return searchPage(form, false);
+            return searchPage(null, null,null,null,null,null);
         }
-        redirectAttributes.addFlashAttribute("filterBy", form);
-//        redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
-//        redirectAttributes.addAttribute("location", form.getLocation());
-//        redirectAttributes.addAttribute("availability", form.getAvailability());
-//        redirectAttributes.addAttribute("abilities", form.getAbilities());
-        redirectAttributes.addAttribute("filterBoolean", true);
+        redirectAttributes.addAttribute("name",form.getName());
+        if (form.getExperienceYears() > 0)
+            redirectAttributes.addAttribute("experienceYears", new Long(form.getExperienceYears()));
+        if (form.getLocation() != "")
+            redirectAttributes.addAttribute("location", form.getLocation());
+        redirectAttributes.addAttribute("availability", form.getAvailability());
+        redirectAttributes.addAttribute("abilities", form.getAbilities());
+
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 
