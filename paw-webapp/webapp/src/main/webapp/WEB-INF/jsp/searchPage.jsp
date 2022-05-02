@@ -42,24 +42,24 @@
         <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
             <div class="my-8 w-full"></div>
             <div class="grid grid-cols-4">
-                <div class="col-span-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 absolute" >
+                <div class="col-start-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-fit" >
                     <c:url value="/filterEmployees" var="postPath"/>
                     <form:form modelAttribute="filterBy" action="${postPath}" method="get">
-                        <div class="flex flex-col">
+                        <div class="flex flex-col items-center">
                             <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.experienceYears"/></h1>
-                            <div>
-                                <form:input type="tel" id="expYears" onchange="validateExpYears()" path="experienceYears" cssStyle="border-radius: 5px; padding-left: 5px"/>
+                            <div class="grid grid-cols-12">
+                                <form:input type="tel" id="expYears" onchange="validateExpYears()" path="experienceYears" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
 <%--                                   TODO arreglar el codigo de error --%>
                                 <form:errors path="experienceYears" element="p" cssStyle="color:red"/>
                             </div>
                             <h1 class="font-semibold mt-4"><spring:message code="searchPage.label.location"/></h1>
-                            <div>
-                                <form:input type="text" path="location" cssStyle="border-radius: 5px; padding-left: 5px"/>
+                            <div class="grid grid-cols-12">
+                                <form:input type="text" path="location" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
                                     <%--TODO arreglar el codigo de error --%>
                                 <form:errors path="location" element="p" cssStyle="color:red"/>
                             </div>
-                            <h1 class="font-semibold mt-4"><spring:message code="searchPage.abilities"/></h1>
-                            <div class="grid grid-cols-4">
+                            <h1 class="font-semibold mt-4 "><spring:message code="searchPage.abilities"/></h1>
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.cook"/></form:label>
                                 </div>
@@ -67,7 +67,7 @@
                                     <form:checkbox path="abilities" value="Cocinar"/>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.iron"/></form:label>
                                 </div>
@@ -75,7 +75,7 @@
                                     <form:checkbox path="abilities" value="Planchar"/>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.pets"/></form:label>
                                 </div>
@@ -83,7 +83,7 @@
                                     <form:checkbox path="abilities" value="Cuidado de mascotas"/>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.older"/></form:label>
                                 </div>
@@ -91,7 +91,7 @@
                                 <form:checkbox path="abilities" value="Cuidado de mayores"/>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.young"/></form:label>
                                 </div>
@@ -99,7 +99,7 @@
                                     <form:checkbox path="abilities" value="Cuidado de menores"/>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="abilities"><spring:message code="searchPage.abilities.specialNeeds"/></form:label>
                                 </div>
@@ -108,7 +108,7 @@
                                 </div>
                             </div>
                             <h1 class="font-semibold mt-4"><spring:message code="employeeForm.availability"/></h1>
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="availability"><spring:message code="searchPage.availability.half"/></form:label>
                                 </div>
@@ -116,7 +116,7 @@
                                     <form:checkbox path="availability" value="Media jornada"/>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="availability"><spring:message code="searchPage.availability.complete"/></form:label>
                                 </div>
@@ -124,7 +124,7 @@
                                     <form:checkbox path="availability" value="Jornada completa"/>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
                                     <form:label path="availability"><spring:message code="searchPage.availability.bed"/></form:label>
                                 </div>
@@ -132,7 +132,7 @@
                                     <form:checkbox path="availability" value="Con cama"/>
                                 </div>
                             </div>
-                            <button type="submit" class="mt-4 border shadow-md text-lg w-full focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Filtrar</button>
+                            <button type="submit" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Filtrar</button>
                         </div>
                     </form:form>
                 </div>
