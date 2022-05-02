@@ -13,11 +13,24 @@ public class Job {
     private String description;
     private String employerName;
 
+    private List<String> availabilityArr;
+    private List<String> abilitiesArr;
+
     public Job(String title, String location, long jobId, long employerId, String availability, long experienceYears, String abilities, String description) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
         this.employerId = employerId;
+        this.availability = availability;
+        this.experienceYears = experienceYears;
+        this.abilities = abilities;
+        this.description = description;
+    }
+
+    public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description) {
+        this.title = title;
+        this.location = location;
+        this.jobId = jobId;
         this.availability = availability;
         this.experienceYears = experienceYears;
         this.abilities = abilities;
@@ -31,6 +44,17 @@ public class Job {
         this.availability = availability;
         this.experienceYears = experienceYears;
         this.abilities = abilities;
+        this.description = description;
+        this.employerName = employerName;
+    }
+
+    public Job(String title, String location, long jobId, List<String>  availability, long experienceYears, List<String> abilities, String description, String employerName) {
+        this.title = title;
+        this.location = location;
+        this.jobId = jobId;
+        this.availabilityArr = availability;
+        this.experienceYears = experienceYears;
+        this.abilitiesArr = abilities;
         this.description = description;
         this.employerName = employerName;
     }
@@ -105,5 +129,21 @@ public class Job {
 
     public void setEmployerName(String employerName) {
         this.employerName = employerName;
+    }
+
+    public List<String> getAvailabilityArr() {
+        return availabilityArr;
+    }
+
+    public void setAvailabilityArr(List<String> availabilityArr) {
+        this.availabilityArr = availabilityArr;
+    }
+
+    public List<String> getAbilitiesArr() {
+        return abilitiesArr;
+    }
+
+    public void setAbilitiesArr(List<String> abilitiesArr) {
+        this.abilitiesArr = abilitiesArr;
     }
 }

@@ -51,9 +51,7 @@ public class ViewProfileController {
         Optional<User> user = userService.getUserById(userId);
         user.ifPresent(value -> mav.addObject("user", value));
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
-        if(employee.isPresent()){
-            mav.addObject("employee", employee.get());
-        }
+        employee.ifPresent(value -> mav.addObject("employee", value));
 
         return mav;
     }

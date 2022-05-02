@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.JobService;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -50,6 +52,16 @@ public class JobController {
         User user = optional.get();
         Optional<List<Job>> jobs = jobService.getUserJobs(user.getId());
         mav.addObject("JobList", jobs.get());
+        System.out.println("JOB ID");
+        System.out.println(jobs.get().get(2).getJobId());
+        return mav;
+    }
+
+    @RequestMapping("/trabajo/{id}")
+    ModelAndView verTrabajo(@PathVariable final long id){
+        ModelAndView mav = new ModelAndView("viewJob");
+        Optional<Job> job = jobService.getJobByID(id);
+        job.ifPresent(value -> mav.addObject("job", value));
         return mav;
     }
 }

@@ -15,7 +15,7 @@
 <c:url value="/redirectSearch" var = "search"/>
 <c:url value="/redirectContacts" var = "contacts"/>
 <c:url value="/" var = "home"/>
-<nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5" style="background-color: #ac70ff">
+<nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 shadow-md" style="background-color: #ac70ff">
     <div class="h-12 grid grid-cols-5 space-between">
         <div class = "flex items-center mx-8">
         <form:form method="get" action="${home}">
@@ -53,7 +53,7 @@
                 <sec:authorize access="hasAuthority('EMPLOYER')">
                     <div class = "items-center">
                             <c:choose>
-                                <c:when test="${param.currentUrl.equals('createJob')}">
+                                <c:when test="${param.currentUrl.equals('publishedJobs')}">
                                     <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.jobs"/></p>
                                 </c:when>
                                 <c:otherwise>

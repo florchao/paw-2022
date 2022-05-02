@@ -19,6 +19,12 @@ public class JobJdbcDao implements JobDao{
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
+    private static final RowMapper<Job> MY_JOB_ROW_MAPPER = (rs, rowNum) ->
+            new Job(rs.getString("title"), rs.getString("location"),
+                    rs.getLong("jobid"),
+                    rs.getString("availability"), rs.getLong("experienceYears"),
+                    rs.getString("abilities"), rs.getString("description"));
+
     private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
             new Job(rs.getString("title"), rs.getString("location"),
                     rs.getLong("jobid"),
@@ -48,9 +54,18 @@ public class JobJdbcDao implements JobDao{
 
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
-        List<Job> query = jdbcTemplate.query("SELECT title, location, jobid, availability, experienceYears, " +
-                "abilities, description, name  FROM jobs NATURAL JOIN employer WHERE employerID = ?",
-                new Object[] {employerID}, JOB_ROW_MAPPER);
+        List<Job> query = jdbcTemplate.query("SELECT * FROM jobs WHERE employerID = ?",
+                new Object[] {employerID}, MY_JOB_ROW_MAPPER);
         return Optional.of(query);
     }
+
+    @Override
+    public Optional<Job> getJobById(long jobId) {
+        List<Job> query = jdbcTemplate.query("SELECT title, location, jobid, availability, experienceYears, " +
+                        "abilities, description, name  FROM jobs NATURAL JOIN employer WHERE jobID = ?",
+                new Object[] {jobId}, JOB_ROW_MAPPER);
+        return query.stream().findFirst();
+    }
+
+
 }

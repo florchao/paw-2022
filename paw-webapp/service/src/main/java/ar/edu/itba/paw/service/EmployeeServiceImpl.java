@@ -23,10 +23,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.getAbilities().split(",")));
         Employee aux = new Employee(employee.getName(), employee.getLocation(), id, availabilityArr, employee.getExperienceYears(), abilitiesArr);
-        System.out.println(aux);
-        System.out.println(availabilityArr);
-        System.out.println(abilitiesArr);
-        System.out.println("-----------");
         return Optional.of(aux);
     }
 
