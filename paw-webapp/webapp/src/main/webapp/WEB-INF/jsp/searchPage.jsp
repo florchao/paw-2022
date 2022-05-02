@@ -132,7 +132,7 @@
                                     <form:checkbox path="availability" value="Con cama"/>
                                 </div>
                             </div>
-                            <button type="submit" class="mt-4 border shadow-md border-purple-500/75 text-lg w-full focus:outline-none text-purple-900 bg-purple-500 bg-opacity-30 hover:bg-purple-700 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Filtrar</button>
+                            <button type="submit" class="mt-4 border shadow-md text-lg w-full focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Filtrar</button>
                         </div>
                     </form:form>
                 </div>
