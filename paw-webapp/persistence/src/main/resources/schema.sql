@@ -46,3 +46,11 @@ CREATE TABLE IF NOT EXISTS  contact (
                 FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
                 PRIMARY KEY (employeeID, employerID)
     );
+
+CREATE TABLE IF NOT EXISTS profile_images
+(
+    image  BYTEA,
+    userId INTEGER PRIMARY KEY ,
+    FOREIGN KEY (userId) REFERENCES users ON DELETE CASCADE
+
+    );

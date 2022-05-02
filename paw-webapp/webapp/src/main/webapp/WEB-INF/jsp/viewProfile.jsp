@@ -37,9 +37,21 @@
         <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
                 <div class="row-span-3 col-span-2 ml-10 mr-6 mb-6">
-                    <div class="overflow-hidden w-48 bg-gray-100 rounded-full">
-                        <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                    </div>
+                    <c:if test="${image == null}">
+                        <div class="overflow-hidden w-48 bg-gray-100 rounded-full">
+                            <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </c:if>
+                    <c:if test="${image != null}">
+                        <img src="<c:url value="/user/profile-image"/>" />
+                    </c:if>
+                    <form:form modelAttribute="userProfileForm" method="post" enctype="multipart/form-data"
+                               acceptCharset="utf-8" cssStyle="margin: 30px 0; display: flex; flex-direction: column">
+                        <form:label path="image">Insertar imagen</form:label>
+                        <form:input type="file" path="image" accept="image/png, image/jpeg" />
+                        <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
+                        <button>Confirmar</button>
+                    </form:form>
                 </div>
                 <div class="ml-3 col-span-2">
                     <p class="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden"><c:out value="${employee.name}"/></p>

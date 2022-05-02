@@ -15,4 +15,8 @@ public interface UserService {
     Optional<User> findByUsername(String username);
 
     boolean update(String username, String password);
+
+    Optional<byte[]> getProfileImage(Long userId);
+
+    boolean updateProfileImage(Long userId, byte[] image);
 }

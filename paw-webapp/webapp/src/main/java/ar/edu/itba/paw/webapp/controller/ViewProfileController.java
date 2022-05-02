@@ -7,15 +7,22 @@ import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.form.UserProfileForm;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.Option;
+import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 @Controller
@@ -65,6 +72,48 @@ public class ViewProfileController {
         employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
 
         return mav;
+    }
+//    @GetMapping("/verPerfil/{userId}")
+//    public ModelAndView userProfile(@PathVariable("userId") final long userId, final UserProfileForm userProfileForm) {
+//        final ModelAndView mav = new ModelAndView("viewProfile");
+//        ModelAndView errorPage = new ModelAndView("errorPage");
+//
+//        Optional<User> user;
+//        try{
+//            user = userService.getUserById(userId);
+//        }
+//        catch (UserNotFoundException uex){
+//            errorPage.addObject("errorMsg", uex.getMessage());
+//            return errorPage;
+//        }
+//        user.ifPresent(value -> mav.addObject("user", value));
+//
+//        Optional<Employee> employee = employeeService.getEmployeeById(userId);
+//
+//        employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
+//
+//        Optional<byte[]> optionalImage = userService.getProfileImage(userId);
+//        optionalImage.ifPresent(bytes -> mav.addObject("image", bytes));
+//        mav.addObject("userProfileForm",userProfileForm);
+//
+//        return mav;
+//    }
+//
+//    @PostMapping("/verPerfil/{userId}")
+//    public ModelAndView user(@PathVariable("userId") final long userId, @Valid UserProfileForm userProfileForm, final BindingResult errors) {
+//        if (!errors.hasErrors()){
+//            userService.updateProfileImage(userId,
+//                    userProfileForm.getImage().getBytes());
+//        }
+//        return userProfile(userId, userProfileForm);
+//    }
+
+    @RequestMapping("/user/profile-image")
+    public void profileImage(HttpServletResponse response) throws IOException {
+//        byte[] image = userService.getProfileImage(//ACA QUIERO EL USER ID//)
+//                .orElseThrow(RuntimeException::new);
+//        InputStream is = new ByteArrayInputStream(image);
+//        IOUtils.copy(is,response.getOutputStream());
     }
 
     Employee firstWordsToUpper(Employee employee) {

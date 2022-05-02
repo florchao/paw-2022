@@ -56,4 +56,14 @@ public class UserServiceImpl implements UserService{
     public boolean update(String username, String password) {
         return userDao.update(username, password);
     }
+
+    @Override
+    public Optional<byte[]> getProfileImage(Long userId) {
+        return userDao.getProfileImage(userId);
+    }
+
+    @Override
+    public boolean updateProfileImage(Long userId, byte[] image) {
+        return userDao.updateProfileImage(userId, image);
+    }
 }
