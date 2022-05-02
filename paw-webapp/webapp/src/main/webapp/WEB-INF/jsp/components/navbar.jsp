@@ -16,7 +16,7 @@
 <c:url value="/redirectSearch" var = "search"/>
 <c:url value="/redirectContacts" var = "contacts"/>
 <c:url value="/" var = "home"/>
-<nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5" style="background-color: #ac70ff">
+<nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 shadow" style="background-color: #ac70ff">
     <div class="h-12 grid grid-cols-3 space-between">
         <div class = "flex items-center mx-8">
         <form:form method="get" action="${home}">
@@ -31,9 +31,7 @@
                         <form:form modelAttribute="filterBy" action="${postPath}" method="get">
                             <form:input type="text" path="name" cssStyle="border-radius: 5px;"/>
                             <button type="submit"><i class="fa fa-search"></i></button>
-
                         </form:form>
-
                     </div>
                 </div>
             </c:if>
