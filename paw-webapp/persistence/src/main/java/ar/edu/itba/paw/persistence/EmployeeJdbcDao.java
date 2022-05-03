@@ -20,6 +20,8 @@ public class EmployeeJdbcDao implements EmployeeDao{
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
+    private final static long LIMIT_SIZE = 2;
+
     private static final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, rowNum) ->
             new Employee(rs.getString("name"),
                     rs.getString("location"),
@@ -43,7 +45,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
 
     @Override
     public Optional<List<Employee>> getEmployees() {
-        List<Employee> query = jdbcTemplate.query("SELECT * FROM employee", new Object[] {}, EMPLOYEE_ROW_MAPPER);
+        List<Employee> query = jdbcTemplate.query("SELECT * FROM employee LIMIT " + LIMIT_SIZE, new Object[] {}, EMPLOYEE_ROW_MAPPER);
         return Optional.of(query);
     }
 
@@ -76,6 +78,9 @@ public class EmployeeJdbcDao implements EmployeeDao{
             stringBuilder.append(" and ");
         }
         stringBuilder.setLength(stringBuilder.length() - 5);
+        // TODO Hacer que el limit no este hardcodeado
+        stringBuilder.append(" limit " + LIMIT_SIZE);
+        stringBuilder.append(" offset " + page * LIMIT_SIZE);
         System.out.println("-------------");
         System.out.println(stringBuilder.toString());
         System.out.println("-------------");

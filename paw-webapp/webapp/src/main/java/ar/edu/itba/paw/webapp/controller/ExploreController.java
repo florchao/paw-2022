@@ -50,6 +50,9 @@ public class ExploreController {
             @RequestParam(value = "abilities", required = false) String abilities,
             @RequestParam(value = "page", required = false) Long page) {
         System.out.println("pagina: "+page);
+        if (page == null)
+            page = Long.valueOf(0);
+        System.out.println("pagina: "+page);
         List<Employee> list = new ArrayList<>();
         System.out.println("-----------");
         System.out.println(name);

@@ -59,8 +59,9 @@ public class EmployeeServiceImpl implements EmployeeService{
         System.out.println(experiences);
         System.out.println(availability);
         System.out.println(abilities);
+        System.out.println(page);
         System.out.println("---------");
-        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null)
+        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == 0)
             return employeeDao.getEmployees();
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
