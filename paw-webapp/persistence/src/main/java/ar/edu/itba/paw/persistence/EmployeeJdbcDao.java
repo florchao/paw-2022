@@ -20,8 +20,6 @@ public class EmployeeJdbcDao implements EmployeeDao{
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    private final static long LIMIT_SIZE = 2;
-
     private static final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, rowNum) ->
             new Employee(rs.getString("name"),
                     rs.getString("location"),
@@ -44,13 +42,13 @@ public class EmployeeJdbcDao implements EmployeeDao{
     }
 
     @Override
-    public Optional<List<Employee>> getEmployees() {
-        List<Employee> query = jdbcTemplate.query("SELECT * FROM employee LIMIT " + LIMIT_SIZE, new Object[] {}, EMPLOYEE_ROW_MAPPER);
+    public Optional<List<Employee>> getEmployees(long pageSize) {
+        List<Employee> query = jdbcTemplate.query("SELECT * FROM employee LIMIT " + pageSize, new Object[] {}, EMPLOYEE_ROW_MAPPER);
         return Optional.of(query);
     }
 
     @Override
-    public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page) {
+    public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page, long pageSize) {
         System.out.println("en jdbcDao para filtered");
         System.out.println(experienceYears);
         StringBuilder stringBuilder = new StringBuilder();
@@ -79,8 +77,8 @@ public class EmployeeJdbcDao implements EmployeeDao{
         }
         stringBuilder.setLength(stringBuilder.length() - 5);
         // TODO Hacer que el limit no este hardcodeado
-        stringBuilder.append(" limit " + LIMIT_SIZE);
-        stringBuilder.append(" offset " + page * LIMIT_SIZE);
+        stringBuilder.append(" limit " + pageSize);
+        stringBuilder.append(" offset " + page * pageSize);
         System.out.println("-------------");
         System.out.println(stringBuilder.toString());
         System.out.println("-------------");

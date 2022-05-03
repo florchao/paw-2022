@@ -40,6 +40,8 @@ public class ExploreController {
 
     public String order;
 
+    private final static long PAGE_SIZE = 2;
+
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage(
             @ModelAttribute("filterBy") FilterForm employeeForm,
@@ -62,7 +64,7 @@ public class ExploreController {
         System.out.println(abilities);
         System.out.println("-----------");
         List<Experience> experiencesList = null;
-        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page).get()) {
+        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE).get()) {
             list.add(firstWordsToUpper(employee));
         }
 
