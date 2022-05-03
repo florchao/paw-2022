@@ -134,7 +134,7 @@
                             </div>
                             <button type="submit" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Filtrar</button>
                         </div>
-                    </form:form>
+<%--                    </form:form>--%>
                 </div>
                 <div class="col-span-3 col-start-2">
 <%--                    <div class="bg-green-300 flex justify-end">--%>
@@ -173,6 +173,17 @@
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
+    <div>
+        <form:input type="number" path="pageNumber"/>
+    </div>
+    </form:form>
+<%--                    <div>--%>
+<%--                        <c:url value="/buscarEmpleadas" var="getPath"/>--%>
+<%--                        <form:form action="${getPath}" method="get">--%>
+<%--                            <input type="text" name="page"/>--%>
+<%--                            <button type="submit">Botoncito :)</button>--%>
+<%--                        </form:form>--%>
+<%--                    </div>--%>
                 </div>
             </div>
         </div>

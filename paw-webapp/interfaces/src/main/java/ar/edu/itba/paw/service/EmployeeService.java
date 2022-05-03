@@ -18,6 +18,7 @@ public interface EmployeeService {
             String location,
             List<Experience> experiences,
             String availability,
-            String abilities
+            String abilities,
+            Long page
     );
 }

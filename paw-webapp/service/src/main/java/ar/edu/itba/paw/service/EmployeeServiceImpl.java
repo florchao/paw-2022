@@ -48,7 +48,8 @@ public class EmployeeServiceImpl implements EmployeeService{
             String location,
             List<Experience> experiences,
             String availability,
-            String abilities
+            String abilities,
+            Long page
     ) {
         System.out.println("getEmployees pero filtrados!");
         System.out.println("---------");
@@ -69,6 +70,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList);
+        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page);
     }
 }

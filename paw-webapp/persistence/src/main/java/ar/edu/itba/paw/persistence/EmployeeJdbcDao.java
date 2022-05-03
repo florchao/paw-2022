@@ -48,10 +48,11 @@ public class EmployeeJdbcDao implements EmployeeDao{
     }
 
     @Override
-    public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities) {
+    public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page) {
         System.out.println("en jdbcDao para filtered");
         System.out.println(experienceYears);
         StringBuilder stringBuilder = new StringBuilder();
+        System.out.println("pagina en dao: "+page);
         stringBuilder.append("SELECT * FROM employee where ");
         if (name != null) {
             stringBuilder.append("name like '%" + name.toLowerCase() + "%'");

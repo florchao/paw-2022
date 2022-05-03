@@ -21,6 +21,11 @@ public class FilterForm {
 
     private List<Experience> experiencesList;
 
+    @DecimalMin("0")
+    @DecimalMax("100")
+    @NumberFormat(style = NumberFormat.Style.NUMBER)
+    private long pageNumber;
+
     @Pattern(regexp = "[a-z A-z\\s0-9,]+|")
     @Size(max = 100)
     private String location;
@@ -35,6 +40,14 @@ public class FilterForm {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(long pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     public String getLocation() {

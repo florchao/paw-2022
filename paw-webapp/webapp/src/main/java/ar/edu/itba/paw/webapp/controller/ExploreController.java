@@ -47,7 +47,9 @@ public class ExploreController {
             @RequestParam(value = "experienceYears", required = false) Long experienceYears,
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "availability", required = false) String availability,
-            @RequestParam(value = "abilities", required = false) String abilities) {
+            @RequestParam(value = "abilities", required = false) String abilities,
+            @RequestParam(value = "page", required = false) Long page) {
+        System.out.println("pagina: "+page);
         List<Employee> list = new ArrayList<>();
         System.out.println("-----------");
         System.out.println(name);
@@ -57,7 +59,7 @@ public class ExploreController {
         System.out.println(abilities);
         System.out.println("-----------");
         List<Experience> experiencesList = null;
-        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities).get()) {
+        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page).get()) {
             list.add(firstWordsToUpper(employee));
         }
 
@@ -82,7 +84,7 @@ public class ExploreController {
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
             System.out.println("me meti en error");
-            return searchPage(null, null,null,null,null,null);
+            return searchPage(null, null,null,null,null,null, null);
         }
         redirectAttributes.addAttribute("name",form.getName());
         if (form.getExperienceYears() > 0)
@@ -91,7 +93,16 @@ public class ExploreController {
             redirectAttributes.addAttribute("location", form.getLocation());
         redirectAttributes.addAttribute("availability", form.getAvailability());
         redirectAttributes.addAttribute("abilities", form.getAbilities());
+        System.out.println("valor de pagina en filtrado es: "+form.getPageNumber());
+        if (form.getPageNumber() > 0)
+            redirectAttributes.addAttribute("page", form.getPageNumber());
 
+        return new ModelAndView("redirect:/buscarEmpleadas");
+    }
+
+    @RequestMapping(value = "/filterPage", method = {RequestMethod.GET})
+    public ModelAndView pageFilter(@RequestParam("id2") String id2) {
+        System.out.println("me meti en filterPage!");
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 
