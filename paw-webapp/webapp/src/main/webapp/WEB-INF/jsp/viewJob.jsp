@@ -32,6 +32,7 @@
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="verPerfil"/>
 </jsp:include>
+<c:url value="/apply/${id}" var="postPath"/>
 <div class="grid h-screen grid-cols-6 overflow-auto">
     <div class=" grid grid-row-4 col-span-4 col-start-2">
         <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
@@ -47,11 +48,11 @@
                     <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewJob.experience"/></h1>
                     <h1 class="block mb-2 ml-2 text-sm font-medium text-gray-600 "> <c:out value="${job.experienceYears}"/></h1>
                 </div>
-                <sec:authorize access="hasAuthority('EMPLOYER')">
+                <sec:authorize access="hasAuthority('EMPLOYEE')">
                 <div class="ml-3 col-start-5 row-start-2">
-                    <a href="#">
+                    <form:form action="${postPath}" method="post">
                         <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewJob.apply"/></button>
-                    </a>
+                    </form:form>
                 </div>
                 </sec:authorize>
             </div>

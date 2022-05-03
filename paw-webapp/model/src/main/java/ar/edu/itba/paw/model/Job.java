@@ -12,6 +12,7 @@ public class Job {
     private String abilities;
     private String description;
     private String employerName;
+    private String employerUsername;
 
     private List<String> availabilityArr;
     private List<String> abilitiesArr;
@@ -57,6 +58,11 @@ public class Job {
         this.abilitiesArr = abilities;
         this.description = description;
         this.employerName = employerName;
+    }
+
+    public Job(String title, String employerUsername) {
+        this.title = title;
+        this.employerUsername = employerUsername;
     }
 
     public String getTitle() {

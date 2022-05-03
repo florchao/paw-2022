@@ -21,7 +21,7 @@ public class MailingServiceImpl implements MailingService{
 
     @Override
     @Async
-    public void sendMail(String replyTo, String to, String name) {
+    public void sendContactMail(String replyTo, String to, String name) {
         try {
             MimeMessage mimeMessage = new MimeMessage(session);
 
@@ -32,6 +32,20 @@ public class MailingServiceImpl implements MailingService{
             String subject = "¡"+ name + " quiere contactarse con vos!";
             sendEmail(mimeMessage, Collections.singletonList(to), subject, name);
         } catch (MessagingException mex) {
+            throw new RuntimeException(mex.getMessage());
+        }
+    }
+
+    @Override
+    @Async
+    public void sendApplyMail(String to, String jobTitle, String name) {
+        try {
+            MimeMessage mimeMessage = new MimeMessage(session);
+            String SERVER_MAIL = "hogarempleos22@gmail.com";
+            mimeMessage.setFrom(new InternetAddress(SERVER_MAIL));
+            String subject = "¡"+ name + " aplicó para "+jobTitle+"!";
+
+        }catch (MessagingException mex){
             throw new RuntimeException(mex.getMessage());
         }
     }

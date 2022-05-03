@@ -60,6 +60,13 @@
             </div>
         </c:otherwise>
     </c:choose>
+    <div class="fixed bottom-5 right-10">
+        <a href="<c:url value="/crearTrabajo"/>">
+            <button class="rounded-full text-3xl text-white h-14 w-14 bg-violet-900">
+                +
+            </button>
+        </a>
+    </div>
 </div>
 
 </body>
