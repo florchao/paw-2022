@@ -48,7 +48,7 @@
                         <div class="flex flex-col items-center">
                             <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.experienceYears"/></h1>
                             <div class="grid grid-cols-12">
-                                <form:input type="tel" id="expYears" onchange="validateExpYears()" path="experienceYears" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
+                                <form:input type="number" id="expYears" onchange="validateExpYears()" path="experienceYears" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
 <%--                                   TODO arreglar el codigo de error --%>
                                 <form:errors path="experienceYears" element="p" cssStyle="color:red"/>
                             </div>
