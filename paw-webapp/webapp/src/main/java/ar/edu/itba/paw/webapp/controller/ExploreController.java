@@ -71,6 +71,8 @@ public class ExploreController {
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
         mav.addObject("page", page);
+        mav.addObject("maxPage", employeeService.getPageNumber(name, experienceYears, location, experiencesList, availability, abilities, PAGE_SIZE));
+//        System.out.println("el valor de max number en controller vale " + employeeService.getPageNumber(name, experienceYears, location, experiencesList, availability, abilities, PAGE_SIZE));
         return mav;
 
     }

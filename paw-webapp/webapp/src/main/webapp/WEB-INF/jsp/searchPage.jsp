@@ -199,19 +199,19 @@
             </c:otherwise>
         </c:choose>
         <div class="bg-red-300 w-8 flex justify-center">
-            <h1>${page}</h1>
+            <h1>${page + 1}</h1>
         </div>
         <c:choose>
-            <c:when test="${page} > 0">
+            <c:when test="${page + 1 >= maxPage}">
                 <button type="submit" class="bg-gray-300 mx-4 font-bold w-8" disabled="true" onclick="nextPage(${page})">></button>
             </c:when>
             <c:otherwise>
                 <button type="submit" id="prevPageButton" class="bg-green-300 mx-4 font-bold w-8" onclick="nextPage(${page})">></button>
             </c:otherwise>
         </c:choose>
-
+        <h1 class="bg-blue-300">${maxPage}</h1>
     </div>
-    <form:input type="number" id="pageNumber" path="pageNumber"/>
+    <form:input cssStyle="visibility: hidden" type="number" id="pageNumber" path="pageNumber"/>
     </form:form>
 <%--                    <div>--%>
 <%--                        <c:url value="/buscarEmpleadas" var="getPath"/>--%>

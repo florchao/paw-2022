@@ -38,6 +38,19 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
+        List<String> availabilityList = new ArrayList<>();
+        if (availability != null) {
+            availabilityList = Arrays.asList(availability.split(","));
+        }
+        List<String> abilitiesList= new ArrayList<>();
+        if (abilities != null) {
+            abilitiesList = Arrays.asList(abilities.split(","));
+        }
+        return employeeDao.getPageNumber(name, experienceYears, location, experiences, availabilityList, abilitiesList, pageSize);
+    }
+
+    @Override
     public Optional<List<Employee>> getFilteredEmployees(
             String name,
             Long experienceYears,

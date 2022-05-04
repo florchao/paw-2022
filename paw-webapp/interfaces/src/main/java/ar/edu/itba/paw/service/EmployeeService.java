@@ -12,6 +12,15 @@ public interface EmployeeService {
 
     Optional<List<Employee>> getEmployees();
 
+    int getPageNumber(
+            String name,
+            Long experienceYears,
+            String location,
+            List<Experience> experiences,
+            String availability,
+            String abilities,
+            long pageSize);
+
     Optional<List<Employee>> getFilteredEmployees(
             String name,
             Long experienceYears,
@@ -20,6 +29,5 @@ public interface EmployeeService {
             String availability,
             String abilities,
             Long page,
-            long pageSize
-    );
+            long pageSize);
 }
