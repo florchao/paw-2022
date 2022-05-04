@@ -11,10 +11,26 @@
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript">
-        function validateExpYears() {
-            var el = document.getElementById('expYears');
-            if (el.value ==="") {
-                el.value=0;
+        function validateEmptyNumberForm(id) {
+            if (id === 'expYears') {
+                var el = document.getElementById('expYears');
+                if (el.value ==="") {
+                    el.value=0;
+                }
+            }
+        }
+        function previousPage(current) {
+            var el = document.getElementById('pageNumber');
+            el.value = (current - 1);
+        }
+        function nextPage(current) {
+            var el = document.getElementById('pageNumber');
+            el.value = (current + 1);
+        }
+        function prevPageValidation(current) {
+            console.log(current);
+            if (current === 0) {
+                document.getElementById('prevPageButton').disabled = true;
             }
         }
     </script>
@@ -48,7 +64,7 @@
                         <div class="flex flex-col items-center">
                             <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.experienceYears"/></h1>
                             <div class="grid grid-cols-12">
-                                <form:input type="number" id="expYears" onchange="validateExpYears()" path="experienceYears" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
+                                <form:input type="number" id="expYears" onchange="validateEmptyNumberForm('expYears')" path="experienceYears" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
 <%--                                   TODO arreglar el codigo de error --%>
                                 <form:errors path="experienceYears" element="p" cssStyle="color:red"/>
                             </div>
@@ -173,9 +189,29 @@
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
-    <div>
-        <form:input type="number" path="pageNumber"/>
+    <div class="flex flex-row justify-center">
+        <c:choose>
+            <c:when test="${page < 1}">
+                <button type="submit" class="bg-gray-300 mx-4 font-bold w-8" disabled="true" onclick="previousPage(${page})"><</button>
+            </c:when>
+            <c:otherwise>
+                <button type="submit" class="bg-green-300 mx-4 font-bold w-8" onclick="previousPage(${page})"><</button>
+            </c:otherwise>
+        </c:choose>
+        <div class="bg-red-300 w-8 flex justify-center">
+            <h1>${page}</h1>
+        </div>
+        <c:choose>
+            <c:when test="${page} > 0">
+                <button type="submit" class="bg-gray-300 mx-4 font-bold w-8" disabled="true" onclick="nextPage(${page})">></button>
+            </c:when>
+            <c:otherwise>
+                <button type="submit" id="prevPageButton" class="bg-green-300 mx-4 font-bold w-8" onclick="nextPage(${page})">></button>
+            </c:otherwise>
+        </c:choose>
+
     </div>
+    <form:input type="number" id="pageNumber" path="pageNumber"/>
     </form:form>
 <%--                    <div>--%>
 <%--                        <c:url value="/buscarEmpleadas" var="getPath"/>--%>

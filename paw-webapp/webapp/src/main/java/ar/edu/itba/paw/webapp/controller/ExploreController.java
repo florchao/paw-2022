@@ -53,7 +53,7 @@ public class ExploreController {
             @RequestParam(value = "page", required = false) Long page) {
         System.out.println("pagina: "+page);
         if (page == null)
-            page = Long.valueOf(0);
+            page = 0L;
         System.out.println("pagina: "+page);
         List<Employee> list = new ArrayList<>();
         System.out.println("-----------");
@@ -70,6 +70,7 @@ public class ExploreController {
 
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
+        mav.addObject("page", page);
         return mav;
 
     }
@@ -93,8 +94,8 @@ public class ExploreController {
         }
         redirectAttributes.addAttribute("name",form.getName());
         if (form.getExperienceYears() > 0)
-            redirectAttributes.addAttribute("experienceYears", new Long(form.getExperienceYears()));
-        if (form.getLocation() != "")
+            redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
+        if (!Objects.equals(form.getLocation(), ""))
             redirectAttributes.addAttribute("location", form.getLocation());
         redirectAttributes.addAttribute("availability", form.getAvailability());
         redirectAttributes.addAttribute("abilities", form.getAbilities());
