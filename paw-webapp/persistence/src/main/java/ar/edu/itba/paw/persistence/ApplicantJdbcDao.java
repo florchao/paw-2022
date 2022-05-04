@@ -22,6 +22,12 @@ public class ApplicantJdbcDao implements ApplicantDao{
     private static final RowMapper<Applicant> APPLICANT_ROW_MAPPER = (rs, rowNum) ->
             new Applicant(rs.getLong("jobID"), rs.getLong("employeeID"));
 
+    private static final RowMapper<Applicant> APPLI_LIST_ROW_MAPPER = (rs, rowNum) ->
+            new Applicant(rs.getLong("jobID"), rs.getLong("employeeID"), rs.getString("name"), rs.getString("email"));
+
+    private  static final RowMapper<Applicant> INFO_ROW_MAPPER = (rs, rowNum) ->
+            new Applicant(rs.getLong("jobID"), rs.getString("email"), rs.getString("title"));
+
     @Autowired
     public ApplicantJdbcDao(final DataSource ds){
         jdbcTemplate = new JdbcTemplate(ds);
@@ -40,8 +46,17 @@ public class ApplicantJdbcDao implements ApplicantDao{
 
     @Override
     public Optional<List<Applicant>> getApplicantsByJob(long jobID) {
-        List<Applicant> query = jdbcTemplate.query("SELECT * FROM applicants WHERE jobID = ?",
-                new Object[] {jobID}, APPLICANT_ROW_MAPPER);
+        List<Applicant> query = jdbcTemplate.query("SELECT employeeid, jobid, name, email FROM applicants NATURAL " +
+                        "JOIN employee JOIN users ON employee.employeeid = users.userid WHERE jobid = ?",
+                new Object[] {jobID}, APPLI_LIST_ROW_MAPPER);
         return Optional.of(query);
+    }
+
+    @Override
+    public Optional<Applicant> getInfoMail(long jobID) {
+        List<Applicant> query = jdbcTemplate.query("SELECT jobid, title, email FROM jobs JOIN users " +
+                        "ON employerid = userid WHERE jobid = ?",
+                new Object[] {jobID}, INFO_ROW_MAPPER);
+        return query.stream().findFirst();
     }
 }

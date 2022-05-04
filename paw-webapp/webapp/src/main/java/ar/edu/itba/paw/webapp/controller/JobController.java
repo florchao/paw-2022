@@ -52,8 +52,6 @@ public class JobController {
         User user = optional.get();
         Optional<List<Job>> jobs = jobService.getUserJobs(user.getId());
         mav.addObject("JobList", jobs.get());
-        System.out.println("JOB ID");
-        System.out.println(jobs.get().get(2).getJobId());
         return mav;
     }
 

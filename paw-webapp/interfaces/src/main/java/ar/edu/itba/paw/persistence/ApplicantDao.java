@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ApplicantDao {
     Applicant create(long jobID, long employeeID);
     Optional<List<Applicant>> getApplicantsByJob(long jobID);
+    Optional<Applicant> getInfoMail(long jobID);
 }

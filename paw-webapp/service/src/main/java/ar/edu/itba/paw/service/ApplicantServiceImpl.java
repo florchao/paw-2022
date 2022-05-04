@@ -1,7 +1,11 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Applicant;
+import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistence.ApplicantDao;
+import ar.edu.itba.paw.persistence.EmployeeDao;
+import ar.edu.itba.paw.persistence.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +16,9 @@ import java.util.Optional;
 public class ApplicantServiceImpl implements ApplicantService{
     @Autowired
     ApplicantDao applicantDao;
+
+    @Autowired
+    EmployeeDao employeeDao;
 
     @Autowired
     MailingService mailingService;
@@ -27,7 +34,10 @@ public class ApplicantServiceImpl implements ApplicantService{
     }
 
     @Override
-    public void apply(long jobID, String employeeUsername, long employerID) {
-
+    public void apply(long jobID, User user) {
+        Optional<Applicant> applicant = applicantDao.getInfoMail(jobID);
+        Optional<Employee> employee = employeeDao.getEmployeeById(user.getId());
+        mailingService.sendApplyMail(applicant.get().getEmployerUsername(), applicant.get().getJobName(), employee.get().getName());
+        create(jobID, user.getId());
     }
 }
