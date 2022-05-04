@@ -1,11 +1,9 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.*;
-import java.sql.Time;
 import java.util.List;
 
 public class FilterForm {
