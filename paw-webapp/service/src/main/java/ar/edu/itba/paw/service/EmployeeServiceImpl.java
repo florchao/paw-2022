@@ -65,8 +65,14 @@ public class EmployeeServiceImpl implements EmployeeService{
             Long page,
             long pageSize
     ) {
-        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null)
-            return employeeDao.getEmployees();
+        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == null) {
+            System.out.println("------------------------");
+            System.out.println("------------------------");
+            System.out.println("para vos flor :)");
+            System.out.println("------------------------");
+            System.out.println("------------------------");
+            return employeeDao.getEmployees(pageSize);
+        }
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));

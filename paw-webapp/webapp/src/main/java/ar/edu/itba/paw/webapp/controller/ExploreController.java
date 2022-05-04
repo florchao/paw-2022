@@ -82,7 +82,7 @@ public class ExploreController {
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
-            return searchPage(null, null,null,null,null,null);
+            return searchPage(null, null,null,null,null,null,null);
         }
         redirectAttributes.addAttribute("name",form.getName());
         if (form.getExperienceYears() > 0)
