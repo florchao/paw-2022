@@ -192,24 +192,23 @@
     <div class="flex flex-row justify-center">
         <c:choose>
             <c:when test="${page < 1}">
-                <button type="submit" class="bg-gray-300 mx-4 font-bold w-8" disabled="true" onclick="previousPage(${page})"><</button>
+                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>
             </c:when>
             <c:otherwise>
-                <button type="submit" class="bg-green-300 mx-4 font-bold w-8" onclick="previousPage(${page})"><</button>
+                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>
             </c:otherwise>
         </c:choose>
-        <div class="bg-red-300 w-8 flex justify-center">
-            <h1>${page + 1}</h1>
+        <div class="bg--300 w-16 flex justify-center">
+            <h1 class="text-yellow-300">${page + 1} of ${maxPage}</h1>
         </div>
         <c:choose>
             <c:when test="${page + 1 >= maxPage}">
-                <button type="submit" class="bg-gray-300 mx-4 font-bold w-8" disabled="true" onclick="nextPage(${page})">></button>
+                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>
             </c:when>
             <c:otherwise>
-                <button type="submit" id="prevPageButton" class="bg-green-300 mx-4 font-bold w-8" onclick="nextPage(${page})">></button>
+                <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>
             </c:otherwise>
         </c:choose>
-        <h1 class="bg-blue-300">${maxPage}</h1>
     </div>
     <form:input cssStyle="visibility: hidden" type="number" id="pageNumber" path="pageNumber"/>
     </form:form>
