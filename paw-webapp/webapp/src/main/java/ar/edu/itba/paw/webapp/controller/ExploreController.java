@@ -85,7 +85,6 @@ public class ExploreController {
         finalName.setLength(finalName.length() - 1);
         employee.setName(finalName.toString());
         return employee;
-
     }
 
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
@@ -99,8 +98,15 @@ public class ExploreController {
             redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
         if (!Objects.equals(form.getLocation(), ""))
             redirectAttributes.addAttribute("location", form.getLocation());
-        redirectAttributes.addAttribute("availability", form.getAvailability());
-        redirectAttributes.addAttribute("abilities", form.getAbilities());
+        System.out.println("availability: ");
+        if (form.getAvailability().length > 0)
+            redirectAttributes.addAttribute("availability", form.getAvailability());
+        if (form.getAbilities().length > 0)
+            redirectAttributes.addAttribute("abilities", form.getAbilities());
+
+        System.out.println(form.getAvailability().length);
+        System.out.println("abilities: ");
+        System.out.println(form.getAbilities().length);
         System.out.println("valor de pagina en filtrado es: "+form.getPageNumber());
         if (form.getPageNumber() > 0)
             redirectAttributes.addAttribute("page", form.getPageNumber());
@@ -110,7 +116,6 @@ public class ExploreController {
 
     @RequestMapping(value = "/filterPage", method = {RequestMethod.GET})
     public ModelAndView pageFilter(@RequestParam("id2") String id2) {
-        System.out.println("me meti en filterPage!");
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 
