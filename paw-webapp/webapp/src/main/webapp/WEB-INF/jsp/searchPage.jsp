@@ -11,10 +11,26 @@
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript">
-        function validateExpYears() {
-            var el = document.getElementById('expYears');
-            if (el.value ==="") {
-                el.value=0;
+        function validateEmptyNumberForm(id) {
+            if (id === 'expYears') {
+                var el = document.getElementById('expYears');
+                if (el.value ==="") {
+                    el.value=0;
+                }
+            }
+        }
+        function previousPage(current) {
+            var el = document.getElementById('pageNumber');
+            el.value = (current - 1);
+        }
+        function nextPage(current) {
+            var el = document.getElementById('pageNumber');
+            el.value = (current + 1);
+        }
+        function prevPageValidation(current) {
+            console.log(current);
+            if (current === 0) {
+                document.getElementById('prevPageButton').disabled = true;
             }
         }
     </script>
@@ -48,7 +64,7 @@
                         <div class="flex flex-col items-center">
                             <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.experienceYears"/></h1>
                             <div class="grid grid-cols-12">
-                                <form:input type="number" id="expYears" onchange="validateExpYears()" path="experienceYears" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
+                                <form:input type="number" id="expYears" onchange="validateEmptyNumberForm('expYears')" path="experienceYears" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
                                 <form:errors path="experienceYears" element="p" class="col-start-2 col-span-full" cssStyle="color:red"/>
                             </div>
                             <h1 class="font-semibold mt-4"><spring:message code="searchPage.label.location"/></h1>
@@ -132,7 +148,6 @@
                             </div>
                             <button type="submit" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Filtrar</button>
                         </div>
-                    </form:form>
                 </div>
                 <div class="col-span-3 col-start-2">
 <%--                    <div class="bg-green-300 flex justify-end">--%>
@@ -171,6 +186,29 @@
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
+    <div class="flex flex-row justify-center">
+        <c:choose>
+            <c:when test="${page < 1}">
+                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>
+            </c:when>
+            <c:otherwise>
+                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>
+            </c:otherwise>
+        </c:choose>
+        <div class="bg--300 w-16 flex justify-center">
+            <h1 class="text-yellow-300">${page + 1} of ${maxPage}</h1>
+        </div>
+        <c:choose>
+            <c:when test="${page + 1 >= maxPage}">
+                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>
+            </c:when>
+            <c:otherwise>
+                <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>
+            </c:otherwise>
+        </c:choose>
+    </div>
+    <form:input cssStyle="visibility: hidden" type="number" id="pageNumber" path="pageNumber"/>
+    </form:form>
                 </div>
             </div>
         </div>

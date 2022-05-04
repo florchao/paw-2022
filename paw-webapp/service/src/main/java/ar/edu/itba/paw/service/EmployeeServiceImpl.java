@@ -38,7 +38,20 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Optional<List<Employee>> getEmployees() {
-        return employeeDao.getEmployees();
+        return employeeDao.getEmployees(0);
+    }
+
+    @Override
+    public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
+        List<String> availabilityList = new ArrayList<>();
+        if (availability != null) {
+            availabilityList = Arrays.asList(availability.split(","));
+        }
+        List<String> abilitiesList= new ArrayList<>();
+        if (abilities != null) {
+            abilitiesList = Arrays.asList(abilities.split(","));
+        }
+        return employeeDao.getPageNumber(name, experienceYears, location, experiences, availabilityList, abilitiesList, pageSize);
     }
 
     @Override
@@ -48,7 +61,9 @@ public class EmployeeServiceImpl implements EmployeeService{
             String location,
             List<Experience> experiences,
             String availability,
-            String abilities
+            String abilities,
+            Long page,
+            long pageSize
     ) {
         if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null)
             return employeeDao.getEmployees();
@@ -60,6 +75,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList);
+        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
     }
 }
