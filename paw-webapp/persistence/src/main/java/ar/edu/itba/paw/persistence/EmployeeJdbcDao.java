@@ -49,8 +49,6 @@ public class EmployeeJdbcDao implements EmployeeDao{
 
     @Override
     public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities) {
-        System.out.println("en jdbcDao para filtered");
-        System.out.println(experienceYears);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM employee where ");
         if (name != null) {
@@ -75,9 +73,6 @@ public class EmployeeJdbcDao implements EmployeeDao{
             stringBuilder.append(" and ");
         }
         stringBuilder.setLength(stringBuilder.length() - 5);
-        System.out.println("-------------");
-        System.out.println(stringBuilder.toString());
-        System.out.println("-------------");
         List<Employee> query = jdbcTemplate.query(stringBuilder.toString(), new Object[] {}, EMPLOYEE_ROW_MAPPER);
         return Optional.of(query);
     }

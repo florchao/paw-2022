@@ -60,7 +60,6 @@ public class CreateProfileController {
         if(errors.hasErrors())
             return createProfileEmployer(form, userID);
         String name = form.getName() + " " + form.getLastname();
-        System.out.println(userID);
         final Employer employer = employerService.create(name.toLowerCase(), Long.parseLong(userID));
         return new ModelAndView("redirect:/buscarEmpleadas");
     }

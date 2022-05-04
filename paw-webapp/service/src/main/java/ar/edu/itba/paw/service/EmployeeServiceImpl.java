@@ -50,15 +50,6 @@ public class EmployeeServiceImpl implements EmployeeService{
             String availability,
             String abilities
     ) {
-        System.out.println("getEmployees pero filtrados!");
-        System.out.println("---------");
-        System.out.println(name);
-        System.out.println(experienceYears);
-        System.out.println(location);
-        System.out.println(experiences);
-        System.out.println(availability);
-        System.out.println(abilities);
-        System.out.println("---------");
         if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null)
             return employeeDao.getEmployees();
         List<String> availabilityList = new ArrayList<>();

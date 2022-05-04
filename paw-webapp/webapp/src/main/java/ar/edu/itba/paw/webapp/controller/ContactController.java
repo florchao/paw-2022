@@ -50,7 +50,7 @@ public class ContactController {
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
         final ModelAndView mav = new ModelAndView("contactForm");
         Optional<Employee> employee = employeeService.getEmployeeById(id);
-        employee.ifPresent(value -> {mav.addObject("name", value.getName()); System.out.println(employee.get().getName());});
+        employee.ifPresent(value -> {mav.addObject("name", value.getName());});
         return mav;
     }
 
@@ -74,7 +74,6 @@ public class ContactController {
             username = ((UserDetails)principal).getUsername();
         Optional<User> current = userService.findByUsername(username);
         Optional<Employer> employer = employerService.getEmployerById(current.get().getId());
-        System.out.println(current.get().toString());
         try{
             user.ifPresent(value -> contactService.contact(value, form.getContent(), employer.get().getName(), form.getPhone()));
         }

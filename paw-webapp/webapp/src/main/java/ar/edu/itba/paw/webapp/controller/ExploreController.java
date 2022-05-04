@@ -49,13 +49,6 @@ public class ExploreController {
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "abilities", required = false) String abilities) {
         List<Employee> list = new ArrayList<>();
-        System.out.println("-----------");
-        System.out.println(name);
-        System.out.println(experienceYears);
-        System.out.println(location);
-        System.out.println(availability);
-        System.out.println(abilities);
-        System.out.println("-----------");
         List<Experience> experiencesList = null;
         for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities).get()) {
             list.add(firstWordsToUpper(employee));
@@ -81,7 +74,6 @@ public class ExploreController {
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
-            System.out.println("me meti en error");
             return searchPage(null, null,null,null,null,null);
         }
         redirectAttributes.addAttribute("name",form.getName());
