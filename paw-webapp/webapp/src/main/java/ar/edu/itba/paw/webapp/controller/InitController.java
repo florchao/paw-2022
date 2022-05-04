@@ -61,7 +61,6 @@ public class InitController {
         }
         else {
             Optional<Employer> employer = employerService.getEmployerById(current.get().getId());
-            System.out.println(employer);
             if (!employer.isPresent()) {
                 return new ModelAndView("redirect:/crearPerfilEmpleador/"+current.get().getId());
             }

@@ -19,15 +19,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Optional<Employee> getEmployeeById(long id) {
-        Employee employee = (employeeDao.getEmployeeById(id)).get();
-        List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.getAvailability().split(",")));
-        List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.getAbilities().split(",")));
-        Employee aux = new Employee(employee.getName(), employee.getLocation(), id, availabilityArr, employee.getExperienceYears(), abilitiesArr);
-        System.out.println(aux);
-        System.out.println(availabilityArr);
-        System.out.println(abilitiesArr);
-        System.out.println("-----------");
-        return Optional.of(aux);
+
+        Optional<Employee> employee = (employeeDao.getEmployeeById(id));
+        if(employee.isPresent()) {
+            List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.get().getAvailability().split(",")));
+            List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.get().getAbilities().split(",")));
+            Employee aux = new Employee(employee.get().getName(), employee.get().getLocation(), id, availabilityArr, employee.get().getExperienceYears(), abilitiesArr);
+            return Optional.of(aux);
+        }
+        return employee;
     }
 
     @Override
