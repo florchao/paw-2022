@@ -1,20 +1,22 @@
 package ar.edu.itba.paw.webapp.form;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class ContactForm {
+public class ContactUsForm {
 
     @Pattern(regexp = "[a-zA-z\\s]+|^$")
     @NotBlank
     @Size(max = 100)
     private String name;
 
-    @Pattern(regexp = "[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
+    @Email
+    @NotBlank
     // source: https://www.w3resource.com/javascript/form/email-validation.php
-    private String phone;
+    private String mail;
 
     @NotBlank
     private String content;
@@ -22,16 +24,17 @@ public class ContactForm {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getMail() {
+        return mail;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getContent() {

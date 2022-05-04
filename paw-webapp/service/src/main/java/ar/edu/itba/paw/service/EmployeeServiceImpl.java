@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Employee create(String name, String location, long id, String availability, long experienceYears, String abilities) {
+    public Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities) {
         //TODO: validate name, location, id, etc
         return employeeDao.create(id, name, location, availability, experienceYears, abilities);
     }
@@ -39,7 +39,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Optional<List<Employee>> getFilteredEmployees(
-            long experienceYears,
+            String name,
+            Long experienceYears,
             String location,
             List<Experience> experiences,
             String availability,
@@ -47,12 +48,15 @@ public class EmployeeServiceImpl implements EmployeeService{
     ) {
         System.out.println("getEmployees pero filtrados!");
         System.out.println("---------");
+        System.out.println(name);
         System.out.println(experienceYears);
         System.out.println(location);
         System.out.println(experiences);
         System.out.println(availability);
         System.out.println(abilities);
         System.out.println("---------");
+        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null)
+            return employeeDao.getEmployees();
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
@@ -61,6 +65,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(experienceYears,location,experiences, availabilityList,abilitiesList);
+        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList);
     }
 }

@@ -11,7 +11,7 @@
 <body>
 <div class = "grid content-center justify-center h-screen">
   <div class = "grid justify-items-center">
-    <img src="<c:url value='/public/warning2.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
+    <img src="<c:url value='/public/warning2.png'/>" alt="Error" class="mr-3 h-6 sm:h-52">
     <p class="text-3xl font-semibold text-purple-700" style="margin-top: 50px">${errorMsg}</p>
   </div>
 </div>

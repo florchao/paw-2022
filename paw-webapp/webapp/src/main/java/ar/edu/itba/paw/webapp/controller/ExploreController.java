@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
@@ -20,10 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ExploreController {
@@ -43,21 +41,25 @@ public class ExploreController {
     public String order;
 
     @RequestMapping("/buscarEmpleadas")
-    public ModelAndView searchPage(@ModelAttribute("filterBy") FilterForm employeeForm, @RequestParam(value = "filterBoolean", required = false) Boolean filter) {
-        List<Employee> list;
-        if (filter != null) {
-            System.out.println("me meti!");
-            list = employeeService.getFilteredEmployees(
-                    employeeForm.getExperienceYears(),
-                    employeeForm.getLocation(),
-                    employeeForm.getExperiencesList(),
-                    employeeForm.getAvailability(),
-                    employeeForm.getAbilities()
-            ).get();
-        } else {
-            list = employeeService.getEmployees().get();
+    public ModelAndView searchPage(
+            @ModelAttribute("filterBy") FilterForm employeeForm,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "experienceYears", required = false) Long experienceYears,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "availability", required = false) String availability,
+            @RequestParam(value = "abilities", required = false) String abilities) {
+        List<Employee> list = new ArrayList<>();
+        System.out.println("-----------");
+        System.out.println(name);
+        System.out.println(experienceYears);
+        System.out.println(location);
+        System.out.println(availability);
+        System.out.println(abilities);
+        System.out.println("-----------");
+        List<Experience> experiencesList = null;
+        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities).get()) {
+            list.add(firstWordsToUpper(employee));
         }
-        System.out.println(employeeForm.getExperienceYears());
 
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
@@ -65,19 +67,31 @@ public class ExploreController {
 
     }
 
-    @RequestMapping(value = "/filterEmployees", method = {RequestMethod.POST})
+    Employee firstWordsToUpper(Employee employee) {
+        StringBuilder finalName = new StringBuilder();
+        for (String word : employee.getName().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        employee.setName(finalName.toString());
+        return employee;
+
+    }
+
+    @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
             System.out.println("me meti en error");
-            return searchPage(form, false);
+            return searchPage(null, null,null,null,null,null);
         }
-        System.out.println("filtrar!");
-        redirectAttributes.addFlashAttribute("filterBy", form);
-        redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
-        redirectAttributes.addAttribute("location", form.getLocation());
+        redirectAttributes.addAttribute("name",form.getName());
+        if (form.getExperienceYears() > 0)
+            redirectAttributes.addAttribute("experienceYears", new Long(form.getExperienceYears()));
+        if (form.getLocation() != "")
+            redirectAttributes.addAttribute("location", form.getLocation());
         redirectAttributes.addAttribute("availability", form.getAvailability());
         redirectAttributes.addAttribute("abilities", form.getAbilities());
-        redirectAttributes.addAttribute("filterBoolean", true);
+
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 

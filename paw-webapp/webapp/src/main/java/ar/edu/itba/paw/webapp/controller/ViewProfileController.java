@@ -48,11 +48,33 @@ public class ViewProfileController {
     @RequestMapping("/verPerfil/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
         final ModelAndView mav = new ModelAndView("viewProfile");
-        Optional<User> user = userService.getUserById(userId);
+        ModelAndView errorPage = new ModelAndView("errorPage");
+
+        Optional<User> user;
+        try{
+            user = userService.getUserById(userId);
+        }
+        catch (UserNotFoundException uex){
+            errorPage.addObject("errorMsg", uex.getMessage());
+            return errorPage;
+        }
         user.ifPresent(value -> mav.addObject("user", value));
+
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
-        employee.ifPresent(value -> mav.addObject("employee", value));
+
+        employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
 
         return mav;
+    }
+
+    Employee firstWordsToUpper(Employee employee) {
+        StringBuilder finalName = new StringBuilder();
+        for (String word : employee.getName().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        employee.setName(finalName.toString());
+        return employee;
+
     }
 }

@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>navbar</title>
 </head>
 <body>
@@ -24,6 +25,20 @@
         </div>
         <c:if test="${!param.currentUrl.equals('init')}">
             <div class="grid grid-cols-3 items-center justify-items-center col-span-2 col-start-4">
+            <c:if test="${param.currentUrl.equals('searchPage')}">
+                <c:url value="/filterEmployees" var="postPath"/>
+                <div class="col-start-2 ">
+                    <div class="search-box">
+                        <form:form modelAttribute="filterBy" action="${postPath}" method="get">
+                            <form:input type="text" path="name" cssStyle="border-radius: 5px;"/>
+                            <button type="submit"><i class="fa fa-search"></i></button>
+
+                        </form:form>
+
+                    </div>
+                </div>
+            </c:if>
+            <div class="grid grid-cols-3 col-start-3">
                 <sec:authorize access="!isAuthenticated()">
                     <div class = "items-center ">
                         <c:choose>

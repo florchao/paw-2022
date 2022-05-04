@@ -48,17 +48,21 @@ public class EmployeeJdbcDao implements EmployeeDao{
     }
 
     @Override
-    public Optional<List<Employee>> getFilteredEmployees(long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities) {
+    public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities) {
         System.out.println("en jdbcDao para filtered");
         System.out.println(experienceYears);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM employee where ");
-        if (experienceYears > 0) {
+        if (name != null) {
+            stringBuilder.append("name like '%" + name.toLowerCase() + "%'");
+            stringBuilder.append(" and ");
+        }
+        if (experienceYears != null && experienceYears.intValue() > 0) {
             stringBuilder.append("experienceYears >= " + experienceYears);
             stringBuilder.append(" and ");
         }
         if (location != null) {
-            stringBuilder.append("location like '%" + location + "%' ");
+            stringBuilder.append("location like '%" + location.toLowerCase() + "%' ");
             stringBuilder.append(" and ");
         }
         // TODO Aca iria lo mismo pero para experienceList
