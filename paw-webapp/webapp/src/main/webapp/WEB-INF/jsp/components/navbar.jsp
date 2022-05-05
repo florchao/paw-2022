@@ -69,7 +69,7 @@
                                 <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.jobs"/></p>
                             </c:when>
                             <c:otherwise>
-                                <a href="<c:url value="/buscarEmpleadas"/>"  class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.jobs"/></a>
+                                <a href="<c:url value="/trabajos"/>"  class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.jobs"/></a>
                             </c:otherwise>
                         </c:choose>
                     </div>
