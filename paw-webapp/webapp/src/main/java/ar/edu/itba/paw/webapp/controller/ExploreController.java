@@ -40,7 +40,7 @@ public class ExploreController {
 
     public String order;
 
-    private final static long PAGE_SIZE = 2;
+    private final static long PAGE_SIZE = 4;
 
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage(
@@ -51,14 +51,13 @@ public class ExploreController {
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "abilities", required = false) String abilities,
             @RequestParam(value = "page", required = false) Long page) {
-        System.out.println("pagina: "+page);
         if (page == null)
             page = 0L;
-        System.out.println("pagina: "+page);
         List<Employee> list = new ArrayList<>();
         List<Experience> experiencesList = null;
         for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE).get()) {
-            list.add(firstWordsToUpper(employee));
+            employee.firstWordsToUpper();
+            list.add(employee);
         }
 
         final ModelAndView mav = new ModelAndView("searchPage");
@@ -69,46 +68,24 @@ public class ExploreController {
 
     }
 
-    Employee firstWordsToUpper(Employee employee) {
-        StringBuilder finalName = new StringBuilder();
-        for (String word : employee.getName().split(" ")) {
-            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalName.setLength(finalName.length() - 1);
-        employee.setName(finalName.toString());
-        return employee;
-    }
-
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
             return searchPage(null, null,null,null,null,null,null);
         }
-        redirectAttributes.addAttribute("name",form.getName());
+        if (!Objects.equals(form.getName(),""))
+            redirectAttributes.addAttribute("name",form.getName());
         if (form.getExperienceYears() > 0)
             redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
         if (!Objects.equals(form.getLocation(), ""))
             redirectAttributes.addAttribute("location", form.getLocation());
-        if (form.getAvailability().length > 0)
+        if (form.getAvailability() != null && form.getAvailability().length > 0)
             redirectAttributes.addAttribute("availability", form.getAvailability());
-        if (form.getAbilities().length > 0)
+        if (form.getAbilities() != null && form.getAbilities().length > 0)
             redirectAttributes.addAttribute("abilities", form.getAbilities());
         if (form.getPageNumber() > 0)
             redirectAttributes.addAttribute("page", form.getPageNumber());
 
         return new ModelAndView("redirect:/buscarEmpleadas");
-    }
-
-    @RequestMapping(value = "/filterPage", method = {RequestMethod.GET})
-    public ModelAndView pageFilter(@RequestParam("id2") String id2) {
-        return new ModelAndView("redirect:/buscarEmpleadas");
-    }
-
-    @ModelAttribute("orderBy")
-    public Map<String, String> getOrderList() {
-        Map<String, String> orderList = new HashMap<>();
-        orderList.put("Rel","Relevancia");
-        orderList.put("Ed", "Edad");
-        return orderList;
     }
 }

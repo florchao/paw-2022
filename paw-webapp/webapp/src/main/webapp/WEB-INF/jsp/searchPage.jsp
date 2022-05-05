@@ -150,20 +150,6 @@
                         </div>
                 </div>
                 <div class="col-span-3 col-start-2">
-<%--                    <div class="bg-green-300 flex justify-end">--%>
-<%--                        <h1 class="font-semibold">Ordenar por</h1>--%>
-<%--                        <div class="dropdown">--%>
-<%--                            <button class="dropbtn">Dropdown</button>--%>
-<%--                            <div class="dropdown-content">--%>
-<%--                                    &lt;%&ndash;                                <c:url value="/filterEmployees" var="postPath"/>&ndash;%&gt;--%>
-<%--                                <form method="post" action="/filterEmployees">--%>
-<%--                                    <button type="submit" value="Filtrar"/>--%>
-<%--                                </form>--%>
-<%--                                <a href="#">Link 2</a>--%>
-<%--                                <a href="#">Link 3</a>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
                     <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="searchPage.searchEmployees"/></p>
                     <c:choose>
                         <c:when test="${EmployeeList.size() == 0}">
@@ -186,29 +172,31 @@
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
-    <div class="flex flex-row justify-center">
-        <c:choose>
-            <c:when test="${page < 1}">
-                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>
-            </c:when>
-            <c:otherwise>
-                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>
-            </c:otherwise>
-        </c:choose>
-        <div class="bg--300 w-16 flex justify-center">
-            <h1 class="text-yellow-300">${page + 1} of ${maxPage}</h1>
-        </div>
-        <c:choose>
-            <c:when test="${page + 1 >= maxPage}">
-                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>
-            </c:when>
-            <c:otherwise>
-                <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>
-            </c:otherwise>
-        </c:choose>
-    </div>
-    <form:input cssStyle="visibility: hidden" type="number" id="pageNumber" path="pageNumber"/>
-    </form:form>
+                    <c:if test="${maxPage > 0}">
+                    <div class="flex flex-row justify-center">
+                        <c:choose>
+                            <c:when test="${page < 1}">
+                                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>
+                            </c:when>
+                            <c:otherwise>
+                                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>
+                            </c:otherwise>
+                        </c:choose>
+                        <div class="bg--300 w-16 flex justify-center">
+                            <h1 class="text-yellow-300">${page + 1} of ${maxPage}</h1>
+                        </div>
+                        <c:choose>
+                            <c:when test="${page + 1 >= maxPage}">
+                                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>
+                            </c:when>
+                            <c:otherwise>
+                                <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>
+                            </c:otherwise>
+                        </c:choose>
+                        </c:if>
+                    </div>
+                    <form:input cssStyle="visibility: hidden" type="number" id="pageNumber" path="pageNumber"/>
+                    </form:form>
                 </div>
             </div>
         </div>

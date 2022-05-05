@@ -93,6 +93,15 @@ public class Employee {
         this.availability = availability;
     }
 
+    public void firstWordsToUpper() {
+        StringBuilder finalName = new StringBuilder();
+        for (String word : getName().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        setName(finalName.toString());
+    }
+
     @Override
     public String toString() {
         return getId()+ " - "
