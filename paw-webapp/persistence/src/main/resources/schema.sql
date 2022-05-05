@@ -37,12 +37,32 @@ CREATE TABLE IF NOT EXISTS  experiences (
 );
 
 CREATE TABLE IF NOT EXISTS  contact (
-                employeeID INT,
-                employerID INT,
-                message TEXT,
-                phone TEXT,
-                created DATE,
-                FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
-                FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
-                PRIMARY KEY (employeeID, employerID)
-    );
+            employeeID INT,
+            employerID INT,
+            message TEXT,
+            phone TEXT,
+            created DATE,
+            FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
+            FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
+            PRIMARY KEY (employeeID, employerID)
+);
+
+create table if not exists jobs(
+    jobID SERIAL PRIMARY KEY,
+    employerID INT,
+    title TEXT,
+    location TEXT,
+    availability TEXT,
+    experienceYears INT,
+    abilities TEXT,
+    description TEXT,
+    FOREIGN KEY (employerID) REFERENCES employer(employerID) ON DELETE CASCADE
+);
+
+create table if not exists applicants(
+    employeeID INT NOT NULL,
+    jobID INT NOT NULL,
+    FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
+    FOREIGN KEY (jobID) REFERENCES jobs(jobid) ON DELETE CASCADE,
+    PRIMARY KEY(employeeID, jobID)
+);
