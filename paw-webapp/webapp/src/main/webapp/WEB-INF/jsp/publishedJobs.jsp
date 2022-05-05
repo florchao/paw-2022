@@ -39,7 +39,7 @@
         <c:when test="${JobList.size() == 0}">
             <div class = "grid content-center justify-center h-5/6 mt-16">
                 <div class = "grid justify-items-center">
-                    <img src="<c:url value='/public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
+                    <img src="<c:url value='/public/job.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
                     <p class="text-3xl font-semibold text-purple-700"><spring:message code="publishedJobs.noJobs"/></p>
                 </div>
             </div>
