@@ -52,29 +52,8 @@ public class ViewProfileController {
         return mav;
     }
 
-    @RequestMapping("/verPerfil/{userId}")
-    public ModelAndView userProfile(@PathVariable("userId") final long userId) {
-        final ModelAndView mav = new ModelAndView("viewProfile");
-        ModelAndView errorPage = new ModelAndView("errorPage");
-
-        Optional<User> user;
-        try{
-            user = userService.getUserById(userId);
-        }
-        catch (UserNotFoundException uex){
-            errorPage.addObject("errorMsg", uex.getMessage());
-            return errorPage;
-        }
-        user.ifPresent(value -> mav.addObject("user", value));
-
-        Optional<Employee> employee = employeeService.getEmployeeById(userId);
-
-        employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
-
-        return mav;
-    }
-//    @GetMapping("/verPerfil/{userId}")
-//    public ModelAndView userProfile(@PathVariable("userId") final long userId, final UserProfileForm userProfileForm) {
+//    @RequestMapping("/verPerfil/{userId}")
+//    public ModelAndView userProfile(@PathVariable("userId") final long userId) {
 //        final ModelAndView mav = new ModelAndView("viewProfile");
 //        ModelAndView errorPage = new ModelAndView("errorPage");
 //
@@ -92,28 +71,43 @@ public class ViewProfileController {
 //
 //        employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
 //
-//        Optional<byte[]> optionalImage = userService.getProfileImage(userId);
-//        optionalImage.ifPresent(bytes -> mav.addObject("image", bytes));
-//        mav.addObject("userProfileForm",userProfileForm);
-//
 //        return mav;
 //    }
-//
-//    @PostMapping("/verPerfil/{userId}")
-//    public ModelAndView user(@PathVariable("userId") final long userId, @Valid UserProfileForm userProfileForm, final BindingResult errors) {
-//        if (!errors.hasErrors()){
-//            userService.updateProfileImage(userId,
-//                    userProfileForm.getImage().getBytes());
-//        }
-//        return userProfile(userId, userProfileForm);
-//    }
+    @RequestMapping(value = "/verPerfil/{userId}", method = RequestMethod.GET)
+    public ModelAndView userProfile(@PathVariable("userId") final long userId, final UserProfileForm userProfileForm) {
+        final ModelAndView mav = new ModelAndView("viewProfile");
+        ModelAndView errorPage = new ModelAndView("errorPage");
 
-    @RequestMapping("/user/profile-image")
-    public void profileImage(HttpServletResponse response) throws IOException {
-//        byte[] image = userService.getProfileImage(//ACA QUIERO EL USER ID//)
-//                .orElseThrow(RuntimeException::new);
-//        InputStream is = new ByteArrayInputStream(image);
-//        IOUtils.copy(is,response.getOutputStream());
+        User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        mav.addObject("user", user);
+
+        Optional<Employee> employee = employeeService.getEmployeeById(userId);
+
+        employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
+
+        Optional<byte[]> optionalImage = userService.getProfileImage(userId);
+        optionalImage.ifPresent(bytes -> mav.addObject("image", bytes));
+        mav.addObject("userProfileForm",userProfileForm);
+
+        return mav;
+    }
+
+    @RequestMapping(value ="/verPerfil/{userId}", method = RequestMethod.POST)
+    public ModelAndView user(@PathVariable("userId") final long userId, @Valid UserProfileForm userProfileForm, final BindingResult errors) {
+        if (!errors.hasErrors()){
+            userService.updateProfileImage(userId,
+                    userProfileForm.getImage().getBytes());
+        }
+        return userProfile(userId, userProfileForm);
+    }
+
+    @RequestMapping("/user/profile-image/{userId}")
+    public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
+        byte[] image = userService.getProfileImage(userId)
+                .orElseThrow(RuntimeException::new);
+        InputStream is = new ByteArrayInputStream(image);
+        IOUtils.copy(is,response.getOutputStream());
     }
 
     Employee firstWordsToUpper(Employee employee) {

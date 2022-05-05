@@ -43,7 +43,7 @@
                         </div>
                     </c:if>
                     <c:if test="${image != null}">
-                        <img src="<c:url value="/user/profile-image"/>" />
+                        <img src="<c:url value="/user/profile-image/${userId}"/>" />
                     </c:if>
                     <form:form modelAttribute="userProfileForm" method="post" enctype="multipart/form-data"
                                acceptCharset="utf-8" cssStyle="margin: 30px 0; display: flex; flex-direction: column">
