@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 @Component
 public class PawUserDetailsService implements UserDetailsService {
     @Autowired
-    private UserService us;
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -26,14 +26,13 @@ public class PawUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final Optional<User> user = us.findByUsername(username);
+        final Optional<User> user = userService.findByUsername(username);
         if (!user.isPresent()) {
             throw new UsernameNotFoundException("No user by the name " + username);
         }
         String password = user.get().getPassword();
         if(Objects.equals(user.get().getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
-            password = passwordEncoder.encode(user.get().getPassword());
-            us.update(username, password);
+            userService.update(username, user.get().getPassword());
         }
         final Collection<GrantedAuthority> authorities = new ArrayList<>();
         System.out.println(user.get().getRole());

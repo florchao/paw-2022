@@ -5,12 +5,10 @@ import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.UserDao;
-import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -54,7 +52,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean update(String username, String password) {
-        return userDao.update(username, password);
+        String passEncoder = passwordEncoder.encode(password);
+        return userDao.update(username, passEncoder);
     }
 
     @Override
