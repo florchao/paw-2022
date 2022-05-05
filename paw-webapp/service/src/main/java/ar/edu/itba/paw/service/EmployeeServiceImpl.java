@@ -65,7 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService{
             Long page,
             long pageSize
     ) {
-        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == null) {
+        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == 0) {
             System.out.println("------------------------");
             System.out.println("------------------------");
             System.out.println("para vos flor :)");
