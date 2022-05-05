@@ -24,21 +24,19 @@
         </form:form>
         </div>
         <c:if test="${!param.currentUrl.equals('init')}">
-            <div class="grid grid-cols-3 items-center justify-items-center col-span-2 col-start-4">
             <c:if test="${param.currentUrl.equals('searchPage')}">
                 <c:url value="/filterEmployees" var="postPath"/>
-                <div class="col-start-2 ">
+                <div class="col-start-2">
                     <div class="search-box">
                         <form:form modelAttribute="filterBy" action="${postPath}" method="get">
                             <form:input type="text" path="name" cssStyle="border-radius: 5px;"/>
                             <button type="submit"><i class="fa fa-search"></i></button>
-
                         </form:form>
 
                     </div>
                 </div>
             </c:if>
-            <div class="grid grid-cols-3 col-start-3">
+            <div class="grid grid-cols-3 items-center justify-items-center col-span-2 col-start-4">
                 <sec:authorize access="!isAuthenticated()">
                     <div class = "items-center ">
                         <c:choose>
@@ -52,58 +50,58 @@
                     </div>
                 </sec:authorize>
                 <sec:authorize access="!isAuthenticated() || hasAuthority('EMPLOYER')">
-                <div class = "items-center">
-                    <form:form method="get" action="${search}">
-                        <c:choose>
-                            <c:when test="${param.currentUrl.equals('searchPage')}">
-                                <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.searchEmployee"/></p>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="<c:url value="/buscarEmpleadas"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.searchEmployee"/></a>
-                            </c:otherwise>
-                        </c:choose>
-                    </form:form>
-                </div>
+                    <div class = "items-center">
+                        <form:form method="get" action="${search}">
+                            <c:choose>
+                                <c:when test="${param.currentUrl.equals('searchPage')}">
+                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.searchEmployee"/></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="<c:url value="/buscarEmpleadas"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.searchEmployee"/></a>
+                                </c:otherwise>
+                            </c:choose>
+                        </form:form>
+                    </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYER')">
                     <div class = "items-center">
-                            <c:choose>
-                                <c:when test="${param.currentUrl.equals('publishedJobs')}">
-                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.jobs"/></p>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="<c:url value="/trabajos"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.jobs"/></a>
-                                </c:otherwise>
-                            </c:choose>
+                        <c:choose>
+                            <c:when test="${param.currentUrl.equals('publishedJobs')}">
+                                <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.jobs"/></p>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<c:url value="/buscarEmpleadas"/>"  class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.jobs"/></a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
-                <div class = "items-center">
-                    <form:form method="get" action="${contacts}">
-                        <c:choose>
-                            <c:when test="${param.currentUrl.equals('contactos')}">
-                                <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contacts"/></p>
-                            </c:when>
-                            <c:otherwise>
-                                <button class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contacts"/></button>
-                            </c:otherwise>
-                        </c:choose>
-                    </form:form>
-                </div>
+                    <div class = "items-center">
+                        <form:form method="get" action="${contacts}">
+                            <c:choose>
+                                <c:when test="${param.currentUrl.equals('contactos')}">
+                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contacts"/></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contacts"/></button>
+                                </c:otherwise>
+                            </c:choose>
+                        </form:form>
+                    </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
-                <div class = "items-center">
-                    <form:form method="get" action="${contacts}">
-                        <c:choose>
-                            <c:when test="${param.currentUrl.equals('verPerfil')}">
-                                <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.profile"/></p>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="<c:url value="/verPerfil"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.profile"/></a>
-                            </c:otherwise>
-                        </c:choose>
-                    </form:form>
-                </div>
+                    <div class = "items-center">
+                        <form:form method="get" action="${contacts}">
+                            <c:choose>
+                                <c:when test="${param.currentUrl.equals('verPerfil')}">
+                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.profile"/></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="<c:url value="/verPerfil"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.profile"/></a>
+                                </c:otherwise>
+                            </c:choose>
+                        </form:form>
+                    </div>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
                     <div class = "items-center">
