@@ -1,12 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -60,7 +60,7 @@
             <div class="grid grid-cols-4">
                 <div class="col-start-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-fit" >
                     <c:url value="/filterEmployees" var="postPath"/>
-                    <form:form modelAttribute="filterBy" action="${postPath}" method="get">
+                    <form:form modelAttribute="filterBy" action="${postPath}" method="get" pageEncoding="UTF-8">
                         <div class="flex flex-col items-center">
                             <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.experienceYears"/></h1>
                             <div class="grid grid-cols-12">
@@ -163,6 +163,7 @@
                         <c:otherwise>
                             <c:forEach var="employee" items="${EmployeeList}">
                                 <c:set var="employee" value="${employee}" scope="request"/>
+                                <% request.setCharacterEncoding("utf-8");%>
                                 <jsp:include page="components/employeeCardComponent.jsp">
                                     <jsp:param name="name" value="${employee.name}"/>
                                     <jsp:param name="location" value="${employee.location}"/>

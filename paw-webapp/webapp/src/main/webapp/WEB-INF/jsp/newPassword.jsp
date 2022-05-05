@@ -1,12 +1,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
-<html lang="es">
+<html>
 <head>
     <title><spring:message code="newpassword.title"/></title>
-    <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
@@ -30,7 +29,7 @@
 <jsp:include page="components/navbar.jsp"/>
 <c:url value="/newPassword" var="newpassurl"/>
 <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
-    <form:form modelAttribute="newPasswordForm" class="col-span-3 col-start-3" action="${newpassurl}" method="post" enctype = "application/x-www-form-urlencoded">
+    <form:form modelAttribute="newPasswordForm" class="col-span-3 col-start-3" action="${newpassurl}" method="post" enctype = "application/x-www-form-urlencoded" pageEncoding="UTF-8">
         <div class="block p-6 rounded-lg shadow-lg bg-white">
             <div class="form-group mb-6 grid grid-cols-6">
                 <form:label for="mail" path="mail" class="text-sm font-medium text-gray-900" ><spring:message code="register.mail"/> </form:label>
