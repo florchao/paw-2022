@@ -40,11 +40,6 @@
         <form:form modelAttribute="contactForm" action="${postPath}" method="post">
             <div class="block p-6 rounded-3xl shadow-lg bg-gray-200">
                 <div class="form-group mb-6">
-                    <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.name"/></form:label>
-                    <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                    <form:errors path="name" element="p" cssStyle="color: red"/>
-                </div>
-                <div class="form-group mb-6">
                     <form:label path="phone" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactForm2.mail"/></form:label>
                     <form:input path="phone" type="tel" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                     <form:errors path="phone" element="p" cssStyle="color: red"/>

@@ -8,9 +8,19 @@ import java.util.Optional;
 
 public interface EmployeeService {
     Optional<Employee> getEmployeeById(long id);
+
     Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities);
 
     Optional<List<Employee>> getEmployees();
+
+    int getPageNumber(
+            String name,
+            Long experienceYears,
+            String location,
+            List<Experience> experiences,
+            String availability,
+            String abilities,
+            long pageSize);
 
     Optional<List<Employee>> getFilteredEmployees(
             String name,
@@ -18,6 +28,7 @@ public interface EmployeeService {
             String location,
             List<Experience> experiences,
             String availability,
-            String abilities
-    );
+            String abilities,
+            Long page,
+            long pageSize);
 }

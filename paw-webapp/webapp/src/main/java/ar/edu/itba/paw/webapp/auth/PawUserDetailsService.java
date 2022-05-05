@@ -36,13 +36,11 @@ public class PawUserDetailsService implements UserDetailsService {
             us.update(username, password);
         }
         final Collection<GrantedAuthority> authorities = new ArrayList<>();
-        System.out.println(user.get().getRole());
         if(user.get().getRole() == 1)
             authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
         else
             authorities.add(new SimpleGrantedAuthority("EMPLOYER"));
         org.springframework.security.core.userdetails.User uuuu = new org.springframework.security.core.userdetails.User(username, password, authorities);
-        System.out.println(uuuu.getAuthorities());
         return new org.springframework.security.core.userdetails.User(username, password, authorities);
     }
 }

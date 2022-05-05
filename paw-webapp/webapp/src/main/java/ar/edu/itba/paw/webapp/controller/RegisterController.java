@@ -8,17 +8,21 @@ import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
-import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Collections;
 
 @Controller
 public class RegisterController {
@@ -40,7 +44,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = {RequestMethod.POST})
-    public ModelAndView registerUser(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors){
+    public ModelAndView registerUser(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, HttpServletRequest request){
 
         ModelAndView mav = new ModelAndView("register");
 
@@ -50,10 +54,18 @@ public class RegisterController {
         try{
             int role = form.getRole().equals("Empleada")? 1 : 2;
             final User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword(), role);
-            if(role == 1)
-                return new ModelAndView("redirect:/crearPerfil/"+ u.getId());
-            else
+            if(role == 1) {
+                org.springframework.security.core.userdetails.User current = new org.springframework.security.core.userdetails.User(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))));
+                Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYEE")));
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                return new ModelAndView("redirect:/crearPerfil/" + u.getId());
+            }
+            else {
+                org.springframework.security.core.userdetails.User current = new org.springframework.security.core.userdetails.User(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))));
+                Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYER")));
+                SecurityContextHolder.getContext().setAuthentication(auth);
                 return new ModelAndView("redirect:/crearPerfilEmpleador/" + u.getId());
+            }
         }catch (UserFoundException uaeEx){
             mav.addObject("UserError", "An account for that username/email already exists.");
             return mav;
@@ -63,5 +75,4 @@ public class RegisterController {
         }
 
     }
-
 }

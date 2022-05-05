@@ -32,7 +32,6 @@
                             <form:input type="text" path="name" cssStyle="border-radius: 5px;"/>
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form:form>
-
                     </div>
                 </div>
             </c:if>

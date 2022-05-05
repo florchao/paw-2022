@@ -46,7 +46,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div class="flex flex-wrap content-start h-screen pl-5 pr-5">
+            <div class="flex flex-wrap content-start pl-5 pr-5">
                 <c:forEach var="contact" items="${ContactList}">
                     <c:set var="contact" value="${contact}" scope="request"/>
                     <a href="#${contact.email.replaceAll("[@.]*", "")}" rel="modal:open" class=" transition hover:scale-105">
