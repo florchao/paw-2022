@@ -65,6 +65,13 @@
                     </a>
                 </div>
                 </sec:authorize>
+                <sec:authorize access="hasAuthority('EMPLOYEE')">
+                    <div class="ml-3 col-start-5 row-start-2">
+                        <a href="<c:url value="/editarPerfil"/>">
+                            <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.editProfile"/></button>
+                        </a>
+                    </div>
+                </sec:authorize>
             </div>
             <%--            <div>--%>
             <%--                <h1 class="pb-3">Experiencia</h1>--%>

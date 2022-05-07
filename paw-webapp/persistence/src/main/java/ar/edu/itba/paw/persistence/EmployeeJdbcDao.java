@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
-import ar.edu.itba.paw.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -53,8 +52,6 @@ public class EmployeeJdbcDao implements EmployeeDao{
 
     @Override
     public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page, long pageSize) {
-        System.out.println("en jdbcDao para filtered");
-        System.out.println(experienceYears);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM employee where ");
         if (name != null) {
@@ -114,9 +111,6 @@ public class EmployeeJdbcDao implements EmployeeDao{
         stringBuilder.setLength(stringBuilder.length() - 5);
         // TODO Hacer que el limit no este hardcodeado
         String query = jdbcTemplate.queryForObject(stringBuilder.toString(), new Object[] {}, String.class);
-        System.out.println(Long.parseLong(query));
-        System.out.println(pageSize);
-        System.out.println();
         return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
     }
 
@@ -136,4 +130,13 @@ public class EmployeeJdbcDao implements EmployeeDao{
        jdbcInsert.execute(employeeData);
        return new Employee(name, location, id, availability, experienceYears, abilities);
     }
+
+    @Override
+    public void update(long id, String name, String location, String availability, long experienceYears, String abilities) {
+        final Map<String, Object> employeeData = new HashMap<>();
+        String updateQuery = "UPDATE employee SET name = ?, location = ?, availability = ?, experienceYears = ?, abilities = ? WHERE employeeID = ?";
+        jdbcTemplate.update(updateQuery, name, location,availability, experienceYears, abilities, id);
+        return;
+    }
+
 }
