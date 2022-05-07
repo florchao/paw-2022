@@ -4,8 +4,6 @@ import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,6 +28,14 @@ public class EmployeeServiceImpl implements EmployeeService{
             return Optional.of(aux);
         }
         return employee;
+    }
+
+    @Override
+    public void editProfile(String name, String location, Long id, String availability, long experienceYears, String abilities) {
+        //TODO: validate name, location, id, etc
+        employeeDao.update(id, name, location, availability, experienceYears, abilities);
+        return;
+
     }
 
     @Override
