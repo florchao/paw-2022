@@ -1,21 +1,20 @@
 package ar.edu.itba.paw.webapp.constraint.validator;
 
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesAnnotation;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Arrays;
-import java.util.List;
 
-public class CheckboxesAbilitiesValidator implements ConstraintValidator<CheckboxesAbilitiesAnnotation,String[]> {
+public class CheckboxesAbilitiesEditValidator implements ConstraintValidator<CheckboxesAbilitiesEdit,String[]> {
 
     @Override
-    public void initialize(CheckboxesAbilitiesAnnotation checkboxesAbilitiesAnnotation) {
+    public void initialize(CheckboxesAbilitiesEdit checkboxesAbilitiesEdit) {
     }
 
     public boolean isValid(String []s, ConstraintValidatorContext cvc) {
-        if(s == null)
-            return true;
+        if(s.length == 0) {
+            return false;
+        }
         String abilities = "Cocinar;Planchar;Cuidado de mascotas;Cuidado de mayores;Cuidado de menores;Cuidados especiales";
         for (String l : s) {
             if(!abilities.contains(l))
