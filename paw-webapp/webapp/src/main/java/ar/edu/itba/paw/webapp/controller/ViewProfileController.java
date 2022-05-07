@@ -52,27 +52,13 @@ public class ViewProfileController {
         return mav;
     }
 
-//    @RequestMapping("/verPerfil/{userId}")
-//    public ModelAndView userProfile(@PathVariable("userId") final long userId) {
-//        final ModelAndView mav = new ModelAndView("viewProfile");
-//        ModelAndView errorPage = new ModelAndView("errorPage");
-//
-//        Optional<User> user;
-//        try{
-//            user = userService.getUserById(userId);
-//        }
-//        catch (UserNotFoundException uex){
-//            errorPage.addObject("errorMsg", uex.getMessage());
-//            return errorPage;
-//        }
-//        user.ifPresent(value -> mav.addObject("user", value));
-//
-//        Optional<Employee> employee = employeeService.getEmployeeById(userId);
-//
-//        employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
-//
-//        return mav;
-//    }
+@ExceptionHandler(UserNotFoundException.class)
+public ModelAndView handlingUserNotFound(){
+    System.out.println("hola");
+    ModelAndView mav = new ModelAndView("errorPage");
+    mav.addObject("errorMsg", "404 not found");
+    return mav;
+}
     @RequestMapping(value = "/verPerfil/{userId}", method = RequestMethod.GET)
     public ModelAndView userProfile(@PathVariable("userId") final long userId, final UserProfileForm userProfileForm) {
         final ModelAndView mav = new ModelAndView("viewProfile");
@@ -86,8 +72,9 @@ public class ViewProfileController {
 
         employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
 
-        Optional<byte[]> optionalImage = userService.getProfileImage(userId);
-        optionalImage.ifPresent(bytes -> mav.addObject("image", bytes));
+//        Optional<byte[]> optionalImage = userService.getProfileImage(userId);
+//        optionalImage.ifPresent(bytes -> mav.addObject("image", bytes));
+//
         mav.addObject("userProfileForm",userProfileForm);
 
         return mav;
@@ -106,6 +93,8 @@ public class ViewProfileController {
     public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
         byte[] image = userService.getProfileImage(userId)
                 .orElseThrow(RuntimeException::new);
+        System.out.println(image);
+        System.out.println("hola2");
         InputStream is = new ByteArrayInputStream(image);
         IOUtils.copy(is,response.getOutputStream());
     }

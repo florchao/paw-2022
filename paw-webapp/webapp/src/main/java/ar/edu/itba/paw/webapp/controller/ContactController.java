@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.ContactExistsException;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,8 +44,8 @@ public class ContactController {
     @RequestMapping("/contacto/{id}")
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
         final ModelAndView mav = new ModelAndView("contactForm");
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
-        employee.ifPresent(value -> {mav.addObject("name", value.getName()); System.out.println(employee.get().getName());});
+        Employee employee = employeeService.getEmployeeById(id).orElseThrow(UserNotFoundException::new);
+        mav.addObject("name", employee.getName());
         return mav;
     }
 

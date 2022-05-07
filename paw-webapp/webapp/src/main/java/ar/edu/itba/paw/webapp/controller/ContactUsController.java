@@ -1,21 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Contact;
-import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.exception.ContactExistsException;
 import ar.edu.itba.paw.service.*;
-import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ContactUsController {

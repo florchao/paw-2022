@@ -17,6 +17,7 @@ public class EmployerJdbcDao implements EmployerDao{
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+    private final SimpleJdbcInsert jdbcInsertProfileImage;
 
     private static final RowMapper<Employer> EMPLOYER_ROW_MAPPER = (rs, rowNum) ->
             new Employer(rs.getString("name"),
@@ -27,13 +28,18 @@ public class EmployerJdbcDao implements EmployerDao{
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("employer");
+        jdbcInsertProfileImage = new SimpleJdbcInsert(jdbcTemplate).withTableName("profile_images");
+
     }
     @Override
-    public Employer create(String name, long id) {
+    public Employer create(String name, long id, byte[] image) {
         final Map<String, Object> employerData = new HashMap<>();
         employerData.put("employerID", id);
         employerData.put("name", name);
-
+        final Map<String, Object> argsProfileImage = new HashMap<>();
+        argsProfileImage.put("userId", id);
+        argsProfileImage.put("image", image);
+        jdbcInsertProfileImage.execute(argsProfileImage);
         jdbcInsert.execute(employerData);
         return new Employer(name, id);
     }

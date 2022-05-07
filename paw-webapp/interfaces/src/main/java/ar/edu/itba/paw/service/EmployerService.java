@@ -5,6 +5,6 @@ import ar.edu.itba.paw.model.Employer;
 
 public interface EmployerService {
 
-    Employer create(String name, long id);
+    Employer create(String name, long id, byte[] image);
 
 }

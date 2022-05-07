@@ -2,13 +2,14 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeService {
-    Optional<Employee> getEmployeeById(long id);
-    Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities);
+    Optional<Employee> getEmployeeById(long id) throws UserNotFoundException;
+    Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities, byte[] image);
 
     Optional<List<Employee>> getEmployees();
 

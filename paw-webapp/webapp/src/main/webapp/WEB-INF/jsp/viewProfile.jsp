@@ -37,14 +37,14 @@
         <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
                 <div class="row-span-3 col-span-2 ml-10 mr-6 mb-6">
-                    <c:if test="${image == null}">
-                        <div class="overflow-hidden w-48 bg-gray-100 rounded-full">
-                            <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                        </div>
-                    </c:if>
-                    <c:if test="${image != null}">
+<%--                    <c:if test="${image == null}">--%>
+<%--                        <div class="overflow-hidden w-48 bg-gray-100 rounded-full">--%>
+<%--                            <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>--%>
+<%--                        </div>--%>
+<%--                    </c:if>--%>
+<%--                    <c:if test="${image != null}">--%>
                         <img src="<c:url value="/user/profile-image/${userId}"/>" />
-                    </c:if>
+<%--                    </c:if>--%>
                     <form:form modelAttribute="userProfileForm" method="post" enctype="multipart/form-data"
                                acceptCharset="utf-8" cssStyle="margin: 30px 0; display: flex; flex-direction: column">
                         <form:label path="image">Insertar imagen</form:label>

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface EmployeeDao {
     Optional<Employee> getEmployeeById(long id);
 
-    Employee create(long id, String name, String location, String availability, long experienceYears, String abilites);
+    Employee create(long id, String name, String location, String availability, long experienceYears, String abilites, byte[] image);
 
     Optional<List<Employee>> getEmployees();
 

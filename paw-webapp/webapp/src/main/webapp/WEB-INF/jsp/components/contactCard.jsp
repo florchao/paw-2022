@@ -18,7 +18,12 @@
         </p>
     </div>
     <div class="flex flex-col items-center pb-6 ">
+        <c:if test="${image == null}">
         <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
+        </c:if>
+        <c:if test="${image != null}">
+            <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="<c:url value="/user/profile-image/${userId}"/>" />
+        </c:if>
         <h5 class="mb-1 text-xl font-medium text-gray-900"><c:out value="${param.name}"/></h5>
         <c:choose>
             <c:when test="${param.message.length() <= 180}">

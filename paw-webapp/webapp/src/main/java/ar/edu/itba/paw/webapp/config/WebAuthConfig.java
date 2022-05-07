@@ -37,7 +37,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .invalidSessionUrl("/login")
                 .and().authorizeRequests()
-                .antMatchers("/", "/buscarEmpleadas","/verPerfil/{userId}", "/filterEmployees", "/contactUs").permitAll()
+                .antMatchers("/", "/buscarEmpleadas","/verPerfil/{userId}", "/filterEmployees", "/contactUs", "/user/profile-image/{userId}").permitAll()
                 .antMatchers("/login", "/crearPerfil/{userID}", "/createEmployee/{userID}", "/registrarse", "/register",
                         "/nuevaContrasena", "/newPassword",
                         "/crearPerfilEmpleador/{userID}", "/createEmployer/{userID}").anonymous()

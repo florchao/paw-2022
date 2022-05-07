@@ -19,6 +19,7 @@ import java.util.Optional;
 public class EmployeeJdbcDao implements EmployeeDao{
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+    private final SimpleJdbcInsert jdbcInsertProfileImage;
 
     private static final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, rowNum) ->
             new Employee(rs.getString("name"),
@@ -33,6 +34,8 @@ public class EmployeeJdbcDao implements EmployeeDao{
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("Employee");
+        jdbcInsertProfileImage = new SimpleJdbcInsert(jdbcTemplate).withTableName("profile_images");
+
     }
 
     @Override
@@ -83,7 +86,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
     }
 
     @Override
-    public Employee create(long id, String name, String location, String availability, long experienceYears, String abilities) {
+    public Employee create(long id, String name, String location, String availability, long experienceYears, String abilities, byte[] image) {
        final Map<String, Object> employeeData = new HashMap<>();
        employeeData.put("employeeID", id);
        employeeData.put("name", name);
@@ -91,7 +94,10 @@ public class EmployeeJdbcDao implements EmployeeDao{
        employeeData.put("availability", availability);
        employeeData.put("experienceYears", experienceYears);
        employeeData.put("abilities", abilities);
-
+        final Map<String, Object> argsProfileImage = new HashMap<>();
+        argsProfileImage.put("userId", id);
+        argsProfileImage.put("image", image);
+        jdbcInsertProfileImage.execute(argsProfileImage);
        jdbcInsert.execute(employeeData);
        return new Employee(name, location, id, availability, experienceYears, abilities);
     }

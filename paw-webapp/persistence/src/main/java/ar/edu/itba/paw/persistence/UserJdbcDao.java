@@ -18,8 +18,6 @@ public class UserJdbcDao implements UserDao{
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
-    private final SimpleJdbcInsert jdbcInsertProfileImage;
-
 
     private static final RowMapper<User> ROW_MAPPER = (rs, rowNum) ->
             new User(rs.getLong("userid"), rs.getString("email"), rs.getString("password"), rs.getInt("role"));
@@ -30,7 +28,6 @@ public class UserJdbcDao implements UserDao{
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("Users")
                 .usingGeneratedKeyColumns("userid");
-        jdbcInsertProfileImage = new SimpleJdbcInsert(jdbcTemplate).withTableName("profile_images");
     }
 
     @Override
@@ -47,11 +44,6 @@ public class UserJdbcDao implements UserDao{
         userData.put("password", password);
         userData.put("role", role);
         Number userId = jdbcInsert.executeAndReturnKey(userData);
-
-        final Map<String, Object> argsProfileImage = new HashMap<>();
-        argsProfileImage.put("image", null);
-        argsProfileImage.put("userId", userId);
-        jdbcInsertProfileImage.execute(argsProfileImage);
 
         return new User(userId.longValue(), username, password, role);
     }
@@ -77,9 +69,12 @@ public class UserJdbcDao implements UserDao{
 
     @Override
     public Optional<byte[]> getProfileImage(Long userId) {
-        return jdbcTemplate.query("SELECT image FROM profile_images WHERE userId = ?",
-                new Object[]{userId}, (rs, rowNumber) ->  Optional.ofNullable(rs.getBytes("image"))).stream().findFirst().get();    }
-
+        Optional<Optional<byte[]>> query = jdbcTemplate.query("SELECT image FROM profile_images WHERE userId = ?",
+                new Object[]{userId}, (rs, rowNumber) ->  Optional.ofNullable(rs.getBytes("image"))).stream().findFirst();
+        if(query.isPresent())
+            return query.get();
+        return Optional.empty();
+    }
     @Override
     public boolean updateProfileImage(Long userId, byte[] image) {
         return jdbcTemplate.update("UPDATE profile_images " +

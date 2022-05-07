@@ -22,6 +22,7 @@ public class EmployeeServiceImplTest {
     private static final long ID = 1;
     private static final long EXPERIENCE_YEARS = 3;
     private static final String ABILITIES = "Cocinar,Planchar";
+    private static final byte[] IMAGE = null;
 
     @Mock
     private EmployeeDao mockDao;
@@ -32,10 +33,10 @@ public class EmployeeServiceImplTest {
     @Test
     public void testCreate(){
 
-        Mockito.when(mockDao.create(Mockito.eq(ID), Mockito.eq(NAME), Mockito.eq(LOCATION), Mockito.eq(AVAILABILITY), Mockito.eq(EXPERIENCE_YEARS), Mockito.eq(ABILITIES)))
+        Mockito.when(mockDao.create(Mockito.eq(ID), Mockito.eq(NAME), Mockito.eq(LOCATION), Mockito.eq(AVAILABILITY), Mockito.eq(EXPERIENCE_YEARS), Mockito.eq(ABILITIES), Mockito.eq(IMAGE)))
                 .thenReturn(new Employee(NAME, LOCATION,ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES));
 
-        Optional<Employee> maybeEmployee = Optional.ofNullable(employeeService.create(NAME, LOCATION, ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES));
+        Optional<Employee> maybeEmployee = Optional.ofNullable(employeeService.create(NAME, LOCATION, ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, IMAGE));
 
         Assert.assertNotNull(maybeEmployee);
         Assert.assertTrue(maybeEmployee.isPresent());
@@ -52,7 +53,7 @@ public class EmployeeServiceImplTest {
         Mockito.when(mockDao.getEmployeeById(Mockito.eq(ID)))
                 .thenReturn(Optional.of(new Employee(NAME,LOCATION, ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES)));
 
-        Optional<Employee> maybeEmployee = Optional.ofNullable(employeeService.create(NAME, LOCATION, ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES));
+        Optional<Employee> maybeEmployee = Optional.ofNullable(employeeService.create(NAME, LOCATION, ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, IMAGE));
 
         Assert.assertNotNull(maybeEmployee);
         Assert.assertFalse(maybeEmployee.isPresent());

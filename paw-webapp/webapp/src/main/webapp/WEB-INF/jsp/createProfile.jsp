@@ -31,7 +31,7 @@
 </jsp:include>
 <c:url value="/createEmployee/${userID}" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">
-    <form:form modelAttribute="employeeForm" action="${postPath}" method="post">
+    <form:form modelAttribute="employeeForm" action="${postPath}" method="post" enctype="multipart/form-data">
         <div class="grid grid-cols-6">
             <div class="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                 <div class="bg-gray-200 rounded-3xl p-5 shadow-2xl">
@@ -40,7 +40,10 @@
                             <div class="overflow-hidden bg-gray-100 rounded-full">
                                 <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                             </div>
-                        </div>
+                                <form:label path="image">Insertar imagen</form:label>
+                                <form:input type="file" path="image" accept="image/png, image/jpeg" />
+                                <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
+                       </div>
                         <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                             <form:label path="name" for="name" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employeeForm.label.name"/></form:label>
                             <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>

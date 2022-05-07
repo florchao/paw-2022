@@ -1,9 +1,12 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
+import ar.edu.itba.paw.webapp.constraint.annotation.NotEmptyFile;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.constraints.*;
 import java.sql.Time;
@@ -32,6 +35,17 @@ public class EmployeeForm {
 
     @NotNull
     private String availability;
+
+    @NotEmptyFile
+    private CommonsMultipartFile image;
+
+    public CommonsMultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(CommonsMultipartFile image) {
+        this.image = image;
+    }
 
     public String getLocation() {
         return location;

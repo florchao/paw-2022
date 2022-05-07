@@ -13,7 +13,7 @@ public class EmployerServiceImpl implements EmployerService{
     private EmployerDao employerDao;
 
     @Override
-    public Employer create(String name, long id) {
-        return employerDao.create(name, id);
+    public Employer create(String name, long id, byte[] image) {
+        return employerDao.create(name, id, image);
     }
 }
