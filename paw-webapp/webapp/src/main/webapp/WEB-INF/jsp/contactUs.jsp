@@ -1,12 +1,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
-<html lang="es">
+<html>
 <head>
     <title><spring:message code="contactUs.title"/></title>
-    <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
@@ -37,7 +36,7 @@
             </p>
         </div>
         <c:url value="/contactUs" var="postPath"/>
-        <form:form modelAttribute="contactUsForm" action="${postPath}" method="post">
+         <form:form modelAttribute="contactUsForm" action="${postPath}" method="post" pageEncoding="UTF-8">
             <div class="block p-6 rounded-3xl shadow-lg bg-gray-200">
                 <div class="form-group mb-6">
                     <form:label path="name" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactUs.name"/></form:label>
