@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
@@ -49,6 +49,7 @@
                 <c:forEach var="job" items="${JobList}">
                     <c:set var="job" value="${job}" scope="request"/>
                     <div>
+                    <% request.setCharacterEncoding("utf-8");%>
                         <jsp:include page="components/jobCard.jsp">
                             <jsp:param name="title" value="${job.title}"/>
                             <jsp:param name="description" value="${job.description}"/>
