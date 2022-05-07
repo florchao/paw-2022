@@ -36,7 +36,7 @@
                 <spring:message code="contactUs.title" arguments="${name}"/>
             </p>
         </div>
-
+        <c:url value="/contactUs" var="postPath"/>
         <form:form modelAttribute="contactUsForm" action="${postPath}" method="post">
             <div class="block p-6 rounded-3xl shadow-lg bg-gray-200">
                 <div class="form-group mb-6">

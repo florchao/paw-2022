@@ -7,12 +7,16 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.ContactExistsException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.form.ContactForm;
+import ar.edu.itba.paw.webapp.form.ContactUsForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -38,13 +42,6 @@ public class ContactController {
 
     @Autowired
     private EmployerService employerService;
-
-//    @RequestMapping(value = "/contactRedirect", method = RequestMethod.GET)
-//    public ModelAndView contactRedirect(@RequestParam("userId") Long id) {
-//        final ModelAndView mav = new ModelAndView("redirect:/contacto");
-//        mav.addObject("user",userService.getUserById(id));
-//        return mav;
-//    }
 
     @RequestMapping("/contacto/{id}")
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
@@ -81,5 +78,18 @@ public class ContactController {
             mav.addObject("ContactError", contactException.getMessage());
         }
         return mav;
+    }
+
+    @RequestMapping("/contactanos")
+    public ModelAndView contactPage(@ModelAttribute("contactUsForm") final ContactUsForm form) {
+        final ModelAndView mav = new ModelAndView("contactUs");
+        mav.addObject("name", "AAAAA");
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/contactUs", method = {RequestMethod.POST})
+    public ModelAndView contactUs(@Valid @ModelAttribute("contactUsForm") final ContactUsForm form, BindingResult error) {
+        return new ModelAndView("redirect:/contactUs");
     }
 }
