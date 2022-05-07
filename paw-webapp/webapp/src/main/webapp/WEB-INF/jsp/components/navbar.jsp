@@ -14,6 +14,7 @@
 <body>
 <c:url value="/redirectSearch" var = "search"/>
 <c:url value="/redirectContacts" var = "contacts"/>
+<c:url value="/login" var = "login"/>
 <c:url value="/" var = "home"/>
 <nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 shadow-md" style="background-color: #ac70ff">
     <div class="h-12 grid grid-cols-5 space-between">
@@ -26,9 +27,9 @@
             <c:if test="${param.currentUrl.equals('searchPage')}">
                 <c:url value="/filterEmployees" var="postPath"/>
                 <div class="col-start-2">
-                    <div class="search-box">
+                    <div class="search-box mt-2">
                         <form:form modelAttribute="filterBy" action="${postPath}" method="get" pageEncoding="UTF-8">
-                            <form:input type="text" path="name" cssStyle="border-radius: 5px;"/>
+                            <form:input type="text" path="name" cssStyle="border-radius: 5px;background-color: #ac70ff;border-width: 0 0 2px;border-color: #8a52d9;"/>
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form:form>
                     </div>
@@ -43,6 +44,16 @@
                             </c:when>
                             <c:otherwise>
                                 <a href="<c:url value="/registrarse"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.register"/></a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <div class = "items-center ">
+                        <c:choose>
+                            <c:when test="${param.currentUrl.equals('login')}">
+                                <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.login"/></p>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<c:url value="/login"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.login"/></a>
                             </c:otherwise>
                         </c:choose>
                     </div>

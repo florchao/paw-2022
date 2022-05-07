@@ -121,6 +121,9 @@
                                     <form:checkbox path="abilities" value="Cuidados especiales"/>
                                 </div>
                             </div>
+                            <div class="grid grid-cols-4 w-5/6">
+                                <form:errors path="abilities" element="p"  class="col-start-2 col-span-full" cssStyle="color:red"/>
+                            </div>
                             <h1 class="font-semibold mt-4"><spring:message code="employeeForm.availability"/></h1>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
@@ -151,6 +154,7 @@
                 </div>
                 <div class="col-span-3 col-start-2">
                     <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="searchPage.searchEmployees"/></p>
+                    <form:input type="text" path="name" cssClass="hidden" cssStyle="border-radius: 5px;"/>
                     <c:choose>
                         <c:when test="${EmployeeList.size() == 0}">
                             <div class = "grid content-center justify-center h-5/6 mt-16">
@@ -198,6 +202,7 @@
                     </div>
                     <form:input cssStyle="visibility: hidden" type="number" id="pageNumber" path="pageNumber"/>
                     </form:form>
+
                 </div>
             </div>
         </div>

@@ -3,15 +3,17 @@ package ar.edu.itba.paw.webapp.form;
 import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesRegister;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilityRegister;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.sql.Time;
 import java.util.List;
 
-public class EmployeeForm {
+public class EmployeeEditForm {
 
     @Pattern(regexp = "[a-zA-z\\s']+|^$")
     @NotBlank
@@ -29,11 +31,11 @@ public class EmployeeForm {
     @Size(max = 100)
     private String location;
 
-    @CheckboxesAbilitiesRegister
-    private String abilities;
+//    @CheckboxesAbilitiesRegister
+    private String abilities[];
 
-    @CheckboxesAvailabilityRegister
-    private String availability;
+//    @CheckboxesAvailabilityRegister
+    private String availability[];
 
     public String getLocation() {
         return location;
@@ -59,7 +61,7 @@ public class EmployeeForm {
         this.experiencesList = experiencesList;
     }
 
-    public String getAbilities() {
+    public String[] getAbilities() {
         return abilities;
     }
 
@@ -71,15 +73,15 @@ public class EmployeeForm {
         return experienceYears;
     }
 
-    public void setAbilities(String abilities) {
+    public void setAbilities(String[] abilities) {
         this.abilities = abilities;
     }
 
-    public String getAvailability() {
+    public String[] getAvailability() {
         return availability;
     }
 
-    public void setAvailability(String availability) {
+    public void setAvailability(String[] availability) {
         this.availability = availability;
     }
 
