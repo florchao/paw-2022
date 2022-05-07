@@ -10,6 +10,7 @@ import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -48,9 +49,6 @@ public class ContactController {
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
         final ModelAndView mav = new ModelAndView("contactForm");
         Optional<Employee> employee = employeeService.getEmployeeById(id);
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println(employee.get());
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         employee.ifPresent(value -> mav.addObject("name", value.getName()));
         return mav;
     }
@@ -60,8 +58,7 @@ public class ContactController {
         final ModelAndView mav = new ModelAndView("contacts");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID());
-        if(list.isPresent())
-            mav.addObject("ContactList", list);
+        list.ifPresent(contacts -> mav.addObject("ContactList", contacts));
         return mav;
     }
 
@@ -84,13 +81,18 @@ public class ContactController {
     @RequestMapping("/contactanos")
     public ModelAndView contactPage(@ModelAttribute("contactUsForm") final ContactUsForm form) {
         final ModelAndView mav = new ModelAndView("contactUs");
-        mav.addObject("name", "AAAAA");
-
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof HogarUser){
+            HogarUser hogarUser = (HogarUser) principal;
+            mav.addObject("name", hogarUser.getName());
+        }
         return mav;
     }
 
     @RequestMapping(value = "/contactUs", method = {RequestMethod.POST})
     public ModelAndView contactUs(@Valid @ModelAttribute("contactUsForm") final ContactUsForm form, BindingResult error) {
+        if(error.hasErrors())
+            return contactPage(form);
         return new ModelAndView("redirect:/contactUs");
     }
 }
