@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesAnnotation;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailability;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.*;
@@ -28,8 +30,10 @@ public class FilterForm {
     @Size(max = 100)
     private String location;
 
+    @CheckboxesAbilitiesAnnotation
     private String[] abilities;
 
+    @CheckboxesAvailability
     private String[] availability;
 
     public String getName() {
