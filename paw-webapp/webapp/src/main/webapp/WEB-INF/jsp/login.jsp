@@ -26,7 +26,9 @@
         <li></li>
     </ul>
 </div>
-    <jsp:include page="components/navbar.jsp"/>
+    <jsp:include page="components/navbar.jsp">
+        <jsp:param name="currentUrl" value="login"/>
+    </jsp:include>
     <c:url value="/login" var="loginUrl"/>
     <div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
             <form modelAttribute="login" class="col-span-3 col-start-3" action="${loginUrl}" method="post" enctype = "application/x-www-form-urlencoded">
