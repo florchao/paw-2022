@@ -26,9 +26,9 @@
             <c:if test="${param.currentUrl.equals('searchPage')}">
                 <c:url value="/filterEmployees" var="postPath"/>
                 <div class="col-start-2">
-                    <div class="search-box">
+                    <div class="search-box mt-2">
                         <form:form modelAttribute="filterBy" action="${postPath}" method="get" pageEncoding="UTF-8">
-                            <form:input type="text" path="name" cssStyle="border-radius: 5px;"/>
+                            <form:input type="text" path="name" cssStyle="border-radius: 5px;background-color: #ac70ff;border-width: 0 0 2px;border-color: #8a52d9;"/>
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form:form>
                     </div>
