@@ -74,7 +74,7 @@ public class ContactController {
             user.ifPresent(value -> contactService.contact(value, form.getContent(), principal.getName(), form.getPhone()));
         }
         catch (ContactExistsException contactException){
-            mav.addObject("ContactError", contactException.getMessage());
+            mav.addObject("error", "exits");
         }
         return mav;
     }
@@ -94,6 +94,7 @@ public class ContactController {
     public ModelAndView contactUs(@Valid @ModelAttribute("contactUsForm") final ContactUsForm form, BindingResult error) {
         if(error.hasErrors())
             return contactPage(form);
-        return new ModelAndView("redirect:/contactUs");
+        contactService.contactUS(form.getContent(), form.getMail(), form.getName());
+        return new ModelAndView("redirect:/contactanos");
     }
 }
