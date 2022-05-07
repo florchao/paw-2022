@@ -52,4 +52,11 @@ public class ContactServiceImpl implements ContactService{
         //mailingService.sendMail(replyTo, to, name, message);
 
     }
+
+    @Override
+    public void contactUS(String message, String from, String name) {
+        mailingService.sendContactUsMail(name, from, message);
+    }
+
+
 }

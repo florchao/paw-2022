@@ -16,4 +16,7 @@ public interface ContactService {
     Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws ContactExistsException;
 
     void contact(User to, String message, String name, String phoneNumber);
+
+    void contactUS(String message, String from, String name);
 }
+
