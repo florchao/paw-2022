@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckboxesAvailability {
     //error message
-    public String message() default "Invalid role";
+    public String message() default "Invalid availability";
     //represents group of constraints
     public Class<?>[] groups() default {};
     //represents additional information about annotation

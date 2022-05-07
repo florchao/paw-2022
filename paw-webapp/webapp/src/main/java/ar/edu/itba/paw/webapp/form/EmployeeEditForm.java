@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesRegister;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilitiesEdit;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilityRegister;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
@@ -31,10 +33,10 @@ public class EmployeeEditForm {
     @Size(max = 100)
     private String location;
 
-//    @CheckboxesAbilitiesRegister
+    @CheckboxesAbilitiesEdit
     private String abilities[];
 
-//    @CheckboxesAvailabilityRegister
+    @CheckboxesAvailabilitiesEdit
     private String availability[];
 
     public String getLocation() {

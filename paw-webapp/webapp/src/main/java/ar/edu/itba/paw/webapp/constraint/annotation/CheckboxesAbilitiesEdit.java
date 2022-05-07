@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.constraint.annotation;
 
-import ar.edu.itba.paw.webapp.constraint.validator.CheckboxesAbilitiesValidator;
+import ar.edu.itba.paw.webapp.constraint.validator.CheckboxesAbilitiesEditValidator;
+import ar.edu.itba.paw.webapp.constraint.validator.CheckboxesAbilitiesRegisterValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,10 +10,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = CheckboxesAbilitiesValidator.class)
+@Constraint(validatedBy = CheckboxesAbilitiesEditValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD } )
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CheckboxesAbilitiesAnnotation {
+public @interface CheckboxesAbilitiesEdit{
     //error message
     public String message() default "Invalid abilities";
     //represents group of constraints

@@ -41,11 +41,14 @@ public class EmployeeServiceImpl implements EmployeeService{
         for (String av : availability) {
             availabilitySB.append(av).append(",");
         }
-        abilitiesSB.setLength(abilitiesSB.length() - 1);
-        availabilitySB.setLength(availabilitySB.length() - 1);
-        System.out.println("aca en service");
-        System.out.println(availabilitySB.toString());
-        System.out.println(abilitiesSB.toString());
+        if(abilitiesSB.length() == 0)
+            abilitiesSB.setLength(0);
+        else
+            abilitiesSB.setLength(abilitiesSB.length() - 1);
+        if(availabilitySB.length() == 0)
+            availabilitySB.setLength(0);
+        else
+            availabilitySB.setLength(availabilitySB.length() - 1);
         employeeDao.update(id, name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString());
     }
 
