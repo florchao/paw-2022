@@ -61,14 +61,17 @@
 </jsp:include>
 <c:url value="/editEmployee" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">
-    <form:form modelAttribute="employeeEditForm" action="${postPath}" method="post" pageEncoding="UTF-8">
+    <form:form modelAttribute="employeeEditForm" action="${postPath}" method="post" pageEncoding="UTF-8" enctype="multipart/form-data">
         <div class="grid grid-cols-6" onload="">
             <div class="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                 <div class="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                     <div class="grid grid-cols-5 gap-6">
                         <div class="row-span-4 col-span-2 m-6">
                             <div class="overflow-hidden bg-gray-100 rounded-full">
-                                <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                                <img src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '/public/user.png'"/>
+                                    <form:label path="image">Insertar imagen</form:label>
+                                    <form:input type="file" path="image" accept="image/png, image/jpeg" />
+                                    <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
                             </div>
                         </div>
                         <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">

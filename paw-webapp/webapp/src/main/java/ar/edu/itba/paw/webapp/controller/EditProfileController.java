@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;
+import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.EmployeeEditForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class EditProfileController {
     @Autowired
     private EmployerService employerService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("/editarPerfil")
     public ModelAndView editProfile(@ModelAttribute("employeeEditForm") final EmployeeEditForm form) {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -37,6 +41,7 @@ public class EditProfileController {
         form.setLocation(employee.get().getLocation());
         form.setName(employee.get().getName());
         form.setExperienceYears(employee.get().getExperienceYears());
+        mav.addObject("userId", principal.getUserID());
         return mav;
     }
 
@@ -47,6 +52,9 @@ public class EditProfileController {
             return editProfile(form);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), ((Long) principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
+        userService.updateProfileImage(((Long) principal.getUserID()), form.getImage().getBytes());
+        System.out.println(principal.getUserID());
+        System.out.println(form.getImage().getBytes());
         return new ModelAndView("redirect:/verPerfil/");
     }
 }

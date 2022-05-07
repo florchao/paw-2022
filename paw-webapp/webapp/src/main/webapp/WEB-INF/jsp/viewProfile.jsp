@@ -37,15 +37,7 @@
         <div class=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
                 <div class="row-span-3 col-span-2 ml-6 mr-6 mb-6">
-
                     <img src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '/public/user.png'"/>
-                    <form:form modelAttribute="userProfileForm" method="post" enctype="multipart/form-data"
-                               acceptCharset="utf-8" cssStyle="margin: 30px 0; display: flex; flex-direction: column">
-                        <form:label path="image">Insertar imagen</form:label>
-                        <form:input type="file" path="image" accept="image/png, image/jpeg" />
-                        <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
-                        <button>Confirmar</button>
-                    </form:form>
                 </div>
                 <div class="ml-3 col-span-2">
                     <p class="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden"><c:out value="${employee.name}"/></p>

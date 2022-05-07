@@ -1,12 +1,10 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesRegister;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilitiesEdit;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilityRegister;
+import ar.edu.itba.paw.webapp.constraint.annotation.*;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -38,6 +36,17 @@ public class EmployeeEditForm {
 
     @CheckboxesAvailabilitiesEdit
     private String availability[];
+
+    @NotEmptyFile
+    private CommonsMultipartFile image;
+
+    public CommonsMultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(CommonsMultipartFile image) {
+        this.image = image;
+    }
 
     public String getLocation() {
         return location;

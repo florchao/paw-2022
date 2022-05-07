@@ -48,12 +48,13 @@ public class ViewProfileController {
             mav.addObject("user", user.get());
             Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
             employee.ifPresent(value -> mav.addObject("employee", value));
+            mav.addObject("userId", user.get().getId());
         }
         return mav;
     }
 
     @RequestMapping(value = "/verPerfil/{userId}", method = RequestMethod.GET)
-    public ModelAndView userProfile(@PathVariable("userId") final long userId, final UserProfileForm userProfileForm) {
+    public ModelAndView userProfile(@PathVariable("userId") final long userId) {
         final ModelAndView mav = new ModelAndView("viewProfile");
         ModelAndView errorPage = new ModelAndView("errorPage");
 
@@ -68,19 +69,9 @@ public class ViewProfileController {
             mav.addObject("employee", employee.get());
         }
 
-        mav.addObject("userProfileForm",userProfileForm);
-
         return mav;
     }
 
-    @RequestMapping(value ="/verPerfil/{userId}", method = RequestMethod.POST)
-    public ModelAndView user(@PathVariable("userId") final long userId, @Valid UserProfileForm userProfileForm, final BindingResult errors) {
-        if (!errors.hasErrors()){
-            userService.updateProfileImage(userId,
-                    userProfileForm.getImage().getBytes());
-        }
-        return userProfile(userId, userProfileForm);
-    }
 
     @RequestMapping("/user/profile-image/{userId}")
     public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
