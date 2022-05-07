@@ -13,7 +13,7 @@
 <div class = "grid content-center justify-center h-screen">
     <div class = "grid justify-items-center">
         <img src="<c:url value='/public/warning2.png'/>" alt="Error" class="mr-3 h-6 sm:h-52">
-        <p class="text-3xl font-semibold text-purple-700" style="margin-top: 50px">404 not found</p>
+        <p class="text-3xl font-semibold text-purple-700" style="margin-top: 50px"><spring:message code="404.message"/> </p>
     </div>
 </div>
 </body>
