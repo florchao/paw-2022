@@ -18,9 +18,13 @@ public class UserJdbcDao implements UserDao{
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+    private final SimpleJdbcInsert jdbcInsertProfileImage;
+
 
     private static final RowMapper<User> ROW_MAPPER = (rs, rowNum) ->
             new User(rs.getLong("userid"), rs.getString("email"), rs.getString("password"), rs.getInt("role"));
+
+    private static final RowMapper<Boolean> IMAGE_EXISTS_ROW_MAPPER = (rs, rowNum) -> rs.getBoolean("exists");
 
     @Autowired
     public UserJdbcDao(final DataSource ds) {
@@ -28,6 +32,8 @@ public class UserJdbcDao implements UserDao{
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("Users")
                 .usingGeneratedKeyColumns("userid");
+        jdbcInsertProfileImage = new SimpleJdbcInsert(jdbcTemplate).withTableName("profile_images");
+
     }
 
     @Override
@@ -75,12 +81,23 @@ public class UserJdbcDao implements UserDao{
             return query.get();
         return Optional.empty();
     }
-    @Override
-    public boolean updateProfileImage(Long userId, byte[] image) {
-        return jdbcTemplate.update("UPDATE profile_images " +
-                "SET image = ?" +
-                "WHERE userId = ?", image, userId) == 1;
+
+    private Optional<Boolean> hasProfileImage(Long userId){
+        List<Boolean> query =  jdbcTemplate.query("SELECT EXISTS(SELECT * FROM profile_images WHERE userid = ?)", new Object[]{userId}, IMAGE_EXISTS_ROW_MAPPER);
+        return query.stream().findFirst();
     }
 
+    @Override
+    public boolean updateProfileImage(Long userId, byte[] image) {
+        if(hasProfileImage(userId).get()) {
+            return jdbcTemplate.update("UPDATE profile_images " +
+                    "SET image = ?" +
+                    "WHERE userId = ?", image, userId) == 1;
+        }
+        final Map<String, Object> argsProfileImage = new HashMap<>();
+        argsProfileImage.put("userId", userId);
+        argsProfileImage.put("image", image);
+        return jdbcInsertProfileImage.execute(argsProfileImage) == 1;
+    }
 
 }
