@@ -68,9 +68,6 @@ public class ViewProfileController {
             mav.addObject("employee", employee.get());
         }
 
-//        Optional<byte[]> optionalImage = userService.getProfileImage(userId);
-//        optionalImage.ifPresent(bytes -> mav.addObject("image", bytes));
-//
         mav.addObject("userProfileForm",userProfileForm);
 
         return mav;
@@ -87,12 +84,12 @@ public class ViewProfileController {
 
     @RequestMapping("/user/profile-image/{userId}")
     public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
-        byte[] image = userService.getProfileImage(userId)
-                .orElseThrow(RuntimeException::new);
-        System.out.println(image);
-        System.out.println("hola2");
-        InputStream is = new ByteArrayInputStream(image);
-        IOUtils.copy(is,response.getOutputStream());
+        Optional<byte[]> image = userService.getProfileImage(userId);
+        if(image.isPresent()){
+            InputStream is = new ByteArrayInputStream(image.get());
+            IOUtils.copy(is,response.getOutputStream());
+        }
+
     }
 
     Employee firstWordsToUpper(Employee employee) {
