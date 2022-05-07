@@ -17,7 +17,7 @@ public class CheckboxesAbilitiesValidator implements ConstraintValidator<Checkbo
         if(s == null)
             return true;
         String abilities = "Cocinar;Planchar;Cuidado de mascotas;Cuidado de mayores;Cuidado de menores;Cuidados especiales";
-        List<String> list= Arrays.asList(s.split(";"));
+        List<String> list= Arrays.asList(s.split(","));
         for (String l : list) {
             if(!abilities.contains(l))
                 return false;

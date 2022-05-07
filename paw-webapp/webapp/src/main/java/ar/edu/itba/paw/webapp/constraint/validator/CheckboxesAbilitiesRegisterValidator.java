@@ -18,7 +18,7 @@ public class CheckboxesAbilitiesRegisterValidator implements ConstraintValidator
         if(s == null)
             return false;
         String abilities = "Cocinar;Planchar;Cuidado de mascotas;Cuidado de mayores;Cuidado de menores;Cuidados especiales";
-        List<String> list= Arrays.asList(s.split(";"));
+        List<String> list= Arrays.asList(s.split(","));
         for (String l : list) {
             if(!abilities.contains(l))
                 return false;
