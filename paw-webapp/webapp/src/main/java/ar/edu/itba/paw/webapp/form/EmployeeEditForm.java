@@ -31,11 +31,11 @@ public class EmployeeEditForm {
     @Size(max = 100)
     private String location;
 
-    @CheckboxesAbilitiesRegister
-    private String abilities;
+//    @CheckboxesAbilitiesRegister
+    private String abilities[];
 
-    @CheckboxesAvailabilityRegister
-    private String availability;
+//    @CheckboxesAvailabilityRegister
+    private String availability[];
 
     public String getLocation() {
         return location;
@@ -61,7 +61,7 @@ public class EmployeeEditForm {
         this.experiencesList = experiencesList;
     }
 
-    public String getAbilities() {
+    public String[] getAbilities() {
         return abilities;
     }
 
@@ -73,15 +73,15 @@ public class EmployeeEditForm {
         return experienceYears;
     }
 
-    public void setAbilities(String abilities) {
+    public void setAbilities(String[] abilities) {
         this.abilities = abilities;
     }
 
-    public String getAvailability() {
+    public String[] getAvailability() {
         return availability;
     }
 
-    public void setAvailability(String availability) {
+    public void setAvailability(String[] availability) {
         this.availability = availability;
     }
 

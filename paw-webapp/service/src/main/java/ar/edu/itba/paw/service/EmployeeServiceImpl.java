@@ -31,11 +31,22 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public void editProfile(String name, String location, Long id, String availability, long experienceYears, String abilities) {
+    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities) {
         //TODO: validate name, location, id, etc
-        employeeDao.update(id, name, location, availability, experienceYears, abilities);
-        return;
-
+        StringBuilder abilitiesSB = new StringBuilder();
+        StringBuilder availabilitySB = new StringBuilder();
+        for (String ab : abilities) {
+            abilitiesSB.append(ab).append(",");
+        }
+        for (String av : availability) {
+            availabilitySB.append(av).append(",");
+        }
+        abilitiesSB.setLength(abilitiesSB.length() - 1);
+        availabilitySB.setLength(availabilitySB.length() - 1);
+        System.out.println("aca en service");
+        System.out.println(availabilitySB.toString());
+        System.out.println(abilitiesSB.toString());
+        employeeDao.update(id, name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString());
     }
 
     @Override

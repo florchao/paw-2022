@@ -11,7 +11,7 @@ public interface EmployeeService {
 
     Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities);
 
-    void editProfile(String name, String location, Long id, String availability, long experienceYears, String abilities);
+    void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities);
     Optional<List<Employee>> getEmployees();
 
     int getPageNumber(
