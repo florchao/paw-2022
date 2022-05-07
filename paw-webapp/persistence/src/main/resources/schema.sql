@@ -54,3 +54,23 @@ CREATE TABLE IF NOT EXISTS profile_images
     FOREIGN KEY (userId) REFERENCES users ON DELETE CASCADE
 
     );
+
+create table if not exists jobs(
+    jobID SERIAL PRIMARY KEY,
+    employerID INT,
+    title TEXT,
+    location TEXT,
+    availability TEXT,
+    experienceYears INT,
+    abilities TEXT,
+    description TEXT,
+    FOREIGN KEY (employerID) REFERENCES employer(employerID) ON DELETE CASCADE
+);
+
+create table if not exists applicants(
+    employeeID INT NOT NULL,
+    jobID INT NOT NULL,
+    FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
+    FOREIGN KEY (jobID) REFERENCES jobs(jobid) ON DELETE CASCADE,
+    PRIMARY KEY(employeeID, jobID)
+);

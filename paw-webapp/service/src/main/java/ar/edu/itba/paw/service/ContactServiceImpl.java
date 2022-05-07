@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,11 +27,8 @@ public class ContactServiceImpl implements ContactService{
 
 
     @Override
-    public Optional<List<Contact>> getAllContacts() {
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> optional = userService.findByUsername(principal.getUsername());
-        User user = optional.get();
-        return contactDao.getAllContacts(user.getId());
+    public Optional<List<Contact>> getAllContacts(long id) {
+        return contactDao.getAllContacts(id);
     }
 
     @Override
@@ -51,7 +47,7 @@ public class ContactServiceImpl implements ContactService{
         if(optional.isPresent()) {
             User from = optional.get();
             create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber);
-            mailingService.sendMail(from.getUsername(), to.getUsername(), name);
+            mailingService.sendContactMail(from.getUsername(), to.getUsername(), name);
         }
         //mailingService.sendMail(replyTo, to, name, message);
 

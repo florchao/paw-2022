@@ -5,6 +5,8 @@ import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,10 +29,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.get().getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.get().getAbilities().split(",")));
         Employee aux = new Employee(employee.get().getName(), employee.get().getLocation(), id, availabilityArr, employee.get().getExperienceYears(), abilitiesArr);
-        System.out.println(aux);
-        System.out.println(availabilityArr);
-        System.out.println(abilitiesArr);
-        System.out.println("-----------");
         return Optional.of(aux);
     }
 
@@ -42,7 +40,20 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Optional<List<Employee>> getEmployees() {
-        return employeeDao.getEmployees();
+        return employeeDao.getEmployees(0);
+    }
+
+    @Override
+    public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
+        List<String> availabilityList = new ArrayList<>();
+        if (availability != null) {
+            availabilityList = Arrays.asList(availability.split(","));
+        }
+        List<String> abilitiesList= new ArrayList<>();
+        if (abilities != null) {
+            abilitiesList = Arrays.asList(abilities.split(","));
+        }
+        return employeeDao.getPageNumber(name, experienceYears, location, experiences, availabilityList, abilitiesList, pageSize);
     }
 
     @Override
@@ -52,19 +63,18 @@ public class EmployeeServiceImpl implements EmployeeService{
             String location,
             List<Experience> experiences,
             String availability,
-            String abilities
+            String abilities,
+            Long page,
+            long pageSize
     ) {
-        System.out.println("getEmployees pero filtrados!");
-        System.out.println("---------");
-        System.out.println(name);
-        System.out.println(experienceYears);
-        System.out.println(location);
-        System.out.println(experiences);
-        System.out.println(availability);
-        System.out.println(abilities);
-        System.out.println("---------");
-        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null)
-            return employeeDao.getEmployees();
+        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == 0) {
+            System.out.println("------------------------");
+            System.out.println("------------------------");
+            System.out.println("para vos flor :)");
+            System.out.println("------------------------");
+            System.out.println("------------------------");
+            return employeeDao.getEmployees(pageSize);
+        }
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
@@ -73,6 +83,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList);
+        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
     }
 }

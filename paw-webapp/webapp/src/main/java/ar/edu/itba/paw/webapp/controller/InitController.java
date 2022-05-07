@@ -1,19 +1,20 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.service.ExperienceService;
-import ar.edu.itba.paw.service.MailingService;
-import ar.edu.itba.paw.service.UserService;
-import ar.edu.itba.paw.service.EmployeeService;
-
+import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.Collection;
+import java.util.Optional;
 
 @Controller
 public class InitController {
@@ -22,6 +23,9 @@ public class InitController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private EmployerService employerService;
 
     @Autowired
     private ExperienceService experienceService;
@@ -44,9 +48,21 @@ public class InitController {
     @RequestMapping("/afterLogin")
     public ModelAndView afterLogin() {
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
+            Optional<Employee> employee = employeeService.getEmployeeById(principal.getUserID());
+            if(!employee.isPresent()){
+                return new ModelAndView("redirect:/crearPerfil/"+principal.getUserID());
+            }
             return new ModelAndView("redirect:/contactos");
-        return new ModelAndView("redirect:/buscarEmpleadas");
+        }
+        else {
+            Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
+            if (!employer.isPresent()) {
+                return new ModelAndView("redirect:/crearPerfilEmpleador/"+principal.getUserID());
+            }
+            return new ModelAndView("redirect:/buscarEmpleadas");
+        }
     }
 
     @RequestMapping(value = "/redirectSearch", method = RequestMethod.GET)

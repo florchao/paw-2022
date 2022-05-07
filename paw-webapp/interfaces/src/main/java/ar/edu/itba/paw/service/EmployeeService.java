@@ -13,12 +13,22 @@ public interface EmployeeService {
 
     Optional<List<Employee>> getEmployees();
 
+    int getPageNumber(
+            String name,
+            Long experienceYears,
+            String location,
+            List<Experience> experiences,
+            String availability,
+            String abilities,
+            long pageSize);
+
     Optional<List<Employee>> getFilteredEmployees(
             String name,
             Long experienceYears,
             String location,
             List<Experience> experiences,
             String availability,
-            String abilities
-    );
+            String abilities,
+            Long page,
+            long pageSize);
 }

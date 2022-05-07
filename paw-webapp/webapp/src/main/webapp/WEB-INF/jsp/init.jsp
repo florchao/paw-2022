@@ -1,12 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
@@ -27,14 +26,14 @@
             <div class="flex flex-col">
                 <div class="grid">
                     <div class="pb-4 grid col-start-2 col-span-2">
-                        <form:form method="get" action="${search}">
+                        <form:form method="get" action="${search}" pageEncoding="UTF-8">
                             <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
                                 <spring:message code="init.employee"/>
                             </button>
                         </form:form>
                     </div>
                     <div class="grid col-start-2 col-span-2">
-                        <form:form method="get" action="${createProfile}">
+                        <form:form method="get" action="${createProfile}" pageEncoding="UTF-8">
                             <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
                                 <spring:message code="init.profile"/>
                             </button>

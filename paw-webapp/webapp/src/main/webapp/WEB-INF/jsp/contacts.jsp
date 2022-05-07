@@ -1,14 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
 <html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
@@ -46,7 +44,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div class="flex flex-wrap content-start h-screen pl-5 pr-5">
+            <div class="flex flex-wrap content-start pl-5 pr-5">
                 <c:forEach var="contact" items="${ContactList}">
                     <c:set var="contact" value="${contact}" scope="request"/>
                     <a href="#${contact.email.replaceAll("[@.]*", "")}" rel="modal:open" class=" transition hover:scale-105">

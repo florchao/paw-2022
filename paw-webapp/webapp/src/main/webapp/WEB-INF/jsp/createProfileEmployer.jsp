@@ -1,10 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<html lang="es">
+<html>
 <head>
-    <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,7 +30,7 @@
 </jsp:include>
 <c:url value="/createEmployer/${userID}" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">
-    <form:form modelAttribute="employerForm" action="${postPath}" method="post">
+    <form:form modelAttribute="employerForm" action="${postPath}" method="post" pageEncoding="UTF-8">
         <div class="grid grid-cols-6">
             <div class="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                 <div class="bg-gray-200 rounded-3xl p-5 shadow-2xl">

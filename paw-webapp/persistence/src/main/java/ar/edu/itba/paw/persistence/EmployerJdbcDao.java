@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class EmployerJdbcDao implements EmployerDao{
@@ -21,7 +23,7 @@ public class EmployerJdbcDao implements EmployerDao{
 
     private static final RowMapper<Employer> EMPLOYER_ROW_MAPPER = (rs, rowNum) ->
             new Employer(rs.getString("name"),
-                    rs.getLong("employeeID"));
+                    rs.getLong("employerID"));
 
     @Autowired
     public EmployerJdbcDao(final DataSource ds){
@@ -43,4 +45,11 @@ public class EmployerJdbcDao implements EmployerDao{
         jdbcInsert.execute(employerData);
         return new Employer(name, id);
     }
+
+    @Override
+    public Optional<Employer> getEmployerById(long id){
+        List<Employer> query = jdbcTemplate.query("SELECT * FROM employer WHERE employerID = ?", new Object[] {id}, EMPLOYER_ROW_MAPPER);
+        return query.stream().findFirst();
+    }
+
 }

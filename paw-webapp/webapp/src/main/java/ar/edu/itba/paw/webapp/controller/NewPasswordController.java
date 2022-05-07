@@ -37,12 +37,8 @@ public class NewPasswordController {
     @RequestMapping(value = "/newPassword", method = {RequestMethod.POST})
     public ModelAndView updatePassword(@Valid @ModelAttribute("newPasswordForm") final NewPasswordForm form, final BindingResult errors){
         if (errors.hasErrors()){
-            System.out.println("ERROR");
             return newPassword(form);
         }
-        System.out.println("hola");
-        System.out.println(userService.findByUsername(form.getMail()).get().getId());
-        System.out.println(form.getPassword());
         final boolean u = userService.update(form.getMail(), form.getPassword());
         return new ModelAndView("redirect:/buscarEmpleadas");
     }

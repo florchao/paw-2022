@@ -37,12 +37,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .invalidSessionUrl("/login")
                 .and().authorizeRequests()
-                .antMatchers("/", "/buscarEmpleadas","/verPerfil/{userId}", "/filterEmployees", "/contactUs", "/user/profile-image/{userId}").permitAll()
-                .antMatchers("/login", "/crearPerfil/{userID}", "/createEmployee/{userID}", "/registrarse", "/register",
-                        "/nuevaContrasena", "/newPassword",
-                        "/crearPerfilEmpleador/{userID}", "/createEmployer/{userID}").anonymous()
-                .antMatchers("/contactos", "/verPerfil").hasAuthority("EMPLOYEE")
-                .antMatchers("/contacto/{id}", "/contactarEmpleado/{id}").hasAuthority("EMPLOYER")
+                .antMatchers("/", "/buscarEmpleadas","/verPerfil/{userId}", "/filterEmployees", "/contactanos","/user/profile-image/{userId}").permitAll()
+                .antMatchers("/login", "/registrarse", "/register", "/nuevaContrasena", "/newPassword" ).anonymous()
+                .antMatchers("/contactos", "/verPerfil", "/crearPerfil/{userID}", "/createEmployee/{userID}").hasAuthority("EMPLOYEE")
+                .antMatchers("/contacto/{id}", "/contactarEmpleado/{id}", "/crearPerfilEmpleador/{userID}", "/createEmployer/{userID}", "/trabajos").hasAuthority("EMPLOYER")
                 .antMatchers("/**").authenticated()
                 .and().formLogin()
                 .usernameParameter("j_username")

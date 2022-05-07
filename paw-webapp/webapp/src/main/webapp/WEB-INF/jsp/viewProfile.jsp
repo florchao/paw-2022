@@ -1,13 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html class="scroll-smooth">
 <head>
-    <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,11 +31,11 @@
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="verPerfil"/>
 </jsp:include>
-<div class="grid grid-cols-6">
+<div class="grid overflow-auto h-screen grid-cols-6">
     <div class=" grid grid-row-4 col-span-4 col-start-2">
-        <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
+        <div class=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
-                <div class="row-span-3 col-span-2 ml-10 mr-6 mb-6">
+                <div class="row-span-3 col-span-2 ml-6 mr-6 mb-6">
 <%--                    <c:if test="${image == null}">--%>
 <%--                        <div class="overflow-hidden w-48 bg-gray-100 rounded-full">--%>
 <%--                            <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>--%>

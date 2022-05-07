@@ -52,13 +52,6 @@ public class ViewProfileController {
         return mav;
     }
 
-@ExceptionHandler(UserNotFoundException.class)
-public ModelAndView handlingUserNotFound(){
-    System.out.println("hola");
-    ModelAndView mav = new ModelAndView("errorPage");
-    mav.addObject("errorMsg", "404 not found");
-    return mav;
-}
     @RequestMapping(value = "/verPerfil/{userId}", method = RequestMethod.GET)
     public ModelAndView userProfile(@PathVariable("userId") final long userId, final UserProfileForm userProfileForm) {
         final ModelAndView mav = new ModelAndView("viewProfile");
@@ -70,7 +63,10 @@ public ModelAndView handlingUserNotFound(){
 
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
 
-        employee.ifPresent(value -> mav.addObject("employee", firstWordsToUpper(value)));
+        if (employee.isPresent()) {
+            employee.get().firstWordsToUpper();
+            mav.addObject("employee", employee.get());
+        }
 
 //        Optional<byte[]> optionalImage = userService.getProfileImage(userId);
 //        optionalImage.ifPresent(bytes -> mav.addObject("image", bytes));

@@ -4,9 +4,12 @@ import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
 import ar.edu.itba.paw.webapp.form.EmployerForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,6 +49,8 @@ public class CreateProfileController {
             return createProfile(form, userID);
 
         final Employee employee = employeeService.create(form.getName().toLowerCase(), form.getLocation().toLowerCase(), Long.parseLong(userID), form.getAvailability(), form.getExperienceYears(), form.getAbilities(), form.getImage().getBytes());
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        principal.setName(form.getName());
         return new ModelAndView("redirect:/verPerfil/"+employee.getId());
     }
 
@@ -62,6 +67,8 @@ public class CreateProfileController {
         String name = form.getName() + " " + form.getLastname();
         System.out.println(userID);
         final Employer employer = employerService.create(name.toLowerCase(), Long.parseLong(userID), form.getImage().getBytes());
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        principal.setName(name);
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 
