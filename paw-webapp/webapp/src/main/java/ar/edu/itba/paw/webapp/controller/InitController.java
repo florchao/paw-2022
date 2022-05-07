@@ -53,7 +53,9 @@ public class InitController {
             username = ((UserDetails)principal).getUsername();
         Optional<User> current = userService.findByUsername(username);
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
+            System.out.println(current.get().getId());
             Optional<Employee> employee = employeeService.getEmployeeById(current.get().getId());
+            System.out.println(employee);
             if(!employee.isPresent()){
                 return new ModelAndView("redirect:/crearPerfil/"+current.get().getId());
             }

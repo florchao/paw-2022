@@ -105,6 +105,9 @@
                                     <form:checkbox path="abilities" value="Cuidados especiales"/>
                                 </div>
                             </div>
+                            <div class="grid grid-cols-4 w-5/6">
+                                <form:errors path="abilities" element="p"  class="col-start-2 col-span-full" cssStyle="color:red"/>
+                            </div>
                             <h1 class="font-semibold mt-4"><spring:message code="employeeForm.availability"/></h1>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
