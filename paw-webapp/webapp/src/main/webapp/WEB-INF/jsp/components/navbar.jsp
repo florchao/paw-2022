@@ -74,18 +74,6 @@
                     </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
-                    <div class = "items-center">
-                        <form:form method="get" action="${contacts}" pageEncoding="UTF-8">
-                            <c:choose>
-                                <c:when test="${param.currentUrl.equals('contactos')}">
-                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contacts"/></p>
-                                </c:when>
-                                <c:otherwise>
-                                    <button class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contacts"/></button>
-                                </c:otherwise>
-                            </c:choose>
-                        </form:form>
-                    </div>
                 <div class = "flex items-center justify-items-end">
                     <form:form method="get" action="${contacts}" pageEncoding="UTF-8">
                         <c:choose>
@@ -112,18 +100,6 @@
                         </c:choose>
                     </form:form>
                 </div>
-                    <div class = "items-center">
-                        <form:form method="get" action="${contacts}">
-                            <c:choose>
-                                <c:when test="${param.currentUrl.equals('verPerfil')}">
-                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.profile"/></p>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="<c:url value="/verPerfil"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.profile"/></a>
-                                </c:otherwise>
-                            </c:choose>
-                        </form:form>
-                    </div>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
                     <div class = "items-center">

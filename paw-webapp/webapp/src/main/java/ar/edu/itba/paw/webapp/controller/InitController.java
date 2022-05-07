@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -47,22 +48,18 @@ public class InitController {
     @RequestMapping("/afterLogin")
     public ModelAndView afterLogin() {
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = "";
-        if (principal instanceof UserDetails)
-            username = ((UserDetails)principal).getUsername();
-        Optional<User> current = userService.findByUsername(username);
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
-            Optional<Employee> employee = employeeService.getEmployeeById(current.get().getId());
+            Optional<Employee> employee = employeeService.getEmployeeById(principal.getUserID());
             if(!employee.isPresent()){
-                return new ModelAndView("redirect:/crearPerfil/"+current.get().getId());
+                return new ModelAndView("redirect:/crearPerfil/"+principal.getUserID());
             }
             return new ModelAndView("redirect:/contactos");
         }
         else {
-            Optional<Employer> employer = employerService.getEmployerById(current.get().getId());
+            Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
             if (!employer.isPresent()) {
-                return new ModelAndView("redirect:/crearPerfilEmpleador/"+current.get().getId());
+                return new ModelAndView("redirect:/crearPerfilEmpleador/"+principal.getUserID());
             }
             return new ModelAndView("redirect:/buscarEmpleadas");
         }

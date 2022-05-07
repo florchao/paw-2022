@@ -32,7 +32,7 @@
     <div class = "col-start-3 col-span-3 grid h-full w-full">
         <div class="grid justify-items-center mx-6">
             <p class="text-xl font-semibold text-white mb-5">
-                <spring:message code="contactForm2.contactForm2title" arguments="${name}"/>
+                <spring:message code="contactForm2.title" arguments="${name}"/>
             </p>
         </div>
 

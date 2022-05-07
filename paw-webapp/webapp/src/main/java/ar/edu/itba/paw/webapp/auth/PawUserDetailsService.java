@@ -1,6 +1,10 @@
 package ar.edu.itba.paw.webapp.auth;
 
+import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +24,12 @@ public class PawUserDetailsService implements UserDetailsService {
     private UserService us;
 
     @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private EmployerService employerService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     private final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
@@ -36,11 +46,19 @@ public class PawUserDetailsService implements UserDetailsService {
             us.update(username, password);
         }
         final Collection<GrantedAuthority> authorities = new ArrayList<>();
-        if(user.get().getRole() == 1)
+        String name = "";
+        if(user.get().getRole() == 1) {
             authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
-        else
+            final Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
+            if(employee.isPresent())
+                name = employee.get().getName();
+        }
+        else {
             authorities.add(new SimpleGrantedAuthority("EMPLOYER"));
-        org.springframework.security.core.userdetails.User uuuu = new org.springframework.security.core.userdetails.User(username, password, authorities);
-        return new org.springframework.security.core.userdetails.User(username, password, authorities);
+            final Optional<Employer> employer = employerService.getEmployerById(user.get().getId());
+            if(employer.isPresent())
+                name = employer.get().getName();
+        }
+        return new HogarUser(username, password, authorities, name, user.get().getId());
     }
 }

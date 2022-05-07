@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,8 +37,8 @@ public class ApplicantController {
     @RequestMapping(value = "/apply/{jobID}", method = {RequestMethod.POST})
     ModelAndView apply(@PathVariable final long jobID){
         ModelAndView mav = new ModelAndView("redirect:/trabajo/"+jobID);
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> optional = userService.findByUsername(principal.getUsername());
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> optional = userService.getUserById(principal.getUserID());
         optional.ifPresent(user -> applicantService.apply(jobID, user));
         return mav;
     }

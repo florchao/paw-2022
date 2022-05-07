@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ContactService {
 
-    Optional<List<Contact>> getAllContacts();
+    Optional<List<Contact>> getAllContacts(long id);
 
     Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws ContactExistsException;
 

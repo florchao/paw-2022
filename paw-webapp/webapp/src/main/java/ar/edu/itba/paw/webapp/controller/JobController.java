@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,20 +37,16 @@ public class JobController {
     ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
         if(errors.hasErrors())
             return crearTrabajo(form);
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> optional = userService.findByUsername(principal.getUsername());
-        User user = optional.get();
-        jobService.create(form.getTitle(), form.getLocation(), user.getId(), form.getAvailability(), form.getExperienceYears(), form.getAbilities(), form.getDescription());
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.getAbilities(), form.getDescription());
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 
     @RequestMapping("/trabajos")
     ModelAndView verTrabajos(){
         ModelAndView mav = new ModelAndView("publishedJobs");
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> optional = userService.findByUsername(principal.getUsername());
-        User user = optional.get();
-        Optional<List<Job>> jobs = jobService.getUserJobs(user.getId());
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<List<Job>> jobs = jobService.getUserJobs(principal.getUserID());
         mav.addObject("JobList", jobs.get());
         return mav;
     }

@@ -27,11 +27,8 @@ public class ContactServiceImpl implements ContactService{
 
 
     @Override
-    public Optional<List<Contact>> getAllContacts() {
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> optional = userService.findByUsername(principal.getUsername());
-        User user = optional.get();
-        return contactDao.getAllContacts(user.getId());
+    public Optional<List<Contact>> getAllContacts(long id) {
+        return contactDao.getAllContacts(id);
     }
 
     @Override
