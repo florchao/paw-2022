@@ -151,6 +151,7 @@
                 </div>
                 <div class="col-span-3 col-start-2">
                     <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="searchPage.searchEmployees"/></p>
+                    <form:input type="text" path="name" cssClass="hidden" cssStyle="border-radius: 5px;"/>
                     <c:choose>
                         <c:when test="${EmployeeList.size() == 0}">
                             <div class = "grid content-center justify-center h-5/6 mt-16">
