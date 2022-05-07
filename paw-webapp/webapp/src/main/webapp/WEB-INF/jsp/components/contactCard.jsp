@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -17,12 +16,7 @@
         </p>
     </div>
     <div class="flex flex-col items-center pb-6 ">
-        <c:if test="${image == null}">
-        <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
-        </c:if>
-        <c:if test="${image != null}">
-            <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="<c:url value="/user/profile-image/${userId}"/>" />
-        </c:if>
+        <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="<c:url value="/user/profile-image/${param.employerID}"/>" alt="" onerror="this.src = '/public/user.png'"/>
         <h5 class="mb-1 text-xl font-medium text-gray-900"><c:out value="${param.name}"/></h5>
         <c:choose>
             <c:when test="${param.message.length() <= 180}">

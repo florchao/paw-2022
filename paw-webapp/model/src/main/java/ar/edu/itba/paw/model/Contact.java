@@ -19,13 +19,14 @@ public class Contact {
         this.phoneNumber = phoneNumber;
     }
 
-    public Contact(long employeeID, String email, String employer, String message, String phoneNumber, Date created) {
+    public Contact(long employeeID, String email, String employer, String message, String phoneNumber, Date created, long employerID) {
         this.employeeID = employeeID;
         this.email = email;
         this.employer = employer;
         this.contactMessage = message;
         this.created = created;
         this.phoneNumber = phoneNumber;
+        this.employerID = employerID;
     }
 
     public String getPhoneNumber() {

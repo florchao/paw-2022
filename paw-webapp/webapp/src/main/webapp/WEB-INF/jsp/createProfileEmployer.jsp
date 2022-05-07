@@ -30,7 +30,7 @@
 </jsp:include>
 <c:url value="/createEmployer/${userID}" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">
-    <form:form modelAttribute="employerForm" action="${postPath}" method="post" pageEncoding="UTF-8">
+    <form:form modelAttribute="employerForm" action="${postPath}" method="post" pageEncoding="UTF-8" enctype="multipart/form-data">
         <div class="grid grid-cols-6">
             <div class="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                 <div class="bg-gray-200 rounded-3xl p-5 shadow-2xl">
