@@ -57,6 +57,7 @@ create table if not exists jobs(
     availability varchar(100),
     experienceYears INT,
     abilities varchar(100),
+    description varchar(100000),
 );
 
 create table if not exists applicants(
