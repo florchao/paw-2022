@@ -52,19 +52,60 @@ public class UserJdbcDaoTest {
 
     @Test
     public void testGetById(){
+        String query = "INSERT INTO users values(0,'Username', 'Password', 1)";
+        jdbcTemplate.execute(query);
 
-        final Optional<User> user = userJdbcDao.getUserById(1);
+        final Optional<User> user = userJdbcDao.getUserById(0);
 
         Assert.assertNotNull(user);
-        Assert.assertFalse(user.isPresent());
+        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals(PASSWORD, user.get().getPassword());
+        Assert.assertEquals(ROLE, user.get().getRole());
+
+    }
+
+    @Test
+    public void testGetByUsername(){
+        String query = "INSERT INTO users values(0,'Username', 'Password', 1)";
+        jdbcTemplate.execute(query);
+
+        final Optional<User> user = userJdbcDao.getUserByUsername("Username");
+
+        Assert.assertNotNull(user);
+        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals(PASSWORD, user.get().getPassword());
+        Assert.assertEquals(ROLE, user.get().getRole());
+
+    }
+
+    @Test
+    public void testUpdate(){
+        String query = "INSERT INTO users values(0,'Username', 'Password', 1)";
+        jdbcTemplate.execute(query);
+
+        userJdbcDao.update("Username", "Password2");
+        final Optional<User> user = userJdbcDao.getUserById(0);
+
+        Assert.assertNotNull(user);
+        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals("Password2", user.get().getPassword());
+        Assert.assertEquals(ROLE, user.get().getRole());
 
     }
 
     @Test
     public void testGetAll(){
+
+        String query = "INSERT INTO users values(0,'Username', 'Password', 1)";
+        jdbcTemplate.execute(query);
+
         final List<User> list = userJdbcDao.getAll(1);
 
         Assert.assertNotNull(list);
+        Assert.assertEquals(1, list.size());
     }
 
 
