@@ -47,7 +47,7 @@ public class JobController {
         if(errors.hasErrors())
             return crearTrabajo(form);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.getAbilities(), form.getDescription());
+        jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 

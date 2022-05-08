@@ -65,27 +65,27 @@
                     </div>
                     <div class="flex flex-wrap ml-8">
                         <div class = "mb-8">
-                            <form:label path="abilities" for="cocinar-cb" id = "cocinar-label" onclick="setColor('cocinar-label');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"> <spring:message code="jobForm.abilities.cook"/></form:label>
+                            <form:label path="abilities" for="cocinar-cb" id = "cocinar-label" onclick="setColor('cocinar');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"> <spring:message code="employeeForm.abilities.cook"/></form:label>
                             <form:checkbox path="abilities" id="cocinar-cb" value = "Cocinar" cssStyle="visibility: hidden"/>
                         </div>
-                        <div class = "mb-8">
-                            <form:label path="abilities" for="planchar-cb" id = "planchar-label" onclick="setColor('planchar-label');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="jobForm.abilities.iron"/></form:label>
+                        <div>
+                            <form:label path="abilities" for="planchar-cb" id = "planchar-label" onclick="setColor('planchar');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.iron"/></form:label>
                             <form:checkbox path="abilities" id="planchar-cb" value = "Planchar" cssStyle="visibility: hidden"/>
                         </div>
-                        <div class = "mb-8">
-                            <form:label path="abilities" for="menores-cb" id = "menores-label" onclick="setColor('menores-label');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="jobForm.abilities.young"/></form:label>
+                        <div>
+                            <form:label path="abilities" for="menores-cb" id = "menores-label" onclick="setColor('menores');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.young"/></form:label>
                             <form:checkbox path="abilities" id="menores-cb" value = "Cuidado de menores" cssStyle="visibility: hidden"/>
                         </div>
-                        <div class = "mb-8">
-                            <form:label path="abilities" for="mayores-cb" id = "mayores-label" onclick="setColor('mayores-label');" class="mt-1 h-fit w-fit text-xs text-gray-900border bg-white border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="jobForm.abilities.older"/></form:label>
+                        <div>
+                            <form:label path="abilities" for="mayores-cb" id = "mayores-label" onclick="setColor('mayores');" class="mt-1 h-fit w-fit text-xs text-gray-900border bg-white border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.older"/></form:label>
                             <form:checkbox path="abilities" id="mayores-cb" value = "Cuidado de mayores" cssStyle="visibility: hidden"/>
                         </div>
-                        <div class = "mb-8">
-                            <form:label path="abilities" for="especiales-cb" id = "especiales-label" onclick="setColor('especiales-label');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="jobForm.abilities.specialNeeds"/></form:label>
+                        <div>
+                            <form:label path="abilities" for="especiales-cb" id = "especiales-label" onclick="setColor('especiales');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.specialNeeds"/></form:label>
                             <form:checkbox path="abilities" id="especiales-cb" value = "Cuidados especiales" cssStyle="visibility: hidden"/>
                         </div>
-                        <div class = "mb-8">
-                            <form:label path="abilities" for="mascotas-cb" id = "mascotas-label" onclick="setColor('mascotas-label');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="jobForm.abilities.pets"/></form:label>
+                        <div>
+                            <form:label path="abilities" for="mascotas-cb" id = "mascotas-label" onclick="setColor('mascotas');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.pets"/></form:label>
                             <form:checkbox path="abilities" id="mascotas-cb" value = "Cuidado de mascotas" cssStyle="visibility: hidden"/>
                         </div>
 
@@ -106,3 +106,17 @@
 </div>
 </body>
 </html>
+
+<script>
+    const buttons = ["cocinar", "planchar", "menores", "mayores", "especiales", "mascotas"]
+    window.onload = function() {
+        buttons.forEach(function(word) {
+            let property = document.getElementById(word + "-cb");
+            let label = document.getElementById(word + "-label");
+            if (property.checked === true) {
+                label.style.backgroundColor = "#c4b5fd";
+                window.sessionStorage.setItem(word, "#c4b5fd");
+            }
+        })
+    };
+</script>

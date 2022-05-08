@@ -48,7 +48,7 @@ public class CreateProfileController {
         if(errors.hasErrors())
             return createProfile(form, userID);
 
-        final Employee employee = employeeService.create(form.getName().toLowerCase(), form.getLocation().toLowerCase(), Long.parseLong(userID), form.getAvailability(), form.getExperienceYears(), form.getAbilities(), form.getImage().getBytes());
+        final Employee employee = employeeService.create(form.getName().toLowerCase(), form.getLocation().toLowerCase(), Long.parseLong(userID), form.fromArrtoString(form.getAvailability()), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getImage().getBytes());
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.setName(form.getName());
         return new ModelAndView("redirect:/verPerfil/"+employee.getId());

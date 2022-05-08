@@ -1,9 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
-import ar.edu.itba.paw.webapp.constraint.annotation.NotEmptyFile;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesRegister;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilityRegister;
+import ar.edu.itba.paw.webapp.constraint.annotation.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
@@ -31,11 +29,11 @@ public class EmployeeForm {
     @Size(max = 100)
     private String location;
 
-    @CheckboxesAbilitiesRegister
-    private String abilities;
+    @CheckboxesAbilitiesEdit
+    private String[] abilities;
 
-    @CheckboxesAvailabilityRegister
-    private String availability;
+    @CheckboxesAvailabilitiesEdit
+    private String[] availability;
 
     @NotEmptyFile
     private CommonsMultipartFile image;
@@ -72,7 +70,7 @@ public class EmployeeForm {
         this.experiencesList = experiencesList;
     }
 
-    public String getAbilities() {
+    public String[] getAbilities() {
         return abilities;
     }
 
@@ -84,16 +82,24 @@ public class EmployeeForm {
         return experienceYears;
     }
 
-    public void setAbilities(String abilities) {
+    public void setAbilities(String[] abilities) {
         this.abilities = abilities;
     }
 
-    public String getAvailability() {
+    public String[] getAvailability() {
         return availability;
     }
 
-    public void setAvailability(String availability) {
+    public void setAvailability(String[] availability) {
         this.availability = availability;
+    }
+
+    public String fromArrtoString(String[] arr){
+        StringBuilder ret = new StringBuilder();
+        for (String str: arr) {
+            ret.append(str).append(",");
+        }
+        return ret.substring(0, ret.length() - 2);
     }
 
     private static class ExperiencesForm{
