@@ -7,6 +7,7 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.ExperienceService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,13 +56,13 @@ public class RegisterController {
             int role = form.getRole().equals("Empleada")? 1 : 2;
             final User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword(), role);
             if(role == 1) {
-                org.springframework.security.core.userdetails.User current = new org.springframework.security.core.userdetails.User(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))));
+                HogarUser current = new HogarUser(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))), null, u.getId());
                 Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYEE")));
                 SecurityContextHolder.getContext().setAuthentication(auth);
                 return new ModelAndView("redirect:/crearPerfil/" + u.getId());
             }
             else {
-                org.springframework.security.core.userdetails.User current = new org.springframework.security.core.userdetails.User(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))));
+                HogarUser current = new HogarUser(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))), null, u.getId());
                 Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYER")));
                 SecurityContextHolder.getContext().setAuthentication(auth);
                 return new ModelAndView("redirect:/crearPerfilEmpleador/" + u.getId());

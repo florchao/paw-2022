@@ -3,9 +3,9 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.Applicant;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.persistence.ApplicantDao;
 import ar.edu.itba.paw.persistence.EmployeeDao;
-import ar.edu.itba.paw.persistence.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,9 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Override
     public Applicant create(long jobID, long employeeID) {
+        Optional<Boolean> exists = applicantDao.existsApplicant(employeeID, jobID);
+        if(exists.isPresent() && exists.get())
+            throw new AlreadyExistsException("You already applied for this job");
         return applicantDao.create(jobID, employeeID);
     }
 

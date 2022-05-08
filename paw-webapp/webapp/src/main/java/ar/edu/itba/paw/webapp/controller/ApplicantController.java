@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Applicant;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
@@ -39,7 +40,12 @@ public class ApplicantController {
         ModelAndView mav = new ModelAndView("redirect:/trabajo/"+jobID);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> optional = userService.getUserById(principal.getUserID());
-        optional.ifPresent(user -> applicantService.apply(jobID, user));
+        try {
+            optional.ifPresent(user -> applicantService.apply(jobID, user));
+            mav.addObject("status", "sent");
+        } catch (AlreadyExistsException alreadyExistsException) {
+            mav.addObject("status", "error");
+        }
         return mav;
     }
 

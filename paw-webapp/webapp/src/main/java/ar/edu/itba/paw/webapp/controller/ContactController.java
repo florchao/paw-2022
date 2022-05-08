@@ -2,24 +2,19 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.exception.ContactExistsException;
+import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -74,28 +69,32 @@ public class ContactController {
             user.ifPresent(value -> contactService.contact(value, form.getContent(), principal.getName(), form.getPhone()));
             mav.addObject("status", "sent");
         }
-        catch (ContactExistsException contactException){
+        catch (AlreadyExistsException alreadyExistsException){
             mav.addObject("status", "error");
         }
         return mav;
     }
 
     @RequestMapping("/contactanos")
-    public ModelAndView contactPage(@ModelAttribute("contactUsForm") final ContactUsForm form) {
+    public ModelAndView contactPage(@ModelAttribute("contactUsForm") final ContactUsForm form, @RequestParam(value = "status", required = false) String status) {
         final ModelAndView mav = new ModelAndView("contactUs");
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof HogarUser){
             HogarUser hogarUser = (HogarUser) principal;
             mav.addObject("name", hogarUser.getName());
+            mav.addObject("mail", hogarUser.getUsername());
         }
+        mav.addObject("status", status);
         return mav;
     }
 
     @RequestMapping(value = "/contactUs", method = {RequestMethod.POST})
     public ModelAndView contactUs(@Valid @ModelAttribute("contactUsForm") final ContactUsForm form, BindingResult error) {
         if(error.hasErrors())
-            return contactPage(form);
+            return contactPage(form, "error");
+        final ModelAndView mav = new ModelAndView("redirect:/contactanos");
         contactService.contactUS(form.getContent(), form.getMail(), form.getName());
-        return new ModelAndView("redirect:/contactanos");
+        mav.addObject("status", "sent");
+        return mav;
     }
 }
