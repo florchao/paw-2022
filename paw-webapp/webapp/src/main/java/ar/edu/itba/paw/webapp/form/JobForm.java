@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesAnnotation;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailability;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -21,8 +24,8 @@ public class JobForm {
     @NumberFormat(style = NumberFormat.Style.NUMBER)
     private long experienceYears;
 
-    @NotNull
-    private String abilities;
+    @CheckboxesAbilitiesEdit
+    private String[] abilities;
 
     @NotNull
     private String availability;
@@ -46,11 +49,11 @@ public class JobForm {
         this.location = location;
     }
 
-    public String getAbilities() {
+    public String[] getAbilities() {
         return abilities;
     }
 
-    public void setAbilities(String abilities) {
+    public void setAbilities(String[] abilities) {
         this.abilities = abilities;
     }
 
@@ -76,5 +79,13 @@ public class JobForm {
 
     public void setExperienceYears(long experienceYears) {
         this.experienceYears = experienceYears;
+    }
+
+    public String fromArrtoString(String[] arr){
+        StringBuilder ret = new StringBuilder();
+        for (String str: arr) {
+            ret.append(str).append(",");
+        }
+        return ret.substring(0, ret.length() - 2);
     }
 }

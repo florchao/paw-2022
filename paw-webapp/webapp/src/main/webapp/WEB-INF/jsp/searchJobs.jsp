@@ -56,7 +56,7 @@
     <jsp:param name="currentUrl" value="trabajos"/>
 </jsp:include>
 <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
-    <div class="my-8 w-full"></div>
+    <div class="my-9 w-full"></div>
     <div class="grid grid-cols-4">
         <div class="col-start-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-fit" >
             <c:url value="/filterJobs" var="postPath"/>

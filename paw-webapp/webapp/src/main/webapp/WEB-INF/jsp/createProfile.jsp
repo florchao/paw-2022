@@ -145,4 +145,16 @@
         var image = document.getElementById('picture');
         image.src = URL.createObjectURL(event.target.files[0]);
     };
+
+    const buttons = ["cocinar", "planchar", "menores", "mayores", "especiales", "mascotas","media","completa","cama"]
+    window.onload = function() {
+        buttons.forEach(function(word) {
+            let property = document.getElementById(word + "-cb");
+            let label = document.getElementById(word + "-label");
+            if (property.checked === true) {
+                label.style.backgroundColor = "#c4b5fd";
+                window.sessionStorage.setItem(word, "#c4b5fd");
+            }
+        })
+    };
 </script>
