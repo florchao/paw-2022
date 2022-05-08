@@ -37,7 +37,6 @@ public class EmployeeEditForm {
     @CheckboxesAvailabilitiesEdit
     private String availability[];
 
-    @NotEmptyFile
     private CommonsMultipartFile image;
 
     public CommonsMultipartFile getImage() {
