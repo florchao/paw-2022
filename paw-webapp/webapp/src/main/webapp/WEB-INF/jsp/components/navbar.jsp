@@ -14,6 +14,7 @@
 <body>
 <c:url value="/redirectSearch" var = "search"/>
 <c:url value="/redirectContacts" var = "contacts"/>
+<c:url value="/redirectJobs" var = "jobs"/>
 <c:url value="/login" var = "login"/>
 <c:url value="/contactanos" var = "contactus"/>
 <c:url value="/" var = "home"/>
@@ -81,9 +82,23 @@
                                 <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.jobs"/></p>
                             </c:when>
                             <c:otherwise>
-                                <a href="<c:url value="/trabajos"/>"  class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.jobs"/></a>
+                                <a href="<c:url value="/misTrabajos"/>"  class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.jobs"/></a>
                             </c:otherwise>
                         </c:choose>
+                    </div>
+                </sec:authorize>
+                <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
+                    <div class = "flex items-center justify-items-end">
+                        <form:form method="get" action="${jobs}" pageEncoding="UTF-8">
+                            <c:choose>
+                                <c:when test="${param.currentUrl.equals('trabajos')}">
+                                    <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.exploreJobs"/></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.exploreJobs"/></button>
+                                </c:otherwise>
+                            </c:choose>
+                        </form:form>
                     </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -65,6 +66,74 @@ public class JobJdbcDao implements JobDao{
                         "abilities, description, name  FROM jobs NATURAL JOIN employer WHERE jobID = ?",
                 new Object[] {jobId}, JOB_ROW_MAPPER);
         return query.stream().findFirst();
+    }
+
+    @Override
+    public Optional<List<Job>> getAllJobs(long pageSize) {
+        List<Job> query = jdbcTemplate.query("SELECT * FROM jobs LIMIT " + pageSize, new Object[] {}, MY_JOB_ROW_MAPPER);
+        return Optional.of(query);
+    }
+
+    @Override
+    public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT * FROM jobs where ");
+        if (name != null) {
+            stringBuilder.append("title like '%").append(name.toLowerCase()).append("%'");
+            stringBuilder.append(" and ");
+        }
+        if (experienceYears != null && experienceYears.intValue() > 0) {
+            stringBuilder.append("experienceYears >= ").append(experienceYears);
+            stringBuilder.append(" and ");
+        }
+        if (location != null) {
+            stringBuilder.append("location like '%").append(location.toLowerCase()).append("%' ");
+            stringBuilder.append(" and ");
+        }
+        for (String av : availability) {
+            stringBuilder.append("availability like '%").append(av).append("%'");
+            stringBuilder.append(" and ");
+        }
+        for (String ability : abilities) {
+            stringBuilder.append("abilities like '%").append(ability).append("%'");
+            stringBuilder.append(" and ");
+        }
+        stringBuilder.setLength(stringBuilder.length() - 5);
+        stringBuilder.append(" limit ").append(pageSize);
+        stringBuilder.append(" offset ").append(page * pageSize);
+        List<Job> query = jdbcTemplate.query(stringBuilder.toString(), new Object[] {}, MY_JOB_ROW_MAPPER);
+        return Optional.of(query);
+    }
+
+    @Override
+    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT COUNT(*) FROM jobs where ");
+        if (name != null) {
+            stringBuilder.append("title like '%").append(name.toLowerCase()).append("%'");
+            stringBuilder.append(" and ");
+        }
+        if (experienceYears != null && experienceYears.intValue() > 0) {
+            stringBuilder.append("experienceYears >= ").append(experienceYears);
+            stringBuilder.append(" and ");
+        }
+        if (location != null) {
+            stringBuilder.append("location like '%").append(location.toLowerCase()).append("%' ");
+            stringBuilder.append(" and ");
+        }
+        // TODO Aca iria lo mismo pero para experienceList
+        for (String av : availability) {
+            stringBuilder.append("availability like '%").append(av).append("%'");
+            stringBuilder.append(" and ");
+        }
+        for (String ability : abilities) {
+            stringBuilder.append("abilities like '%").append(ability).append("%'");
+            stringBuilder.append(" and ");
+        }
+        stringBuilder.setLength(stringBuilder.length() - 5);
+        // TODO Hacer que el limit no este hardcodeado
+        String query = jdbcTemplate.queryForObject(stringBuilder.toString(), new Object[] {}, String.class);
+        return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
     }
 
 
