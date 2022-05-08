@@ -55,6 +55,9 @@
                     <a href="<c:url value="/contacto/${user.id}"/>">
                         <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.connect"/></button>
                     </a>
+                    <c:if test="${status.equals('error')}">
+                        <p class="text-red-600 text-xs"><spring:message code="viewProfile.errorExists"/></p>
+                    </c:if>
                 </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE')">
@@ -65,50 +68,9 @@
                     </div>
                 </sec:authorize>
             </div>
-            <%--            <div>--%>
-            <%--                <h1 class="pb-3">Experiencia</h1>--%>
-            <%--            </div>--%>
-            <%--            <div class="grid grid-flow-row-dense grid-cols-2 gap-4">--%>
-            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-            <%--                    </div>--%>
-            <%--                </a>--%>
-            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-            <%--                    </div>--%>
-            <%--                </a>--%>
-            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-            <%--                    </div>--%>
-            <%--                </a>--%>
-            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-            <%--                    </div>--%>
-            <%--                </a>--%>
-            <%--                <a class="flex flex-col items-center bg-white rounded-lg border shadow-lg mb-5 md:flex-row md:max-w-full w-full">--%>
-            <%--                    <div class="flex flex-col justify-between p-4 leading-normal">--%>
-            <%--                        <h5 class="mb-2 text-xl font-bold tracking-tight text-black">Titulo</h5>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Años</p>--%>
-            <%--                        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Descripción</p>--%>
-            <%--                    </div>--%>
-            <%--                </a>--%>
-
-            <%--            </div>--%>
             <div class="grid grid-cols-2">
                 <div class="col-span-1">
-                    <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.abilities"/></h1>
+                    <h1 class="pb-3 pt-3 font-semibold" onclick="printValue('${status}')"><spring:message code="viewProfile.abilities"/></h1>
                     <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
                         <c:forEach var="ability" items="${employee.abilitiesArr}">
                             <li><c:out value="${ability}"/></li>
@@ -127,4 +89,18 @@
         </div>
     </div>
 </div>
+<c:if test="${status.equals('sent')}">
+    <div class="absolute bottom-6 inset-x-1/3">
+        <div class = "grid justify-items-center bg-purple-600 bg-opacity-25 rounded-full">
+            <p><spring:message code="viewProfile.sent"/></p>
+        </div>
+    </div>
+</c:if>
 </body>
+
+<script>
+    function printValue(value){
+        console.log(value)
+    }
+    
+</script>

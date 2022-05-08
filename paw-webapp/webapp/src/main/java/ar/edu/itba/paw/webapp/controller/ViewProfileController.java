@@ -55,7 +55,7 @@ public class ViewProfileController {
     }
 
     @RequestMapping(value = "/verPerfil/{userId}", method = RequestMethod.GET)
-    public ModelAndView userProfile(@PathVariable("userId") final long userId) {
+    public ModelAndView userProfile(@PathVariable("userId") final long userId, @RequestParam(value = "status", required = false) String status) {
         final ModelAndView mav = new ModelAndView("viewProfile");
         ModelAndView errorPage = new ModelAndView("errorPage");
 
@@ -69,7 +69,8 @@ public class ViewProfileController {
             employee.get().firstWordsToUpper();
             mav.addObject("employee", employee.get());
         }
-
+        mav.addObject("status", status);
+        System.out.println(status);
         return mav;
     }
 

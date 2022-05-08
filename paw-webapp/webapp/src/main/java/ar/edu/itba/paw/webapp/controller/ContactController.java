@@ -46,20 +46,20 @@ public class ContactController {
     @Autowired
     private EmployerService employerService;
 
-    @RequestMapping("/contacto/{id}")
-    public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
-        final ModelAndView mav = new ModelAndView("contactForm");
-        Employee employee = employeeService.getEmployeeById(id).orElseThrow(UserNotFoundException::new);
-        mav.addObject("name", employee.getName());
-        return mav;
-    }
-
     @RequestMapping("/contactos")
     public ModelAndView contactsPage() {
         final ModelAndView mav = new ModelAndView("contacts");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID());
         list.ifPresent(contacts -> mav.addObject("ContactList", contacts));
+        return mav;
+    }
+
+    @RequestMapping("/contacto/{id}")
+    public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
+        final ModelAndView mav = new ModelAndView("contactForm");
+        Employee employee = employeeService.getEmployeeById(id).orElseThrow(UserNotFoundException::new);
+        mav.addObject("name", employee.getName());
         return mav;
     }
 
@@ -72,9 +72,10 @@ public class ContactController {
         HogarUser principal = (HogarUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try{
             user.ifPresent(value -> contactService.contact(value, form.getContent(), principal.getName(), form.getPhone()));
+            mav.addObject("status", "sent");
         }
         catch (ContactExistsException contactException){
-            mav.addObject("error", "exits");
+            mav.addObject("status", "error");
         }
         return mav;
     }
