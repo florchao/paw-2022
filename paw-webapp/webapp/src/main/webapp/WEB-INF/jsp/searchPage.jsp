@@ -10,30 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="text/javascript">
-        function validateEmptyNumberForm(id) {
-            if (id === 'expYears') {
-                var el = document.getElementById('expYears');
-                if (el.value ==="") {
-                    el.value=0;
-                }
-            }
-        }
-        function previousPage(current) {
-            var el = document.getElementById('pageNumber');
-            el.value = (current - 1);
-        }
-        function nextPage(current) {
-            var el = document.getElementById('pageNumber');
-            el.value = (current + 1);
-        }
-        function prevPageValidation(current) {
-            console.log(current);
-            if (current === 0) {
-                document.getElementById('prevPageButton').disabled = true;
-            }
-        }
-    </script>
+    <script src="../../public/javascript/utils.js"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="searchPage.title"/></title>
 </head>

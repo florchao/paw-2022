@@ -9,14 +9,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="createProfile.title"/></title>
-    <script type="text/javascript">
-            function validateExpYears() {
-                var el = document.getElementById('expYears');
-                if (el.value ==="") {
-                    el.value=0;
-                }
-            }
-        </script>
 </head>
 <body>
 <div class="area absolute">
