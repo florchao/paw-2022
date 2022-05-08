@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,14 +13,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
-public class EmployeeDdbcDaoTest {
+public class EmployeeJdbcDaoTest {
 
     private static final String NAME = "Name";
     private static final String LOCATION = "Location";
