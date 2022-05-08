@@ -37,11 +37,11 @@
                     <div class="grid grid-cols-5 gap-6">
                         <div class="row-span-4 col-span-2 m-6">
                             <div class="overflow-hidden bg-gray-100 rounded-full">
-                                <svg class="text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                                <form:label path="image">Insertar imagen</form:label>
-                                <form:input type="file" path="image" accept="image/png, image/jpeg" />
-                                <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
+                                <img id="picture" src="<c:url value='/public/user.png'/>" />
                             </div>
+                            <form:label path="image"><spring:message code="employerForm.insertImage"/></form:label>
+                            <form:input type="file" path="image" accept="image/png, image/jpeg" onchange="loadFile(event);"/>
+                            <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
                         </div>
                         <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                             <form:label path="name" for="name" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employerForm.label.name"/></form:label>
@@ -64,3 +64,10 @@
 </div>
 </body>
 </html>
+
+<script>
+    var loadFile = function(event) {
+        var image = document.getElementById('picture');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>

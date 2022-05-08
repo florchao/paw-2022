@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="editProfile.title"/></title>
+
     <script type="text/javascript">
         function validateExpYears() {
             var el = document.getElementById('expYears');
@@ -39,6 +40,10 @@
                 label.style.backgroundColor = "#ffffff";
             }
         }
+        var loadFile = function(event) {
+            var image = document.getElementById('picture');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
     </script>
 </head>
 <body>
@@ -68,10 +73,10 @@
                     <div class="grid grid-cols-5 gap-6">
                         <div class="row-span-4 col-span-2 m-6">
                             <div class="overflow-hidden bg-gray-100 rounded-full">
-                                <img src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '/public/user.png'"/>
+                                <img id="picture" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '/public/user.png'" />
                             </div>
-                            <form:label path="image">Insertar imagen</form:label>
-                            <form:input type="file" path="image" accept="image/png, image/jpeg" />
+                            <form:label path="image"><spring:message code="employeeForm.insertImage"/></form:label>
+                            <form:input id= "file" type="file" path="image" accept="image/png, image/jpeg" onchange="loadFile(event);"/>
                             <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
                         </div>
                         <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
