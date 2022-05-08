@@ -38,7 +38,7 @@ public class InitController {
     public ModelAndView helloWorld() {
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
-            return new ModelAndView("redirect:/contactos");
+            return new ModelAndView("redirect:/trabajos");
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYER")))
             return new ModelAndView("redirect:/buscarEmpleadas");
         return new ModelAndView("init");
@@ -54,7 +54,7 @@ public class InitController {
             if(!employee.isPresent()){
                 return new ModelAndView("redirect:/crearPerfil/"+principal.getUserID());
             }
-            return new ModelAndView("redirect:/contactos");
+            return new ModelAndView("redirect:/trabajos");
         }
         else {
             Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
