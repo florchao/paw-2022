@@ -15,6 +15,7 @@
 <c:url value="/redirectSearch" var = "search"/>
 <c:url value="/redirectContacts" var = "contacts"/>
 <c:url value="/login" var = "login"/>
+<c:url value="/contactanos" var = "contactus"/>
 <c:url value="/" var = "home"/>
 <nav class="bg-white absolute w-full px-2 sm:px-4 py-2.5 shadow-md" style="background-color: #ac70ff">
     <div class="h-12 grid grid-cols-5 space-between">
@@ -35,8 +36,18 @@
                     </div>
                 </div>
             </c:if>
-            <div class="grid grid-cols-3 items-center justify-items-center col-span-2 col-start-4">
+            <div class="grid grid-cols-4 items-center justify-items-center col-span-2 col-start-4">
                 <sec:authorize access="!isAuthenticated()">
+                    <div class = "items-center ">
+                        <c:choose>
+                            <c:when test="${param.currentUrl.equals('contactUs')}">
+                                <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contactus"/></p>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<c:url value="/contactanos"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contactus"/></a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                     <div class = "items-center ">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('register')}">
