@@ -39,7 +39,6 @@ public class UserJdbcDao implements UserDao{
     @Override
     public Optional<User> getUserById(long id) {
         List<User> query = jdbcTemplate.query("SELECT * FROM Users WHERE userId = ?", new Object[] {id}, ROW_MAPPER);
-
         return query.stream().findFirst();
     }
 
@@ -50,7 +49,6 @@ public class UserJdbcDao implements UserDao{
         userData.put("password", password);
         userData.put("role", role);
         Number userId = jdbcInsert.executeAndReturnKey(userData);
-
         return new User(userId.longValue(), username, password, role);
     }
 
