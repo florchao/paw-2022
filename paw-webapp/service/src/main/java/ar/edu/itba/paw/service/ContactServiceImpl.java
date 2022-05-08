@@ -2,7 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.exception.ContactExistsException;
+import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.persistence.ContactDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +35,7 @@ public class ContactServiceImpl implements ContactService{
     public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
         Optional<Boolean> exists = contactDao.existsContact(employeeId, employerId);
         if(exists.isPresent() && exists.get()){
-            throw new ContactExistsException("You already have a contact with this employee");
+            throw new AlreadyExistsException("You already have a contact with this employee");
         }
         return contactDao.create(employeeId, employerId, created, contactMessage, phoneNumber);
     }

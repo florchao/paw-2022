@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -52,10 +53,11 @@ public class JobController {
     }
 
     @RequestMapping("/trabajo/{id}")
-    ModelAndView verTrabajo(@PathVariable final long id){
+    ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
         job.ifPresent(value -> mav.addObject("job", value));
+        mav.addObject("status", status);
         return mav;
     }
 }

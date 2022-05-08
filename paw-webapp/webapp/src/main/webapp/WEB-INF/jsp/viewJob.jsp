@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="viewJob.title"/></title>
 </head>
@@ -79,4 +80,35 @@
         </div>
     </div>
 </div>
+<sec:authorize access="hasAuthority('EMPLOYEE')">
+    <c:if test="${status.equals('sent')}">
+        <div id="sent" class="absolute bottom-6 inset-1/3">
+            <div class = "grid justify-items-center bg-purple-400 rounded h-1/3 p-5">
+                <h1 class="text-2xl font-semibold text-white"><spring:message code="feedback.congrats"/></h1>
+                <p class="font-light text-white"><spring:message code="feedback.viewJob.sent"/></p>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${status.equals('error')}">
+        <div id="error" class="absolute bottom-6 inset-1/3">
+            <div class = "grid justify-items-center bg-white rounded-lg h-1/3 p-5">
+                <h1 class="text-2xl font-semibold text-red-700"><spring:message code="feedback.error"/></h1>
+                <p class="font-light text-red-700"><spring:message code="feedback.viewJob.errorExists"/></p>
+            </div>
+        </div>
+    </c:if>
+</sec:authorize>
 </body>
+<script>
+    $(function (){
+        setTimeout(function (){
+            $("#sent").fadeOut('slow');
+        }, 2000)
+    });
+
+    $(function (){
+        setTimeout(function (){
+            $("#error").fadeOut('slow');
+        }, 2500)
+    });
+</script>

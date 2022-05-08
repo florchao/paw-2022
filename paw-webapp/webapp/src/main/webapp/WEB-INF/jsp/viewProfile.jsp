@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="viewProfile.title"/></title>
 </head>
@@ -55,9 +56,6 @@
                     <a href="<c:url value="/contacto/${user.id}"/>">
                         <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.connect"/></button>
                     </a>
-                    <c:if test="${status.equals('error')}">
-                        <p class="text-red-600 text-xs"><spring:message code="viewProfile.errorExists"/></p>
-                    </c:if>
                 </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE')">
@@ -70,7 +68,7 @@
             </div>
             <div class="grid grid-cols-2">
                 <div class="col-span-1">
-                    <h1 class="pb-3 pt-3 font-semibold" onclick="printValue('${status}')"><spring:message code="viewProfile.abilities"/></h1>
+                    <h1 class="pb-3 pt-3 font-semibold"><spring:message code="viewProfile.abilities"/></h1>
                     <ul role="list" class="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
                         <c:forEach var="ability" items="${employee.abilitiesArr}">
                             <li><c:out value="${ability}"/></li>
@@ -90,17 +88,35 @@
     </div>
 </div>
 <c:if test="${status.equals('sent')}">
-    <div class="absolute bottom-6 inset-x-1/3">
-        <div class = "grid justify-items-center bg-purple-600 bg-opacity-25 rounded-full">
-            <p><spring:message code="viewProfile.sent"/></p>
+    <div id="sent" class="absolute bottom-6 inset-1/3">
+        <div class = "grid justify-items-center bg-purple-400 rounded h-1/3 p-5">
+            <h1 class="text-2xl font-semibold text-white"><spring:message code="feedback.congrats"/></h1>
+            <p class="font-light text-white"><spring:message code="feedback.viewProfile.sent"/></p>
+        </div>
+    </div>
+</c:if>
+<c:if test="${status.equals('error')}">
+    <div id="error" class="absolute bottom-6 inset-1/3">
+        <div class = "grid justify-items-center bg-white rounded-lg h-1/3 p-5">
+            <h1 class="text-2xl font-semibold text-red-700"><spring:message code="feedback.error"/></h1>
+            <p class="font-light text-red-700"><spring:message code="feedback.viewProfile.errorExists"/></p>
         </div>
     </div>
 </c:if>
 </body>
 
 <script>
-    function printValue(value){
-        console.log(value)
-    }
+
+    $(function (){
+        setTimeout(function (){
+            $("#sent").fadeOut('slow');
+        }, 2000)
+    });
+
+    $(function (){
+        setTimeout(function (){
+            $("#error").fadeOut('slow');
+        }, 2500)
+    });
     
 </script>

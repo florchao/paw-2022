@@ -2,7 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.exception.ContactExistsException;
+import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 
 
 import java.sql.Date;
@@ -13,7 +13,7 @@ public interface ContactService {
 
     Optional<List<Contact>> getAllContacts(long id);
 
-    Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws ContactExistsException;
+    Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws AlreadyExistsException;
 
     void contact(User to, String message, String name, String phoneNumber);
 

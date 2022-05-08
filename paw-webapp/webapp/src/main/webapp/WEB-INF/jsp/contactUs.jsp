@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="area absolute">
@@ -46,7 +47,7 @@
                 </div>
                 <div class="form-group mb-6">
                     <form:label path="mail" class="block mb-2 text-sm font-medium text-gray-900"><spring:message code="contactUs.mail"/></form:label>
-                    <form:input path="mail" type="tel" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                    <form:input path="mail" value = "${mail}" type="tel" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                     <form:errors path="mail" element="p" cssStyle="color: red"/>
                 </div>
                 <div class="form-group mb-6">
@@ -60,19 +61,21 @@
         </form:form>
     </div>
 </div>
+<c:if test="${status.equals('sent')}">
+    <div id="sent" class="absolute bottom-6 inset-1/3">
+        <div class = "grid justify-items-center bg-purple-400 rounded h-1/3 p-5">
+            <h1 class="text-2xl font-semibold text-white"><spring:message code="feedback.congrats"/></h1>
+            <p class="font-light text-white"><spring:message code="feedback.viewProfile.sent"/></p>
+        </div>
+    </div>
+</c:if>
 </body>
 </html>
 
 <script>
-
-    function setColor(btn) {
-        let property = document.getElementById(btn);
-        if (property.style.backgroundColor === 'rgb(255, 255, 255)' || property.style.backgroundColor === '') {
-            property.style.backgroundColor = "#c4b5fd";
-            window.sessionStorage.setItem(btn, "#c4b5fd");
-        }
-        else {
-            property.style.backgroundColor = "#ffffff";
-        }
-    }
+    $(function (){
+        setTimeout(function (){
+            $("#sent").fadeOut('slow');
+        }, 2000)
+    });
 </script>

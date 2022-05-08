@@ -19,14 +19,13 @@ public class ApplicantJdbcDao implements ApplicantDao{
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    private static final RowMapper<Applicant> APPLICANT_ROW_MAPPER = (rs, rowNum) ->
-            new Applicant(rs.getLong("jobID"), rs.getLong("employeeID"));
-
     private static final RowMapper<Applicant> APPLI_LIST_ROW_MAPPER = (rs, rowNum) ->
             new Applicant(rs.getLong("jobID"), rs.getLong("employeeID"), rs.getString("name"), rs.getString("email"));
 
     private  static final RowMapper<Applicant> INFO_ROW_MAPPER = (rs, rowNum) ->
             new Applicant(rs.getLong("jobID"), rs.getString("email"), rs.getString("title"));
+
+    private static final RowMapper<Boolean> APPLICANT_EXISTS_ROW_MAPPER = (rs, rowNum) -> rs.getBoolean("exists");
 
     @Autowired
     public ApplicantJdbcDao(final DataSource ds){
@@ -57,6 +56,13 @@ public class ApplicantJdbcDao implements ApplicantDao{
         List<Applicant> query = jdbcTemplate.query("SELECT jobid, title, email FROM jobs JOIN users " +
                         "ON employerid = userid WHERE jobid = ?",
                 new Object[] {jobID}, INFO_ROW_MAPPER);
+        return query.stream().findFirst();
+    }
+
+    @Override
+    public Optional<Boolean> existsApplicant(long employeeId, long jobId) {
+        List<Boolean> query = jdbcTemplate.query("SELECT EXISTS(SELECT * FROM applicants WHERE employeeid = ? AND jobid = ?)", new Object[] {employeeId,jobId}, APPLICANT_EXISTS_ROW_MAPPER);
+
         return query.stream().findFirst();
     }
 }
