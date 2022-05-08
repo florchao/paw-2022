@@ -10,4 +10,5 @@ public interface JobService {
     Optional<List<Job>> getUserJobs(long employerID);
     Optional<Job> getJobByID(long jobID);
     Optional<List<Job>> getFilteredJobs(String name, Long experienceYears,String location, String availability, String abilities, Long page, long pageSize);
+    int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize);
 }

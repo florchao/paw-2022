@@ -91,7 +91,7 @@ public class JobController {
         final ModelAndView mav = new ModelAndView("searchJobs");
         mav.addObject("jobList", jobList);
         mav.addObject("page", page);
-//        mav.addObject("maxPage", jobService.getPageNumber)
+        mav.addObject("maxPage", jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE));
         return mav;
     }
 

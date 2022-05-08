@@ -153,63 +153,64 @@
             </div>
         </div>
         <div class="col-span-3 col-start-2">
-            <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="searchPage.searchEmployees"/></p>
+            <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="searchJobs.availableJobs"/></p>
             <form:input type="text" path="name" cssClass="hidden" cssStyle="border-radius: 5px;"/>
             <c:choose>
-                <c:when test="${jobList.size() == 0}">
-                    <div class = "grid content-center justify-center h-5/6 mt-16">
-                        <div class = "grid justify-items-center">
-                            <img src="<c:url value='/public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
-                            <p class="text-3xl font-semibold text-purple-700"><spring:message code="searchPage.noEmployees"/></p>
-                        </div>
+            <c:when test="${jobList.size() == 0}">
+                <div class = "grid content-center justify-center h-5/6 mt-16">
+                    <div class = "grid justify-items-center">
+                        <img src="<c:url value='/public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
+                        <p class="text-3xl font-semibold text-purple-700"><spring:message code="searchPage.noEmployees"/></p>
                     </div>
-                </c:when>
-                <c:otherwise>
-            <div class="flex flex-wrap content-start justify-center h-screen">
-                    <c:forEach var="job" items="${jobList}">
-                        <c:set var="job" value="${job}" scope="request"/>
-                        <div>
-                            <% request.setCharacterEncoding("utf-8");%>
-                            <jsp:include page="components/jobCard.jsp">
-                                <jsp:param name="title" value="${job.title}"/>
-                                <jsp:param name="description" value="${job.description}"/>
-                                <jsp:param name = "location" value = "${job.location}"/>
-                                <jsp:param name="jobid" value="${job.jobId}"/>
-                            </jsp:include>
-                        </div>
-                    </c:forEach>
-                </c:otherwise>
-            </c:choose>
-            <c:if test="${maxPage > 0}">
-            <div class="flex flex-row justify-center">
-                <c:choose>
-                    <c:when test="${page < 1}">
-                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>
-                    </c:when>
-                    <c:otherwise>
-                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>
-                    </c:otherwise>
-                </c:choose>
-                <div class="bg--300 w-16 flex justify-center">
-                    <h1 class="text-yellow-300">${page + 1} of ${maxPage}</h1>
                 </div>
-                <c:choose>
-                    <c:when test="${page + 1 >= maxPage}">
-                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>
-                    </c:when>
-                    <c:otherwise>
-                        <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>
-                    </c:otherwise>
-                </c:choose>
-                </c:if>
+            </c:when>
+            <c:otherwise>
+            <div class="flex flex-wrap content-start justify-center">
+                <c:forEach var="job" items="${jobList}">
+                    <c:set var="job" value="${job}" scope="request"/>
+                    <div>
+                        <% request.setCharacterEncoding("utf-8");%>
+                        <jsp:include page="components/jobCard.jsp">
+                            <jsp:param name="title" value="${job.title}"/>
+                            <jsp:param name="description" value="${job.description}"/>
+                            <jsp:param name = "location" value = "${job.location}"/>
+                            <jsp:param name="jobid" value="${job.jobId}"/>
+                        </jsp:include>
+                    </div>
+                </c:forEach>
             </div>
-            <form:input cssStyle="visibility: hidden" type="number" id="pageNumber" path="pageNumber"/>
-            </form:form>
+                </c:otherwise>
+                </c:choose>
+                <c:if test="${maxPage > 0}">
+                <div class="flex flex-row justify-center">
+                    <c:choose>
+                        <c:when test="${page < 1}">
+                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>
+                        </c:when>
+                        <c:otherwise>
+                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="bg--300 w-16 flex justify-center">
+                        <h1 class="text-yellow-300">${page + 1} of ${maxPage}</h1>
+                    </div>
+                    <c:choose>
+                        <c:when test="${page + 1 >= maxPage}">
+                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>
+                        </c:when>
+                        <c:otherwise>
+                            <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>
+                        </c:otherwise>
+                    </c:choose>
+                    </c:if>
+                </div>
+                <form:input cssStyle="visibility: hidden" type="number" id="pageNumber" path="pageNumber"/>
+                </form:form>
 
+            </div>
         </div>
     </div>
-</div>
-</div>
+<%--</div>--%>
 </body>
 </html>
 <style>

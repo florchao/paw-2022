@@ -51,4 +51,17 @@ public class JobServiceImpl implements JobService{
         System.out.println("en filtered jobs");
         return jobDao.getFilteredJobs(name, experienceYears, location, availabilityList, abilitiesList, page, pageSize);
     }
+
+    @Override
+    public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize) {
+        List<String> availabilityList = new ArrayList<>();
+        if (availability != null) {
+            availabilityList = Arrays.asList(availability.split(","));
+        }
+        List<String> abilitiesList= new ArrayList<>();
+        if (abilities != null) {
+            abilitiesList = Arrays.asList(abilities.split(","));
+        }
+        return jobDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize);
+    }
 }
