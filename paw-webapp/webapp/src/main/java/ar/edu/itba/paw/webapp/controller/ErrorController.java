@@ -11,4 +11,14 @@ public class ErrorController {
     public ModelAndView noSuchPath() {
         return new ModelAndView("404");
     }
+
+    @RequestMapping("403")
+    public ModelAndView accessDenied() {
+        return new ModelAndView("403");
+    }
+
+    @RequestMapping("500")
+    public ModelAndView serverError() {
+        return new ModelAndView("500");
+    }
 }
