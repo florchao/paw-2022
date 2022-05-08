@@ -14,6 +14,7 @@
 <body>
 <c:url value="/buscarEmpleadas" var = "search"/>
 <c:url value="/registrarse" var = "createProfile"/>
+<c:url value="/login" var = "login"/>
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="init"/>
 </jsp:include>
@@ -32,10 +33,17 @@
                             </button>
                         </form:form>
                     </div>
-                    <div class="grid col-start-2 col-span-2">
+                    <div class="pb-4 grid col-start-2 col-span-2">
                         <form:form method="get" action="${createProfile}" pageEncoding="UTF-8">
                             <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
                                 <spring:message code="init.profile"/>
+                            </button>
+                        </form:form>
+                    </div>
+                    <div class="grid col-start-2 col-span-2">
+                        <form:form method="get" action="${login}" pageEncoding="UTF-8">
+                            <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
+                                <spring:message code="init.login"/>
                             </button>
                         </form:form>
                     </div>
