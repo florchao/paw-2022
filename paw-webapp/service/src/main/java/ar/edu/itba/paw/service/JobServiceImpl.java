@@ -33,4 +33,22 @@ public class JobServiceImpl implements JobService{
         Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription(), job.getEmployerName());
         return Optional.of(aux);
     }
+
+    @Override
+    public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, String availability, String abilities, Long page, long pageSize) {
+        if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0) {
+            System.out.println("en all jobs");
+            return jobDao.getAllJobs(pageSize);
+        }
+        List<String> availabilityList = new ArrayList<>();
+        if (availability != null) {
+            availabilityList = Arrays.asList(availability.split(","));
+        }
+        List<String> abilitiesList= new ArrayList<>();
+        if (abilities != null) {
+            abilitiesList = Arrays.asList(abilities.split(","));
+        }
+        System.out.println("en filtered jobs");
+        return jobDao.getFilteredJobs(name, experienceYears, location, availabilityList, abilitiesList, page, pageSize);
+    }
 }

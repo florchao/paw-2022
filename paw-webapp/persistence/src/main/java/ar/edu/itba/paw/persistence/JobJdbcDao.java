@@ -67,5 +67,16 @@ public class JobJdbcDao implements JobDao{
         return query.stream().findFirst();
     }
 
+    @Override
+    public Optional<List<Job>> getAllJobs(long pageSize) {
+        List<Job> query = jdbcTemplate.query("SELECT * FROM jobs LIMIT " + pageSize, new Object[] {}, MY_JOB_ROW_MAPPER);
+        return Optional.of(query);
+    }
+
+    @Override
+    public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
+        return Optional.empty();
+    }
+
 
 }

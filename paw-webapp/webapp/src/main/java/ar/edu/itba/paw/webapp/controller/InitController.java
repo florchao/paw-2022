@@ -80,6 +80,11 @@ public class InitController {
         return new ModelAndView("redirect:/contactos");
     }
 
+    @RequestMapping(value = "/redirectJobs", method = RequestMethod.GET)
+    public ModelAndView redirectJobs() {
+        return new ModelAndView("redirect:/trabajos");
+    }
+
     @RequestMapping("/login")
     public ModelAndView login(){
         return new ModelAndView("login");

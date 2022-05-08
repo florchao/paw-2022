@@ -152,4 +152,13 @@ public class Job {
     public void setAbilitiesArr(List<String> abilitiesArr) {
         this.abilitiesArr = abilitiesArr;
     }
+
+    public void firstWordsToUpper() {
+        StringBuilder finalName = new StringBuilder();
+        for (String word : getTitle().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        setTitle(finalName.toString());
+    }
 }
