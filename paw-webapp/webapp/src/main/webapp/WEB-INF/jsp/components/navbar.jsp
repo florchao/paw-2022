@@ -38,16 +38,7 @@
             </c:if>
             <div class="grid grid-cols-4 items-center justify-items-center col-span-2 col-start-4">
                 <sec:authorize access="!isAuthenticated()">
-                    <div class = "items-center ">
-                        <c:choose>
-                            <c:when test="${param.currentUrl.equals('contactUs')}">
-                                <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contactus"/></p>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="<c:url value="/contactanos"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contactus"/></a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+
                     <div class = "items-center ">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('register')}">
@@ -128,6 +119,16 @@
                         <a href="<c:url value="/logout"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.logout"/></a>
                     </div>
                 </sec:authorize>
+                <div class = "items-center ">
+                    <c:choose>
+                        <c:when test="${param.currentUrl.equals('contactUs')}">
+                            <p class="text-m whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contactus"/></p>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="<c:url value="/contactanos"/>" class="text-m whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contactus"/></a>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
             </div>
         </c:if>
     </div>
