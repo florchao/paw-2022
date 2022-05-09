@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../public/javascript/viewJob.js"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="viewJob.title"/></title>
 </head>
@@ -99,16 +100,3 @@
     </c:if>
 </sec:authorize>
 </body>
-<script>
-    $(function (){
-        setTimeout(function (){
-            $("#sent").fadeOut('slow');
-        }, 2000)
-    });
-
-    $(function (){
-        setTimeout(function (){
-            $("#error").fadeOut('slow');
-        }, 2500)
-    });
-</script>

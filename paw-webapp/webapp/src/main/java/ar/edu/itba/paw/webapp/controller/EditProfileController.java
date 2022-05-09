@@ -54,8 +54,6 @@ public class EditProfileController {
         employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), ((Long) principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
         if(!form.getImage().isEmpty())
             userService.updateProfileImage(((Long) principal.getUserID()), form.getImage().getBytes());
-        System.out.println(principal.getUserID());
-        System.out.println(form.getImage().getBytes());
         return new ModelAndView("redirect:/verPerfil/");
     }
 }

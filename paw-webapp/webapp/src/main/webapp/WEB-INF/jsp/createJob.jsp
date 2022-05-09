@@ -6,14 +6,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
-    <script type="text/javascript">
-        function validateExpYears() {
-            var el = document.getElementById('expYears');
-            if (el.value ==="") {
-                el.value=0;
-            }
-        }
-    </script>
+    <script src="../../public/javascript/createJob.js"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="createJob.title"/></title>
 </head>
@@ -60,8 +53,8 @@
                         <div class="ml-3 col-span-3 w-4/5 justify-self-center">
                             <form:label path="availability" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="jobForm.availability"/></form:label>
                             <form:select path="availability" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
-                                <form:option value="Medio dia" label="Medio dia"/>
-                                <form:option value="Dia completo" label="Dia completo"/>
+                                <form:option value="Media jornada" label="Medio dia"/>
+                                <form:option value="Jornada completa" label="Dia completo"/>
                                 <form:option value="Con cama" label="Con cama"/>
                             </form:select>
                             <form:errors path="availability" element="p" cssStyle="color:red"/>
@@ -113,34 +106,3 @@
 </div>
 </body>
 </html>
-
-<script>
-
-    function setColor(btn) {
-        let property = document.getElementById(btn + "-cb");
-        let label = document.getElementById(btn + "-label")
-        if (property.checked === false) {
-            label.style.backgroundColor = "#c4b5fd";
-            window.sessionStorage.setItem(btn, "#c4b5fd");
-        }
-        else {
-            label.style.backgroundColor = "#ffffff";
-        }
-    }
-
-    const buttons = ["cocinar", "planchar", "menores", "mayores", "especiales", "mascotas"]
-    window.onload = function() {
-        console.log("Entre");
-        buttons.forEach(function(word) {
-            console.log(word)
-
-            let property = document.getElementById(word + "-cb");
-            let label = document.getElementById(word + "-label");
-            console.log(property.checked)
-            if (property.checked === true) {
-                label.style.backgroundColor = "#c4b5fd";
-                window.sessionStorage.setItem(word, "#c4b5fd");
-            }
-        })
-    };
-</script>

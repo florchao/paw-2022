@@ -2,12 +2,14 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,7 @@ public class JobController {
     @Autowired
     UserService userService;
 
-    private final static long PAGE_SIZE = 4;
+    private final static long PAGE_SIZE = 8;
 
     @RequestMapping("/crearTrabajo")
     ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
@@ -56,7 +58,14 @@ public class JobController {
         ModelAndView mav = new ModelAndView("publishedJobs");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<List<Job>> jobs = jobService.getUserJobs(principal.getUserID());
-        mav.addObject("JobList", jobs.get());
+        List<Job> jobList = new ArrayList<>();
+        if (jobs.isPresent()) {
+            for (Job job : jobs.get()) {
+                job.firstWordsToUpper();
+                jobList.add(job);
+            }
+        }
+        mav.addObject("JobList", jobList);
         return mav;
     }
 
@@ -64,7 +73,11 @@ public class JobController {
     ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
-        job.ifPresent(value -> mav.addObject("job", value));
+        if (job.isPresent()) {
+            job.get().employerNameToUpper();
+            job.get().firstWordsToUpper();
+            mav.addObject("job", job.get());
+        }
         mav.addObject("status", status);
         return mav;
     }
@@ -83,11 +96,8 @@ public class JobController {
         List<Job> jobList = new ArrayList<>();
         Optional<List<Job>> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
         if (opJob.isPresent()) {
-            System.out.println("entre aca?");
             for (Job job : opJob.get()) {
                 job.firstWordsToUpper();
-                System.out.println("mi primer trabajo?");
-                System.out.println(job);
                 jobList.add(job);
             }
         }

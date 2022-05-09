@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -134,6 +133,13 @@ public class JobJdbcDao implements JobDao{
         // TODO Hacer que el limit no este hardcodeado
         String query = jdbcTemplate.queryForObject(stringBuilder.toString(), new Object[] {}, String.class);
         return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
+    }
+
+    @Override
+    public String getJobNameById(long jobID) {
+        List<String> query = jdbcTemplate.query("SELECT title FROM jobs WHERE jobid = ? ", new Object[] {jobID}, (rs, rowNum) -> rs.getString("title"));
+        Optional<String> optional = query.stream().findFirst();
+        return optional.orElse("Trabajo sin nombre");
     }
 
 

@@ -4,7 +4,6 @@ import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 
-
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;

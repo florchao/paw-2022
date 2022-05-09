@@ -1,7 +1,8 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.Experience;
-import ar.edu.itba.paw.webapp.constraint.annotation.*;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilitiesEdit;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;

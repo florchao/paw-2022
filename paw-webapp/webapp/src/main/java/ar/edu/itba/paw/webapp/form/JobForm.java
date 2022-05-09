@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.form;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesAnnotation;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailability;
+import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilityJobAnnotation;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -27,7 +28,7 @@ public class JobForm {
     @CheckboxesAbilitiesEdit
     private String[] abilities;
 
-    @NotNull
+    @CheckboxesAvailabilityJobAnnotation
     private String availability;
 
     @Size(max = 4000, min = 10)

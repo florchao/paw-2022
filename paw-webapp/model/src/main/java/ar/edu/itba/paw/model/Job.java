@@ -161,4 +161,13 @@ public class Job {
         finalName.setLength(finalName.length() - 1);
         setTitle(finalName.toString());
     }
+
+    public void employerNameToUpper() {
+        StringBuilder finalName = new StringBuilder();
+        for (String word : getEmployerName().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        setEmployerName(finalName.toString());
+    }
 }
