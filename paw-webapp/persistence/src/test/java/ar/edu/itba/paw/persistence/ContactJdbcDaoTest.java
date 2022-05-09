@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Job;
 import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,12 @@ public class ContactJdbcDaoTest {
     private static final Date DATE = new Date(10);
     private static final String MESSAGE = "Message";
     private static final String PHONE = "Phone";
+
+    @Before
+    public void setUp(){
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "contact");
+    }
 
     @Test
     public void testCreate(){
