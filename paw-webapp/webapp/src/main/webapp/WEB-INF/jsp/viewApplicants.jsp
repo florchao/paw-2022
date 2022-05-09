@@ -39,7 +39,7 @@
                             <a href="<c:url value="/verPerfil/${applicant.employeeID}"/>">
                             <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
-                                    <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-1.jpg">
+                                    <img class="w-8 h-8 rounded-full" src="<c:url value="/user/profile-image/${applicant.employeeID}"/>"  onerror="this.src = '/public/user.png'">
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-xl font-medium text-gray-900 truncate">
