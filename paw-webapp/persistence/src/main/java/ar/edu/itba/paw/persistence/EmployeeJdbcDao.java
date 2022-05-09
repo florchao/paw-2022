@@ -55,7 +55,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM employee where ");
         if (name != null) {
-            stringBuilder.append("name like '%").append(name.toLowerCase()).append("%'");
+            stringBuilder.append("lower(name) like '%").append(name.toLowerCase()).append("%'");
             stringBuilder.append(" and ");
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
@@ -63,7 +63,7 @@ public class EmployeeJdbcDao implements EmployeeDao{
             stringBuilder.append(" and ");
         }
         if (location != null) {
-            stringBuilder.append("location like '%").append(location.toLowerCase()).append("%' ");
+            stringBuilder.append("lower(location) like '%").append(location.toLowerCase()).append("%' ");
             stringBuilder.append(" and ");
         }
         // TODO Aca iria lo mismo pero para experienceList

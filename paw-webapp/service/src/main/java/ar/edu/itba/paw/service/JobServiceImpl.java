@@ -18,6 +18,8 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
+        title = title.trim().replaceAll(" +", " ");
+        location = location.trim().replaceAll(" +", " ");
         return jobDao.create(title, location, employerId, availability, experienceYears, abilities, description);
     }
 

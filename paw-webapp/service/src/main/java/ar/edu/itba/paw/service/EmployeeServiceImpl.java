@@ -35,6 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService{
         //TODO: validate name, location, id, etc
         StringBuilder abilitiesSB = new StringBuilder();
         StringBuilder availabilitySB = new StringBuilder();
+        name = name.trim().replaceAll(" +", " ");
+        location = location.trim().replaceAll(" +", " ");
         for (String ab : abilities) {
             abilitiesSB.append(ab).append(",");
         }
@@ -54,7 +56,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities, byte[] image) {
-        //TODO: validate name, location, id, etc
+        name = name.trim().replaceAll(" +", " ");
+        location = location.trim().replaceAll(" +", " ");
         return employeeDao.create(id, name, location, availability, experienceYears, abilities, image);
     }
 

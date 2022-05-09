@@ -16,7 +16,7 @@ import java.util.List;
 
 public class EmployeeEditForm {
 
-    @Pattern(regexp = "[a-zA-z\\s']+|^$")
+//    @Pattern(regexp = "[a-zA-z\\s']+|^$")
     @NotBlank
     @Size(max = 100)
     private String name;
