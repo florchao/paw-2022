@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Contact;
-import ar.edu.itba.paw.model.Job;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

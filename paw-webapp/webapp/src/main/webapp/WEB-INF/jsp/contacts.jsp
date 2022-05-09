@@ -59,7 +59,7 @@
 
                     <div id="${contact.email.replaceAll("[@.]*", "")}" class="modal w-fit">
                         <div class="flex grid grid-cols-3 items-center py-8 w-fit">
-                            <img class="col-span-1 mb-3 w-24 h-24 rounded-full shadow-lg" src="<c:url value="/user/profile-image/${contact.employerID}"/>" alt=" " onerror="this.src = '/public/user.png'"/>
+                            <img class="col-span-1 mb-3 w-24 h-24 rounded-full shadow-lg" src="<c:url value="/user/profile-image/${contact.employerID}"/>" alt=" " onerror="this.src = '<c:url value="/public/user.png"/>'"/>
                             <div class="col-span-2 row-span-2">
                                 <h5 class="mb-1 text-xl font-medium text-gray-900"><c:out value="${contact.employer}"/></h5>
                                 <p class="text-gray-500 text-sm p-1.5">
