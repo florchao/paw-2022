@@ -9,6 +9,7 @@ import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -57,7 +58,14 @@ public class JobController {
         ModelAndView mav = new ModelAndView("publishedJobs");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<List<Job>> jobs = jobService.getUserJobs(principal.getUserID());
-        mav.addObject("JobList", jobs.get());
+        List<Job> jobList = new ArrayList<>();
+        if (jobs.isPresent()) {
+            for (Job job : jobs.get()) {
+                job.firstWordsToUpper();
+                jobList.add(job);
+            }
+        }
+        mav.addObject("JobList", jobList);
         return mav;
     }
 
@@ -67,6 +75,7 @@ public class JobController {
         Optional<Job> job = jobService.getJobByID(id);
         if (job.isPresent()) {
             job.get().employerNameToUpper();
+            job.get().firstWordsToUpper();
             mav.addObject("job", job.get());
         }
         mav.addObject("status", status);
