@@ -4,8 +4,6 @@ import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilityJobAnn
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Arrays;
-import java.util.List;
 
 public class CheckboxesAvailabilityJobValidator implements ConstraintValidator<CheckboxesAvailabilityJobAnnotation,String> {
 
