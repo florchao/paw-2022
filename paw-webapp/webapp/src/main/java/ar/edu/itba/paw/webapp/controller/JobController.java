@@ -65,7 +65,10 @@ public class JobController {
     ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
-        job.ifPresent(value -> mav.addObject("job", value));
+        if (job.isPresent()) {
+            job.get().employerNameToUpper();
+            mav.addObject("job", job.get());
+        }
         mav.addObject("status", status);
         return mav;
     }
