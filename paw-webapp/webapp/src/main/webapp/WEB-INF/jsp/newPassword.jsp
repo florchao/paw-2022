@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../public/javascript/utils.js"></script>
 </head>
 <body>
 <div class="area absolute">
@@ -56,16 +57,3 @@
 
 </html>
 
-<script>
-
-    function setColor(btn) {
-        let property = document.getElementById(btn);
-        if (property.style.backgroundColor === 'rgb(255, 255, 255)' || property.style.backgroundColor === '') {
-            property.style.backgroundColor = "#c4b5fd";
-            window.sessionStorage.setItem(btn, "#c4b5fd");
-        }
-        else {
-            property.style.backgroundColor = "#ffffff";
-        }
-    }
-</script>

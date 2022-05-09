@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="createProfileEmployer.title"/></title>
+    <script src="../../public/javascript/utils.js"></script>
 </head>
 <body>
 <div class="area absolute">
@@ -64,10 +65,3 @@
 </div>
 </body>
 </html>
-
-<script>
-    var loadFile = function(event) {
-        var image = document.getElementById('picture');
-        image.src = URL.createObjectURL(event.target.files[0]);
-    };
-</script>

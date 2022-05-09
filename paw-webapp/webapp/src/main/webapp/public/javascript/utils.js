@@ -28,3 +28,20 @@ function prevPageValidation(current) {
         document.getElementById('prevPageButton').disabled = true;
     }
 }
+
+function setColor(btn) {
+    console.log('algo')
+    let property = document.getElementById(btn);
+    if (property.style.backgroundColor === 'rgb(255, 255, 255)' || property.style.backgroundColor === '') {
+        property.style.backgroundColor = "#c4b5fd";
+        window.sessionStorage.setItem(btn, "#c4b5fd");
+    }
+    else {
+        property.style.backgroundColor = "#ffffff";
+    }
+}
+
+var loadFile = function(event) {
+    var image = document.getElementById('picture');
+    image.src = URL.createObjectURL(event.target.files[0]);
+};

@@ -11,6 +11,7 @@
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../public/javascript/contactUs.js"></script>
 </head>
 <body>
 <div class="area absolute">
@@ -72,10 +73,3 @@
 </body>
 </html>
 
-<script>
-    $(function (){
-        setTimeout(function (){
-            $("#sent").fadeOut('slow');
-        }, 2000)
-    });
-</script>

@@ -6,7 +6,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
-    <script src="../../public/javascript/utils.js"></script>
+    <script src="../../public/javascript/createJob.js"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="createJob.title"/></title>
 </head>
@@ -106,17 +106,3 @@
 </div>
 </body>
 </html>
-
-<script>
-    const buttons = ["cocinar", "planchar", "menores", "mayores", "especiales", "mascotas"]
-    window.onload = function() {
-        buttons.forEach(function(word) {
-            let property = document.getElementById(word + "-cb");
-            let label = document.getElementById(word + "-label");
-            if (property.checked === true) {
-                label.style.backgroundColor = "#c4b5fd";
-                window.sessionStorage.setItem(word, "#c4b5fd");
-            }
-        })
-    };
-</script>
