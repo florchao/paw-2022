@@ -89,13 +89,13 @@ public class JobJdbcDao implements JobDao{
             stringBuilder.append("location like '%").append(location.toLowerCase()).append("%' ");
             stringBuilder.append(" and ");
         }
-        for (String av : availability) {
-            stringBuilder.append("availability like '%").append(av).append("%'");
-            stringBuilder.append(" and ");
-        }
         for (String ability : abilities) {
             stringBuilder.append("abilities like '%").append(ability).append("%'");
             stringBuilder.append(" and ");
+        }
+        for (String av : availability) {
+            stringBuilder.append("availability like '%").append(av).append("%'");
+            stringBuilder.append(" or  ");
         }
         stringBuilder.setLength(stringBuilder.length() - 5);
         stringBuilder.append(" limit ").append(pageSize);
