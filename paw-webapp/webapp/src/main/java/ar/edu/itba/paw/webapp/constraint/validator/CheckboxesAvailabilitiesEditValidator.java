@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.constraint.validator;
 
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilitiesEdit;
 
 import javax.validation.ConstraintValidator;

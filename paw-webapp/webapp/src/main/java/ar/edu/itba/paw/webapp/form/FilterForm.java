@@ -5,7 +5,10 @@ import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesAnnotatio
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailability;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class FilterForm {

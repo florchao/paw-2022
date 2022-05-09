@@ -3,9 +3,6 @@ package ar.edu.itba.paw.webapp.form;
 import ar.edu.itba.paw.webapp.constraint.annotation.RolesAnnotation;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.context.annotation.Role;
-
-import javax.validation.Constraint;
 
 public class RegisterForm {
 

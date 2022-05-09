@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesAnnotation;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailability;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 

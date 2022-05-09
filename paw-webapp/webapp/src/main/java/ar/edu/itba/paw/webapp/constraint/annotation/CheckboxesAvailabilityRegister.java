@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.constraint.annotation;
 
 
 import ar.edu.itba.paw.webapp.constraint.validator.CheckboxesAvailabilityRegisterValidator;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

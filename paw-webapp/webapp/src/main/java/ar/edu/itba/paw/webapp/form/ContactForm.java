@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.form;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 public class ContactForm {
 
