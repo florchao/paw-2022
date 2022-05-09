@@ -53,6 +53,7 @@ public class ApplicantController {
         ModelAndView mav = new ModelAndView("viewApplicants");
         Optional<List<Applicant>> list = applicantService.getApplicantsByJob(jobID);
         list.ifPresent(applicants -> mav.addObject("ApplicantList", applicants));
+        mav.addObject("title", jobService.getJobNameById(jobID));
         return mav;
     }
 

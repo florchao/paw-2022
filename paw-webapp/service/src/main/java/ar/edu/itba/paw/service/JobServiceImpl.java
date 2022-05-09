@@ -65,4 +65,9 @@ public class JobServiceImpl implements JobService{
         }
         return jobDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize);
     }
+
+    @Override
+    public String getJobNameById(long jobID) {
+        return jobDao.getJobNameById(jobID);
+    }
 }

@@ -44,21 +44,21 @@ public class MailingServiceImpl implements MailingService{
 
     @Override
     @Async
-    public void sendApplyMail(String to, String jobTitle, String name) {
+    public void sendApplyMail(String to, String jobTitle, String name, long jobid) {
         MimeMessage mimeMessage = new MimeMessage(session);
         String subject = "¡"+ name + " aplicó para "+jobTitle+"!";
         String message = String.format("<div style = \"justify-content: center;\n" +
                 "  align-items: center;\">\n" +
                 "<h1 style=\"color: #a78bfa;\">&iexcl;%s ha aplicado para trabajar con vos!</h1>\n" +
                 "<p>Para ver su informaci&oacute;n y el de todos los aplicantes.</p>\n" +
-                "  <a href=\"http://pawserver.it.itba.edu.ar/paw-2022a-02/misTrabajos\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
+                "  <a href=\"http://pawserver.it.itba.edu.ar/paw-2022a-02/aplicantes/%s\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
                 "        onmouseout=\"mouseout()\" style=\"color: #581c87; background-color: #a78bfa;\n" +
                 "  padding: 14px 40px;\n" +
                 "  border-radius: 8px;\n" +
                 "  cursor: pointer;\n" +
                 "  font-family: Arial, Helvetica, sans-serif;\n" +
                 "  font-size: 14px; \"> Haz click aqu&iacute; </button></a>\n" +
-                "</div>",name);
+                "</div>",name, jobid);
         sendEmail(mimeMessage, Collections.singletonList(to), subject, message, null);
     }
 

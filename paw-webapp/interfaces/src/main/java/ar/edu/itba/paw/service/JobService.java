@@ -13,4 +13,5 @@ public interface JobService {
     Optional<Job> getJobByID(long jobID) throws UserNotFoundException;
     Optional<List<Job>> getFilteredJobs(String name, Long experienceYears,String location, String availability, String abilities, Long page, long pageSize);
     int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize);
+    String getJobNameById(long jobID);
 }

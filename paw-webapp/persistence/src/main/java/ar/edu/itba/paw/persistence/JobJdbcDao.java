@@ -135,5 +135,12 @@ public class JobJdbcDao implements JobDao{
         return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
     }
 
+    @Override
+    public String getJobNameById(long jobID) {
+        List<String> query = jdbcTemplate.query("SELECT title FROM jobs WHERE jobid = ? ", new Object[] {jobID}, (rs, rowNum) -> rs.getString("title"));
+        Optional<String> optional = query.stream().findFirst();
+        return optional.orElse("Trabajo sin nombre");
+    }
+
 
 }
