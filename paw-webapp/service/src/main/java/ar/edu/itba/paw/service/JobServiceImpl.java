@@ -37,7 +37,6 @@ public class JobServiceImpl implements JobService{
     @Override
     public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, String availability, String abilities, Long page, long pageSize) {
         if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0) {
-            System.out.println("en all jobs");
             return jobDao.getAllJobs(pageSize);
         }
         List<String> availabilityList = new ArrayList<>();
@@ -48,7 +47,6 @@ public class JobServiceImpl implements JobService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        System.out.println("en filtered jobs");
         return jobDao.getFilteredJobs(name, experienceYears, location, availabilityList, abilitiesList, page, pageSize);
     }
 

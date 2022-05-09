@@ -35,7 +35,7 @@ public class JobController {
     @Autowired
     UserService userService;
 
-    private final static long PAGE_SIZE = 4;
+    private final static long PAGE_SIZE = 8;
 
     @RequestMapping("/crearTrabajo")
     ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
@@ -83,11 +83,8 @@ public class JobController {
         List<Job> jobList = new ArrayList<>();
         Optional<List<Job>> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
         if (opJob.isPresent()) {
-            System.out.println("entre aca?");
             for (Job job : opJob.get()) {
                 job.firstWordsToUpper();
-                System.out.println("mi primer trabajo?");
-                System.out.println(job);
                 jobList.add(job);
             }
         }

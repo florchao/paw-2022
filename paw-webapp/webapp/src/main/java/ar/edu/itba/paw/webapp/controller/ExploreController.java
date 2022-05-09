@@ -40,7 +40,7 @@ public class ExploreController {
 
     public String order;
 
-    private final static long PAGE_SIZE = 4;
+    private final static long PAGE_SIZE = 8;
 
     @RequestMapping("/buscarEmpleadas")
     public ModelAndView searchPage(
