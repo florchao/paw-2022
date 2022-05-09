@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
     Optional<User> getUserById(long id) throws UserNotFoundException;
 
-    User create(String username, String password, String confirmPassword, int role) throws UserFoundException, PassMatchException, UserNotFoundException;
+    User create(String username, String password, String confirmPassword, int role) throws UserFoundException, PassMatchException;
 
     Optional<User> findByUsername(String username);
 

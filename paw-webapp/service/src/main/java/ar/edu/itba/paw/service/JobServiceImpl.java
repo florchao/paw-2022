@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.persistence.JobDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,8 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public Optional<Job> getJobByID(long jobID) {
+        if(!jobDao.getJobById(jobID).isPresent())
+            throw new JobNotFoundException("job" + jobID + "does not exists");
         Job job = jobDao.getJobById(jobID).get();
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(job.getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(job.getAbilities().split(",")));
