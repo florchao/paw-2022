@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +58,23 @@ public class JobJdbcDaoTest {
         Assert.assertEquals(EXPERIENCE_YEARS, job.getExperienceYears());
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "jobs"));
 
+    }
+
+    @Test
+    public void testGetFilteredJobsByExperienceYearsAndAbilities() {
+        String query = "INSERT INTO jobs values(1,1, 'First job', 'Location','Con cama', 5, 'Planchar,Cocinar', 'Description')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO jobs values(2,2, 'Second job', 'Location','Con cama,Jornada entera', 10, 'Cocinar', 'Description')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO jobs values(3,3, 'Third job', 'Location','Con cama,Jornada entera', 20, 'Cocinar', 'Description')";
+        jdbcTemplate.execute(query);
+
+        Optional<List<Job>> job =  jobJdbcDao.getFilteredJobs(null,10L,null, new ArrayList<>(), Arrays.asList("Cocinar"), 0L, 8);
+
+        Assert.assertNotNull(job);
+        Assert.assertTrue(job.isPresent());
+        Assert.assertEquals(2,job.get().get(0).getJobId());
+        Assert.assertEquals(3,job.get().get(1).getJobId());
     }
 
     @Test

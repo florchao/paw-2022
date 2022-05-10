@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Experience;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +91,83 @@ public class EmployeeJdbcDaoTest {
         Assert.assertNotNull(list);
         Assert.assertTrue(list.isPresent());
         Assert.assertEquals(1, list.get().size());
+    }
+
+    @Test
+    public void testGetFilteredEmployeesByLocation() {
+        String query = "INSERT INTO employee values(1,'Luis', 'Almagro', 'Media jornada,Jornada completa', 10, 'Cocinar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(2,'Jose', 'Lanus', 'Media jornada', 5, 'Planchar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(3,'Tomas', 'Almagro', 'Con cama,Jornada completa', 10, 'Planchar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(4,'Santiago', 'Villa Crespo', 'Jornada completa', 10, 'Cocinar')";
+        jdbcTemplate.execute(query);
+
+        Optional<List<Employee>> list = employeeJdbcDao.getFilteredEmployees(null, 0L, "Almagro", null, new ArrayList<>(), new ArrayList<>(), 0L, 2);
+
+        Assert.assertNotNull(list);
+        Assert.assertTrue(list.isPresent());
+        Assert.assertEquals(1,list.get().get(0).getId());
+        Assert.assertEquals(3,list.get().get(1).getId());
+    }
+
+    @Test
+    public void testGetFilteredEmployeesByExperienceYearsAndName() {
+        String query = "INSERT INTO employee values(1,'Luis', 'Almagro', 'Media jornada,Jornada completa', 10, 'Cocinar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(2,'Jose', 'Lanus', 'Media jornada', 5, 'Planchar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(3,'Tomas', 'Almagro', 'Con cama,Jornada completa', 0, 'Planchar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(4,'Luis', 'Villa Crespo', 'Jornada completa', 20, 'Cocinar')";
+        jdbcTemplate.execute(query);
+
+        Optional<List<Employee>> list = employeeJdbcDao.getFilteredEmployees("Luis", 5L, null, null, new ArrayList<>(), new ArrayList<>(), 0L, 2);
+
+        Assert.assertNotNull(list);
+        Assert.assertTrue(list.isPresent());
+        Assert.assertEquals(1,list.get().get(0).getId());
+        Assert.assertEquals(4,list.get().get(1).getId());
+    }
+
+    @Test
+    public void testGetFilteredEmployeesByAbilitiesAndNameAndExperienceYears() {
+        String query = "INSERT INTO employee values(1,'Luis', 'Almagro', 'Media jornada,Jornada completa', 10, 'Cocinar,Planchar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(2,'Jose', 'Lanus', 'Media jornada', 5, 'Cocinar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(3,'Tomas', 'Almagro', 'Con cama,Jornada completa', 10, 'Planchar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(4,'Luis', 'Villa Crespo', 'Jornada completa', 20, 'Cocinar,Planchar')";
+        jdbcTemplate.execute(query);
+
+        Optional<List<Employee>> list = employeeJdbcDao.getFilteredEmployees("Luis", 5L, null, null, new ArrayList<>(), Arrays.asList("Planchar"), 0L, 4);
+
+        Assert.assertNotNull(list);
+        Assert.assertTrue(list.isPresent());
+        Assert.assertEquals(1,list.get().get(0).getId());
+        Assert.assertEquals(4,list.get().get(1).getId());
+    }
+
+    @Test
+    public void testGetFilteredEmployeesByAvailability() {
+        String query = "INSERT INTO employee values(1,'Luis', 'Almagro', 'Media jornada,Jornada completa', 10, 'Cocinar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(2,'Jose', 'Lanus', 'Media jornada', 5, 'Planchar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(3,'Tomas', 'Almagro', 'Con cama,Jornada completa', 10, 'Planchar')";
+        jdbcTemplate.execute(query);
+        query = "INSERT INTO employee values(4,'Santiago', 'Villa Crespo', 'Jornada completa', 10, 'Cocinar')";
+        jdbcTemplate.execute(query);
+
+        Optional<List<Employee>> list = employeeJdbcDao.getFilteredEmployees(null, 0L, null, null, Arrays.asList("Jornada completa"), new ArrayList<>(), 0L, 8);
+
+        Assert.assertNotNull(list);
+        Assert.assertTrue(list.isPresent());
+        Assert.assertEquals(1,list.get().get(0).getId());
+        Assert.assertEquals(3,list.get().get(1).getId());
+        Assert.assertEquals(4,list.get().get(2).getId());
     }
 
     @Test
