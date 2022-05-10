@@ -28,7 +28,7 @@
         <c:if test="${!param.currentUrl.equals('init')}">
             <c:if test="${param.currentUrl.equals('searchPage')}">
                 <c:url value="/filterEmployees" var="postPath"/>
-                <div class="col-start-3">
+                <div class="col-start-3 col-span-2">
                     <div class="search-box mt-2">
                         <form:form modelAttribute="filterBy" action="${postPath}" method="get" pageEncoding="UTF-8">
                             <form:input type="text" path="name" cssStyle="border-radius: 5px;background-color: #ac70ff;border-width: 0 0 2px;border-color: #8a52d9;"/>
@@ -39,7 +39,7 @@
             </c:if>
             <c:if test="${param.currentUrl.equals('trabajos')}">
                 <c:url value="/filterJobs" var="postPath"/>
-                <div class="col-start-3">
+                <div class="col-start-3 col-span-2">
                     <div class="search-box mt-2">
                         <form:form modelAttribute="filterJobsBy" action="${postPath}" method="get" pageEncoding="UTF-8">
                             <form:input type="text" path="name" cssStyle="border-radius: 5px;background-color: #ac70ff;border-width: 0 0 2px;border-color: #8a52d9;"/>

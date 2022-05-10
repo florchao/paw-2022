@@ -15,6 +15,7 @@ public class EmployerServiceImpl implements EmployerService{
 
     @Override
     public Employer create(String name, long id, byte[] image) {
+        name = name.trim().replaceAll(" +", " ");
         return employerDao.create(name, id, image);
     }
 
