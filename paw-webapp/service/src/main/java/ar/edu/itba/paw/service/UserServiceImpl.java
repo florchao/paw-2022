@@ -32,9 +32,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User create(String username, String password, String confPassword, int role) throws UserFoundException, PassMatchException {
-        // TODO: validate username / password
-        // TODO: send email validation mail
-        // TODO: ...
         if (findByUsername(username).isPresent()) {
             throw new UserFoundException("There is an account with that email address: "
                     + username);

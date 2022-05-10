@@ -1,9 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistence.EmployeeDao;
-import ar.edu.itba.paw.persistence.UserDao;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,17 +56,5 @@ public class EmployeeServiceImplTest {
         Assert.assertNotNull(maybeEmployee);
         Assert.assertFalse(maybeEmployee.isPresent());
     }
-
-//    @Test
-//    public  void testGetUserById(){
-//
-//        Mockito.when(mockDao.create(Mockito.eq(ID), Mockito.eq(NAME), Mockito.eq(LOCATION), Mockito.eq(AVAILABILITY), Mockito.eq(EXPERIENCE_YEARS), Mockito.eq(ABILITIES)))
-//                .thenReturn(new Employee(NAME, LOCATION, ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES));
-//
-//        Optional<Employee> maybeUser = employeeService.getEmployeeById(1);
-//
-//        Assert.assertNotNull(maybeUser);
-//        Assert.assertFalse(maybeUser.isPresent());
-//    }
 
 }

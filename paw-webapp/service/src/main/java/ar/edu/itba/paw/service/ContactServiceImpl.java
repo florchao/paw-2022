@@ -49,7 +49,6 @@ public class ContactServiceImpl implements ContactService{
             create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber);
             mailingService.sendContactMail(from.getUsername(), to.getUsername(), name);
         }
-        //mailingService.sendMail(replyTo, to, name, message);
 
     }
 

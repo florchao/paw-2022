@@ -32,7 +32,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities) {
-        //TODO: validate name, location, id, etc
         StringBuilder abilitiesSB = new StringBuilder();
         StringBuilder availabilitySB = new StringBuilder();
         name = name.trim().replaceAll(" +", " ");
@@ -91,11 +90,6 @@ public class EmployeeServiceImpl implements EmployeeService{
             long pageSize
     ) {
         if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == 0) {
-            System.out.println("------------------------");
-            System.out.println("------------------------");
-            System.out.println("para vos flor :)");
-            System.out.println("------------------------");
-            System.out.println("------------------------");
             return employeeDao.getEmployees(pageSize);
         }
         List<String> availabilityList = new ArrayList<>();
