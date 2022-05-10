@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Job;
 import org.junit.Assert;
 import org.junit.Before;
@@ -81,5 +80,18 @@ public class JobJdbcDaoTest {
         Assert.assertNotNull(job);
         Assert.assertTrue(job.isPresent());
         Assert.assertEquals(1, job.get().size());
+    }
+
+    @Test
+    public void testGetJobNameById(){
+        String query = "INSERT INTO jobs values(1,1, 'Name', 'Location', 'Availability', 10, 'Abilities', 'Description')";
+        jdbcTemplate.execute(query);
+
+        String name = jobJdbcDao.getJobNameById(ID);
+
+        Assert.assertNotNull(name);
+        Assert.assertEquals(TITLE, name);
+
+
     }
 }
