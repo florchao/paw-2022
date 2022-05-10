@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="editProfile.title"/></title>
-    <script src="../../public/javascript/editProfile.js"></script>
+    <script src="<c:url value="/public/javascript/editProfile.js"/>"></script>
 </head>
 <body>
 <div class="area absolute">
@@ -38,7 +38,7 @@
                     <div class="grid grid-cols-5 gap-6">
                         <div class="row-span-4 col-span-2 m-6">
                             <div class="overflow-hidden bg-gray-100 rounded-full">
-                                <img id="picture" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '/public/user.png'" />
+                                <img id="picture" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '<c:url value="/public/user.png"/>'"/>
                             </div>
                             <form:label path="image"><spring:message code="employeeForm.insertImage"/></form:label>
                             <form:input id= "file" type="file" path="image" accept="image/png, image/jpeg" onchange="loadFile(event);"/>

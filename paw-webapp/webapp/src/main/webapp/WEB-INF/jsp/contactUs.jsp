@@ -11,7 +11,7 @@
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="../../public/javascript/contactUs.js"></script>
+    <script src="<c:url value="/public/javascript/contactUs.js"/>"></script>
 </head>
 <body>
 <div class="area absolute">
@@ -31,7 +31,8 @@
 <jsp:include page="components/navbar.jsp">
    <jsp:param name="currentUrl" value="contactUs"/>
 </jsp:include>
-<div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
+<div class="grid grid-cols-7 content-start justify-center h-full pt-5 overflow-auto">
+    <div class="my-16 w-full col-span-7"></div>
     <div class = "col-start-3 col-span-3 grid h-full w-full">
         <div class="grid justify-items-center mx-6">
             <p class="text-xl font-semibold text-white mb-5">

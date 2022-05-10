@@ -3,9 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.service.EmployeeService;
-import ar.edu.itba.paw.service.ExperienceService;
-import ar.edu.itba.paw.service.MailingService;
-import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,20 +21,8 @@ import java.util.Objects;
 
 @Controller
 public class ExploreController {
-
-    @Autowired
-    private UserService userService;
-
     @Autowired
     private EmployeeService employeeService;
-
-    @Autowired
-    private ExperienceService experienceService;
-
-    @Autowired
-    private MailingService mailingService;
-
-    public String order;
 
     private final static long PAGE_SIZE = 8;
 

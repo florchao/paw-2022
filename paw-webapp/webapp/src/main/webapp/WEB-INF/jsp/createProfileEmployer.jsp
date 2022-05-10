@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="createProfileEmployer.title"/></title>
-    <script src="../../public/javascript/utils.js"></script>
+    <script src="<c:url value="/public/javascript/utils.js"/>"></script>
 </head>
 <body>
 <div class="area absolute">

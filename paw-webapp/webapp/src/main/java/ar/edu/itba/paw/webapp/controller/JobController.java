@@ -1,28 +1,19 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Job;
-import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +40,8 @@ public class JobController {
         if(errors.hasErrors())
             return crearTrabajo(form);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
-        return new ModelAndView("redirect:/buscarEmpleadas");
+        Job job = jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
+        return new ModelAndView("redirect:/trabajo/" + job.getJobId());
     }
 
     @RequestMapping("/misTrabajos")

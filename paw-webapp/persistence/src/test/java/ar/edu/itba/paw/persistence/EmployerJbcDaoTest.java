@@ -32,6 +32,7 @@ public class EmployerJbcDaoTest {
     public void setUp(){
         jdbcTemplate = new JdbcTemplate(dataSource);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "employer");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "profile_images");
     }
 
     private static final String NAME = "Name";
@@ -40,7 +41,7 @@ public class EmployerJbcDaoTest {
 
     @Test
     public void testCreate(){
-        final Employer employer = employerJdbcDao.create(NAME,ID, IMAGE);
+        final Employer employer = employerJdbcDao.create(NAME,ID, null);
 
         Assert.assertNotNull(employer);
         Assert.assertEquals(ID, employer.getId());

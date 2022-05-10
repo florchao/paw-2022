@@ -3,9 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
-import ar.edu.itba.paw.service.EmployeeService;
-import ar.edu.itba.paw.service.ExperienceService;
-import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
@@ -29,15 +26,6 @@ import java.util.Collections;
 public class RegisterController {
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private EmployeeService employeeService;
-
-    @Autowired
-    private ExperienceService experienceService;
-
-    @Autowired
-    private MailingService mailingService;
 
     @RequestMapping("/registrarse")
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form){

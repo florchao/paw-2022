@@ -4,7 +4,9 @@ import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
-import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.service.ContactService;
+import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
@@ -29,16 +31,7 @@ public class ContactController {
     private EmployeeService employeeService;
 
     @Autowired
-    private ExperienceService experienceService;
-
-    @Autowired
-    private MailingService mailingService;
-
-    @Autowired
     private ContactService contactService;
-
-    @Autowired
-    private EmployerService employerService;
 
     @RequestMapping("/contactos")
     public ModelAndView contactsPage() {
