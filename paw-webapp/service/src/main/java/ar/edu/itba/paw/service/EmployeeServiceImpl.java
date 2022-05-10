@@ -22,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Optional<Employee> getEmployeeById(long id) {
         Optional<Employee> employee = (employeeDao.getEmployeeById(id));
         if(!employee.isPresent()){
-            throw new UserNotFoundException("User " + id + " not found");
+            return employee;
         }
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.get().getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.get().getAbilities().split(",")));
