@@ -38,8 +38,8 @@
     <div class=" grid grid-row-4 col-span-4 col-start-2">
         <div class=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
-                <div class="row-span-3 col-span-2 ml-6 mr-6 mb-6">
-                    <img style="max-height: 300px" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '<c:url value="/public/user.png"/>'"/>
+                <div class="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-items-center">
+                        <img style="object-fit: fill; max-height: 350px; max-width: 350px" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '<c:url value="/public/user.png"/>'"/>
                 </div>
                 <div class="ml-3 col-span-2">
                     <p class="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden"><c:out value="${employee.name}"/></p>
