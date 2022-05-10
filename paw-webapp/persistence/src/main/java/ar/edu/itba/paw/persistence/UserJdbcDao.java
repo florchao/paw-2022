@@ -75,9 +75,7 @@ public class UserJdbcDao implements UserDao{
     public Optional<byte[]> getProfileImage(Long userId) {
         Optional<Optional<byte[]>> query = jdbcTemplate.query("SELECT image FROM profile_images WHERE userId = ?",
                 new Object[]{userId}, (rs, rowNumber) ->  Optional.ofNullable(rs.getBytes("image"))).stream().findFirst();
-        if(query.isPresent())
-            return query.get();
-        return Optional.empty();
+        return query.orElseGet(Optional::empty);
     }
 
     private Optional<Boolean> hasProfileImage(Long userId){
