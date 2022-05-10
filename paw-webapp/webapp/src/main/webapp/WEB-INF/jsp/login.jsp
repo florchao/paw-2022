@@ -32,7 +32,7 @@
     </jsp:include>
     <c:url value="/login" var="loginUrl"/>
     <div class="grid grid-cols-7 content-start justify-center h-screen pt-5">
-        <div class="my-12 w-full col-span-7"></div>
+        <div class="my-16 w-full col-span-7"></div>
             <form modelAttribute="login" class="col-span-3 col-start-3" action="${loginUrl}" method="post" enctype = "application/x-www-form-urlencoded">
                 <div class="block p-6 rounded-lg shadow-lg bg-white">
                     <div class="form-group mb-6 grid grid-cols-6">
