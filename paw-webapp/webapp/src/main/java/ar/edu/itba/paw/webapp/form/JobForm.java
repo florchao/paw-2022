@@ -1,13 +1,14 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesAnnotation;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailability;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilityJobAnnotation;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class JobForm {
 
