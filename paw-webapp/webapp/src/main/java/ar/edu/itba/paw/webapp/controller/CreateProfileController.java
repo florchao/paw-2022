@@ -2,7 +2,8 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
-import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
 import ar.edu.itba.paw.webapp.form.EmployerForm;
@@ -20,20 +21,12 @@ import javax.validation.Valid;
 
 @Controller
 public class CreateProfileController {
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private EmployeeService employeeService;
 
     @Autowired
     private EmployerService employerService;
-
-    @Autowired
-    private ExperienceService experienceService;
-
-    @Autowired
-    private MailingService mailingService;
 
     @RequestMapping("/crearPerfil/{userID}")
     public ModelAndView createProfile(@ModelAttribute("employeeForm") final EmployeeForm form, @PathVariable String userID) {

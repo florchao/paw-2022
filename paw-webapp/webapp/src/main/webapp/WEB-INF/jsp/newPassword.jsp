@@ -35,17 +35,17 @@
             <div class="form-group mb-6 grid grid-cols-6">
                 <form:label for="mail" path="mail" class="text-sm font-medium text-gray-900" ><spring:message code="register.mail"/> </form:label>
                 <form:input id="mail" name="mail" path="mail" type="mail" class="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                 <form:errors path="mail" element="p" cssStyle="color:red"/>
+                 <form:errors path="mail" element="p" class="col-start-2 col-span-5" cssStyle="color:red"/>
             </div>
             <div class="form-group mb-6 grid grid-cols-6">
                 <form:label for="password" path="password" class="text-sm font-medium text-gray-900"><spring:message code="register.password"/></form:label>
                 <form:input id="password" name="password" path="password" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                 <form:errors path="password" element="p" cssStyle="color:red"/>
+                 <form:errors path="password" element="p" class="col-start-2 col-span-5" cssStyle="color:red"/>
              </div>
              <div class="form-group mb-6 grid grid-cols-6">
                 <form:label for="confirmPassword" path="confirmPassword" class="text-sm font-medium text-gray-900"><spring:message code="register.confirmPassword"/></form:label>
                 <form:input id="confirmPassword" name="confirmPassword" path="confirmPassword" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                 <form:errors path="confirmPassword" element="p" cssStyle="color:red"/>
+                 <form:errors path="confirmPassword" element="p" class="col-start-2 col-span-5" cssStyle="color:red"/>
              </div>
              <div>
                 <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"> <spring:message code="newpassword.button"/></button>

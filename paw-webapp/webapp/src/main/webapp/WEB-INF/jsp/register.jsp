@@ -31,7 +31,8 @@
     <jsp:param name="currentUrl" value="register"/>
 </jsp:include>
 <c:url value="/register" var="registerUrl"/>
-<div class="grid grid-cols-7 content-center justify-center h-screen pt-5">
+<div class="grid grid-cols-7 content-start justify-center h-screen pt-5">
+    <div class="my-16 w-full col-span-7"></div>
     <form:form modelAttribute="registerForm" class="col-span-3 col-start-3" action="${registerUrl}" method="post" enctype = "application/x-www-form-urlencoded" pageEncoding="UTF-8">
         <div class="block p-6 rounded-lg shadow-lg bg-white">
             <div class="form-group mb-6 grid grid-cols-6">

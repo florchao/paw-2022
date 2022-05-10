@@ -2,7 +2,8 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
-import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,20 +19,12 @@ import java.util.Optional;
 
 @Controller
 public class InitController {
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private EmployeeService employeeService;
 
     @Autowired
     private EmployerService employerService;
-
-    @Autowired
-    private ExperienceService experienceService;
-
-    @Autowired
-    private MailingService mailingService;
 
 
     @RequestMapping("/")
