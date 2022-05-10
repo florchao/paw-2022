@@ -26,3 +26,11 @@ var loadFile = function(event) {
     var image = document.getElementById('picture');
     image.src = URL.createObjectURL(event.target.files[0]);
 };
+
+function validateExpYears() {
+    console.log("algo")
+    var el = document.getElementById('expYears');
+    if (el.value ==="") {
+        el.value=0;
+    }
+}
