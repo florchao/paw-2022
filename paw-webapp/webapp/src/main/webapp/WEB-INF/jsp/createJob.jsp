@@ -6,7 +6,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
-    <script src="../../public/javascript/createJob.js"></script>
+    <script src="<c:url value="/public/javascript/createJob.js"/>"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="createJob.title"/></title>
 </head>

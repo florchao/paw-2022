@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="../../public/javascript/viewProfile.js"></script>
+    <script src="<c:url value="/public/javascript/viewProfile.js"/>"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="viewProfile.title"/></title>
 </head>
