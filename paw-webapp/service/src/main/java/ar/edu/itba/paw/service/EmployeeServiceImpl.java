@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,14 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Transactional(readOnly = true)
+    @Override
+    public void isEmployee(long id) {
+        Optional<Boolean> exists = employeeDao.isEmployee(id);
+        if(exists.isPresent() && exists.get() )
+            return;
+        throw new UserNotFoundException("Employee " + id + " not found");
+    }
+
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
         List<String> availabilityList = new ArrayList<>();

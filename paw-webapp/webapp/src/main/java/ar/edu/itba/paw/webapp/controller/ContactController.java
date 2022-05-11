@@ -50,12 +50,9 @@ public class ContactController {
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
         final ModelAndView mav = new ModelAndView("contactForm");
         userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        employeeService.isEmployee(id);
         Optional<Employee> employee = employeeService.getEmployeeById(id);
-        if(!employee.isPresent()) {
-            System.out.println("ERROR");
-            throw new UserNotFoundException();
-        }
-        mav.addObject("name", employee.get().getName());
+        employee.ifPresent(value -> mav.addObject("name", value.getName()));
         return mav;
     }
 
