@@ -49,8 +49,13 @@ public class ContactController {
     @RequestMapping("/contacto/{id}")
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
         final ModelAndView mav = new ModelAndView("contactForm");
-        Employee employee = employeeService.getEmployeeById(id).orElseThrow(UserNotFoundException::new);
-        mav.addObject("name", employee.getName());
+        userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        if(!employee.isPresent()) {
+            System.out.println("ERROR");
+            throw new UserNotFoundException();
+        }
+        mav.addObject("name", employee.get().getName());
         return mav;
     }
 
