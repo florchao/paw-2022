@@ -68,9 +68,7 @@
             <div class="form-group mb-6">
                 <p class="text-sm font-medium text-gray-900">
                     <spring:message code="register.login"/>
-                    <form:form method="get" action="${createProfile}" pageEncoding="UTF-8">
                     <a class="text-violet-900" href="<c:url value="/login"/>"><spring:message code="register.log"/></a>
-                    </form:form>
                 </p>
             </div>
         </div>
