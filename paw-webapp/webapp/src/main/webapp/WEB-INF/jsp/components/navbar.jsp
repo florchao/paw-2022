@@ -12,9 +12,6 @@
     <title>navbar</title>
 </head>
 <body>
-<c:url value="/redirectSearch" var = "search"/>
-<c:url value="/redirectContacts" var = "contacts"/>
-<c:url value="/redirectJobs" var = "jobs"/>
 <c:url value="/login" var = "login"/>
 <c:url value="/contactanos" var = "contactus"/>
 <c:url value="/" var = "home"/>
@@ -51,7 +48,6 @@
             <div class="flex felx-wrap grid grid-cols-5 items-center justify-items-center col-span-5 col-start-6">
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
                     <div class = "flex items-center justify-items-end">
-                        <form:form method="get" action="${jobs}" pageEncoding="UTF-8">
                             <c:choose>
                                 <c:when test="${param.currentUrl.equals('trabajos')}">
                                     <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.exploreJobs"/></p>
@@ -60,12 +56,10 @@
                                     <button class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.exploreJobs"/></button>
                                 </c:otherwise>
                             </c:choose>
-                        </form:form>
                     </div>
                 </sec:authorize>
                 <sec:authorize access="!isAuthenticated() || hasAuthority('EMPLOYER')">
                     <div class = "items-center col-start-2">
-                        <form:form method="get" action="${search}" pageEncoding="UTF-8">
                             <c:choose>
                                 <c:when test="${param.currentUrl.equals('searchPage')}">
                                     <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.searchEmployee"/></p>
@@ -74,7 +68,6 @@
                                     <a href="<c:url value="/buscarEmpleadas"/>" class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.searchEmployee"/></a>
                                 </c:otherwise>
                             </c:choose>
-                        </form:form>
                     </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYER')">
@@ -91,7 +84,6 @@
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
                 <div class = "flex items-center justify-items-end">
-                    <form:form method="get" action="${contacts}" pageEncoding="UTF-8">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('contactos')}">
                                 <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contacts"/></p>
@@ -100,7 +92,6 @@
                                 <button class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contacts"/></button>
                             </c:otherwise>
                         </c:choose>
-                    </form:form>
                 </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
