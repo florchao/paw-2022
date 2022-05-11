@@ -57,27 +57,6 @@ public class InitController {
             return new ModelAndView("redirect:/buscarEmpleadas");
         }
     }
-
-    @RequestMapping(value = "/redirectSearch", method = RequestMethod.GET)
-    public ModelAndView redirectSearch() {
-        return new ModelAndView("redirect:/buscarEmpleadas");
-    }
-
-    @RequestMapping(value = "/redirectRegister", method = RequestMethod.GET)
-    public ModelAndView redirectCreateProfile() {
-        return new ModelAndView("redirect:/registrarse");
-    }
-
-    @RequestMapping(value = "/redirectContacts", method = RequestMethod.GET)
-    public ModelAndView redirectContacts() {
-        return new ModelAndView("redirect:/contactos");
-    }
-
-    @RequestMapping(value = "/redirectJobs", method = RequestMethod.GET)
-    public ModelAndView redirectJobs() {
-        return new ModelAndView("redirect:/trabajos");
-    }
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(){
         return new ModelAndView("login");
