@@ -7,6 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ErrorController {
 
+    @RequestMapping("400")
+    public ModelAndView resourceNotFound() {
+        return new ModelAndView("400");
+    }
+
     @RequestMapping("404")
     public ModelAndView noSuchPath() {
         return new ModelAndView("404");
