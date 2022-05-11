@@ -11,10 +11,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class JobForm {
-
-    @Pattern(regexp = "[a-zA-z\\s']+|^$")
-    @NotBlank
-    @Size(max = 100)
     private String title;
 
     @Pattern(regexp = "[a-z A-z\\s0-9,]+")
