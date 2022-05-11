@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS  experiences (
     title varchar(1000),
     since DATE,
     until DATE,
-    description varchar(1000),
+    description varchar(1000)
 
 );
 
@@ -57,7 +57,7 @@ create table if not exists jobs(
     availability varchar(100),
     experienceYears INT,
     abilities varchar(100),
-    description varchar(100000),
+    description varchar(100000)
 );
 
 create table if not exists applicants(

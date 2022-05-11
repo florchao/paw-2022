@@ -8,6 +8,7 @@ import ar.edu.itba.paw.persistence.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+    @Transactional(readOnly = true)
     @Override
     public Optional<User> getUserById(long id) {
         Optional<User> user = userDao.getUserById(id);
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService{
         return user;
     }
 
+    @Transactional
     @Override
     public User create(String username, String password, String confPassword, int role) throws UserFoundException, PassMatchException {
         if (findByUsername(username).isPresent()) {
@@ -41,24 +43,26 @@ public class UserServiceImpl implements UserService{
         }
         return userDao.create(username, passwordEncoder.encode(password), role);
     }
-
+    @Transactional(readOnly = true)
     @Override
     public Optional<User> findByUsername(String username) {
         return userDao.getUserByUsername(username);
     }
 
+    @Transactional
     @Override
     public boolean update(String username, String password) {
         String passEncoder = passwordEncoder.encode(password);
         return userDao.update(username, passEncoder);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<byte[]> getProfileImage(Long userId) {
-        Optional<byte[]> image = userDao.getProfileImage(userId);
-        return image;
+        return userDao.getProfileImage(userId);
     }
 
+    @Transactional
     @Override
     public boolean updateProfileImage(Long userId, byte[] image) {
         return userDao.updateProfileImage(userId, image);

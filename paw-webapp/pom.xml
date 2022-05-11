@@ -169,6 +169,10 @@
         <artifactId>spring-data-commons</artifactId>
         <version>${org.springframework.data.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

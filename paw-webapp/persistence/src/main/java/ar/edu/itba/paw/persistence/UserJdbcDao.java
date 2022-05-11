@@ -85,11 +85,13 @@ public class UserJdbcDao implements UserDao{
 
     @Override
     public boolean updateProfileImage(Long userId, byte[] image) {
-        if(hasProfileImage(userId).get()) {
-            return jdbcTemplate.update("UPDATE profile_images " +
-                    "SET image = ?" +
-                    "WHERE userId = ?", image, userId) == 1;
-        }
+        Optional<Boolean> hasImage = hasProfileImage(userId);
+        if(hasImage.isPresent())
+            if(hasImage.get()) {
+                return jdbcTemplate.update("UPDATE profile_images " +
+                        "SET image = ?" +
+                        "WHERE userId = ?", image, userId) == 1;
+            }
         final Map<String, Object> argsProfileImage = new HashMap<>();
         argsProfileImage.put("userId", userId);
         argsProfileImage.put("image", image);

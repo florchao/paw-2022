@@ -2,10 +2,10 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
-import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +18,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
     private EmployeeDao employeeDao;
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Employee> getEmployeeById(long id) {
         Optional<Employee> employee = (employeeDao.getEmployeeById(id));
@@ -30,6 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return Optional.of(aux);
     }
 
+    @Transactional
     @Override
     public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities) {
         StringBuilder abilitiesSB = new StringBuilder();
@@ -53,6 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         employeeDao.update(id, name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString());
     }
 
+    @Transactional
     @Override
     public Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities, byte[] image) {
         name = name.trim().replaceAll(" +", " ");
@@ -60,11 +63,13 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.create(id, name, location, availability, experienceYears, abilities, image);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<List<Employee>> getEmployees() {
         return employeeDao.getEmployees(0);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void isEmployee(long id) {
         Optional<Boolean> exists = employeeDao.isEmployee(id);

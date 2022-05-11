@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.persistence.JobDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ public class JobServiceImpl implements JobService{
     @Autowired
     JobDao jobDao;
 
+    @Transactional
     @Override
     public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
         title = title.trim().replaceAll(" +", " ");
@@ -23,11 +25,13 @@ public class JobServiceImpl implements JobService{
         return jobDao.create(title, location, employerId, availability, experienceYears, abilities, description);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
         return jobDao.getUserJobs(employerID);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Job> getJobByID(long jobID) {
         if(!jobDao.getJobById(jobID).isPresent())
@@ -39,6 +43,7 @@ public class JobServiceImpl implements JobService{
         return Optional.of(aux);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, String availability, String abilities, Long page, long pageSize) {
         if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0) {
@@ -55,6 +60,7 @@ public class JobServiceImpl implements JobService{
         return jobDao.getFilteredJobs(name, experienceYears, location, availabilityList, abilitiesList, page, pageSize);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize) {
         List<String> availabilityList = new ArrayList<>();
@@ -68,6 +74,7 @@ public class JobServiceImpl implements JobService{
         return jobDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public String getJobNameById(long jobID) {
         return jobDao.getJobNameById(jobID);

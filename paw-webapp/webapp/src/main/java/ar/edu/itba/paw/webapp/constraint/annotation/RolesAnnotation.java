@@ -14,9 +14,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RolesAnnotation {
     //error message
-    public String message() default "Invalid role";
+    String message() default "Invalid role";
     //represents group of constraints
-    public Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
     //represents additional information about annotation
-    public Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }
