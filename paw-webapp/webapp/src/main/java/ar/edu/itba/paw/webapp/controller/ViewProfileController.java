@@ -64,7 +64,6 @@ public class ViewProfileController {
             mav.addObject("employee", employee.get());
         }
         mav.addObject("status", status);
-        System.out.println(status);
         return mav;
     }
 

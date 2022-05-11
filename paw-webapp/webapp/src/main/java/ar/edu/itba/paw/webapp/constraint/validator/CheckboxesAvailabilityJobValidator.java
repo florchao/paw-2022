@@ -12,7 +12,6 @@ public class CheckboxesAvailabilityJobValidator implements ConstraintValidator<C
     }
 
     public boolean isValid(String s, ConstraintValidatorContext cvc) {
-        System.out.println(s);
         if(s == null)
             return false;
         return s.contains("Jornada completa") || s.contains("Con cama") || s.contains("Media jornada");
