@@ -154,7 +154,7 @@
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
-                    <c:if test="${maxPage > 0}">
+                    <c:if test="${maxPage > 0 && page + 1 <= maxPage}">
                     <div class="flex flex-row justify-center">
                         <c:choose>
                             <c:when test="${page < 1}">
@@ -168,7 +168,7 @@
                             <h1 class="text-yellow-300">${page + 1} of ${maxPage}</h1>
                         </div>
                         <c:choose>
-                            <c:when test="${page + 1 >= maxPage}">
+                            <c:when test="${page + 1 == maxPage}">
                                 <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>
                             </c:when>
                             <c:otherwise>

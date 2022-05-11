@@ -78,7 +78,7 @@ public class JobController {
         return mav;
     }
 
-    @RequestMapping("/trabajos")
+    @RequestMapping(value = "/trabajos", method = RequestMethod.GET)
     ModelAndView searchJobs(
             @ModelAttribute("filterJobsBy") FilterForm jobForm,
             @RequestParam(value = "name", required = false) String name,
