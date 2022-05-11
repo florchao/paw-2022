@@ -52,7 +52,7 @@ public class ApplicantController {
         return mav;
     }
 
-    @RequestMapping("/aplicantes/{jobID}")
+    @RequestMapping(value = "/aplicantes/{jobID}", method = {RequestMethod.GET})
     ModelAndView applicants(@PathVariable final int jobID){
         ModelAndView mav = new ModelAndView("viewApplicants");
         Optional<List<Applicant>> list = applicantService.getApplicantsByJob(jobID);

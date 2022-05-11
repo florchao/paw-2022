@@ -2,9 +2,13 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
+import ar.edu.itba.paw.model.exception.AccessIsDeniedException;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +31,7 @@ public class ExploreController {
 
     private final static long PAGE_SIZE = 8;
 
-    @RequestMapping(value = "/buscarEmpleadas", method = RequestMethod.GET)
+    @RequestMapping(value = "/buscarEmpleadas", method = {RequestMethod.GET})
     public ModelAndView searchPage(
             @ModelAttribute("filterBy") FilterForm employeeForm,
             @RequestParam(value = "name", required = false) String name,
@@ -35,6 +40,11 @@ public class ExploreController {
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "abilities", required = false) String abilities,
             @RequestParam(value = "page", required = false) Long page) {
+
+        Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
+            throw new AccessIsDeniedException("Acces is denied");
+
         if (page == null)
             page = 0L;
         List<Employee> list = new ArrayList<>();

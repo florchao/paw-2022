@@ -37,7 +37,7 @@ public class ContactController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
-    @RequestMapping("/contactos")
+    @RequestMapping(value = "/contactos", method = {RequestMethod.GET})
     public ModelAndView contactsPage() {
         final ModelAndView mav = new ModelAndView("contacts");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -51,7 +51,7 @@ public class ContactController {
         return mav;
     }
 
-    @RequestMapping("/contacto/{id}")
+    @RequestMapping(value = "/contacto/{id}", method = {RequestMethod.GET})
     public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
         final ModelAndView mav = new ModelAndView("contactForm");
         userService.getUserById(id).orElseThrow(UserNotFoundException::new);
@@ -81,7 +81,7 @@ public class ContactController {
         return mav;
     }
 
-    @RequestMapping("/contactanos")
+    @RequestMapping(value = "/contactanos", method = {RequestMethod.GET})
     public ModelAndView contactPage(@ModelAttribute("contactUsForm") final ContactUsForm form, @RequestParam(value = "status", required = false) String status) {
         final ModelAndView mav = new ModelAndView("contactUs");
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

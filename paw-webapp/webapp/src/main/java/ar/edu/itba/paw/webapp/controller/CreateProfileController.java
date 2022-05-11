@@ -32,7 +32,7 @@ public class CreateProfileController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateProfileController.class);
 
 
-    @RequestMapping("/crearPerfil/{userID}")
+    @RequestMapping(value = "/crearPerfil/{userID}", method = {RequestMethod.GET})
     public ModelAndView createProfile(@ModelAttribute("employeeForm") final EmployeeForm form, @PathVariable String userID) {
        return new ModelAndView("createProfile");
     }
@@ -50,7 +50,7 @@ public class CreateProfileController {
         return new ModelAndView("redirect:/verPerfil/"+employee.getId());
     }
 
-    @RequestMapping("/crearPerfilEmpleador/{userID}")
+    @RequestMapping(value = "/crearPerfilEmpleador/{userID}", method = {RequestMethod.GET})
     public ModelAndView createProfileEmployer(@ModelAttribute("employerForm") final EmployerForm form, @PathVariable String userID) {
         return new ModelAndView("createProfileEmployer");
     }

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.exception.AccessIsDeniedException;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import org.slf4j.Logger;
@@ -25,4 +26,10 @@ public class ErrorControllerAdvice {
     public ModelAndView handlingJobNotFound(){
         LOGGER.warn("Job could not be found");
         return new ModelAndView("404");}
+
+    @ExceptionHandler(AccessIsDeniedException.class)
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    public ModelAndView handlingAccessIsDenied(){
+        LOGGER.warn("Access is denied");
+        return new ModelAndView("403");}
 }
