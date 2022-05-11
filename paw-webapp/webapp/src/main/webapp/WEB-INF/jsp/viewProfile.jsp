@@ -39,7 +39,7 @@
         <div class=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
                 <div class="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                        <img  class = "object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '<c:url value="/public/user.png"/>'"/>
+                        <img  class = "object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '<c:url value="/public/user.png"/>'" alt="profile pic"/>
                 </div>
                 <div class="ml-3 col-span-2">
                     <p class="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden"><c:out value="${employee.name}"/></p>

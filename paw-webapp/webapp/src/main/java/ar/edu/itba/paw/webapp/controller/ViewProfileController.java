@@ -50,7 +50,6 @@ public class ViewProfileController {
     @RequestMapping(value = "/verPerfil/{userId}", method = RequestMethod.GET)
     public ModelAndView userProfile(@PathVariable("userId") final long userId, @RequestParam(value = "status", required = false) String status) {
         final ModelAndView mav = new ModelAndView("viewProfile");
-        ModelAndView errorPage = new ModelAndView("errorPage");
 
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
 

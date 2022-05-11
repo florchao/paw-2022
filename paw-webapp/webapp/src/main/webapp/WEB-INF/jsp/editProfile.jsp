@@ -37,7 +37,7 @@
                 <div class="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                     <div class="grid grid-cols-5 gap-6">
                         <div class="row-span-4 col-span-2 m-6 justify-items-center">
-                            <img class="col-span-1 mb-3 w-48 h-48 rounded-full shadow-lg object-cover" id="picture" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '<c:url value="/public/user.png"/>'"/>
+                            <img class="col-span-1 mb-3 w-48 h-48 rounded-full shadow-lg object-cover" id="picture" src="<c:url value="/user/profile-image/${userId}"/>"  onerror="this.src = '<c:url value="/public/user.png"/>'" alt="profile pic"/>
                             <form:label path="image"><spring:message code="employeeForm.insertImage"/></form:label>
                             <form:input id= "file" type="file" path="image" accept="image/png, image/jpeg" onchange="loadFile(event);"/>
                             <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
