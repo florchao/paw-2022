@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
@@ -31,6 +32,7 @@ public class ContactServiceImpl implements ContactService{
         return contactDao.getAllContacts(id);
     }
 
+    @Transactional
     @Override
     public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
         Optional<Boolean> exists = contactDao.existsContact(employeeId, employerId);
