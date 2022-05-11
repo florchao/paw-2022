@@ -53,7 +53,7 @@
                                     <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.exploreJobs"/></p>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.exploreJobs"/></button>
+                                    <a href="<c:url value="/trabajos"/>" class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.exploreJobs"/></a>
                                 </c:otherwise>
                             </c:choose>
                     </div>
@@ -89,7 +89,7 @@
                                 <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.contacts"/></p>
                             </c:when>
                             <c:otherwise>
-                                <button class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contacts"/></button>
+                                <a href="<c:url value="/contactos"/>" class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.contacts"/></a>
                             </c:otherwise>
                         </c:choose>
                 </div>
