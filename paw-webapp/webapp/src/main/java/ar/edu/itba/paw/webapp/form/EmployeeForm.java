@@ -105,49 +105,4 @@ public class EmployeeForm {
         }
         return ret.substring(0, ret.length() - 2);
     }
-
-    private static class ExperiencesForm{
-
-        @Size(min=6, max = 50)
-        private String title;
-
-        private Time from;
-
-        private Time until;
-
-        @Size(max = 200)
-        private String description;
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public Time getFrom() {
-            return from;
-        }
-
-        public void setFrom(Time from) {
-            this.from = from;
-        }
-
-        public Time getUntil() {
-            return until;
-        }
-
-        public void setUntil(Time until) {
-            this.until = until;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-    }
 }

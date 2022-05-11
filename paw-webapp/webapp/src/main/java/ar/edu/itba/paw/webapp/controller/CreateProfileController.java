@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -35,8 +34,7 @@ public class CreateProfileController {
 
     @RequestMapping("/crearPerfil/{userID}")
     public ModelAndView createProfile(@ModelAttribute("employeeForm") final EmployeeForm form, @PathVariable String userID) {
-        final ModelAndView mav = new ModelAndView("createProfile");
-        return mav;
+       return new ModelAndView("createProfile");
     }
 
     @RequestMapping(value = "/createEmployee/{userID}", method = {RequestMethod.POST})
@@ -54,8 +52,7 @@ public class CreateProfileController {
 
     @RequestMapping("/crearPerfilEmpleador/{userID}")
     public ModelAndView createProfileEmployer(@ModelAttribute("employerForm") final EmployerForm form, @PathVariable String userID) {
-        final ModelAndView mav = new ModelAndView("createProfileEmployer");
-        return mav;
+        return new ModelAndView("createProfileEmployer");
     }
 
     @RequestMapping(value = "/createEmployer/{userID}", method = {RequestMethod.POST})
@@ -65,7 +62,7 @@ public class CreateProfileController {
             return createProfileEmployer(form, userID);
         }
         String name = form.getName() + " " + form.getLastname();
-        final Employer employer = employerService.create(name.toLowerCase(), Long.parseLong(userID), form.getImage().getBytes());
+        employerService.create(name.toLowerCase(), Long.parseLong(userID), form.getImage().getBytes());
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.setName(name);
         LOGGER.debug(String.format("employer created under userid %d", principal.getUserID()));

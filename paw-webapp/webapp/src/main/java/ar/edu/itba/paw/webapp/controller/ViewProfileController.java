@@ -40,7 +40,7 @@ public class ViewProfileController {
         if(user.isPresent()){
             mav.addObject("user", user.get());
             Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
-            employee.get().firstWordsToUpper();
+            employee.ifPresent(Employee::firstWordsToUpper);
             employee.ifPresent(value -> mav.addObject("employee", value));
             mav.addObject("userId", user.get().getId());
         }

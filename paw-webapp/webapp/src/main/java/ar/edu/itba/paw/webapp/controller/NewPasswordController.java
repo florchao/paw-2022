@@ -31,7 +31,7 @@ public class NewPasswordController {
             LOGGER.debug("couldn't update password");
             return newPassword(form);
         }
-        final boolean u = userService.update(form.getMail(), form.getPassword());
+        userService.update(form.getMail(), form.getPassword());
         LOGGER.debug("password updated");
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
