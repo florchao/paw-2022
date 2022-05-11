@@ -66,6 +66,14 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    public void isEmployee(long id) {
+        Optional<Boolean> exists = employeeDao.isEmployee(id);
+        if(exists.isPresent() && exists.get() )
+            return;
+        throw new UserNotFoundException("Employee " + id + " not found");
+    }
+
+    @Override
     public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {

@@ -13,7 +13,7 @@ public interface EmployeeService {
 
     void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities);
     Optional<List<Employee>> getEmployees();
-
+    void isEmployee(long id);
     int getPageNumber(
             String name,
             Long experienceYears,

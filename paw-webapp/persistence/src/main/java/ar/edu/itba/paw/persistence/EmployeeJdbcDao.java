@@ -51,6 +51,12 @@ public class EmployeeJdbcDao implements EmployeeDao{
     }
 
     @Override
+    public Optional<Boolean> isEmployee(long id) {
+        List<Boolean> query =  jdbcTemplate.query("SELECT EXISTS(SELECT * FROM employee WHERE employeeid = ?)", new Object[]{id}, (rs, rowNum) -> rs.getBoolean("exists"));
+        return query.stream().findFirst();
+    }
+
+    @Override
     public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page, long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM employee where ");
