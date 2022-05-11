@@ -78,15 +78,4 @@ public class ViewProfileController {
         InputStream is = new ByteArrayInputStream(image.get());
         IOUtils.copy(is,response.getOutputStream());
     }
-
-    Employee firstWordsToUpper(Employee employee) {
-        StringBuilder finalName = new StringBuilder();
-        for (String word : employee.getName().split(" ")) {
-            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalName.setLength(finalName.length() - 1);
-        employee.setName(finalName.toString());
-        return employee;
-
-    }
 }

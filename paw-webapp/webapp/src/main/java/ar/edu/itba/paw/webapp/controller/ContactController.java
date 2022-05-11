@@ -59,7 +59,7 @@ public class ContactController {
         return mav;
     }
 
-    @RequestMapping(value = "/contactarEmpleado/{id}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/contactEmployee/{id}", method = {RequestMethod.POST})
     public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) {
         ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+id);
         if(errors.hasErrors()) {

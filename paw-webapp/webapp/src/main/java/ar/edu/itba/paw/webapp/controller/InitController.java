@@ -78,7 +78,7 @@ public class InitController {
         return new ModelAndView("redirect:/trabajos");
     }
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(){
         return new ModelAndView("login");
     }

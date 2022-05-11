@@ -28,7 +28,7 @@
     </ul>
 </div>
 <jsp:include page="components/navbar.jsp"/>
-<c:url value="/contactarEmpleado/${id}" var="postPath"/>
+<c:url value="/contactEmployee/${id}" var="postPath"/>
 <div class="grid grid-cols-7 content-start justify-center h-screen pt-5">
     <div class="my-16 w-full col-span-7"></div>
     <div class = "col-start-3 col-span-3 grid h-full w-full">
