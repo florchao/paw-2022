@@ -3,7 +3,6 @@ package ar.edu.itba.paw.model;
 public class Applicant {
     private long jobID;
     private long employeeID;
-
     private String employerUsername;
     private String employeeUsername;
     private String jobName;
