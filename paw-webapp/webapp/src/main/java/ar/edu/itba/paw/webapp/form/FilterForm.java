@@ -13,8 +13,6 @@ import java.util.List;
 
 public class FilterForm {
 
-    @Pattern(regexp = "[a-zA-z\\s']+|^$")
-    @Size(max = 100)
     private String name;
 
     @DecimalMin("0")
