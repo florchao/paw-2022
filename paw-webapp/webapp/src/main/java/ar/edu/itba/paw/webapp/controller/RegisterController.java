@@ -30,7 +30,7 @@ public class RegisterController {
     private UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 
-    @RequestMapping("/registrarse")
+    @RequestMapping(value = "/registrarse", method = {RequestMethod.GET})
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form){
         return new ModelAndView("register");
     }

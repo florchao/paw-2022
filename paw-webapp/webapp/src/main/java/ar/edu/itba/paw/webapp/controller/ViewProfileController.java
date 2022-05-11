@@ -32,7 +32,7 @@ public class ViewProfileController {
     @Autowired
     private EmployeeService employeeService;
 
-    @RequestMapping("/verPerfil")
+    @RequestMapping(value = "/verPerfil", method = {RequestMethod.GET})
     public ModelAndView viewProfile() {
         final ModelAndView mav = new ModelAndView("viewProfile");
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -70,7 +70,7 @@ public class ViewProfileController {
     }
 
 
-    @RequestMapping("/user/profile-image/{userId}")
+    @RequestMapping(value = "/user/profile-image/{userId}", method = {RequestMethod.GET})
     public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
         Optional<byte[]> image = userService.getProfileImage(userId);
         if(!image.isPresent()){

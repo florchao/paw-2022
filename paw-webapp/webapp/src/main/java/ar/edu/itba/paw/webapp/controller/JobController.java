@@ -32,7 +32,7 @@ public class JobController {
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE = 8;
 
-    @RequestMapping("/crearTrabajo")
+    @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
     ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
         return new ModelAndView("createJob");
     }
@@ -49,7 +49,7 @@ public class JobController {
         return new ModelAndView("redirect:/trabajo/" + job.getJobId());
     }
 
-    @RequestMapping("/misTrabajos")
+    @RequestMapping(value = "/misTrabajos", method = {RequestMethod.GET})
     ModelAndView verTrabajos(){
         ModelAndView mav = new ModelAndView("publishedJobs");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -65,7 +65,7 @@ public class JobController {
         return mav;
     }
 
-    @RequestMapping("/trabajo/{id}")
+    @RequestMapping(value = "/trabajo/{id}", method = {RequestMethod.GET})
     ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
@@ -78,7 +78,7 @@ public class JobController {
         return mav;
     }
 
-    @RequestMapping("/trabajos")
+    @RequestMapping(value = "/trabajos", method = {RequestMethod.GET})
     ModelAndView searchJobs(
             @ModelAttribute("filterJobsBy") FilterForm jobForm,
             @RequestParam(value = "name", required = false) String name,

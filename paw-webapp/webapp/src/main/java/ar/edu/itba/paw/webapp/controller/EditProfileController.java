@@ -28,14 +28,14 @@ public class EditProfileController {
     private UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(EditProfileController.class);
 
-    @RequestMapping("/editarPerfil")
+    @RequestMapping(value = "/editarPerfil", method = {RequestMethod.GET})
     public ModelAndView editProfile(@ModelAttribute("employeeEditForm") final EmployeeEditForm form) {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Employee> employee = employeeService.getEmployeeById(principal.getUserID());
         final ModelAndView mav = new ModelAndView("editProfile");
         if(employee.isPresent()) {
             form.setAbilities(new String[]{String.join(", ", employee.get().getAbilitiesArr())});
-            form.setAbilities(employee.get().getAbilitiesArr().toArray(new String[employee.get().getAbilitiesArr().size()]));
+            form.setAbilities(employee.get().getAbilitiesArr().toArray(new String[0]));
             form.setAvailability(employee.get().getAvailabilityArr().toArray(new String[employee.get().getAvailabilityArr().size()]));
             form.setLocation(employee.get().getLocation());
             form.setName(employee.get().getName());

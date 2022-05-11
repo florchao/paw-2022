@@ -20,7 +20,7 @@ public class NewPasswordController {
     private UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(NewPasswordController.class);
 
-    @RequestMapping("/nuevaContrasena")
+    @RequestMapping(value = "/nuevaContrasena", method = {RequestMethod.GET})
     public ModelAndView newPassword(@ModelAttribute("newPasswordForm") final NewPasswordForm form){
         return new ModelAndView("newPassword");
     }

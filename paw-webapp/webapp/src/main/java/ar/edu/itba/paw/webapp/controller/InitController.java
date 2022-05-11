@@ -27,7 +27,7 @@ public class InitController {
     private EmployerService employerService;
 
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/", method = {RequestMethod.GET})
     public ModelAndView helloWorld() {
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
@@ -38,7 +38,7 @@ public class InitController {
     }
 
 
-    @RequestMapping("/afterLogin")
+    @RequestMapping(value = "/afterLogin", method = {RequestMethod.GET})
     public ModelAndView afterLogin() {
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

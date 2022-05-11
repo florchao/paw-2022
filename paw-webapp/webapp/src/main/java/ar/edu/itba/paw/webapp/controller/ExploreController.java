@@ -26,7 +26,7 @@ public class ExploreController {
 
     private final static long PAGE_SIZE = 8;
 
-    @RequestMapping("/buscarEmpleadas")
+    @RequestMapping(value = "/buscarEmpleadas", method = {RequestMethod.GET})
     public ModelAndView searchPage(
             @ModelAttribute("filterBy") FilterForm employeeForm,
             @RequestParam(value = "name", required = false) String name,
