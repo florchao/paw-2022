@@ -21,8 +21,7 @@ public class EmployerServiceImpl implements EmployerService{
 
     @Override
     public Optional<Employer> getEmployerById(long id) {
-        Optional<Employer> employer = employerDao.getEmployerById(id);
-        return employer;
+        return employerDao.getEmployerById(id);
     }
 
 }

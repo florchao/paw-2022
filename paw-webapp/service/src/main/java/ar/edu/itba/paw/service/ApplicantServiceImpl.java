@@ -40,7 +40,8 @@ public class ApplicantServiceImpl implements ApplicantService{
     public void apply(long jobID, User user) {
         Optional<Applicant> applicant = applicantDao.getInfoMail(jobID);
         Optional<Employee> employee = employeeDao.getEmployeeById(user.getId());
-        mailingService.sendApplyMail(applicant.get().getEmployerUsername(), applicant.get().getJobName(), employee.get().getName(), jobID);
+        if(applicant.isPresent() && employee.isPresent())
+            mailingService.sendApplyMail(applicant.get().getEmployerUsername(), applicant.get().getJobName(), employee.get().getName(), jobID);
         create(jobID, user.getId());
     }
 }

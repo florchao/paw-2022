@@ -55,8 +55,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Optional<byte[]> getProfileImage(Long userId) {
-        Optional<byte[]> image = userDao.getProfileImage(userId);
-        return image;
+        return userDao.getProfileImage(userId);
     }
 
     @Override
