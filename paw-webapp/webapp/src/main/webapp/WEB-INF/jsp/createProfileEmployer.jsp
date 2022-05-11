@@ -38,7 +38,7 @@
                     <div class="grid grid-cols-5 gap-6">
                         <div class="row-span-4 col-span-2 m-6">
                             <div class="overflow-hidden bg-gray-100 rounded-full">
-                                <img id="picture" src="<c:url value='/public/user.png'/>" />
+                                <img id="picture" src="<c:url value='/public/user.png'/>" alt="user pic"/>
                             </div>
                             <form:label path="image"><spring:message code="employerForm.insertImage"/></form:label>
                             <form:input type="file" path="image" accept="image/png, image/jpeg" onchange="loadFile(event);"/>

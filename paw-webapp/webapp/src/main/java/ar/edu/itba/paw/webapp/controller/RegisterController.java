@@ -48,7 +48,6 @@ public class RegisterController {
             int role = form.getRole().equals("Empleada")? 1 : 2;
             final User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword(), role);
             if(role == 1) {
-                System.out.println("ADENTRO");
                 HogarUser current = new HogarUser(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))), null, u.getId());
                 Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYEE")));
                 SecurityContextHolder.getContext().setAuthentication(auth);
