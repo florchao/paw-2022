@@ -36,7 +36,7 @@ public class EditProfileController {
         if(employee.isPresent()) {
             form.setAbilities(new String[]{String.join(", ", employee.get().getAbilitiesArr())});
             form.setAbilities(employee.get().getAbilitiesArr().toArray(new String[0]));
-            form.setAvailability(employee.get().getAvailabilityArr().toArray(new String[employee.get().getAvailabilityArr().size()]));
+            form.setAvailability(employee.get().getAvailabilityArr().toArray(new String[0]));
             form.setLocation(employee.get().getLocation());
             form.setName(employee.get().getName());
             form.setExperienceYears(employee.get().getExperienceYears());
