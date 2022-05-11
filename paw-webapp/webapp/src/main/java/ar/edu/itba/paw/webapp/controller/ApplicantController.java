@@ -8,6 +8,8 @@ import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ public class ApplicantController {
 
     @Autowired
     UserService userService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicantController.class);
 
     @Autowired
     EmployerService employerService;
@@ -43,6 +46,7 @@ public class ApplicantController {
             optional.ifPresent(user -> applicantService.apply(jobID, user));
             mav.addObject("status", "sent");
         } catch (AlreadyExistsException alreadyExistsException) {
+            LOGGER.error(String.format("there has already been made a contact for %d by %s", jobID, principal.getName()));
             mav.addObject("status", "error");
         }
         return mav;

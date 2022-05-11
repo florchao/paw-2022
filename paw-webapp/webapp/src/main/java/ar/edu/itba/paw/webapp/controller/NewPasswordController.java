@@ -2,6 +2,8 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.form.NewPasswordForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import javax.validation.Valid;
 public class NewPasswordController {
     @Autowired
     private UserService userService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewPasswordController.class);
 
     @RequestMapping("/nuevaContrasena")
     public ModelAndView newPassword(@ModelAttribute("newPasswordForm") final NewPasswordForm form){
@@ -25,9 +28,11 @@ public class NewPasswordController {
     @RequestMapping(value = "/newPassword", method = {RequestMethod.POST})
     public ModelAndView updatePassword(@Valid @ModelAttribute("newPasswordForm") final NewPasswordForm form, final BindingResult errors){
         if (errors.hasErrors()){
+            LOGGER.debug("couldn't update password");
             return newPassword(form);
         }
         final boolean u = userService.update(form.getMail(), form.getPassword());
+        LOGGER.debug("password updated");
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 }

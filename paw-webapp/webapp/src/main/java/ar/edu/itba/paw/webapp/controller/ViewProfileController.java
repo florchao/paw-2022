@@ -6,6 +6,8 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +28,7 @@ import java.util.Optional;
 public class ViewProfileController {
     @Autowired
     private UserService userService;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
     @Autowired
     private EmployeeService employeeService;
 
@@ -69,11 +71,12 @@ public class ViewProfileController {
     @RequestMapping("/user/profile-image/{userId}")
     public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
         Optional<byte[]> image = userService.getProfileImage(userId);
-        if(image.isPresent()){
-            InputStream is = new ByteArrayInputStream(image.get());
-            IOUtils.copy(is,response.getOutputStream());
+        if(!image.isPresent()){
+            LOGGER.debug("User {} does not have an image", userId);
+            return;
         }
-
+        InputStream is = new ByteArrayInputStream(image.get());
+        IOUtils.copy(is,response.getOutputStream());
     }
 
     Employee firstWordsToUpper(Employee employee) {

@@ -5,6 +5,8 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.EmployeeEditForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ public class EditProfileController {
     private EmployeeService employeeService;
     @Autowired
     private UserService userService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditProfileController.class);
 
     @RequestMapping("/editarPerfil")
     public ModelAndView editProfile(@ModelAttribute("employeeEditForm") final EmployeeEditForm form) {
@@ -43,12 +46,16 @@ public class EditProfileController {
     @RequestMapping(value = "/editEmployee", method = {RequestMethod.POST})
     public ModelAndView edit(@Valid @ModelAttribute("employeeEditForm") final EmployeeEditForm form, final BindingResult errors){
 
-        if(errors.hasErrors())
+        if(errors.hasErrors()) {
+            LOGGER.debug("Could not update profile");
             return editProfile(form);
+        }
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), ((Long) principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
-        if(!form.getImage().isEmpty())
+        if(!form.getImage().isEmpty()) {
             userService.updateProfileImage(((Long) principal.getUserID()), form.getImage().getBytes());
+        }
+        LOGGER.debug(String.format("updated profile for userid %d", principal.getUserID()));
         return new ModelAndView("redirect:/verPerfil/");
     }
 }

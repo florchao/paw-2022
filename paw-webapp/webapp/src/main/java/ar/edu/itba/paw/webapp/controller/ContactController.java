@@ -11,6 +11,8 @@ import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,8 @@ public class ContactController {
     @Autowired
     private ContactService contactService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
+
     @RequestMapping("/contactos")
     public ModelAndView contactsPage() {
         final ModelAndView mav = new ModelAndView("contacts");
@@ -53,8 +57,10 @@ public class ContactController {
     @RequestMapping(value = "/contactarEmpleado/{id}", method = {RequestMethod.POST})
     public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) {
         ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+id);
-        if(errors.hasErrors())
+        if(errors.hasErrors()) {
+            LOGGER.debug("Couldn't contact employee");
             return contactPage(form, id);
+        }
         Optional<User> user = userService.getUserById(id);
         HogarUser principal = (HogarUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try{
@@ -62,6 +68,7 @@ public class ContactController {
             mav.addObject("status", "sent");
         }
         catch (AlreadyExistsException alreadyExistsException){
+            LOGGER.error(String.format("there has already been made a contact for id %d by %s",id , principal.getName()));
             mav.addObject("status", "error");
         }
         return mav;
@@ -82,8 +89,10 @@ public class ContactController {
 
     @RequestMapping(value = "/contactUs", method = {RequestMethod.POST})
     public ModelAndView contactUs(@Valid @ModelAttribute("contactUsForm") final ContactUsForm form, BindingResult error) {
-        if(error.hasErrors())
+        if(error.hasErrors()) {
+            LOGGER.debug("Couldn't contact Hogar");
             return contactPage(form, "error");
+        }
         final ModelAndView mav = new ModelAndView("redirect:/contactanos");
         contactService.contactUS(form.getContent(), form.getMail(), form.getName());
         mav.addObject("status", "sent");

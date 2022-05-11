@@ -83,10 +83,4 @@ public class InitController {
         return new ModelAndView("login");
     }
 
-//    @ExceptionHandler(UserNotFoundException.class)
-//    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-//    public ModelAndView noSuchUser() {
-//        return new ModelAndView("404");
-//    }
-
 }
