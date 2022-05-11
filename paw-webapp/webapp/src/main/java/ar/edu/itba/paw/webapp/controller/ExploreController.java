@@ -55,7 +55,7 @@ public class ExploreController {
         if (errors.hasErrors()) {
             return searchPage(null, null,null,null,null,null,null);
         }
-        if (!Objects.equals(form.getName(),""))
+        if (!Objects.equals(form.getName(),"") && !form.getName().contains("\'") && !form.getName().contains("\"") )
             redirectAttributes.addAttribute("name",form.getName());
         if (form.getExperienceYears() > 0)
             redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
