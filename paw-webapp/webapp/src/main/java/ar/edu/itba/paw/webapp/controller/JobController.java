@@ -37,7 +37,7 @@ public class JobController {
         return new ModelAndView("createJob");
     }
 
-    @RequestMapping("/createJob")
+    @RequestMapping(value = "/createJob", method = RequestMethod.POST)
     ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
         if(errors.hasErrors()) {
             LOGGER.debug("couldn't create job");
