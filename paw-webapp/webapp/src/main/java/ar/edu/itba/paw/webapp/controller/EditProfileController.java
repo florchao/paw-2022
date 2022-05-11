@@ -33,12 +33,14 @@ public class EditProfileController {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Employee> employee = employeeService.getEmployeeById(principal.getUserID());
         final ModelAndView mav = new ModelAndView("editProfile");
-        form.setAbilities(new String[]{String.join(", ", employee.get().getAbilitiesArr())});
-        form.setAbilities(employee.get().getAbilitiesArr().toArray(new String[employee.get().getAbilitiesArr().size()]));
-        form.setAvailability(employee.get().getAvailabilityArr().toArray(new String[employee.get().getAvailabilityArr().size()]));
-        form.setLocation(employee.get().getLocation());
-        form.setName(employee.get().getName());
-        form.setExperienceYears(employee.get().getExperienceYears());
+        if(employee.isPresent()) {
+            form.setAbilities(new String[]{String.join(", ", employee.get().getAbilitiesArr())});
+            form.setAbilities(employee.get().getAbilitiesArr().toArray(new String[employee.get().getAbilitiesArr().size()]));
+            form.setAvailability(employee.get().getAvailabilityArr().toArray(new String[employee.get().getAvailabilityArr().size()]));
+            form.setLocation(employee.get().getLocation());
+            form.setName(employee.get().getName());
+            form.setExperienceYears(employee.get().getExperienceYears());
+        }
         mav.addObject("userId", principal.getUserID());
         return mav;
     }
@@ -51,9 +53,9 @@ public class EditProfileController {
             return editProfile(form);
         }
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), ((Long) principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
+        employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), (principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
         if(!form.getImage().isEmpty()) {
-            userService.updateProfileImage(((Long) principal.getUserID()), form.getImage().getBytes());
+            userService.updateProfileImage((principal.getUserID()), form.getImage().getBytes());
         }
         LOGGER.debug(String.format("updated profile for userid %d", principal.getUserID()));
         return new ModelAndView("redirect:/verPerfil/");
