@@ -27,7 +27,7 @@
     </ul>
 </div>
 <jsp:include page="components/navbar.jsp">
-    <jsp:param name="currentUrl" value="createProfileEmployer"/>
+    <jsp:param name="currentUrl" value="createProfile"/>
 </jsp:include>
 <c:url value="/createEmployer/${userID}" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">

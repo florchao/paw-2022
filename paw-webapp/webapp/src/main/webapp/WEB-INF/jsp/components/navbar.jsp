@@ -25,7 +25,7 @@
             <button><img src="<c:url value='/public/hogar.png'/>" alt="logo" class="mr-3 h-9"></button>
         </form:form>
         </div>
-        <c:if test="${!param.currentUrl.equals('init')}">
+        <c:if test="${!param.currentUrl.equals('init') && !param.currentUrl.equals('createProfile')}">
             <c:if test="${param.currentUrl.equals('searchPage')}">
                 <c:url value="/filterEmployees" var="postPath"/>
                 <div class="col-start-3 col-span-2">
