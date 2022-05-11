@@ -13,7 +13,6 @@ public class Job {
     private String description;
     private String employerName;
     private String employerUsername;
-
     private List<String> availabilityArr;
     private List<String> abilitiesArr;
 
