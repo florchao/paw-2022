@@ -72,7 +72,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             ds.setUsername(environment.getRequiredProperty("db.prod.username"));
             ds.setPassword(environment.getRequiredProperty("db.prod.password"));
         }
-
         return ds;
     }
 
@@ -111,17 +110,18 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf); }
+        return new JpaTransactionManager(emf);
+    }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean factoryBean() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        factoryBean.setPackagesToScan("ar.edu.itba.model");
+        factoryBean.setPackagesToScan("ar.edu.itba.paw.models");
         factoryBean.setDataSource(dataSource());
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         final Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", " update");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
         if(isOnDevBuild()) properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("format_sql", "true");

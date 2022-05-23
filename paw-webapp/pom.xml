@@ -24,7 +24,6 @@
     <mockito.version>2.25.1</mockito.version>
     <org.hsqldb.version>2.3.1</org.hsqldb.version>
     <javax.validation-api.version>1.0.0.GA</javax.validation-api.version>
-    <org.hibernate.validator>4.3.1.Final</org.hibernate.validator>
     <javax.mail.version>1.6.2</javax.mail.version>
     <spring-security.version>4.0.4.RELEASE</spring-security.version>
     <org.slf4j.version>1.7.5</org.slf4j.version>
@@ -35,6 +34,7 @@
     <org.springframework.data.version>2.5.4</org.springframework.data.version>
     <org.hibernate.version>5.1.0.Final</org.hibernate.version>
     <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
+    <org.hibernate.validator>4.3.1.Final</org.hibernate.validator>
   </properties>
 
 
@@ -103,11 +103,6 @@
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
         <version>${javax.validation-api.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>${org.hibernate.validator}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.security</groupId>
