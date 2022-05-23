@@ -10,11 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -24,9 +20,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
@@ -57,19 +57,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         viewResolver.setSuffix(".jsp");
 
         return viewResolver;
-    }
-    @Bean
-    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
-        final DataSourceInitializer dsi = new DataSourceInitializer();
-        dsi.setDataSource(ds);
-        dsi.setDatabasePopulator(databasePopulator());
-        return dsi;
-    }
-
-    private DatabasePopulator databasePopulator() {
-        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        dbp.addScript(schemaSql);
-        return dbp;
     }
     @Autowired
     Environment environment;
@@ -126,7 +113,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(final DataSource ds) {
-        return new DataSourceTransactionManager(ds);
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf); }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setPackagesToScan("ar.edu.itba.model");
+        factoryBean.setDataSource(dataSource());
+        final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        factoryBean.setJpaVendorAdapter(vendorAdapter);
+        final Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", " update");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
+        // Si ponen esto en prod, hay tabla!!!
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("format_sql", "true");
+        factoryBean.setJpaProperties(properties);
+        return factoryBean;
     }
 }
