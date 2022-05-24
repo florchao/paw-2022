@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
 public class EmployerJdbcDao implements EmployerDao{
 
     private final JdbcTemplate jdbcTemplate;
