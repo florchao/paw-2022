@@ -49,7 +49,7 @@ public class ContactServiceImpl implements ContactService{
         if(optional.isPresent()) {
             User from = optional.get();
             create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber);
-            mailingService.sendContactMail(from.getUsername(), to.getUsername(), name);
+            mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
         }
 
     }

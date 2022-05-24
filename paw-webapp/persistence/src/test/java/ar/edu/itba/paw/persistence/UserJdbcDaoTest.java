@@ -46,7 +46,7 @@ public class UserJdbcDaoTest {
         final User user = userJdbcDao.create(USERNAME, PASSWORD, ROLE);
 
         Assert.assertNotNull(user);
-        Assert.assertEquals(USERNAME, user.getUsername());
+        Assert.assertEquals(USERNAME, user.getEmail());
         Assert.assertEquals(PASSWORD, user.getPassword());
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
 
@@ -61,7 +61,7 @@ public class UserJdbcDaoTest {
 
         Assert.assertNotNull(user);
         Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals(USERNAME, user.get().getEmail());
         Assert.assertEquals(PASSWORD, user.get().getPassword());
         Assert.assertEquals(ROLE, user.get().getRole());
 
@@ -76,7 +76,7 @@ public class UserJdbcDaoTest {
 
         Assert.assertNotNull(user);
         Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals(USERNAME, user.get().getEmail());
         Assert.assertEquals(PASSWORD, user.get().getPassword());
         Assert.assertEquals(ROLE, user.get().getRole());
 
@@ -92,7 +92,7 @@ public class UserJdbcDaoTest {
 
         Assert.assertNotNull(user);
         Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals(USERNAME, user.get().getEmail());
         Assert.assertEquals("Password2", user.get().getPassword());
         Assert.assertEquals(ROLE, user.get().getRole());
 

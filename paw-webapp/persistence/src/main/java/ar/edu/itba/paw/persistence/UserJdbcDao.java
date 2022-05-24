@@ -1,100 +1,68 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.util.HashMap;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
+@Repository
+@Primary
 public class UserJdbcDao implements UserDao{
 
-    private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsert jdbcInsert;
-    private final SimpleJdbcInsert jdbcInsertProfileImage;
+    @PersistenceContext
+    private EntityManager em;
 
-
-    private static final RowMapper<User> ROW_MAPPER = (rs, rowNum) ->
-            new User(rs.getLong("userid"), rs.getString("email"), rs.getString("password"), rs.getInt("role"));
-
-    private static final RowMapper<Boolean> IMAGE_EXISTS_ROW_MAPPER = (rs, rowNum) -> rs.getBoolean("exists");
-
-    @Autowired
-    public UserJdbcDao(final DataSource ds) {
-        jdbcTemplate = new JdbcTemplate(ds);
-        jdbcInsert = new SimpleJdbcInsert(ds)
-                .withTableName("Users")
-                .usingGeneratedKeyColumns("userid");
-        jdbcInsertProfileImage = new SimpleJdbcInsert(jdbcTemplate).withTableName("profile_images");
-
+    @Override
+    public List<User> getAll(int page) {
+        final TypedQuery<User> usersList = em.createQuery("select u from User u", User.class);
+       return usersList.getResultList();
     }
 
     @Override
     public Optional<User> getUserById(long id) {
-        List<User> query = jdbcTemplate.query("SELECT * FROM Users WHERE userId = ?", new Object[] {id}, ROW_MAPPER);
-        return query.stream().findFirst();
+        return Optional.ofNullable(em.find(User.class, id));
     }
 
     @Override
     public User create(String username, String password, int role) {
-        final Map<String, Object> userData = new HashMap<>();
-        userData.put("email", username);
-        userData.put("password", password);
-        userData.put("role", role);
-        Number userId = jdbcInsert.executeAndReturnKey(userData);
-        return new User(userId.longValue(), username, password, role);
+        final User user = new User(username, password, role);
+        em.persist(user);
+        return user;
     }
 
     @Override
-    public List<User> getAll(int page) {
-        return jdbcTemplate.query("SELECT * FROM Users LIMIT 10 OFFSET ?", new Object[] {(page - 1) * 10}, ROW_MAPPER);
-    }
-
-    @Override
-    public Optional<User> getUserByUsername(String username) {
-        List<User> query = jdbcTemplate.query("SELECT * FROM Users WHERE email = ?", new Object[] {username}, ROW_MAPPER);
-
-        return query.stream().findFirst();
+    public Optional<User> getUserByUsername(String email) {
+        final TypedQuery<User> query = em.createQuery("select u from User u where u.email = :email", User.class);
+        query.setParameter("email", email);
+        return query.getResultList().stream().findFirst();
     }
 
     @Override
     public boolean update(String username, String password) {
-        return jdbcTemplate.update("UPDATE users " +
-                " SET password = ? " +
-                " WHERE email = ?;", password, username) == 1;
+        Optional<User> dbUser = getUserByUsername(username);
+        if(!dbUser.isPresent()) return false;
+        dbUser.get().setPassword(password);
+        return true;
     }
 
     @Override
     public Optional<byte[]> getProfileImage(Long userId) {
-        Optional<Optional<byte[]>> query = jdbcTemplate.query("SELECT image FROM profile_images WHERE userId = ?",
-                new Object[]{userId}, (rs, rowNumber) ->  Optional.ofNullable(rs.getBytes("image"))).stream().findFirst();
-        return query.orElseGet(Optional::empty);
-    }
-
-    private Optional<Boolean> hasProfileImage(Long userId){
-        List<Boolean> query =  jdbcTemplate.query("SELECT EXISTS(SELECT * FROM profile_images WHERE userid = ?)", new Object[]{userId}, IMAGE_EXISTS_ROW_MAPPER);
-        return query.stream().findFirst();
+        Optional<User> u = getUserById(userId);
+        return u.map(user -> Optional.ofNullable(user.getImage())).orElse(null);
     }
 
     @Override
     public boolean updateProfileImage(Long userId, byte[] image) {
-        Optional<Boolean> hasImage = hasProfileImage(userId);
-        if(hasImage.isPresent())
-            if(hasImage.get()) {
-                return jdbcTemplate.update("UPDATE profile_images " +
-                        "SET image = ?" +
-                        "WHERE userId = ?", image, userId) == 1;
-            }
-        final Map<String, Object> argsProfileImage = new HashMap<>();
-        argsProfileImage.put("userId", userId);
-        argsProfileImage.put("image", image);
-        return jdbcInsertProfileImage.execute(argsProfileImage) == 1;
+        Optional<User> u = getUserById(userId);
+        if (u.isPresent()) {
+            u.get().setImage(image);
+            return true;
+        }
+        return false;
     }
-
 }
