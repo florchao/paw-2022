@@ -103,6 +103,6 @@ public class EmployeeForm {
         for (String str: arr) {
             ret.append(str).append(",");
         }
-        return ret.substring(0, ret.length() - 2);
+        return ret.substring(0, ret.length() - 1);
     }
 }
