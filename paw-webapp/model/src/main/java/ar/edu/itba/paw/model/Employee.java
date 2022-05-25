@@ -1,18 +1,34 @@
 package ar.edu.itba.paw.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity(name = "Employee")
+@Table(name = "employee")
+@SecondaryTable(name = "users",
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
 public class Employee {
+    @Column(length = 100, nullable = false)
     private String name;
+    @Column(length = 100, nullable = false)
     private String location;
-    private long id;
+    @Id
+    @OneToOne
+    @JoinColumn(name = "userId")
+    private User id;
+    @Column(length = 100, nullable = false)
     private String availability;
     private List<String> availabilityArr;
+    @Column(nullable = false)
     private long experienceYears;
+    @Column(length = 100, nullable = false)
     private String abilities;
     private List<String> abilitiesArr;
 
-    public Employee(String name, String location, long id, String availability, long experienceYears, String abilities) {
+    public Employee() {
+    }
+
+    public Employee(String name, String location, User id, String availability, long experienceYears, String abilities) {
         this.name = name;
         this.location = location;
         this.id = id;
@@ -20,7 +36,7 @@ public class Employee {
         this.experienceYears = experienceYears;
         this.abilities = abilities;
     }
-    public Employee(String name, String location, long id, List<String> availabilityArr, long experienceYears, List<String> abilitiesArr) {
+    public Employee(String name, String location, User id, List<String> availabilityArr, long experienceYears, List<String> abilitiesArr) {
         this.name = name;
         this.location = location;
         this.id = id;
@@ -45,11 +61,11 @@ public class Employee {
         this.location = location;
     }
 
-    public long getId() {
+    public User getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(User id) {
         this.id = id;
     }
 
