@@ -37,7 +37,7 @@ public class UserJdbcDao implements UserDao{
 
     @Override
     public Optional<User> getUserByUsername(String email) {
-        final TypedQuery<User> query = em.createQuery("select u from User u where u.email = :email", User.class);
+        final TypedQuery<User> query = em.createQuery("select u from User u where u.email =:email", User.class);
         query.setParameter("email", email);
         return query.getResultList().stream().findFirst();
     }
