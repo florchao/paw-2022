@@ -1,28 +1,33 @@
 package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "Employee")
 @Table(name = "employee")
 @SecondaryTable(name = "users",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
-public class Employee {
+@Embeddable
+public class Employee implements Serializable {
+
     @Column(length = 100, nullable = false)
     private String name;
     @Column(length = 100, nullable = false)
     private String location;
-    @Id
     @OneToOne
-    @JoinColumn(name = "userId")
+    @EmbeddedId
+    @JoinColumn(name = "employeeID", nullable = false)
     private User id;
     @Column(length = 100, nullable = false)
     private String availability;
+    @ElementCollection
     private List<String> availabilityArr;
     @Column(nullable = false)
     private long experienceYears;
     @Column(length = 100, nullable = false)
     private String abilities;
+    @ElementCollection
     private List<String> abilitiesArr;
 
     public Employee() {

@@ -14,10 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class EmployeeJdbcDao implements EmployeeDao{
+
+public abstract class EmployeeJdbcDao implements EmployeeDao{
+    /*
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
     private final SimpleJdbcInsert jdbcInsertProfileImage;
+
 
     private static final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, rowNum) ->
             new Employee(rs.getString("name"),
@@ -143,5 +146,6 @@ public class EmployeeJdbcDao implements EmployeeDao{
         jdbcTemplate.update(updateQuery, name, location,availability, experienceYears, abilities, id);
         return;
     }
+     */
 
 }

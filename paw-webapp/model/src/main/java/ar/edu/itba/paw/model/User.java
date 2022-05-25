@@ -1,12 +1,13 @@
 package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "User")
 @Table(name = "users")
 @SecondaryTable(name = "profile_images",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_userid_seq")
     @SequenceGenerator(name = "users_userid_seq", sequenceName = "users_userid_seq", allocationSize = 1)

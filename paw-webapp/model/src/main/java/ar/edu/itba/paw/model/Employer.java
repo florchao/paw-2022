@@ -1,10 +1,27 @@
 package ar.edu.itba.paw.model;
 
-public class Employer {
-    private String name;
-    private long id;
 
-    public Employer(String name, long id) {
+import com.sun.xml.internal.ws.developer.Serialization;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity(name = "Employer")
+@Table(name = "employer")
+@SecondaryTable(name = "users",
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
+public class Employer implements Serializable {
+    @Column(length = 100, nullable = false)
+    private String name;
+    @OneToOne
+    @EmbeddedId
+    @JoinColumn(name = "employerID", nullable = false)
+    private User id;
+
+    public Employer() {
+    }
+
+    public Employer(String name, User id) {
         this.name = name;
         this.id = id;
     }
@@ -16,11 +33,11 @@ public class Employer {
         this.name = name;
     }
 
-    public long getId() {
-        return id;
+    public void setId(User id) {
+        this.id = id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public User getId() {
+        return id;
     }
 }

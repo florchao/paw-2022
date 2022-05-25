@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistence.EmployerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class EmployerServiceImpl implements EmployerService{
 
     @Transactional
     @Override
-    public Employer create(String name, long id, byte[] image) {
+    public Employer create(String name, User id, byte[] image) {
         name = name.trim().replaceAll(" +", " ");
         return employerDao.create(name, id, image);
     }
