@@ -25,6 +25,7 @@ public class EmployeeJpaDao implements EmployeeDao{
         Optional<User> user=  Optional.ofNullable(em.find(User.class, id));
         if(user.isPresent()) {
             final Employee employee = new Employee(name, location, user.get(), availability, experienceYears, abilites);
+            employee.getId().setImage(image);
             em.persist(employee);
             return employee;
         }
