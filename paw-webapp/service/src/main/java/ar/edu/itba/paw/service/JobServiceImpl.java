@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.persistence.JobDao;
@@ -19,7 +20,7 @@ public class JobServiceImpl implements JobService{
 
     @Transactional
     @Override
-    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
+    public Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
         title = title.toLowerCase().trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
         return jobDao.create(title, location, employerId, availability, experienceYears, abilities, description);
@@ -39,7 +40,7 @@ public class JobServiceImpl implements JobService{
         Job job = jobDao.getJobById(jobID).get();
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(job.getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(job.getAbilities().split(",")));
-        Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription(), job.getEmployerName());
+        Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription());
         return Optional.of(aux);
     }
 

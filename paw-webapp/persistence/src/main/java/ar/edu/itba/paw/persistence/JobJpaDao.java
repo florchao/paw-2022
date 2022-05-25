@@ -1,37 +1,45 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.model.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class JobJpaDao implements  JobDao{
+
     @PersistenceContext
     private EntityManager em;
-
     @Override
-    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
-        return null;
+    public Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
+        final Job job = new Job(title, location, employerId, availability, experienceYears, abilities, description);
+        em.persist(job);
+        return job;
     }
 
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
-        return Optional.empty();
+        final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId =: employerId", Job.class);
+        query.setParameter("employerId", employerID);
+        return Optional.ofNullable(query.getResultList());
     }
 
     @Override
     public Optional<Job> getJobById(long jobId) {
-        return Optional.empty();
+        return Optional.of(em.find(Job.class, jobId));
     }
 
     @Override
     public Optional<List<Job>> getAllJobs(long pageSize) {
-        return Optional.empty();
+        final TypedQuery<Job> jobList = em.createQuery("select u from Job u", Job.class);
+        return Optional.ofNullable(jobList.getResultList());
     }
 
     @Override
@@ -46,6 +54,7 @@ public class JobJpaDao implements  JobDao{
 
     @Override
     public String getJobNameById(long jobID) {
-        return null;
+       Job job = em.find(Job.class, jobID);
+       return job.getTitle();
     }
 }

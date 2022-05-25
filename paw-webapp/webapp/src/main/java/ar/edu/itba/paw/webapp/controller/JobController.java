@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -28,6 +30,9 @@ public class JobController {
     JobService jobService;
 
     @Autowired
+    EmployerService employerService;
+
+    @Autowired
     UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE = 8;
@@ -39,14 +44,17 @@ public class JobController {
 
     @RequestMapping(value = "/createJob", method = RequestMethod.POST)
     ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
-        if(errors.hasErrors()) {
-            LOGGER.debug("couldn't create job");
-            return crearTrabajo(form);
+        if(!errors.hasErrors()) {
+            HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
+            if (employer.isPresent()) {
+                Job job = jobService.create(form.getTitle(), form.getLocation(), employer.get(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
+                LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
+                return new ModelAndView("redirect:/trabajo/" + job.getJobId());
+            }
         }
-        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Job job = jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
-        LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
-        return new ModelAndView("redirect:/trabajo/" + job.getJobId());
+        LOGGER.debug("couldn't create job");
+        return crearTrabajo(form);
     }
 
     @RequestMapping(value = "/misTrabajos", method = {RequestMethod.GET})

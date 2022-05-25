@@ -1,22 +1,52 @@
 package ar.edu.itba.paw.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+
+@Entity(name = "Job")
+@Table(name = "jobs")
+@SecondaryTable(name = "employer",
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "employerID"))
 public class Job {
+    @Column(length = 100, nullable = false)
     private String title;
+    @Column(length = 100, nullable = false)
     private String location;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobs_jobid_seq")
+    @SequenceGenerator(name = "jobs_jobid_seq", sequenceName = "jobs_jobid_seq", allocationSize = 1)
+    @Column(name = "jobID", nullable = false)
     private long jobId;
-    private long employerId;
+    @EmbeddedId
+    @JoinColumn(name = "employerID", nullable = false)
+    private Employer employerId;
+    @Column(length = 100, nullable = false)
     private String availability;
+    @Column(nullable = false)
     private long experienceYears;
+    @Column(length = 100, nullable = false)
     private String abilities;
+    @Column(length = 1000, nullable = false)
     private String description;
-    private String employerName;
-    private String employerUsername;
+    @ElementCollection
     private List<String> availabilityArr;
+    @ElementCollection
     private List<String> abilitiesArr;
 
-    public Job(String title, String location, long jobId, long employerId, String availability, long experienceYears, String abilities, String description) {
+    public Job(){}
+
+    public Job(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
+        this.title = title;
+        this.location = location;
+        this.employerId = employerId;
+        this.availability = availability;
+        this.experienceYears = experienceYears;
+        this.abilities = abilities;
+        this.description = description;
+    }
+
+    public Job(String title, String location, long jobId, Employer employerId, String availability, long experienceYears, String abilities, String description) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
@@ -45,10 +75,9 @@ public class Job {
         this.experienceYears = experienceYears;
         this.abilities = abilities;
         this.description = description;
-        this.employerName = employerName;
     }
 
-    public Job(String title, String location, long jobId, List<String>  availability, long experienceYears, List<String> abilities, String description, String employerName) {
+    public Job(String title, String location, long jobId, List<String>  availability, long experienceYears, List<String> abilities, String description) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
@@ -56,12 +85,10 @@ public class Job {
         this.experienceYears = experienceYears;
         this.abilitiesArr = abilities;
         this.description = description;
-        this.employerName = employerName;
     }
 
-    public Job(String title, String employerUsername) {
+    public Job(String title) {
         this.title = title;
-        this.employerUsername = employerUsername;
     }
 
     public String getTitle() {
@@ -88,11 +115,11 @@ public class Job {
         this.jobId = jobId;
     }
 
-    public long getEmployerId() {
+    public Employer getEmployerId() {
         return employerId;
     }
 
-    public void setEmployerId(long employerId) {
+    public void setEmployerId(Employer employerId) {
         this.employerId = employerId;
     }
 
@@ -127,15 +154,6 @@ public class Job {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getEmployerName() {
-        return employerName;
-    }
-
-    public void setEmployerName(String employerName) {
-        this.employerName = employerName;
-    }
-
     public List<String> getAvailabilityArr() {
         return availabilityArr;
     }
@@ -163,10 +181,10 @@ public class Job {
 
     public void employerNameToUpper() {
         StringBuilder finalName = new StringBuilder();
-        for (String word : getEmployerName().split(" ")) {
+        for (String word : employerId.getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        setEmployerName(finalName.toString());
+        employerId.setName(finalName.toString());
     }
 }
