@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @Primary
-public class UserJdbcDao implements UserDao{
+public class UserJpaDao implements UserDao{
 
     @PersistenceContext
     private EntityManager em;
