@@ -8,6 +8,7 @@ import java.util.List;
 @Table(name = "jobs")
 @SecondaryTable(name = "employer",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "employerID"))
+@Embeddable
 public class Job {
     @Column(length = 100, nullable = false)
     private String title;
@@ -18,7 +19,6 @@ public class Job {
     @SequenceGenerator(name = "jobs_jobid_seq", sequenceName = "jobs_jobid_seq", allocationSize = 1)
     @Column(name = "jobID", nullable = false)
     private long jobId;
-    @EmbeddedId
     @JoinColumn(name = "employerID", nullable = false)
     private Employer employerId;
     @Column(length = 100, nullable = false)

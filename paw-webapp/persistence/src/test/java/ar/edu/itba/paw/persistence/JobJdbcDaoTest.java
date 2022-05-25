@@ -47,6 +47,8 @@ public class JobJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "jobs");
     }
 
+    /*
+
     @Test
     public void testCreate(){
         Job job = jobJdbcDao.create(TITLE, LOCATION, ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
@@ -115,4 +117,6 @@ public class JobJdbcDaoTest {
 
 
     }
+
+     */
 }

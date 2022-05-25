@@ -1,17 +1,39 @@
 package ar.edu.itba.paw.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Table(name = "contact")
+@Entity(name = "Contact")
+@Embeddable
+@SecondaryTables({@SecondaryTable(name = "employer",
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "employerID")),
+        @SecondaryTable(name = "employee",
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "employeeID"))})
 public class Contact {
-    public long employeeID;
-    public long employerID;
-    public String email;
-    public String employer;
+
+    @OneToOne
+    @EmbeddedId
+    @JoinColumn(name = "employeeID", nullable = false)
+    public Employee employeeID;
+
+    //TODO: A Foreign key refering ar.edu.itba.paw.model.Contact from ar.edu.itba.paw.model.Contact has the wrong number of column. should be 2
+    @OneToOne
+    @EmbeddedId
+    @JoinColumn(name = "employerID", nullable = false)
+    public Employer employerID;
+    @Column(name = "message", length = 100, nullable = false)
     public String contactMessage;
+    @Column(name = "phone", length = 100, nullable = false)
     public String phoneNumber;
+
+    @Column(nullable = false)
     public Date created;
 
-    public Contact(long employeeID, long employerID, String message, String phoneNumber, Date created) {
+    public Contact() {
+    }
+
+    public Contact(Employee employeeID, Employer employerID, String message, String phoneNumber, Date created) {
         this.employeeID = employeeID;
         this.employerID = employerID;
         this.contactMessage = message;
@@ -19,10 +41,8 @@ public class Contact {
         this.phoneNumber = phoneNumber;
     }
 
-    public Contact(long employeeID, String email, String employer, String message, String phoneNumber, Date created, long employerID) {
+    public Contact(Employee employeeID, String message, String phoneNumber, Date created, Employer employerID) {
         this.employeeID = employeeID;
-        this.email = email;
-        this.employer = employer;
         this.contactMessage = message;
         this.created = created;
         this.phoneNumber = phoneNumber;
@@ -37,20 +57,12 @@ public class Contact {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getEmployer() {
-        return employer;
+    public void setEmployeeID(Employee employeeID) {
+        this.employeeID = employeeID;
     }
 
-    public void setEmployer(String employer) {
-        this.employer = employer;
-    }
-
-    public long getEmployeeID() {
+    public Employee getEmployeeID() {
         return employeeID;
-    }
-
-    public long getEmployerID() {
-        return employerID;
     }
 
     public String getMessage() {
@@ -61,11 +73,11 @@ public class Contact {
         return created;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public Employer getEmployerID() {
+        return employerID;
     }
 
-    public void setEmployerID(int employerID) {
+    public void setEmployerID(Employer employerID) {
         this.employerID = employerID;
     }
 
@@ -77,20 +89,12 @@ public class Contact {
         this.created = created;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void firstWordsToUpper() {
         StringBuilder finalName = new StringBuilder();
-        for (String word : getEmployer().split(" ")) {
+        for (String word : getEmployerID().getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        setEmployer(finalName.toString());
+        getEmployerID().setName(finalName.toString());
     }
 }

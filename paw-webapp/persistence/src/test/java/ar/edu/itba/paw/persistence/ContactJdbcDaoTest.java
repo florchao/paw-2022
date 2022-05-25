@@ -25,7 +25,7 @@ public class ContactJdbcDaoTest {
     DataSource dataSource;
 
     @Autowired
-    private ContactJdbcDao contactJdbcDao;
+    private ContactJpaDao contactJdbcDao;
 
     private JdbcTemplate jdbcTemplate;
 

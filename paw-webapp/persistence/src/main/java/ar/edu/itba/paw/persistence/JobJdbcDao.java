@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class JobJdbcDao implements JobDao{
+public abstract class JobJdbcDao implements JobDao{
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
@@ -37,6 +37,7 @@ public class JobJdbcDao implements JobDao{
                 .withTableName("jobs").usingGeneratedKeyColumns("jobid");
     }
 
+    /*
     @Override
     public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
         final Map<String, Object> jobData = new HashMap<>();
@@ -50,6 +51,8 @@ public class JobJdbcDao implements JobDao{
         Number jobId = jdbcInsert.executeAndReturnKey(jobData);
         return new Job(title, location, jobId.longValue(), employerId, availability, experienceYears, abilities, description);
     }
+
+     */
 
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
