@@ -148,7 +148,7 @@
                                 <jsp:include page="components/employeeCardComponent.jsp">
                                     <jsp:param name="name" value="${employee.name}"/>
                                     <jsp:param name="location" value="${employee.location}"/>
-                                    <jsp:param name="id" value="${employee.id}"/>
+                                    <jsp:param name="id" value="${employee.id.id}"/>
                                     <jsp:param name = "years" value = "${employee.experienceYears}"/>
                                 </jsp:include>
                             </c:forEach>
