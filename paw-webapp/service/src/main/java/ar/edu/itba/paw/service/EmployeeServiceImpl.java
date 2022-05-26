@@ -64,6 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.create(id, name, location, availability, experienceYears, abilities, image);
     }
 
+
     @Transactional(readOnly = true)
     @Override
     public Optional<List<Employee>> getEmployees() {
@@ -116,6 +117,8 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
+//        System.out.println("aka en service");
+//        System.out.println(experienceYears);
         return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
     }
 }

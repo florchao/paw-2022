@@ -3,12 +3,14 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.model.User;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 @Repository
@@ -47,7 +49,9 @@ public class EmployeeJpaDao implements EmployeeDao{
 
     @Override
     public Optional<List<Employee>> getEmployees(long pageSize) {
-        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e", Employee.class);
+        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e", Employee.class)
+                .setFirstResult(0)
+                .setMaxResults((int) pageSize);
         return Optional.ofNullable(employeeList.getResultList());
     }
 
