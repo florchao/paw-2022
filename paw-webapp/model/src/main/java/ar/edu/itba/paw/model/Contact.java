@@ -1,16 +1,13 @@
 package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "contact")
 @Entity(name = "Contact")
 @Embeddable
-@SecondaryTables({@SecondaryTable(name = "employer",
-        pkJoinColumns = @PrimaryKeyJoinColumn(name = "employerID")),
-        @SecondaryTable(name = "employee",
-        pkJoinColumns = @PrimaryKeyJoinColumn(name = "employeeID"))})
-public class Contact {
+public class Contact implements Serializable {
 
     @OneToOne
     @EmbeddedId

@@ -20,7 +20,7 @@ public class Job {
     @Column(name = "jobID", nullable = false)
     private long jobId;
     @JoinColumn(name = "employerID", nullable = false)
-    private Employer employerId;
+    public Employer employerId;
     @Column(length = 100, nullable = false)
     private String availability;
     @Column(nullable = false)

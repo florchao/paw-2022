@@ -18,6 +18,9 @@ public class JobServiceImpl implements JobService{
     @Autowired
     JobDao jobDao;
 
+    @Autowired
+    EmployerService employerService;
+
     @Transactional
     @Override
     public Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
@@ -29,7 +32,8 @@ public class JobServiceImpl implements JobService{
     @Transactional(readOnly = true)
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
-        return jobDao.getUserJobs(employerID);
+        Optional<Employer> employer = employerService.getEmployerById(employerID);
+        return employer.map(value -> jobDao.getUserJobs(value)).orElse(null);
     }
 
     @Transactional(readOnly = true)

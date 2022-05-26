@@ -52,14 +52,14 @@ public abstract class JobJdbcDao implements JobDao{
         return new Job(title, location, jobId.longValue(), employerId, availability, experienceYears, abilities, description);
     }
 
-     */
-
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
         List<Job> query = jdbcTemplate.query("SELECT * FROM jobs WHERE employerID = ?",
                 new Object[] {employerID}, MY_JOB_ROW_MAPPER);
         return Optional.of(query);
     }
+
+     */
 
     @Override
     public Optional<Job> getJobById(long jobId) {

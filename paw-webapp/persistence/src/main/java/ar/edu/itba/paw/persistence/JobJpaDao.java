@@ -3,6 +3,8 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
+import org.hibernate.jpa.TypedParameterValue;
+import org.hibernate.type.IntegerType;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
@@ -25,10 +27,11 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public Optional<List<Job>> getUserJobs(long employerID) {
-        final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId =: employerId", Job.class);
+    public Optional<List<Job>> getUserJobs(Employer employerID) {
+
+        final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId =:employerId", Job.class);
         query.setParameter("employerId", employerID);
-        return Optional.ofNullable(query.getResultList());
+        return Optional.of(query.getResultList());
     }
 
     @Override
