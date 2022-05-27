@@ -46,12 +46,9 @@ public class JobController {
     ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
         if(!errors.hasErrors()) {
             HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
-            if (employer.isPresent()) {
-                Job job = jobService.create(form.getTitle(), form.getLocation(), employer.get(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
+                Job job = jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
                 LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
                 return new ModelAndView("redirect:/trabajo/" + job.getJobId());
-            }
         }
         LOGGER.debug("couldn't create job");
         return crearTrabajo(form);
