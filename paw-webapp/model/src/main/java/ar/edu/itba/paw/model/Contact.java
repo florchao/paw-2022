@@ -10,22 +10,19 @@ import java.util.Date;
 public class Contact implements Serializable {
 
     @OneToOne
-    @EmbeddedId
     @JoinColumn(name = "employeeID", nullable = false)
-    public Employee employeeID;
-
-    //TODO: A Foreign key refering ar.edu.itba.paw.model.Contact from ar.edu.itba.paw.model.Contact has the wrong number of column. should be 2
-    @OneToOne
     @EmbeddedId
+    public Employee employeeID;
+    @OneToOne
     @JoinColumn(name = "employerID", nullable = false)
-    public Employer employerID;
+    @EmbeddedId
+    private Employer employerID;
     @Column(name = "message", length = 100, nullable = false)
-    public String contactMessage;
+    private String contactMessage;
     @Column(name = "phone", length = 100, nullable = false)
-    public String phoneNumber;
-
+    private String phoneNumber;
     @Column(nullable = false)
-    public Date created;
+    private Date created;
 
     public Contact() {
     }

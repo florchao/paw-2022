@@ -31,6 +31,7 @@ public class ContactServiceImpl implements ContactService{
     private EmployerService employerService;
 
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<List<Contact>> getAllContacts(long id) {
         Optional<Employer> employer = employerService.getEmployerById(id);
@@ -47,6 +48,7 @@ public class ContactServiceImpl implements ContactService{
         return contactDao.create(employeeId, employerId, created, contactMessage, phoneNumber);
     }
 
+    @Transactional
     @Override
     public void contact(User to, String message, String name, String phoneNumber) {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -59,6 +61,7 @@ public class ContactServiceImpl implements ContactService{
 
     }
 
+    @Transactional
     @Override
     public void contactUS(String message, String from, String name) {
         mailingService.sendContactUsMail(name, from, message);

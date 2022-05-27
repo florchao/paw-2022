@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,9 +38,11 @@ public class ContactJpaDao implements ContactDao{
 
     @Override
     public Optional<Boolean> existsContact(long employeeId, long employerId) {
-        TypedQuery<Contact> contactTypedQuery = em.createQuery("SELECT c FROM Contact c WHERE c.employerID = :employer AND c.employeeID = :employee", Contact.class);
-        contactTypedQuery.setParameter("employer", employerId);
-        contactTypedQuery.setParameter("employee", employeeId);
+        Employer employer = em.find(Employer.class, employerId);
+        Employee employee = em.find(Employee.class, employeeId);
+        TypedQuery<Contact> contactTypedQuery = em.createQuery("SELECT c FROM Contact c WHERE c.employerID =:employer AND c.employeeID =:employee", Contact.class);
+        contactTypedQuery.setParameter("employer", employer);
+        contactTypedQuery.setParameter("employee", employee);
         return Optional.of(!contactTypedQuery.getResultList().isEmpty());
     }
 }
