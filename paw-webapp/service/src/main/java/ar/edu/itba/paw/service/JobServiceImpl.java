@@ -32,8 +32,7 @@ public class JobServiceImpl implements JobService{
     @Transactional(readOnly = true)
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
-        Optional<Employer> employer = employerService.getEmployerById(employerID);
-        return employer.map(value -> jobDao.getUserJobs(value)).orElse(null);
+        return jobDao.getUserJobs(employerID);
     }
 
     @Transactional(readOnly = true)

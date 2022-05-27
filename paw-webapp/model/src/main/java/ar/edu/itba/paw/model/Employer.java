@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.model;
 
 
-import com.sun.xml.internal.ws.developer.Serialization;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(name = "Employer")
 @Table(name = "employer")
@@ -40,4 +39,5 @@ public class Employer implements Serializable {
     public User getId() {
         return id;
     }
+
 }
