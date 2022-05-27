@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class JobJpaDao implements  JobDao{
+public class JobJpaDao implements JobDao{
 
     @PersistenceContext
     private EntityManager em;
@@ -42,12 +42,12 @@ public class JobJpaDao implements  JobDao{
     @Override
     public Optional<List<Job>> getAllJobs(long pageSize) {
         final TypedQuery<Job> jobList = em.createQuery("select u from Job u", Job.class);
-        return Optional.ofNullable(jobList.getResultList());
+        return Optional.of(jobList.getResultList());
     }
 
     @Override
     public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
-        return Optional.empty();
+        return getAllJobs(pageSize);
     }
 
     @Override

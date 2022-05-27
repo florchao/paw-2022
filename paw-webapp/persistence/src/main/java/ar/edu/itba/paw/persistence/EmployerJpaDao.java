@@ -26,10 +26,11 @@ public class EmployerJpaDao implements EmployerDao{
     }
 
     @Override
-    public Optional<Employer> getEmployerById(User id) {
-        final TypedQuery<Employer> query = em.createQuery("select e from Employer e where e.id =:employerId", Employer.class);
-        query.setParameter("employerId", id);
-        System.out.println(query.getSingleResult());
-        return Optional.of(query.getSingleResult());
+    public Optional<Employer> getEmployerById(long id) {
+//        final TypedQuery<Employer> query = em.createQuery("select e from Employer e where e.id =:employerId", Employer.class);
+//        query.setParameter("employerId", id);
+//        System.out.println(query.getSingleResult());
+//        return Optional.of(query.getSingleResult());
+        return Optional.ofNullable(em.find(Employer.class, id));
     }
 }
