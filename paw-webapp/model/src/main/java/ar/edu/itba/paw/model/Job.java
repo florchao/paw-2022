@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -9,7 +10,7 @@ import java.util.List;
 @SecondaryTable(name = "employer",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "employerID"))
 @Embeddable
-public class Job {
+public class Job implements Serializable {
     @Column(length = 100, nullable = false)
     private String title;
     @Column(length = 100, nullable = false)
