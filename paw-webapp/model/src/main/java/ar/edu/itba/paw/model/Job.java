@@ -22,7 +22,7 @@ public class Job implements Serializable {
     private long jobId;
 
     @JoinColumn(name = "employerID", nullable = false)
-    public Employer employerId;
+    private Employer employerId;
     @Column(length = 100, nullable = false)
     private String availability;
     @Column(nullable = false)
