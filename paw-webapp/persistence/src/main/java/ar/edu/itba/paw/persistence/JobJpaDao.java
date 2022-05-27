@@ -20,16 +20,17 @@ public class JobJpaDao implements JobDao{
     @PersistenceContext
     private EntityManager em;
     @Override
-    public Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
-        final Job job = new Job(title, location, employerId, availability, experienceYears, abilities, description);
+    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
+        Employer employer = em.find(Employer.class, employerId);
+        final Job job = new Job(title, location, employer, availability, experienceYears, abilities, description);
         em.persist(job);
         return job;
     }
 
     @Override
-    public Optional<List<Job>> getUserJobs(Employer employerID) {
+    public Optional<List<Job>> getUserJobs(long employerID) {
 
-        final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId =:employerId", Job.class);
+        final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId.id =:employerId", Job.class);
         query.setParameter("employerId", employerID);
         return Optional.of(query.getResultList());
     }

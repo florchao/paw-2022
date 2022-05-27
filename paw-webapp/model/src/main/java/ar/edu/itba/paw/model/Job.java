@@ -20,6 +20,7 @@ public class Job implements Serializable {
     @SequenceGenerator(name = "jobs_jobid_seq", sequenceName = "jobs_jobid_seq", allocationSize = 1)
     @Column(name = "jobID", nullable = false)
     private long jobId;
+
     @JoinColumn(name = "employerID", nullable = false)
     public Employer employerId;
     @Column(length = 100, nullable = false)

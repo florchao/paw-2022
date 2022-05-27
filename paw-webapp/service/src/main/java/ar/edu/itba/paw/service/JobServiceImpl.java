@@ -23,7 +23,7 @@ public class JobServiceImpl implements JobService{
 
     @Transactional
     @Override
-    public Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
+    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
         title = title.toLowerCase().trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
         return jobDao.create(title, location, employerId, availability, experienceYears, abilities, description);
@@ -32,8 +32,7 @@ public class JobServiceImpl implements JobService{
     @Transactional(readOnly = true)
     @Override
     public Optional<List<Job>> getUserJobs(long employerID) {
-        Optional<Employer> employer = employerService.getEmployerById(employerID);
-        return employer.map(value -> jobDao.getUserJobs(value)).orElse(null);
+        return jobDao.getUserJobs(employerID);
     }
 
     @Transactional(readOnly = true)
