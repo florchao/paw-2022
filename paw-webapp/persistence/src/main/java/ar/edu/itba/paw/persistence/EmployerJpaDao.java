@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import org.springframework.context.annotation.Primary;
@@ -26,10 +27,7 @@ public class EmployerJpaDao implements EmployerDao{
     }
 
     @Override
-    public Optional<Employer> getEmployerById(User id) {
-        final TypedQuery<Employer> query = em.createQuery("select e from Employer e where e.id =:employerId", Employer.class);
-        query.setParameter("employerId", id);
-        System.out.println(query.getSingleResult());
-        return Optional.of(query.getSingleResult());
+    public Optional<Employer> getEmployerById(long id) {
+        return Optional.of(em.find(Employer.class, id));
     }
 }
