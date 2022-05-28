@@ -29,7 +29,11 @@
     <jsp:param name="currentUrl" value="createJob"/>
 </jsp:include>
 <c:url value="/createJob" var="postPath"/>
-<div class = "h-screen overflow-auto pb-5">
+<div class = "h-screen overflow-auto">
+    <div class="grid justify-items-center mt-24" style="margin-bottom: -40px">
+        <p class="text-xl font-semibold text-white">
+            <spring:message code="createJob.title"/></p>
+    </div>
     <form:form modelAttribute="jobForm" action="${postPath}" method="post" pageEncoding="UTF-8">
         <div class="grid grid-cols-6">
             <div class="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
