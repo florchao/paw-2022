@@ -30,6 +30,7 @@ import javax.mail.Session;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 @EnableWebMvc
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
@@ -116,6 +117,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         messageSource.setBasename("classpath:i18n/messages");
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
         messageSource.setCacheSeconds(5);
+        messageSource.setFallbackToSystemLocale(false);
         return messageSource;
     }
     @Bean
