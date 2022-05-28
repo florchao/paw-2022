@@ -79,6 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         throw new UserNotFoundException("Employee " + id + " not found");
     }
 
+    @Transactional
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
         List<String> availabilityList = new ArrayList<>();
@@ -92,6 +93,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.getPageNumber(name, experienceYears, location, experiences, availabilityList, abilitiesList, pageSize);
     }
 
+    @Transactional
     @Override
     public Optional<List<Employee>> getFilteredEmployees(
             String name,

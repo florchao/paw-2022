@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
@@ -62,11 +63,64 @@ public class EmployeeJpaDao implements EmployeeDao{
 
     @Override
     public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page, long pageSize) {
-        return Optional.empty();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT e FROM Employee e where ");
+        if (name != null) {
+            stringBuilder.append("e.name like '%").append(name.toLowerCase()).append("%'");
+            stringBuilder.append(" and   ");
+        }
+        if (experienceYears != null && experienceYears.intValue() > 0) {
+            stringBuilder.append("e.experienceYears >= ").append(experienceYears);
+            stringBuilder.append(" and   ");
+        }
+        if (location != null) {
+            stringBuilder.append("e.location like '%").append(location.toLowerCase()).append("%' ");
+            stringBuilder.append(" and   ");
+        }
+        // TODO Aca iria lo mismo pero para experienceList
+        for (String av : availability) {
+            stringBuilder.append("e.availability like '%").append(av).append("%'");
+            stringBuilder.append(" and   ");
+        }
+        for (String ability : abilities) {
+            stringBuilder.append("e.abilities like '%").append(ability).append("%'");
+            stringBuilder.append(" and   ");
+        }
+        stringBuilder.setLength(stringBuilder.length() - 7);
+        TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
+        System.out.println("FILTERED: "+ filteredQuery.getResultList());
+        return Optional.of(filteredQuery.getResultList());
     }
 
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long pageSize) {
-        return 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT count(e) FROM Employee e where ");
+        if (name != null) {
+            stringBuilder.append("e.name like '%").append(name.toLowerCase()).append("%'");
+            stringBuilder.append(" and   ");
+        }
+        if (experienceYears != null && experienceYears.intValue() > 0) {
+            stringBuilder.append("e.experienceYears >= ").append(experienceYears);
+            stringBuilder.append(" and   ");
+        }
+        if (location != null) {
+            stringBuilder.append("e.location like '%").append(location.toLowerCase()).append("%' ");
+            stringBuilder.append(" and   ");
+        }
+        for (String av : availability) {
+            stringBuilder.append("e.availability like '%").append(av).append("%'");
+            stringBuilder.append(" and   ");
+        }
+        for (String ability : abilities) {
+            stringBuilder.append("e.abilities like '%").append(ability).append("%'");
+            stringBuilder.append(" and   ");
+        }
+        stringBuilder.setLength(stringBuilder.length() - 7);
+
+        TypedQuery<Long> filteredQuery = em.createQuery(stringBuilder.toString(), Long.class);
+
+        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
+
     }
 }
