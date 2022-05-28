@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Contact;
+import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
@@ -28,14 +29,14 @@ public class ContactServiceImpl implements ContactService{
     private UserService userService;
 
     @Autowired
-    private EmployerService employerService;
+    private EmployeeService employeeService;
 
 
     @Transactional(readOnly = true)
     @Override
     public Optional<List<Contact>> getAllContacts(long id) {
-        Optional<Employer> employer = employerService.getEmployerById(id);
-        return employer.map(value -> contactDao.getAllContacts(value)).orElse(null);
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        return employee.map(value -> contactDao.getAllContacts(value)).orElse(null);
     }
 
     @Transactional

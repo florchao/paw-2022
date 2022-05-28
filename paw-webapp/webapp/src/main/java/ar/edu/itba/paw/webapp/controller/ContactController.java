@@ -43,8 +43,11 @@ public class ContactController {
         final ModelAndView mav = new ModelAndView("contacts");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID());
+
         if (list.isPresent()) {
             for (Contact contact : list.get()) {
+                System.out.println("LISTA CONTACTOS" + contact.getEmployerID().getName());
+                System.out.println("LISTA CONTACTOS" + contact.getEmployeeID().getName());
                 contact.firstWordsToUpper();
             }
         }

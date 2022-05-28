@@ -17,8 +17,8 @@ public class ContactJpaDao implements ContactDao{
     private EntityManager em;
 
     @Override
-    public Optional<List<Contact>> getAllContacts(Employer userId) {
-        final TypedQuery<Contact> query = em.createQuery("select u from Contact u where u.employerID =:userId", Contact.class);
+    public Optional<List<Contact>> getAllContacts(Employee userId) {
+        final TypedQuery<Contact> query = em.createQuery("select u from Contact u where u.employeeID =:userId", Contact.class);
         query.setParameter("userId", userId);
         return Optional.ofNullable(query.getResultList());
     }
