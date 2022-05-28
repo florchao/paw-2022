@@ -8,7 +8,6 @@ import java.util.List;
 @Table(name = "employee")
 @SecondaryTable(name = "users",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
-@Embeddable
 public class Employee implements Serializable {
 
     @Column(length = 100, nullable = false)

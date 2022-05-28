@@ -7,10 +7,8 @@ import java.util.List;
 
 @Entity(name = "Job")
 @Table(name = "jobs")
-@SecondaryTable(name = "employer",
-        pkJoinColumns = @PrimaryKeyJoinColumn(name = "employerID"))
 @Embeddable
-public class Job implements Serializable {
+public class Job{
     @Column(length = 100, nullable = false)
     private String title;
     @Column(length = 100, nullable = false)
@@ -21,7 +19,9 @@ public class Job implements Serializable {
     @Column(name = "jobID", nullable = false)
     private long jobId;
 
-    @JoinColumn(name = "employerID", nullable = false)
+    @Embedded
+    @OneToOne
+    @JoinColumn(name = "employerID", nullable = false, referencedColumnName = "employerID")
     private Employer employerId;
     @Column(length = 100, nullable = false)
     private String availability;

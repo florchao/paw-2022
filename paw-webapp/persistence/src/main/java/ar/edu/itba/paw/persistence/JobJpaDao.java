@@ -2,10 +2,6 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
-import ar.edu.itba.paw.model.User;
-import org.hibernate.jpa.TypedParameterValue;
-import org.hibernate.type.IntegerType;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -41,13 +37,13 @@ public class JobJpaDao implements  JobDao{
 
     @Override
     public Optional<List<Job>> getAllJobs(long pageSize) {
-        final TypedQuery<Job> jobList = em.createQuery("select u from Job u", Job.class);
-        return Optional.ofNullable(jobList.getResultList());
+        final TypedQuery<Job> jobList = em.createQuery("select e from Job e", Job.class);
+        return Optional.ofNullable(jobList.setMaxResults((int)pageSize).getResultList());
     }
 
     @Override
     public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
-        return Optional.empty();
+        return getAllJobs(pageSize);
     }
 
     @Override

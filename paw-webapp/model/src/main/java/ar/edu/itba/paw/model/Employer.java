@@ -9,6 +9,7 @@ import java.util.Objects;
 @Table(name = "employer")
 @SecondaryTable(name = "users",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
+@Embeddable
 public class Employer implements Serializable {
     @Column(length = 100, nullable = false)
     private String name;
