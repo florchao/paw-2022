@@ -59,10 +59,10 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p class="text-xl font-medium text-gray-900 truncate">
-                                                    <c:out value="${applicant.employeeName}"/>
+                                                    <c:out value="${applicant.employeeID.name}"/>
                                                 </p>
                                                 <p class="text-sm text-gray-500 truncate">
-                                                    <c:out value="${applicant.employeeUsername}"/>
+                                                    <c:out value="${applicant.employeeID.name}"/>
                                                 </p>
                                             </div>
                                         </div>

@@ -41,7 +41,7 @@ public class ApplicantJpaDao implements ApplicantDao{
     public Optional<Applicant> getInfoMail(Job jobID) {
         final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u join Employer e where u.jobID =:jobID and e.id=:employerID", Applicant.class);
         query.setParameter("jobID", jobID);
-        query.setParameter("employerID", jobID.getEmployerId());
+        query.setParameter("employerID", jobID.getEmployerId().getId());
         return Optional.of(query.getSingleResult());
     }
 
