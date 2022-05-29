@@ -74,3 +74,13 @@ create table if not exists applicants(
     FOREIGN KEY (jobID) REFERENCES jobs(jobid) ON DELETE CASCADE,
     PRIMARY KEY(employeeID, jobID)
 );
+
+create table if not exists review(
+    reviewID SERIAL PRIMARY KEY,
+    employeeId INT NOT NULL,
+    employerId INT NOT NULL,
+    review TEXT,
+    FOREIGN KEY (employeeId) REFERENCES employee(employeeid) ON DELETE CASCADE,
+    FOREIGN KEY (employerId) REFERENCES employer(employerid) ON DELETE CASCADE,
+    UNIQUE (employeeId, employerId)
+);
