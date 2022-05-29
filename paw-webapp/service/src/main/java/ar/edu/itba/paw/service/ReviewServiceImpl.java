@@ -20,8 +20,13 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public Optional<List<Review>> getAllReviews(long employeeId, Long id) {
-        return reviewDao.getAllReviews(employeeId, id);
+    public Optional<List<Review>> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
+        return reviewDao.getAllReviews(employeeId, id, page, pageSize);
+    }
+
+    @Override
+    public int getPageNumber(long employeeId, Long id, int pageSize) {
+        return reviewDao.getPageNumber(employeeId, id, pageSize);
     }
 
     @Override

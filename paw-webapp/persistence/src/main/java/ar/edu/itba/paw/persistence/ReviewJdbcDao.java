@@ -41,14 +41,24 @@ public class ReviewJdbcDao implements ReviewDao{
     }
 
     @Override
-    public Optional<List<Review>> getAllReviews(long employeeId, Long id) {
+    public Optional<List<Review>> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
         StringBuilder sqlQuery = new StringBuilder("SELECT reviewid, employeeid, employerid, review, name FROM review NATURAL JOIN employer WHERE employeeid = ");
         sqlQuery.append(employeeId);
         if(id != null)
-            sqlQuery.append(" AND employerId <> ").append(id);
-        System.out.println(sqlQuery);
+            sqlQuery.append(" AND employerId <> ").append(id).append(" LIMIT ").append(pageSize).append(" OFFSET ").append(page*pageSize);;
         List<Review> query = jdbcTemplate.query(sqlQuery.toString(), new Object[] {}, REVIEW_ROW_MAPPER);
         return Optional.of(query);
+    }
+
+    @Override
+    public int getPageNumber(long employeeId, Long id, int pageSize) {
+        StringBuilder sqlQuery = new StringBuilder("SELECT COUNT(*) FROM review NATURAL JOIN employer WHERE employeeid = ");
+        sqlQuery.append(employeeId);
+        if(id != null)
+            sqlQuery.append(" AND employerId <> ").append(id);
+        String query = jdbcTemplate.queryForObject(sqlQuery.toString(), new Object[] {}, String.class);
+
+        return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
     }
 
     @Override
