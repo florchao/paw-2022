@@ -35,9 +35,15 @@ public class ContactJdbcDao implements ContactDao{
     }
 
     @Override
-    public Optional<List<Contact>> getAllContacts(long id) {
-        List<Contact> query = jdbcTemplate.query("SELECT employeeid, name, email, message, phone, created, contact.employerId FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ? ORDER BY created DESC ", new Object[] {id}, CONTACT_NAME_ROW_MAPPER);
+    public Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize) {
+        List<Contact> query = jdbcTemplate.query("SELECT employeeid, name, email, message, phone, created, contact.employerId FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ? ORDER BY created DESC LIMIT ? OFFSET ?", new Object[] {id, pageSize, page*pageSize}, CONTACT_NAME_ROW_MAPPER);
         return Optional.of(query);
+    }
+
+    @Override
+    public int getPageNumber(long id, int pageSize) {
+        String query = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ?", new Object[] {id}, String.class);
+        return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
     }
 
     @Override
