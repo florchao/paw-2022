@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -23,6 +24,8 @@ import java.util.Optional;
 
 @Controller
 public class ApplicantController {
+
+    private final int PAGE_SIZE = 4;
 
     @Autowired
     JobService jobService;
@@ -53,11 +56,16 @@ public class ApplicantController {
     }
 
     @RequestMapping(value = "/aplicantes/{jobID}", method = {RequestMethod.GET})
-    ModelAndView applicants(@PathVariable final int jobID){
+    ModelAndView applicants(@PathVariable final int jobID,
+                            @RequestParam(value = "page", required = false) Long page){
         ModelAndView mav = new ModelAndView("viewApplicants");
-        Optional<List<Applicant>> list = applicantService.getApplicantsByJob(jobID);
+        if (page == null)
+            page = 0L;
+        Optional<List<Applicant>> list = applicantService.getApplicantsByJob(jobID,page,PAGE_SIZE);
         list.ifPresent(applicants -> mav.addObject("ApplicantList", applicants));
         mav.addObject("title", jobService.getJobNameById(jobID));
+        mav.addObject("page", page);
+        mav.addObject("maxPage",applicantService.getPageNumber(jobID, PAGE_SIZE));
         return mav;
     }
 
