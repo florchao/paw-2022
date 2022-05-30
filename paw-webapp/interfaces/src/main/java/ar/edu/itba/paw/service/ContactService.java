@@ -17,5 +17,7 @@ public interface ContactService {
     void contact(User to, String message, String name, String phoneNumber);
 
     void contactUS(String message, String from, String name);
+
+    Optional<Boolean> existsContact(long employeeId, long employerId);
 }
 
