@@ -68,7 +68,10 @@ public class ContactController {
         userService.getUserById(id).orElseThrow(UserNotFoundException::new);
         employeeService.isEmployee(id);
         Optional<Employee> employee = employeeService.getEmployeeById(id);
-        employee.ifPresent(value -> mav.addObject("name", value.getName()));
+        if(employee.isPresent()){
+            employee.get().firstWordsToUpper();
+            mav.addObject("name", employee.get().getName());
+        }
         return mav;
     }
 
