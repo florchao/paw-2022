@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="from" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -53,12 +54,14 @@
                 <p style="color:red" class="col-start-2 col-span-5">${PasswordError}</p>
             </div>
             <div class="form-group grid grid-cols-6 mb-6">
-                <form:label path="role" class="col-span-1 text-sm font-medium text-gray-900"><spring:message code="register.role"/></form:label>
+                <p class="col-span-1 text-sm font-medium text-gray-900"><spring:message code="register.role"/></p>
                 <div class="col-span-2">
-                    <form:radiobutton path="role" value="Empleador"/> <spring:message code="register.employer"/>
+                    <form:radiobutton path="role" id="empleador" value="Empleador"/>
+                    <from:label path="role" for="empleador"><spring:message code="register.employer"/></from:label>
                 </div>
                 <div class="col-span-2">
-                    <form:radiobutton path="role" value="Empleada"/> <spring:message code="register.employee"/>
+                    <form:radiobutton path="role" id="empleada" value="Empleada"/>
+                    <from:label path="role" for="empleada"><spring:message code="register.employee"/></from:label>
                 </div>
                 <form:errors path="role" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
             </div>

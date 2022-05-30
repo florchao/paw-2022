@@ -53,11 +53,20 @@
                     <h1 class="block mb-2 text-sm font-medium text-gray-600 "> <c:out value="${employee.experienceYears}"/></h1>
                 </div>
                 <sec:authorize access="hasAuthority('EMPLOYER')">
-                <div class="ml-3 col-start-5 row-start-2">
-                    <a href="<c:url value="/contacto/${user.id}"/>">
-                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.connect"/></button>
-                    </a>
-                </div>
+
+                    <div class="ml-3 col-start-5 row-start-2">
+                        <c:if test="${contacted == null || !contacted}">
+                            <a href="<c:url value="/contacto/${employee.id}"/>">
+                                <button class="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.connect"/></button>
+                            </a>
+                        </c:if>
+                        <c:if test="${contacted != null && contacted}">
+                            <p class="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.alreadyConnected"/></p>
+                        </c:if>
+                        <a href="<c:url value="/opiniones/${employee.id}"/>">
+                            <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.reviews"/></button>
+                        </a>
+                    </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE')">
                     <div class="ml-3 col-start-5 row-start-2">

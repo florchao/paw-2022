@@ -28,8 +28,13 @@ public class ContactServiceImpl implements ContactService{
 
 
     @Override
-    public Optional<List<Contact>> getAllContacts(long id) {
-        return contactDao.getAllContacts(id);
+    public Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize) {
+        return contactDao.getAllContacts(id, page, pageSize);
+    }
+
+    @Override
+    public int getPageNumber(long id, int pageSize) {
+        return contactDao.getPageNumber(id, pageSize);
     }
 
     @Transactional
@@ -57,6 +62,11 @@ public class ContactServiceImpl implements ContactService{
     @Override
     public void contactUS(String message, String from, String name) {
         mailingService.sendContactUsMail(name, from, message);
+    }
+
+    @Override
+    public Optional<Boolean> existsContact(long employeeId, long employerId) {
+        return contactDao.existsContact(employeeId, employerId);
     }
 
 

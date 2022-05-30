@@ -44,12 +44,19 @@ public class ApplicantJdbcDao implements ApplicantDao{
     }
 
     @Override
-    public Optional<List<Applicant>> getApplicantsByJob(long jobID) {
+    public Optional<List<Applicant>> getApplicantsByJob(long jobID, Long page, int pageSize) {
         List<Applicant> query = jdbcTemplate.query("SELECT employeeid, jobid, name, email FROM applicants NATURAL " +
-                        "JOIN employee JOIN users ON employee.employeeid = users.userid WHERE jobid = ?",
-                new Object[] {jobID}, APPLI_LIST_ROW_MAPPER);
+                        "JOIN employee JOIN users ON employee.employeeid = users.userid WHERE jobid = ? LIMIT ? OFFSET ?",
+                new Object[] {jobID,pageSize, page*pageSize}, APPLI_LIST_ROW_MAPPER);
         return Optional.of(query);
     }
+
+    @Override
+    public int getPageNumber(long jobID, int pageSize) {
+        String query = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM applicants NATURAL " +
+                        "JOIN employee JOIN users ON employee.employeeid = users.userid WHERE jobid = ? ",
+                new Object[] {jobID}, String.class);
+        return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);    }
 
     @Override
     public Optional<Applicant> getInfoMail(long jobID) {

@@ -8,7 +8,9 @@ import java.util.Optional;
 
 public interface ContactDao {
 
-    Optional<List<Contact>> getAllContacts(long userId);
+    Optional<List<Contact>> getAllContacts(long userId, Long page, int pageSize);
+
+    int getPageNumber(long id, int pageSize);
 
     Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber);
 
