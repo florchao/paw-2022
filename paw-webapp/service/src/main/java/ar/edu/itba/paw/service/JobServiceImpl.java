@@ -60,6 +60,11 @@ public class JobServiceImpl implements JobService{
         return jobDao.getFilteredJobs(name, experienceYears, location, availabilityList, abilitiesList, page, pageSize);
     }
 
+    @Override
+    public Optional<Boolean> alreadyApplied(long jobId, long employeeId) {
+        return jobDao.alreadyApplied(jobId, employeeId);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize) {
