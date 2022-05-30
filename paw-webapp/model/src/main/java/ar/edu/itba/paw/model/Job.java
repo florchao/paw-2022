@@ -19,9 +19,9 @@ public class Job{
     @Column(name = "jobID", nullable = false)
     private long jobId;
 
+    @ManyToOne
     @Embedded
-    @OneToOne
-    @JoinColumn(name = "employerID", nullable = false, referencedColumnName = "employerID")
+    @JoinColumn(name = "employerID", nullable = false)
     private Employer employerId;
     @Column(length = 100, nullable = false)
     private String availability;
@@ -181,12 +181,12 @@ public class Job{
         setTitle(finalName.toString());
     }
 
-    public void employerNameToUpper() {
+    public String employerNameToUpper(Employer employerId) {
         StringBuilder finalName = new StringBuilder();
         for (String word : employerId.getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        employerId.setName(finalName.toString());
+        return finalName.toString();
     }
 }

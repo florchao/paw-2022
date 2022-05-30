@@ -31,7 +31,7 @@ public class JobServiceImpl implements JobService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Job>> getUserJobs(long employerID) {
+    public Optional<List<Job>> getUserJobs(Employer employerID) {
         return jobDao.getUserJobs(employerID);
     }
 

@@ -58,16 +58,20 @@ public class JobController {
     ModelAndView verTrabajos(){
         ModelAndView mav = new ModelAndView("publishedJobs");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<List<Job>> jobs = jobService.getUserJobs(principal.getUserID());
-        List<Job> jobList = new ArrayList<>();
-        if (jobs.isPresent()) {
-            for (Job job : jobs.get()) {
-                job.firstWordsToUpper();
-                jobList.add(job);
+        Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
+        if(employer.isPresent()) {
+            Optional<List<Job>> jobs = jobService.getUserJobs(employer.get());
+            List<Job> jobList = new ArrayList<>();
+            if (jobs.isPresent()) {
+                for (Job job : jobs.get()) {
+                    job.firstWordsToUpper();
+                    jobList.add(job);
+                }
             }
+            mav.addObject("JobList", jobList);
+            return mav;
         }
-        mav.addObject("JobList", jobList);
-        return mav;
+        return null;
     }
 
     @RequestMapping(value = "/trabajo/{id}", method = {RequestMethod.GET})
@@ -75,8 +79,11 @@ public class JobController {
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
         if (job.isPresent()) {
-            job.get().employerNameToUpper();
+            System.out.println(job.get().getEmployerId() + "AYUDA");
+            //System.out.println(job.get().getEmployerId().getId() + "JOBB");
+            //String employerName = job.get().employerNameToUpper(job.get().getEmployerId());
             job.get().firstWordsToUpper();
+            //mav.addObject("name", employerName);
             mav.addObject("job", job.get());
         }
         mav.addObject("status", status);
@@ -102,8 +109,6 @@ public class JobController {
                 jobList.add(job);
             }
         }
-
-
         final ModelAndView mav = new ModelAndView("searchJobs");
         mav.addObject("jobList", jobList);
         mav.addObject("page", page);
