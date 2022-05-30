@@ -64,5 +64,10 @@ public class ContactServiceImpl implements ContactService{
         mailingService.sendContactUsMail(name, from, message);
     }
 
+    @Override
+    public Optional<Boolean> existsContact(long employeeId, long employerId) {
+        return contactDao.existsContact(employeeId, employerId);
+    }
+
 
 }

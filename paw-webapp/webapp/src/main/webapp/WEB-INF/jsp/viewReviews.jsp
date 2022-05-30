@@ -65,7 +65,7 @@
           </c:when>
           <c:otherwise>
             <ul role="list" class="divide-y divide-gray-300">
-              <li class = "py-3 sm:py-4">
+              <li class = "py-3 px-3 sm:py-4 bg-violet-300 bg-opacity-25">
                 <c:if test="${myReview != null}">
                   <c:url value="/user/profile-image/${myReview.employerId}" var="userImage" />
                   <div class="flex items-center space-x-4">

@@ -3,13 +3,16 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AccessIsDeniedException;
+import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +36,10 @@ import java.util.Optional;
 public class ViewProfileController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ContactService contactService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
     @Autowired
     private EmployeeService employeeService;
@@ -56,14 +63,11 @@ public class ViewProfileController {
     public ModelAndView userProfile(@PathVariable("userId") final long userId, @RequestParam(value = "status", required = false) String status) {
         final ModelAndView mav = new ModelAndView("viewProfile");
 
-        Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
-        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE")))
             throw new AccessIsDeniedException("Acces is denied");
-
-        User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-
-        mav.addObject("user", user);
 
         employeeService.isEmployee(userId);
 
@@ -74,6 +78,12 @@ public class ViewProfileController {
             mav.addObject("employee", employee.get());
         }
         mav.addObject("status", status);
+
+        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+            HogarUser user = (HogarUser) auth.getPrincipal();
+            Optional<Boolean> exists = contactService.existsContact(userId, user.getUserID());
+            exists.ifPresent(aBoolean -> mav.addObject("contacted", aBoolean));
+        }
         return mav;
     }
 
