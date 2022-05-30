@@ -33,7 +33,7 @@ public class ApplicantJpaDao implements ApplicantDao{
     public Optional<List<Applicant>> getApplicantsByJob(Job jobID) {
         final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where u.jobID =:jobID", Applicant.class);
         query.setParameter("jobID", jobID);
-        return Optional.of(query.getResultList());
+        return Optional.ofNullable(query.getResultList());
     }
 
     @Override

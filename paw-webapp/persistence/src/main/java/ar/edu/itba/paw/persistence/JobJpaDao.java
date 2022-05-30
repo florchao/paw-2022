@@ -32,7 +32,7 @@ public class JobJpaDao implements  JobDao{
 
     @Override
     public Optional<Job> getJobById(long jobId) {
-        return Optional.of(em.find(Job.class, jobId));
+        return Optional.ofNullable(em.find(Job.class, jobId));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class JobJpaDao implements  JobDao{
         }
         stringBuilder.setLength(stringBuilder.length() - 7);
         TypedQuery<Job> filteredQuery = em.createQuery(stringBuilder.toString(), Job.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
-        return Optional.of(filteredQuery.getResultList());
+        return Optional.ofNullable(filteredQuery.getResultList());
     }
 
     @Override

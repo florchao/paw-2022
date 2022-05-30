@@ -18,7 +18,7 @@ public class EmployeeJpaDao implements EmployeeDao{
 
     @Override
     public Optional<Employee> getEmployeeById(long id) {
-        return Optional.of(em.find(Employee.class, id));
+        return Optional.ofNullable(em.find(Employee.class, id));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class EmployeeJpaDao implements EmployeeDao{
         stringBuilder.setLength(stringBuilder.length() - 7);
         TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
         System.out.println("FILTERED: "+ filteredQuery.getResultList());
-        return Optional.of(filteredQuery.getResultList());
+        return Optional.ofNullable(filteredQuery.getResultList());
     }
 
     @Override

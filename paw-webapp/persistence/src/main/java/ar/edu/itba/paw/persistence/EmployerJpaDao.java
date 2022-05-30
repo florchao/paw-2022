@@ -28,6 +28,6 @@ public class EmployerJpaDao implements EmployerDao{
 
     @Override
     public Optional<Employer> getEmployerById(long id) {
-        return Optional.of(em.find(Employer.class, id));
+        return Optional.ofNullable(em.find(Employer.class, id));
     }
 }
