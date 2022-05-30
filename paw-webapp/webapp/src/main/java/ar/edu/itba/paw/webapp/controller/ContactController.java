@@ -46,8 +46,6 @@ public class ContactController {
 
         if (list.isPresent()) {
             for (Contact contact : list.get()) {
-                System.out.println("LISTA CONTACTOS" + contact.getEmployerID().getName());
-                System.out.println("LISTA CONTACTOS" + contact.getEmployeeID().getName());
                 contact.firstWordsToUpper();
             }
         }
