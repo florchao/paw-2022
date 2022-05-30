@@ -79,11 +79,9 @@ public class JobController {
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
         if (job.isPresent()) {
-            System.out.println(job.get().getEmployerId() + "AYUDA");
-            //System.out.println(job.get().getEmployerId().getId() + "JOBB");
-            //String employerName = job.get().employerNameToUpper(job.get().getEmployerId());
+            String employerName = job.get().employerNameToUpper(job.get().getEmployerId());
             job.get().firstWordsToUpper();
-            //mav.addObject("name", employerName);
+            mav.addObject("name", employerName);
             mav.addObject("job", job.get());
         }
         mav.addObject("status", status);

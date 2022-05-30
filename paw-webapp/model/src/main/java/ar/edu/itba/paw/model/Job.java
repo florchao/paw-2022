@@ -8,7 +8,7 @@ import java.util.List;
 @Entity(name = "Job")
 @Table(name = "jobs")
 @Embeddable
-public class Job{
+public class Job implements Serializable {
     @Column(length = 100, nullable = false)
     private String title;
     @Column(length = 100, nullable = false)
@@ -59,17 +59,18 @@ public class Job{
         this.description = description;
     }
 
-    public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description) {
+    public Job(String title, String location, long jobId, Employer employerId,List<String> availabilityArr, long experienceYears, List<String> abilitiesArr, String description) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
-        this.availability = availability;
+        this.employerId = employerId;
         this.experienceYears = experienceYears;
-        this.abilities = abilities;
         this.description = description;
+        this.availabilityArr = availabilityArr;
+        this.abilitiesArr = abilitiesArr;
     }
 
-    public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description, String employerName) {
+    public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
@@ -188,5 +189,19 @@ public class Job{
         }
         finalName.setLength(finalName.length() - 1);
         return finalName.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "title='" + title + '\'' +
+                ", location='" + location + '\'' +
+                ", jobId=" + jobId +
+                ", employerId=" + employerId +
+                ", availability='" + availabilityArr + '\'' +
+                ", experienceYears=" + experienceYears +
+                ", abilities='" + abilitiesArr + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

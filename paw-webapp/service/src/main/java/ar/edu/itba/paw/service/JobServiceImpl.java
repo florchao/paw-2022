@@ -41,9 +41,10 @@ public class JobServiceImpl implements JobService{
         if(!jobDao.getJobById(jobID).isPresent())
             throw new JobNotFoundException("job" + jobID + "does not exists");
         Job job = jobDao.getJobById(jobID).get();
+        System.out.println();
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(job.getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(job.getAbilities().split(",")));
-        Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription());
+        Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), job.getEmployerId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription());
         return Optional.of(aux);
     }
 

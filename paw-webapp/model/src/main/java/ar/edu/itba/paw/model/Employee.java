@@ -9,7 +9,6 @@ import java.util.List;
 @SecondaryTable(name = "users",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
 public class Employee implements Serializable {
-
     @Column(length = 100, nullable = false)
     private String name;
     @Column(length = 100, nullable = false)

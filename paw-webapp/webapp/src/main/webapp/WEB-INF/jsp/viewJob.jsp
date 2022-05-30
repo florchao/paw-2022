@@ -38,7 +38,7 @@
             <div class="grid grid-cols-5 justify-center">
                 <div class="mb-2 col-span-5">
                     <p class="text-2xl font-semibold whitespace-nowrap text-purple-900 text-ellipsis overflow-hidden"><c:out value="${job.title}"/></p>
-                    <p class="text-sm whitespace-nowrap text-ellipsis overflow-hidden"><spring:message code="viewJob.by"/><c:out value="FLOR"/></p>
+                    <p class="text-sm whitespace-nowrap text-ellipsis overflow-hidden"><spring:message code="viewJob.by"/><c:out value="${name}"/></p>
                 </div>
                 <div class="col-span-2">
                     <h1 class="pb-3 pt-3 text-purple-900 font-semibold"><spring:message code="viewJob.location"/></h1>
