@@ -26,6 +26,9 @@ import java.util.Optional;
 
 @Controller
 public class ContactController {
+
+    private final int PAGE_SIZE = 4;
+
     @Autowired
     private UserService userService;
 
@@ -38,16 +41,24 @@ public class ContactController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
     @RequestMapping(value = "/contactos", method = {RequestMethod.GET})
-    public ModelAndView contactsPage() {
+    public ModelAndView contactsPage(@RequestParam(value = "page", required = false) Long page) {
         final ModelAndView mav = new ModelAndView("contacts");
+        if (page == null)
+            page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID());
+        Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
         if (list.isPresent()) {
             for (Contact contact : list.get()) {
                 contact.firstWordsToUpper();
             }
         }
         list.ifPresent(contacts -> mav.addObject("ContactList", contacts));
+        mav.addObject("page", page);
+        int maxPage = contactService.getPageNumber(principal.getUserID(), PAGE_SIZE);
+        System.out.println("mi page number es: "+page);
+        System.out.println("mi maxPage number es: "+maxPage);
+//        mav.addObject("maxPage",contactService.getPageNumber(principal.getUserID(), PAGE_SIZE));
+        mav.addObject("maxPage", maxPage);
         return mav;
     }
 

@@ -10,7 +10,9 @@ import java.util.Optional;
 
 public interface ContactService {
 
-    Optional<List<Contact>> getAllContacts(long id);
+    Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize);
+
+    int getPageNumber(long id, int pageSize);
 
     Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws AlreadyExistsException;
 
