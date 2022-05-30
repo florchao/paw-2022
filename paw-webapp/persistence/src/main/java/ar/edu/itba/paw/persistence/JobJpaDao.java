@@ -32,9 +32,7 @@ public class JobJpaDao implements  JobDao{
 
     @Override
     public Optional<Job> getJobById(long jobId) {
-        Optional<Job> job =  Optional.of(em.find(Job.class, jobId));
-        System.out.println("JOB EN JPA "+ job.get());
-        return job;
+        return Optional.of(em.find(Job.class, jobId));
     }
 
     @Override

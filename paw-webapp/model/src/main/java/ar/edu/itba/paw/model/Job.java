@@ -190,18 +190,4 @@ public class Job implements Serializable {
         finalName.setLength(finalName.length() - 1);
         return finalName.toString();
     }
-
-    @Override
-    public String toString() {
-        return "Job{" +
-                "title='" + title + '\'' +
-                ", location='" + location + '\'' +
-                ", jobId=" + jobId +
-                ", employerId=" + employerId +
-                ", availability='" + availabilityArr + '\'' +
-                ", experienceYears=" + experienceYears +
-                ", abilities='" + abilitiesArr + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

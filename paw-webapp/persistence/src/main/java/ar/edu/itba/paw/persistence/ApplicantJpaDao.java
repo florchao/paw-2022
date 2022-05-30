@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Applicant;
-import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Job;
 import org.springframework.stereotype.Repository;
@@ -38,16 +37,8 @@ public class ApplicantJpaDao implements ApplicantDao{
     }
 
     @Override
-    public Optional<Applicant> getInfoMail(Job jobID) {
-        final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u join Employer e where u.jobID =:jobID and e.id=:employerID", Applicant.class);
-        query.setParameter("jobID", jobID);
-        query.setParameter("employerID", jobID.getEmployerId().getId());
-        return Optional.of(query.getSingleResult());
-    }
-
-    @Override
-    public Optional<Boolean> existsApplicant(long employeeId, long jobId) {
-        TypedQuery<Applicant> contactTypedQuery = em.createQuery("SELECT c FROM Applicant c WHERE c.employeeID = :employee AND c.jobID = :jobID", Applicant.class);
+    public Optional<Boolean> existsApplicant(Employee employeeId, Job jobId) {
+        TypedQuery<Applicant> contactTypedQuery = em.createQuery("SELECT c FROM Applicant c WHERE c.employeeID =:employee AND c.jobID = :jobID", Applicant.class);
         contactTypedQuery.setParameter("jobID", jobId);
         contactTypedQuery.setParameter("employee", employeeId);
         return Optional.of(!contactTypedQuery.getResultList().isEmpty());
