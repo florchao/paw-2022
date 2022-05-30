@@ -65,8 +65,8 @@
           </c:when>
           <c:otherwise>
             <ul role="list" class="divide-y divide-gray-300">
-              <li class = "py-3 px-3 sm:py-4 bg-violet-300 bg-opacity-25">
-                <c:if test="${myReview != null}">
+              <c:if test="${myReview != null}">
+                <li class = "py-3 px-3 sm:py-4 bg-violet-300 bg-opacity-25">
                   <c:url value="/user/profile-image/${myReview.employerId}" var="userImage" />
                   <div class="flex items-center space-x-4">
                     <div class="flex-shrink-0 self-start">
@@ -81,8 +81,8 @@
                       </p>
                     </div>
                   </div>
-                </c:if>
-              </li>
+                </li>
+              </c:if>
               <c:forEach var="review" items="${ReviewList}">
                 <c:url value="/user/profile-image/${review.employerId}" var="image" />
                 <li class="py-3 sm:py-4">

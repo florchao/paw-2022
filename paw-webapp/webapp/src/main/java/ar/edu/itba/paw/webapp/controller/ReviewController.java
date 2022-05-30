@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,10 @@ public class ReviewController {
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser principal = (HogarUser) auth.getPrincipal();
             Optional<Review> myReview = reviewService.getMyReview(id, principal.getUserID());
-            myReview.ifPresent(review -> mav.addObject("myReview", review));
+            if(myReview.isPresent()){
+                myReview.get().firstWordsToUpper();
+                mav.addObject("myReview", myReview.get());
+            }
             reviews = reviewService.getAllReviews(id, principal.getUserID(), page, PAGE_SIZE);
             maxPage = reviewService.getPageNumber(id, principal.getUserID(), PAGE_SIZE);
         } else {
@@ -69,7 +73,7 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})
-    ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, final BindingResult errors, @PathVariable final long id){
+    ModelAndView addReview(@Valid @ModelAttribute("reviewForm") final ReviewForm reviewForm, final BindingResult errors, @PathVariable final long id){
         if(errors.hasErrors())
             return reviews(reviewForm, id, null);
         //Optional<User> user = userService.getUserById(id);

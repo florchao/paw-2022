@@ -130,7 +130,7 @@
                         <form:checkbox path="availability" value="Con cama"/>
                     </div>
                 </div>
-                <button type="submit" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Filtrar</button>
+                <button type="submit" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="searchJobs.filter"></spring:message></button>
             </div>
         </div>
         <div class="col-span-3 col-start-2">
@@ -144,7 +144,7 @@
                         <p class="text-3xl font-semibold text-purple-700"><spring:message code="searchJobs.noAvailableJobs"/></p>
                     </div>
                     <div>
-                        <input type="button" class="font-semibold text-lg text-purple-700" onclick="document.getElementById('resetButton').click()" value="<spring:message code="searchJobs.callToAction"/>">
+                        <input type="button" class="cursor-pointer mt-4 ml-5 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-yellow-300 hover:bg-yellow-200 border font-small rounded-lg text-sm px-5 py-2.5" onclick="document.getElementById('resetButton').click()" value="<spring:message code="searchJobs.resetFilters"/>">
                     </div>
                 </div>
             </c:when>
