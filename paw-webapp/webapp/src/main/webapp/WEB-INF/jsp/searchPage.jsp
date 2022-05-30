@@ -38,7 +38,7 @@
                 <div class="col-start-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-fit" >
                     <c:url value="/buscarEmpleadas" var="getReturnPath"/>
                     <form method="get" action="${getReturnPath}" id="returnForm">
-                        <button style="color: rebeccapurple" class="font-semibold" form="returnForm" id="resetButton">Reset filters</button>
+                        <button style="color: rebeccapurple" class="font-semibold" form="returnForm" id="resetButton"><spring:message code="searchJobs.resetFilters"/></button>
                     </form>
                     <c:url value="/filterEmployees" var="postPath"/>
                     <form:form modelAttribute="filterBy" action="${postPath}" method="get" pageEncoding="UTF-8">
@@ -144,7 +144,7 @@
                                     <p class="text-3xl font-semibold text-purple-700"><spring:message code="searchPage.noEmployees"/></p>
                                 </div>
                                 <div>
-                                    <input type="button" class="font-semibold text-lg text-purple-700" onclick="document.getElementById('resetButton').click()" value="Return">
+                                    <input type="button" class="font-semibold text-lg text-purple-700" onclick="document.getElementById('resetButton').click()" value="<spring:message code="searchPage.callToAction"/>">
                                 </div>
                             </div>
                         </c:when>

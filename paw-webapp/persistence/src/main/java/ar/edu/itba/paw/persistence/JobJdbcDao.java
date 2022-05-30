@@ -31,6 +31,8 @@ public class JobJdbcDao implements JobDao{
                     rs.getString("availability"), rs.getLong("experienceYears"),
                     rs.getString("abilities"), rs.getString("description"), rs.getString("name"));
 
+    private static final RowMapper<Boolean> JOB_ALREADY_APPLIED_ROW_MAPPER = (rs, rowNum) -> rs.getBoolean("exists");
+
     @Autowired
     public JobJdbcDao(final DataSource ds){
         jdbcTemplate = new JdbcTemplate(ds);
@@ -64,6 +66,12 @@ public class JobJdbcDao implements JobDao{
         List<Job> query = jdbcTemplate.query("SELECT title, location, jobid, availability, experienceYears, " +
                         "abilities, description, name  FROM jobs NATURAL JOIN employer WHERE jobID = ?",
                 new Object[] {jobId}, JOB_ROW_MAPPER);
+        return query.stream().findFirst();
+    }
+
+    @Override
+    public Optional<Boolean> alreadyApplied(long jobId, long employeeId) {
+        List<Boolean> query = jdbcTemplate.query("SELECT EXISTS(SELECT * FROM applicants WHERE jobid = ? AND employeeid = ?)", new Object[] {jobId, employeeId}, JOB_ALREADY_APPLIED_ROW_MAPPER);
         return query.stream().findFirst();
     }
 
