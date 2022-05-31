@@ -1,41 +1,55 @@
 package ar.edu.itba.paw.model;
 
+import javax.persistence.*;
+
+@Entity(name = "Review")
+@Table(name = "review")
 public class Review {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_reviewid_seq")
+    @SequenceGenerator(name = "review_reviewid_seq", sequenceName = "review_reviewid_seq", allocationSize = 1)
+    @Column(name = "reviewID", nullable = false)
     public long reviewId;
-    public long employeeId;
-    public long employerId;
+
+    @ManyToOne
+    @Embedded
+    @JoinColumn(name = "employeeID", nullable = false)
+    public Employee employeeId;
+
+    @ManyToOne
+    @Embedded
+    @JoinColumn(name = "employerID", nullable = false)
+    public Employer employerId;
+
+    @Column(name = "review", nullable = false)
     public String review;
 
-    public String employerName;
-
-    public Review(long reviewId, long employeeId, long employerId, String review) {
+    public Review(long reviewId, Employee employeeId, Employer employerId, String review) {
         this.reviewId = reviewId;
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
     }
 
-    public Review(long reviewId, long employeeId, long employerId, String review, String employerName) {
-        this.reviewId = reviewId;
+    public Review(Employee employeeId, Employer employerId, String review) {
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
-        this.employerName = employerName;
     }
 
-    public long getEmployeeId() {
+    public Employee getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(long employeeId) {
+    public void setEmployeeId(Employee employeeId) {
         this.employeeId = employeeId;
     }
 
-    public long getEmployerId() {
+    public Employer getEmployerId() {
         return employerId;
     }
 
-    public void setEmployerId(long employerId) {
+    public void setEmployerId(Employer employerId) {
         this.employerId = employerId;
     }
 
@@ -55,21 +69,12 @@ public class Review {
         this.reviewId = reviewId;
     }
 
-    public String getEmployerName() {
-        return employerName;
-    }
-
-    public Review firstWordsToUpper() {
+    public String firstWordsToUpper() {
         StringBuilder finalName = new StringBuilder();
-        for (String word : getEmployerName().split(" ")) {
+        for (String word : employerId.getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        setEmployerName(finalName.toString());
-        return this;
-    }
-
-    public void setEmployerName(String employerName) {
-        this.employerName = employerName;
+        return finalName.toString();
     }
 }
