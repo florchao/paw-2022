@@ -29,8 +29,13 @@ public class ApplicantJpaDao implements ApplicantDao{
         return null;
     }
 
+    //TODO hay que adaptarla
     @Override
-    public Optional<List<Applicant>> getApplicantsByJob(Job jobID) {
+    public Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize) {
+        //    List<Applicant> query = jdbcTemplate.query("SELECT employeeid, jobid, name, email FROM applicants NATURAL " +
+        //                        "JOIN employee JOIN users ON employee.employeeid = users.userid WHERE jobid = ? LIMIT ? OFFSET ?",
+        //                new Object[] {jobID,pageSize, page*pageSize}, APPLI_LIST_ROW_MAPPER);
+        //        return Optional.of(query);
         final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where u.jobID =:jobID", Applicant.class);
         query.setParameter("jobID", jobID);
         return Optional.ofNullable(query.getResultList());
@@ -42,6 +47,11 @@ public class ApplicantJpaDao implements ApplicantDao{
         contactTypedQuery.setParameter("jobID", jobId);
         contactTypedQuery.setParameter("employee", employeeId);
         return Optional.of(!contactTypedQuery.getResultList().isEmpty());
+    }
 
+    //TODO hay que hacerla
+    @Override
+    public int getPageNumber(long jobID, int pageSize) {
+        return 0;
     }
 }

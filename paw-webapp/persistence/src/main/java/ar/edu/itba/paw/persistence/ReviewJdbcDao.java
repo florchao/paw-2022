@@ -16,6 +16,7 @@ import java.util.Optional;
 @Repository
 public class ReviewJdbcDao implements ReviewDao{
 
+    //todo hay que pasarla
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 

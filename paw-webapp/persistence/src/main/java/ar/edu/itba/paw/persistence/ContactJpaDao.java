@@ -16,8 +16,11 @@ public class ContactJpaDao implements ContactDao{
     @PersistenceContext
     private EntityManager em;
 
+    //todo hay que actualizarla
     @Override
-    public Optional<List<Contact>> getAllContacts(Employee userId) {
+    public Optional<List<Contact>> getAllContacts(Employee userId,  Long page, int pageSize) {
+        //List<Contact> query = jdbcTemplate.query("SELECT employeeid, name, email, message, phone, created, contact.employerId FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ? ORDER BY created DESC LIMIT ? OFFSET ?", new Object[] {id, pageSize, page*pageSize}, CONTACT_NAME_ROW_MAPPER);
+        //        return Optional.of(query);
         final TypedQuery<Contact> query = em.createQuery("select u from Contact u where u.employeeID =:userId", Contact.class);
         query.setParameter("userId", userId);
         return Optional.ofNullable(query.getResultList());
@@ -34,6 +37,14 @@ public class ContactJpaDao implements ContactDao{
 
         }
         return null;
+    }
+
+    //todo falta implementarla
+    @Override
+    public int getPageNumber(long id, int pageSize) {
+        //String query = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ?", new Object[] {id}, String.class);
+        //return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
+        return 0;
     }
 
     @Override

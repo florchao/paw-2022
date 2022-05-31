@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface ApplicantDao {
     Applicant create(long jobID, long employeeID);
-    Optional<List<Applicant>> getApplicantsByJob(Job jobID);
+    Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize);
     Optional<Boolean> existsApplicant(Employee employeeId, Job jobId);
-    Optional<List<Applicant>> getApplicantsByJob(long jobID, Long page, int pageSize);
     int getPageNumber(long jobID, int pageSize);
