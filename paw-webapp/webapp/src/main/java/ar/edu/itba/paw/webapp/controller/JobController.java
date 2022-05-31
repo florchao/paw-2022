@@ -11,6 +11,7 @@ import ar.edu.itba.paw.webapp.form.JobForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -84,6 +85,11 @@ public class JobController {
             mav.addObject("name", employerName);
             mav.addObject("job", job.get());
         }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        HogarUser principal = (HogarUser) auth.getPrincipal();
+        Optional<Boolean> exists = jobService.alreadyApplied(id, principal.getUserID());
+        exists.ifPresent(aBoolean -> mav.addObject("alreadyApplied", aBoolean));
+        System.out.println(exists.get());
         mav.addObject("status", status);
         return mav;
     }
