@@ -1,11 +1,12 @@
 package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "Review")
 @Table(name = "review")
 @Embeddable
-public class Review {
+public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_reviewid_seq")
     @SequenceGenerator(name = "review_reviewid_seq", sequenceName = "review_reviewid_seq", allocationSize = 1)
@@ -19,7 +20,7 @@ public class Review {
 
     @ManyToOne
     @Embedded
-    @JoinColumn(name = "employerID", nullable = false)
+    @JoinColumn(name = "employerID", nullable = false, referencedColumnName = "employerID")
     public Employer employerId;
 
     @Column(name = "review", nullable = false)
