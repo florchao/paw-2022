@@ -44,17 +44,18 @@ public class ReviewController {
         int maxPage;
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser principal = (HogarUser) auth.getPrincipal();
-            Optional<Review> myReview = reviewService.getMyReview(id, principal.getUserID());
+            Optional<Review> myReview = reviewService.getMyReview(principal.getUserID(),id);
             myReview.ifPresent(review -> mav.addObject("myReview", review));
-            reviews = reviewService.getAllReviews(id, principal.getUserID(), page, PAGE_SIZE);
-            maxPage = reviewService.getPageNumber(id, principal.getUserID(), PAGE_SIZE);
+            reviews = reviewService.getAllReviews(principal.getUserID(), id , page, PAGE_SIZE);
+            maxPage = reviewService.getPageNumber(principal.getUserID(), id, PAGE_SIZE);
         } else {
             maxPage = reviewService.getPageNumber(id, null, PAGE_SIZE);
             reviews = reviewService.getAllReviews(id, null, page, PAGE_SIZE);
         }
         List<Review> reviewsWithUpperCase = null;
         if (reviews.isPresent()) {
-            reviewsWithUpperCase = reviews.get().stream().map(Review::firstWordsToUpper).collect(Collectors.toList());
+            //TODO devuelve un string
+            //reviewsWithUpperCase = reviews.get().stream().map(Review::firstWordsToUpper).collect(Collectors.toList());
         }
         mav.addObject("ReviewList", reviewsWithUpperCase);
         Optional<Employee> employee = employeeService.getEmployeeById(id);

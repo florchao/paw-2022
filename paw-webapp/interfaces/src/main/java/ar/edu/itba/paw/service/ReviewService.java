@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface ReviewService {
     Review create(long employeeId, long employerId, String review);
-    Optional<List<Review>> getAllReviews(Employee employeeId, Long id, Long page, int pageSize);
+    Optional<List<Review>> getAllReviews(long employeeId, Long id, Long page, int pageSize);
 
-    int getPageNumber(Employee employeeId, Long id, int pageSize);
+    int getPageNumber(long employeeId, Long id, int pageSize);
 
-    Optional<Review> getMyReview(Employee employeeId, long id);
+    Optional<Review> getMyReview(long employeeId, long id);
 }

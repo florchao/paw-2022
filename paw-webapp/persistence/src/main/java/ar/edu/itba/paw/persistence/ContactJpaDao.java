@@ -19,6 +19,7 @@ public class ContactJpaDao implements ContactDao{
 
     //todo hay que actualizarla
     @Override
+    //todo update
     public Optional<List<Contact>> getAllContacts(Employee userId,  Long page, int pageSize) {
         //List<Contact> query = jdbcTemplate.query("SELECT employeeid, name, email, message, phone, created, contact.employerId FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ? ORDER BY created DESC LIMIT ? OFFSET ?", new Object[] {id, pageSize, page*pageSize}, CONTACT_NAME_ROW_MAPPER);
         //        return Optional.of(query);

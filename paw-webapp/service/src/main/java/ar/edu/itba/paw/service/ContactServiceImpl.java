@@ -34,14 +34,16 @@ public class ContactServiceImpl implements ContactService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Contact>> getAllContacts(long id) {
+    public Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize) {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
-        return employee.map(value -> contactDao.getAllContacts(value)).orElse(null);
+        return employee.map(value -> contactDao.getAllContacts(value, page, pageSize)).orElse(null);
     }
+
 
     @Override
     public int getPageNumber(long id, int pageSize) {
         return contactDao.getPageNumber(id, pageSize);
+    }
 
 
     @Transactional

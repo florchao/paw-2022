@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity(name = "Review")
 @Table(name = "review")
+@Embeddable
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_reviewid_seq")
@@ -13,7 +14,7 @@ public class Review {
 
     @ManyToOne
     @Embedded
-    @JoinColumn(name = "employeeID", nullable = false)
+    @JoinColumn(name = "employeeID", nullable = false, referencedColumnName = "employeeID")
     public Employee employeeId;
 
     @ManyToOne
