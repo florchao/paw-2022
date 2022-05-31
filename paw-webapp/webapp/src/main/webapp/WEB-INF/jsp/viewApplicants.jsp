@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="<c:url value="/public/javascript/utils.js"/>"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="applicants.title"/> ${title}</title>
 </head>
@@ -69,6 +70,33 @@
                                     </a>
                                 </li>
                             </c:forEach>
+                            <c:url value="/aplicantes/${jobID}" var="getPath"/>
+                            <form:form method="get" action="${getPath}">
+                                <c:if test="${maxPage > 0 && page + 1 <= maxPage}">
+                                <div class="flex flex-row justify-center mt-4">
+                                    <c:choose>
+                                        <c:when test="${page < 1}">
+                                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div class="bg--300 w-16 flex justify-center">
+                                        <h1 class="text-purple-900">${page + 1} of ${maxPage}</h1>
+                                    </div>
+                                    <c:choose>
+                                        <c:when test="${page + 1 == maxPage}">
+                                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    </c:if>
+                                </div>
+                                <input style="visibility: hidden" type="number" name="page" id="pageNumber"/>
+                            </form:form>
                         </ul>
                     </c:otherwise>
                 </c:choose>

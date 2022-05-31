@@ -44,10 +44,14 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Applicant>> getApplicantsByJob(long jobID) {
+    public Optional<List<Applicant>> getApplicantsByJob(long jobID, Long page, int pageSize) {
         Optional<Job> job = jobDao.getJobById(jobID);
         return job.map(value -> applicantDao.getApplicantsByJob(value)).orElse(null);
     }
+
+    @Override
+    public int getPageNumber(long jobID, int pageSize) {
+        return applicantDao.getPageNumber(jobID, pageSize);
 
     @Transactional
     @Override

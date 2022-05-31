@@ -39,6 +39,11 @@ public class ContactServiceImpl implements ContactService{
         return employee.map(value -> contactDao.getAllContacts(value)).orElse(null);
     }
 
+    @Override
+    public int getPageNumber(long id, int pageSize) {
+        return contactDao.getPageNumber(id, pageSize);
+
+
     @Transactional
     @Override
     public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
@@ -66,6 +71,11 @@ public class ContactServiceImpl implements ContactService{
     @Override
     public void contactUS(String message, String from, String name) {
         mailingService.sendContactUsMail(name, from, message);
+    }
+
+    @Override
+    public Optional<Boolean> existsContact(long employeeId, long employerId) {
+        return contactDao.existsContact(employeeId, employerId);
     }
 
 

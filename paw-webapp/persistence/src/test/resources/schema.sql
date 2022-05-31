@@ -65,3 +65,11 @@ create table if not exists applicants(
     jobID INT NOT NULL,
     PRIMARY KEY(employeeID, jobID)
 );
+
+create table if not exists review(
+    reviewID INTEGER IDENTITY PRIMARY KEY,
+    employeeId INT NOT NULL,
+    employerId INT NOT NULL,
+    review varchar(1000),
+    unique (employeeId, employerId)
+    );
