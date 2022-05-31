@@ -36,6 +36,11 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
+    public Optional<Boolean> alreadyApplied(long jobId, long employeeId) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<List<Job>> getAllJobs(long pageSize) {
         final TypedQuery<Job> jobList = em.createQuery("select e from Job e", Job.class);
         return Optional.ofNullable(jobList.setMaxResults((int)pageSize).getResultList());
