@@ -53,7 +53,7 @@
                             <c:forEach var="applicant" items="${ApplicantList}">
                                 <c:url value="/user/profile-image/${applicant.employeeID}" var="image" />
                                 <li class="py-3 sm:py-4 hover:bg-gray-300 rounded">
-                                    <a href="<c:url value="/verPerfil/${applicant.employeeID}"/>">
+                                    <a href="<c:url value="/verPerfil/${applicant.employeeID.id.id}"/>">
                                         <div class="flex items-center space-x-4">
                                             <div class="flex-shrink-0">
                                                 <img class="w-8 h-8 rounded-full" src="${image}" alt="Employee Photo" onerror="this.src = '<c:url value="/public/user.png"/>'"/>
