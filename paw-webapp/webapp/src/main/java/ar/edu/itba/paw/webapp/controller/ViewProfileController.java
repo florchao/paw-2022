@@ -39,13 +39,8 @@ import java.util.Optional;
 public class ViewProfileController {
     @Autowired
     private UserService userService;
-
     @Autowired
     private ContactService contactService;
-
-    @Autowired
-    private ApplicantService applicantService;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
     @Autowired
     private EmployeeService employeeService;
@@ -61,13 +56,6 @@ public class ViewProfileController {
             employee.ifPresent(Employee::firstWordsToUpper);
             employee.ifPresent(value -> mav.addObject("employee", value));
             mav.addObject("userId", user.get().getId());
-            Optional<List<Job>> jobs = applicantService.getJobsByApplicant(user.get().getId());
-            System.out.println("TRABAJOS");
-            for (Job job: jobs.get()) {
-                System.out.print(job.getTitle());
-                System.out.println("; ");
-                System.out.println();
-            }
         }
         return mav;
     }
