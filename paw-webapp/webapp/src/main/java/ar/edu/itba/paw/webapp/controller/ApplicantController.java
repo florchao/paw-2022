@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Applicant;
+import ar.edu.itba.paw.model.Contact;
+import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.service.ApplicantService;
@@ -78,4 +80,22 @@ public class ApplicantController {
         return new ModelAndView("redirect:/aplicantes/" + jobId);
     }
 
+    @RequestMapping(value="/trabajosAplicados", method = {RequestMethod.GET})
+    ModelAndView appliedTo(@RequestParam(value = "page", required = false) Long page){
+        ModelAndView mav = new ModelAndView("appliedJobs");
+        if (page == null)
+            page = 0L;
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<List<Job>> list = applicantService.getJobsByApplicant(principal.getUserID());
+
+        if (list.isPresent()) {
+            for (Job job : list.get()) {
+                job.firstWordsToUpper();
+            }
+        }
+
+        list.ifPresent(jobs -> mav.addObject("JobsList", jobs));
+
+        return mav;
+    }
 }

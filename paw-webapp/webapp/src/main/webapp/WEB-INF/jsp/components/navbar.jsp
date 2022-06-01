@@ -83,6 +83,18 @@
                     </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
+                    <div class = "flex items-center justify-items-end">
+                        <c:choose>
+                            <c:when test="${param.currentUrl.equals('trabajosAplicados')}">
+                                <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.appliedJobs"/></p>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<c:url value="/trabajosAplicados"/>" class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.appliedJobs"/></a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </sec:authorize>
+                <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
                 <div class = "flex items-center justify-items-end">
                         <c:choose>
                             <c:when test="${param.currentUrl.equals('contactos')}">
