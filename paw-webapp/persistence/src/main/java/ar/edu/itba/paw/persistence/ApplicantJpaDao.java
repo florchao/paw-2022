@@ -61,4 +61,17 @@ public class ApplicantJpaDao implements ApplicantDao{
     public int getPageNumber(long jobID, int pageSize) {
         return 0;
     }
+
+    @Override
+    public int changeStatus(int status, Employee employee, Job job) {
+        TypedQuery<Applicant> contactTypedQuery = em.createQuery("SELECT c FROM Applicant c WHERE c.employeeID =:employee AND c.jobID = :job", Applicant.class);
+        contactTypedQuery.setParameter("job", job);
+        contactTypedQuery.setParameter("employee", employee);
+        Applicant applicant = contactTypedQuery.getSingleResult();
+        System.out.println("en change status dao");
+        System.out.println(applicant.getEmployeeID().getName());
+        System.out.println(applicant.getJobID().getTitle());
+        applicant.setStatus(status);
+        return applicant.getStatus();
+    }
 }

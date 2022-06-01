@@ -14,4 +14,6 @@ public interface ApplicantService {
     int getPageNumber(long jobID, int pageSize);
     void apply(long jobID, User user);
     Optional<List<Job>> getJobsByApplicant(long employeeID);
+
+    int changeStatus(int status, long employeeId, long jobId);
 }

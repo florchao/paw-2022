@@ -70,6 +70,7 @@ public class ContactController {
         employeeService.isEmployee(id);
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         if(employee.isPresent()){
+            employee.get().firstWordsToUpper();
             mav.addObject("name", employee.get().getName());
         }
         return mav;

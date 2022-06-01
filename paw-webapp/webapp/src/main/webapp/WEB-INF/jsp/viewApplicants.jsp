@@ -52,8 +52,10 @@
                         <ul role="list" class="divide-y divide-gray-300">
                             <c:forEach var="applicant" items="${ApplicantList}">
                                 <c:url value="/user/profile-image/${applicant.employeeID}" var="image" />
+                                <c:url value="/changeStatus/${jobID}/${applicant.employeeID.id.id}/1" var="accept"/>
+                                <c:url value="/changeStatus/${jobID}/${applicant.employeeID.id.id}/2" var="refuse"/>
                                 <li class="py-3 sm:py-4 hover:bg-gray-300 rounded">
-                                    <a href="<c:url value="/verPerfil/${applicant.employeeID}"/>">
+                                    <a href="<c:url value="/verPerfil/${applicant.employeeID.id.id}"/>">
                                         <div class="flex items-center space-x-4">
                                             <div class="flex-shrink-0">
                                                 <img class="w-8 h-8 rounded-full" src="${image}" alt="Employee Photo" onerror="this.src = '<c:url value="/public/user.png"/>'"/>
@@ -63,10 +65,16 @@
                                                     <c:out value="${applicant.employeeID.name}"/>
                                                 </p>
                                                 <p class="text-sm text-gray-500 truncate">
-                                                    <c:out value="${applicant.employeeID.name}"/>
+                                                    <c:out value="${applicant.employeeID.id.email}"/>
                                                 </p>
                                             </div>
                                         </div>
+                                        <form:form action="${accept}" method="post">
+                                            <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Aceptar</button>
+                                        </form:form>
+                                        <form:form action="${refuse}" method="post">
+                                            <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Rechazar</button>
+                                        </form:form>
                                     </a>
                                 </li>
                             </c:forEach>
