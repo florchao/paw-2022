@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
@@ -64,14 +65,14 @@ public class ApplicantJpaDao implements ApplicantDao{
 
     @Override
     public int changeStatus(int status, Employee employee, Job job) {
-        TypedQuery<Applicant> contactTypedQuery = em.createQuery("SELECT c FROM Applicant c WHERE c.employeeID =:employee AND c.jobID = :job", Applicant.class);
-        contactTypedQuery.setParameter("job", job);
-        contactTypedQuery.setParameter("employee", employee);
-        Applicant applicant = contactTypedQuery.getSingleResult();
-        System.out.println("en change status dao");
-        System.out.println(applicant.getEmployeeID().getName());
-        System.out.println(applicant.getJobID().getTitle());
-        applicant.setStatus(status);
-        return applicant.getStatus();
+        System.out.println("CHANGE DAO");
+        System.out.println(employee.getId());
+        System.out.println(job.getJobId());
+        Query contactQuery = em.createQuery("UPDATE Applicant a SET a.status =:newStatus WHERE a.employeeID =:employee AND a.jobID = :job");
+        contactQuery.setParameter("job", job);
+        contactQuery.setParameter("employee", employee);
+        contactQuery.setParameter("newStatus", status);
+        contactQuery.executeUpdate();
+        return status;
     }
 }

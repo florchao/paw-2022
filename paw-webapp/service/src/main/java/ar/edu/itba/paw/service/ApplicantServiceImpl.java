@@ -73,6 +73,7 @@ public class ApplicantServiceImpl implements ApplicantService{
         }
     }
 
+    @Transactional
     @Override
     public int changeStatus(int status, long employeeId, long jobId) {
         Optional<Job> job = jobDao.getJobById(jobId);
