@@ -69,4 +69,13 @@ public class ApplicantController {
         return mav;
     }
 
+    @RequestMapping(value = "/changeStatus/{jobId}/{employeeId}/{status}", method = {RequestMethod.POST})
+    ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status){
+        System.out.println("STATUS");
+        int aaaaa = applicantService.changeStatus(status, employeeId, jobId);
+        System.out.print("AFTER: ");
+        System.out.println(aaaaa);
+        return new ModelAndView("redirect:/aplicantes/" + jobId);
+    }
+
 }

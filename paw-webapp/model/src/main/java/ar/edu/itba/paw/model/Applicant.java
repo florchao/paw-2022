@@ -16,6 +16,9 @@ public class Applicant implements Serializable {
     @JoinColumn(name = "employeeID", nullable = false, referencedColumnName = "employeeID")
     private Employee employeeID;
 
+    @Column(nullable = false)
+    private int status;
+
     public Applicant(){
     }
 
@@ -26,6 +29,7 @@ public class Applicant implements Serializable {
     public Applicant(Job jobID, Employee employeeID) {
         this.jobID = jobID;
         this.employeeID = employeeID;
+        this.status = 0;
     }
 
     public Job getJobID() {
@@ -42,5 +46,13 @@ public class Applicant implements Serializable {
 
     public void setEmployeeID(Employee employeeID) {
         this.employeeID = employeeID;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

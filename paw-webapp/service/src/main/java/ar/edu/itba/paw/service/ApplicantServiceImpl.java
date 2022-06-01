@@ -72,4 +72,14 @@ public class ApplicantServiceImpl implements ApplicantService{
             create(jobID, user.getId());
         }
     }
+
+    @Override
+    public int changeStatus(int status, long employeeId, long jobId) {
+        Optional<Job> job = jobDao.getJobById(jobId);
+        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
+        System.out.println("en change status service");
+        if(job.isPresent() && employee.isPresent())
+            return applicantDao.changeStatus(status, employee.get(), job.get());
+        return -1;
+    }
 }

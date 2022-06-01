@@ -52,6 +52,8 @@
                         <ul role="list" class="divide-y divide-gray-300">
                             <c:forEach var="applicant" items="${ApplicantList}">
                                 <c:url value="/user/profile-image/${applicant.employeeID}" var="image" />
+                                <c:url value="/changeStatus/${jobID}/${applicant.employeeID.id.id}/1" var="accept"/>
+                                <c:url value="/changeStatus/${jobID}/${applicant.employeeID.id.id}/2" var="refuse"/>
                                 <li class="py-3 sm:py-4 hover:bg-gray-300 rounded">
                                     <a href="<c:url value="/verPerfil/${applicant.employeeID.id.id}"/>">
                                         <div class="flex items-center space-x-4">
@@ -67,6 +69,12 @@
                                                 </p>
                                             </div>
                                         </div>
+                                        <form:form action="${accept}" method="post">
+                                            <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Aceptar</button>
+                                        </form:form>
+                                        <form:form action="${refuse}" method="post">
+                                            <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Rechazar</button>
+                                        </form:form>
                                     </a>
                                 </li>
                             </c:forEach>

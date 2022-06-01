@@ -14,6 +14,8 @@ public interface ApplicantDao {
 
     Optional<List<Job>> getJobsByApplicant(Employee employeeID);
 
+    int changeStatus(int status, Employee employee, Job job);
+
     Optional<Boolean> existsApplicant(Employee employeeId, Job jobId);
 
     int getPageNumber(long jobID, int pageSize);
