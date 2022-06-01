@@ -11,20 +11,20 @@ public class Review implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_reviewid_seq")
     @SequenceGenerator(name = "review_reviewid_seq", sequenceName = "review_reviewid_seq", allocationSize = 1)
     @Column(name = "reviewID", nullable = false)
-    public long reviewId;
+    private long reviewId;
 
     @ManyToOne
     @Embedded
     @JoinColumn(name = "employeeID", nullable = false, referencedColumnName = "employeeID")
-    public Employee employeeId;
+    private Employee employeeId;
 
     @ManyToOne
     @Embedded
     @JoinColumn(name = "employerID", nullable = false, referencedColumnName = "employerID")
-    public Employer employerId;
+    private Employer employerId;
 
     @Column(name = "review", nullable = false)
-    public String review;
+    private String review;
 
     public Review(long reviewId, Employee employeeId, Employer employerId, String review) {
         this.reviewId = reviewId;
