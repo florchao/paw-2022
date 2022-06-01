@@ -44,8 +44,14 @@ public class ContactJpaDao implements ContactDao{
     //todo falta implementarla
     @Override
     public int getPageNumber(long id, int pageSize) {
-        //String query = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ?", new Object[] {id}, String.class);
-        //return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
+//        String query = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM contact JOIN users ON employerId=userId JOIN employer ON contact.employerID = employer.employerID WHERE employeeID = ?", new Object[] {id}, String.class);
+//        return (int) Math.ceil((float) Integer.parseInt(query) / pageSize);
+        StringBuilder queryToBuild = new StringBuilder();
+//        queryToBuild.append("SELECT count(*) FROM Contact c JOIN User u ON u.id.userId=c.employerID JOIN Employer e ON c.employerID=e.id WHERE c.employeeID = ");
+        queryToBuild.append("SELECT count(*) FROM Contact c, User u, Employer e INNER JOIN User u JOIN Employer e WHERE c.employeeID = ");
+        queryToBuild.append(id);
+        TypedQuery<Long> filteredQuery = em.createQuery(queryToBuild.toString(), Long.class);
+//        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
         return 0;
     }
 
