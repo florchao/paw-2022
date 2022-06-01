@@ -63,7 +63,7 @@
                                                     <c:out value="${applicant.employeeID.name}"/>
                                                 </p>
                                                 <p class="text-sm text-gray-500 truncate">
-                                                    <c:out value="${applicant.employeeID.name}"/>
+                                                    <c:out value="${applicant.employeeID.id.email}"/>
                                                 </p>
                                             </div>
                                         </div>
