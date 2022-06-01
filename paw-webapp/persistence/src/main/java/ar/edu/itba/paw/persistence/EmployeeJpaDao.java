@@ -81,7 +81,6 @@ public class EmployeeJpaDao implements EmployeeDao{
             stringBuilder.append("e.location like '%").append(location.toLowerCase()).append("%' ");
             stringBuilder.append(" and   ");
         }
-        // TODO Aca iria lo mismo pero para experienceList
         for (String av : availability) {
             stringBuilder.append("e.availability like '%").append(av).append("%'");
             stringBuilder.append(" and   ");
