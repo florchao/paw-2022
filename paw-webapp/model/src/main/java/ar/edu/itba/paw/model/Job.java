@@ -7,8 +7,6 @@ import java.util.List;
 
 @Entity(name = "Job")
 @Table(name = "jobs")
-@SecondaryTable(name = "employer",
-        pkJoinColumns = @PrimaryKeyJoinColumn(name = "employerID"))
 @Embeddable
 public class Job implements Serializable {
     @Column(length = 100, nullable = false)
@@ -21,6 +19,8 @@ public class Job implements Serializable {
     @Column(name = "jobID", nullable = false)
     private long jobId;
 
+    @ManyToOne
+    @Embedded
     @JoinColumn(name = "employerID", nullable = false)
     private Employer employerId;
     @Column(length = 100, nullable = false)
@@ -59,17 +59,18 @@ public class Job implements Serializable {
         this.description = description;
     }
 
-    public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description) {
+    public Job(String title, String location, long jobId, Employer employerId,List<String> availabilityArr, long experienceYears, List<String> abilitiesArr, String description) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
-        this.availability = availability;
+        this.employerId = employerId;
         this.experienceYears = experienceYears;
-        this.abilities = abilities;
         this.description = description;
+        this.availabilityArr = availabilityArr;
+        this.abilitiesArr = abilitiesArr;
     }
 
-    public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description, String employerName) {
+    public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
@@ -181,12 +182,12 @@ public class Job implements Serializable {
         setTitle(finalName.toString());
     }
 
-    public void employerNameToUpper() {
+    public String employerNameToUpper(Employer employerId) {
         StringBuilder finalName = new StringBuilder();
         for (String word : employerId.getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        employerId.setName(finalName.toString());
+        return finalName.toString();
     }
 }

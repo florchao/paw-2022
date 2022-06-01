@@ -9,6 +9,10 @@ body{
     font-family: 'Exo', sans-serif;
 }
 
+html{
+    scroll-behavior: smooth;
+}
+
 
 .context {
     width: 100%;

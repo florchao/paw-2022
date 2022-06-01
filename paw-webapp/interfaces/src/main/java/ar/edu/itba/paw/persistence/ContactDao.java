@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Contact;
-import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.model.Employee;
 
 import java.sql.Date;
 import java.util.List;
@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface ContactDao {
 
-    Optional<List<Contact>> getAllContacts(Employer userId);
+    int getPageNumber(long id, int pageSize);
+
+    Optional<List<Contact>> getAllContacts(Employee userId,Long page, int pageSize);
 
     Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber);
 

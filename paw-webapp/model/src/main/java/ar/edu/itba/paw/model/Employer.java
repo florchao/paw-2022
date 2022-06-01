@@ -3,12 +3,12 @@ package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity(name = "Employer")
 @Table(name = "employer")
 @SecondaryTable(name = "users",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
+@Embeddable
 public class Employer implements Serializable {
     @Column(length = 100, nullable = false)
     private String name;

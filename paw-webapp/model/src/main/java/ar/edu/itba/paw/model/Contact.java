@@ -10,11 +10,11 @@ import java.util.Date;
 public class Contact implements Serializable {
 
     @OneToOne
-    @JoinColumn(name = "employeeID", nullable = false)
+    @JoinColumn(name = "employeeID", referencedColumnName = "employeeID", nullable = false)
     @EmbeddedId
     public Employee employeeID;
     @OneToOne
-    @JoinColumn(name = "employerID", nullable = false)
+    @JoinColumn(name = "employerID",referencedColumnName = "employerID", nullable = false)
     @EmbeddedId
     private Employer employerID;
     @Column(name = "message", length = 100, nullable = false)

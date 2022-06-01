@@ -64,6 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.create(id, name, location, availability, experienceYears, abilities, image);
     }
 
+
     @Transactional(readOnly = true)
     @Override
     public Optional<List<Employee>> getEmployees() {
@@ -79,6 +80,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         throw new UserNotFoundException("Employee " + id + " not found");
     }
 
+    @Transactional
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
         List<String> availabilityList = new ArrayList<>();
@@ -92,6 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.getPageNumber(name, experienceYears, location, experiences, availabilityList, abilitiesList, pageSize);
     }
 
+    @Transactional
     @Override
     public Optional<List<Employee>> getFilteredEmployees(
             String name,
@@ -114,6 +117,8 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
+//        System.out.println("aka en service");
+//        System.out.println(experienceYears);
         return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
     }
 }

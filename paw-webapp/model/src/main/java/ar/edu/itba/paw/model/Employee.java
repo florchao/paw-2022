@@ -8,9 +8,7 @@ import java.util.List;
 @Table(name = "employee")
 @SecondaryTable(name = "users",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
-@Embeddable
 public class Employee implements Serializable {
-
     @Column(length = 100, nullable = false)
     private String name;
     @Column(length = 100, nullable = false)
@@ -21,13 +19,13 @@ public class Employee implements Serializable {
     private User id;
     @Column(length = 100, nullable = false)
     private String availability;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> availabilityArr;
     @Column(nullable = false)
     private long experienceYears;
     @Column(length = 100, nullable = false)
     private String abilities;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> abilitiesArr;
 
     public Employee() {

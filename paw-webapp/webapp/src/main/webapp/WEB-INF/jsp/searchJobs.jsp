@@ -36,6 +36,10 @@
     <div class="my-9 w-full"></div>
     <div class="grid grid-cols-4">
         <div class="col-start-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-fit" >
+            <c:url value="/trabajos" var="getReturnPath"/>
+            <form method="get" action="${getReturnPath}" id="returnForm">
+                <button style="color: rebeccapurple" class="font-semibold" form="returnForm" id="resetButton"><spring:message code="searchJobs.resetFilters"/></button>
+            </form>
             <c:url value="/filterJobs" var="getPath"/>
             <form:form modelAttribute="filterJobsBy" action="${getPath}" method="get" pageEncoding="UTF-8">
             <div class="flex flex-col items-center">
@@ -138,6 +142,9 @@
                     <div class = "grid justify-items-center">
                         <img src="<c:url value='/public/sinTrabajos.png'/>" alt="sinTrabajos" class="mr-3 h-6 sm:h-52">
                         <p class="text-3xl font-semibold text-purple-700"><spring:message code="searchJobs.noAvailableJobs"/></p>
+                    </div>
+                    <div>
+                        <input type="button" class="font-semibold text-lg text-purple-700" onclick="document.getElementById('resetButton').click()" value="<spring:message code="searchJobs.callToAction"/>">
                     </div>
                 </div>
             </c:when>
