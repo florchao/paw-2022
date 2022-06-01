@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.model.Applicant;
+import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
+import org.hsqldb.ExpressionValue;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -30,6 +33,7 @@ public class JobJpaDao implements  JobDao{
         return Optional.of(query.getResultList());
     }
 
+    //todo
     @Override
     public Optional<Job> getJobById(long jobId) {
         return Optional.ofNullable(em.find(Job.class, jobId));
@@ -37,7 +41,12 @@ public class JobJpaDao implements  JobDao{
 
     @Override
     public Optional<Boolean> alreadyApplied(long jobId, long employeeId) {
-        return Optional.empty();
+        Employee employee = em.find(Employee.class, employeeId);
+        Job job = em.find(Job.class, jobId);
+        TypedQuery<Applicant> typedQuery = em.createQuery("select a from Applicant a where a.employeeID =:employee and a.jobID =:job", Applicant.class);
+        typedQuery.setParameter("employee", employee);
+        typedQuery.setParameter("job", job);
+        return Optional.of(!typedQuery.getResultList().isEmpty());
     }
 
     @Override
@@ -51,7 +60,7 @@ public class JobJpaDao implements  JobDao{
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT e FROM Job e where ");
         if (name != null) {
-            stringBuilder.append("e.name like '%").append(name.toLowerCase()).append("%'");
+            stringBuilder.append("e.title like '%").append(name.toLowerCase()).append("%'");
             stringBuilder.append(" and   ");
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
@@ -62,7 +71,6 @@ public class JobJpaDao implements  JobDao{
             stringBuilder.append("e.location like '%").append(location.toLowerCase()).append("%' ");
             stringBuilder.append(" and   ");
         }
-        // TODO Aca iria lo mismo pero para experienceList
         for (String av : availabilityList) {
             stringBuilder.append("e.availability like '%").append(av).append("%'");
             stringBuilder.append(" and   ");
