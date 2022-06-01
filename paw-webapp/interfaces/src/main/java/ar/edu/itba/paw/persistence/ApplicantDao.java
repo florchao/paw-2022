@@ -12,6 +12,8 @@ public interface ApplicantDao {
 
     Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize);
 
+    Optional<List<Job>> getJobsByApplicant(Employee employeeID);
+
     Optional<Boolean> existsApplicant(Employee employeeId, Job jobId);
 
     int getPageNumber(long jobID, int pageSize);

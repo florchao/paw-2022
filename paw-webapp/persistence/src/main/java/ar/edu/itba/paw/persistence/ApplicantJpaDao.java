@@ -29,6 +29,13 @@ public class ApplicantJpaDao implements ApplicantDao{
         return null;
     }
 
+    @Override
+    public Optional<List<Job>> getJobsByApplicant(Employee employeeID) {
+        final TypedQuery<Job> query = em.createQuery("select a.jobID from Applicant a where a.employeeID =:employeeID", Job.class);
+        query.setParameter("employeeID", employeeID);
+        return Optional.ofNullable(query.getResultList());
+    }
+
     //TODO hay que adaptarla
     @Override
     public Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize) {

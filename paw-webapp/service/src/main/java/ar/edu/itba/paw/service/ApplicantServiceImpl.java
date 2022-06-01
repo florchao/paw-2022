@@ -42,6 +42,12 @@ public class ApplicantServiceImpl implements ApplicantService{
         return null;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<List<Job>> getJobsByApplicant(long employeeID) {
+        Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
+        return employee.flatMap(value -> applicantDao.getJobsByApplicant(value));
+    }
 
     //todo hay que adaptarla con los parmetros
     @Transactional(readOnly = true)
