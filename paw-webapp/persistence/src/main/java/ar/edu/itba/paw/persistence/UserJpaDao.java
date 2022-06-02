@@ -49,20 +49,4 @@ public class UserJpaDao implements UserDao{
         dbUser.get().setPassword(password);
         return true;
     }
-
-    @Override
-    public Optional<byte[]> getProfileImage(Long userId) {
-        Optional<User> u = getUserById(userId);
-        return u.map(user -> Optional.ofNullable(user.getImage())).orElse(null);
-    }
-
-    @Override
-    public boolean updateProfileImage(Long userId, byte[] image) {
-        Optional<User> u = getUserById(userId);
-        if (u.isPresent()) {
-            u.get().setImage(image);
-            return true;
-        }
-        return false;
-    }
 }

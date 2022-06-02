@@ -14,7 +14,4 @@ public interface UserDao {
     Optional<User> getUserByUsername(String username);
     boolean update(String username, String password);
 
-    Optional<byte[]> getProfileImage(Long userId);
-
-    boolean updateProfileImage(Long userId, byte[] image);
 }
