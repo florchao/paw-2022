@@ -149,14 +149,16 @@
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <c:forEach var="employee" items="${EmployeeList}">
-                                <c:set var="employee" value="${employee}" scope="request"/>
+                            <c:forEach var="entry" items="${EmployeeList}">
+                                <c:set var="employee" value="${entry.key}"/>
+                                <c:set var="connected" value="${entry.value}"/>
                                 <% request.setCharacterEncoding("utf-8");%>
                                 <jsp:include page="components/employeeCardComponent.jsp">
                                     <jsp:param name="name" value="${employee.name}"/>
                                     <jsp:param name="location" value="${employee.location}"/>
                                     <jsp:param name="id" value="${employee.id.id}"/>
                                     <jsp:param name = "years" value = "${employee.experienceYears}"/>
+                                    <jsp:param name="contacted" value="${connected}"/>
                                 </jsp:include>
                             </c:forEach>
                         </c:otherwise>
