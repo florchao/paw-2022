@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Transactional(readOnly = true)
     @Override
     public Optional<Review> getMyReview(long employeeId, long id) {
-        return reviewDao.getMyReview(employeeId, id);
+        Optional<Review> review =  reviewDao.getMyReview(employeeId, id);
+        return review;
     }
 }

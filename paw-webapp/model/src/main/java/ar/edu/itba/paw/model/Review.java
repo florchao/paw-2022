@@ -15,12 +15,12 @@ public class Review implements Serializable {
 
     @ManyToOne
     @Embedded
-    @JoinColumn(name = "employeeID", nullable = false, referencedColumnName = "employeeID")
+    @JoinColumn(name = "employeeId", nullable = false, referencedColumnName = "employeeID")
     private Employee employeeId;
 
     @ManyToOne
     @Embedded
-    @JoinColumn(name = "employerID", nullable = false, referencedColumnName = "employerID")
+    @JoinColumn(name = "employerId", nullable = false, referencedColumnName = "employerID")
     private Employer employerId;
 
     @Column(name = "review", nullable = false)
@@ -37,6 +37,9 @@ public class Review implements Serializable {
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
+    }
+
+    public Review() {
     }
 
     public Employee getEmployeeId() {

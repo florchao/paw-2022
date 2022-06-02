@@ -40,9 +40,12 @@ public class ReviewJpaDao implements ReviewDao{
         //        List<Review> query = jdbcTemplate.query(sqlQuery.toString(), new Object[] {}, REVIEW_ROW_MAPPER);
         //        return Optional.of(query);
         Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
-        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeID =:userId", Review.class);
-        query.setParameter("userId", employee);
-        return Optional.ofNullable(query.getResultList());
+        if(employee.isPresent()) {
+            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId", Review.class);
+            query.setParameter("userId", employee.get());
+            return Optional.ofNullable(query.getResultList());
+        }
+        return Optional.empty();
     }
 
     //TODO UPDATE
@@ -54,9 +57,14 @@ public class ReviewJpaDao implements ReviewDao{
     @Override
     public Optional<Review> getMyReview(long employeeId, long id) {
         Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
-        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId", Review.class);
-        query.setParameter("employeeId", employee);
-        return Optional.ofNullable(query.getSingleResult());
+        if(employee.isPresent()) {
+            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId", Review.class);
+            query.setParameter("employeeId", employee.get());
+            List<Review> ans = query.getResultList();
+            if(!ans.isEmpty())
+                return Optional.ofNullable(query.getSingleResult());
+        }
+        return Optional.empty();
     }
 
 }
