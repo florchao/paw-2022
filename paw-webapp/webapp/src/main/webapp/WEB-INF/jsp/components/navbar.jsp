@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </c:if>
-            <div class="flex felx-wrap grid grid-cols-5 items-center justify-items-center col-span-5 col-start-6">
+            <div class="flex felx-wrap grid grid-cols-6 items-center justify-items-center col-span-5 col-start-6">
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
                     <div class = "flex items-center justify-items-end">
                             <c:choose>
