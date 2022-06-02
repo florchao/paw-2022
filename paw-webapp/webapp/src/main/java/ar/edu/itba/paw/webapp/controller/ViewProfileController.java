@@ -104,6 +104,9 @@ public class ViewProfileController {
         if (reviews.isPresent()) {
             //TODO SE ROMPE ESTO
             //reviewsWithUpperCase = reviews.get().stream().map(Review::firstWordsToUpper).collect(Collectors.toList()).;
+            //Lo arregle con esto, pero esta mal
+            reviewsWithUpperCase = reviews.get();
+
         }
         mav.addObject("ReviewList", reviewsWithUpperCase);
         mav.addObject("page", page);

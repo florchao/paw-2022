@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Review;
@@ -57,9 +56,11 @@ public class ReviewJpaDao implements ReviewDao{
     @Override
     public Optional<Review> getMyReview(long employeeId, long id) {
         Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
-        if(employee.isPresent()) {
-            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId", Review.class);
+        Optional<Employer> employer = Optional.ofNullable(em.find(Employer.class, id));
+        if(employee.isPresent() && employer.isPresent()) {
+            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId and u.employerId=:employerId ", Review.class);
             query.setParameter("employeeId", employee.get());
+            query.setParameter("employerId", employer.get());
             List<Review> ans = query.getResultList();
             if(!ans.isEmpty())
                 return Optional.ofNullable(query.getSingleResult());
