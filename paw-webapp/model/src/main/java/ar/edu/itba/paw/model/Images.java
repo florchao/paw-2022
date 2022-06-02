@@ -1,10 +1,11 @@
 package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "profile_images")
-public class Images {
+public class Images implements Serializable {
 
     @OneToOne
     @EmbeddedId

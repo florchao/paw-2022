@@ -110,11 +110,4 @@ public class UserJdbcDaoTest {
         Assert.assertEquals(1, list.size());
     }
 
-    @Test
-    public void testGetProfileImage() {
-        Optional<byte[]> image = userJpaDao.getProfileImage(0L);
-        Assert.assertNotNull(image);
-        Assert.assertFalse(image.isPresent());
-    }
-
 }

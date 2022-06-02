@@ -3,6 +3,7 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistence.EmployerDao;
+import ar.edu.itba.paw.persistence.ImagesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +16,14 @@ public class EmployerServiceImpl implements EmployerService{
     @Autowired
     private EmployerDao employerDao;
 
+    @Autowired
+    private ImagesDao imagesDao;
+
     @Transactional
     @Override
     public Employer create(String name, User id, byte[] image) {
         name = name.trim().replaceAll(" +", " ");
+        imagesDao.insertImage(id, image);
         return employerDao.create(name, id, image);
     }
 

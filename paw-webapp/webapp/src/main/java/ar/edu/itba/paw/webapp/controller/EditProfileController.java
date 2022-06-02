@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.ImagesService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.EmployeeEditForm;
@@ -25,7 +26,7 @@ public class EditProfileController {
     @Autowired
     private EmployeeService employeeService;
     @Autowired
-    private UserService userService;
+    private ImagesService imagesService;
     private static final Logger LOGGER = LoggerFactory.getLogger(EditProfileController.class);
 
     @RequestMapping(value = "/editarPerfil", method = {RequestMethod.GET})
@@ -55,7 +56,7 @@ public class EditProfileController {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), (principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
         if(!form.getImage().isEmpty()) {
-            userService.updateProfileImage((principal.getUserID()), form.getImage().getBytes());
+            imagesService.updateProfileImage((principal.getUserID()), form.getImage().getBytes());
         }
         LOGGER.debug(String.format("updated profile for userid %d", principal.getUserID()));
         return new ModelAndView("redirect:/verPerfil/");

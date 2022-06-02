@@ -4,10 +4,7 @@ import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Review;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AccessIsDeniedException;
-import ar.edu.itba.paw.service.ContactService;
-import ar.edu.itba.paw.service.EmployeeService;
-import ar.edu.itba.paw.service.ReviewService;
-import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.apache.commons.io.IOUtils;
@@ -38,13 +35,16 @@ public class ViewProfileController {
     private UserService userService;
 
     @Autowired
-    ReviewService reviewService;
+    private ReviewService reviewService;
 
     @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private ImagesService imagesService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
 
@@ -102,6 +102,7 @@ public class ViewProfileController {
         }
         List<Review> reviewsWithUpperCase = null;
         if (reviews.isPresent()) {
+            //TODO SE ROMPE ESTO
             //reviewsWithUpperCase = reviews.get().stream().map(Review::firstWordsToUpper).collect(Collectors.toList()).;
         }
         mav.addObject("ReviewList", reviewsWithUpperCase);
@@ -123,7 +124,7 @@ public class ViewProfileController {
     @RequestMapping(value = "/user/profile-image/{userId}", method = {RequestMethod.GET})
     public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
         System.out.println("FOTO ID" + userId);
-        Optional<byte[]> image = userService.getProfileImage(userId);
+        Optional<byte[]> image = imagesService.getProfileImage(userId);
         if(!image.isPresent()){
             LOGGER.debug("User {} does not have an image", userId);
             return;
