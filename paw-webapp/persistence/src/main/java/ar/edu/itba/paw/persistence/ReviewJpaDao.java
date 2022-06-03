@@ -39,9 +39,11 @@ public class ReviewJpaDao implements ReviewDao{
         //        List<Review> query = jdbcTemplate.query(sqlQuery.toString(), new Object[] {}, REVIEW_ROW_MAPPER);
         //        return Optional.of(query);
         Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
-        if(employee.isPresent()) {
-            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId", Review.class);
+        Optional<Employer> employer=  Optional.ofNullable(em.find(Employer.class, id));
+        if(employee.isPresent() && employer.isPresent()) {
+            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId and u.employerId <>:employerId", Review.class);
             query.setParameter("userId", employee.get());
+            query.setParameter("employerId", employer.get());
             return Optional.ofNullable(query.getResultList());
         }
         return Optional.empty();

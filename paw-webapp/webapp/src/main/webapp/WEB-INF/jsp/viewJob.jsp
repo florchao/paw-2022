@@ -10,19 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="<c:url value="/public/javascript/viewJob.js"/>"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="viewJob.title"/></title>
-    <script>
-        function deleteById(jobId){
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/deleteJob/' + jobId,
-                    type: 'DELETE',
-                    success: function (result) {}
-                });
-            }
-    </script>
 </head>
 <body>
 <div class="area absolute">
@@ -41,7 +31,7 @@
 </div>
 <jsp:include page="components/navbar.jsp"/>
 <c:url value="/apply/${id}" var="postPath"/>
-<c:url value="/delete/${id}" var="deletePath"/>
+<c:url value="/deleteJob/${id}" var="deletePath"/>
 <div class="grid h-screen grid-cols-6 overflow-auto">
     <div class=" grid grid-row-4 col-span-4 col-start-2">
         <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
@@ -99,7 +89,9 @@
             <div class="grid grid-rows-3 grid-cols-6">
                 <div class="col-start-3 row-start-3">
                     <sec:authorize access="hasAuthority('EMPLOYER')">
-                        <button onclick="deleteById(${id})" class="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.delete"/></button>
+                        <form:form action="${deletePath}" method="delete">
+                            <button type="submit" class="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.delete"/></button>
+                        </form:form>
                     </sec:authorize>
                 </div>
             </div>

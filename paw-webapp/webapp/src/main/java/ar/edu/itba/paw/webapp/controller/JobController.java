@@ -140,8 +140,9 @@ public class JobController {
         return new ModelAndView("redirect:/trabajos");
     }
 
-    @RequestMapping(value = "/deleteJob/{jobId}", method = {RequestMethod.DELETE})
-    public void deleteJob(@PathVariable final long jobId){
+    @RequestMapping(value = "/deleteJob/{jobId}", method = {RequestMethod.POST, RequestMethod.DELETE})
+    public ModelAndView deleteJob(@PathVariable final long jobId){
         jobService.deleteJob(jobId);
+        return new ModelAndView("redirect:/misTrabajos");
     }
 }
