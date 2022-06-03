@@ -15,4 +15,6 @@ public interface JobDao {
     Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize);
     int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize);
     String getJobNameById(long jobID);
+
+    void deleteJob(long jobId);
 }

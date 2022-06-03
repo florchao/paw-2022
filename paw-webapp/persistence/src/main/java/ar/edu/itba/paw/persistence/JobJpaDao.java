@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
@@ -119,5 +120,12 @@ public class JobJpaDao implements  JobDao{
     public String getJobNameById(long jobID) {
        Job job = em.find(Job.class, jobID);
        return job.getTitle();
+    }
+
+    @Override
+    public void deleteJob(long jobId) {
+        Optional<Job> job = getJobById(jobId);
+        if(!job.isPresent()) return;
+        em.remove(job.get());
     }
 }

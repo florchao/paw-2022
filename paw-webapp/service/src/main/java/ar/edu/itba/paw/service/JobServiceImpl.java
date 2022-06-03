@@ -89,4 +89,10 @@ public class JobServiceImpl implements JobService{
     public String getJobNameById(long jobID) {
         return jobDao.getJobNameById(jobID);
     }
+
+    @Transactional
+    @Override
+    public void deleteJob(long jobId){
+        jobDao.deleteJob(jobId);
+    }
 }

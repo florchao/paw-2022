@@ -89,7 +89,6 @@ public class JobController {
         HogarUser principal = (HogarUser) auth.getPrincipal();
         Optional<Boolean> exists = jobService.alreadyApplied(id, principal.getUserID());
         exists.ifPresent(aBoolean -> mav.addObject("alreadyApplied", aBoolean));
-        System.out.println(exists.get());
         mav.addObject("status", status);
         return mav;
     }
@@ -139,5 +138,10 @@ public class JobController {
             redirectAttributes.addAttribute("page", form.getPageNumber());
 
         return new ModelAndView("redirect:/trabajos");
+    }
+
+    @RequestMapping(value = "/deleteJob/{jobId}", method = {RequestMethod.DELETE})
+    public void deleteJob(@PathVariable final long jobId){
+        jobService.deleteJob(jobId);
     }
 }
