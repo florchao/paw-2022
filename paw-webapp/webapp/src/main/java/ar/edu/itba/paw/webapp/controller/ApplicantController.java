@@ -27,7 +27,7 @@ import java.util.Optional;
 @Controller
 public class ApplicantController {
 
-    private final int PAGE_SIZE = 4;
+    private final int PAGE_SIZE = 1;
 
     @Autowired
     JobService jobService;

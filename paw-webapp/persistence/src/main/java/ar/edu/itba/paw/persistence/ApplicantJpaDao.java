@@ -37,14 +37,10 @@ public class ApplicantJpaDao implements ApplicantDao{
         return Optional.ofNullable(query.getResultList());
     }
 
-    //TODO hay que adaptarla
     @Override
     public Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize) {
-        //    List<Applicant> query = jdbcTemplate.query("SELECT employeeid, jobid, name, email FROM applicants NATURAL " +
-        //                        "JOIN employee JOIN users ON employee.employeeid = users.userid WHERE jobid = ? LIMIT ? OFFSET ?",
-        //                new Object[] {jobID,pageSize, page*pageSize}, APPLI_LIST_ROW_MAPPER);
-        //        return Optional.of(query);
-        final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where u.jobID =:jobID", Applicant.class);
+        System.out.println("mi page y pageSize son: "+ page + " " + pageSize);
+        final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where u.jobID =:jobID", Applicant.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("jobID", jobID);
         return Optional.ofNullable(query.getResultList());
     }
@@ -57,10 +53,13 @@ public class ApplicantJpaDao implements ApplicantDao{
         return Optional.of(!contactTypedQuery.getResultList().isEmpty());
     }
 
-    //TODO hay que hacerla
     @Override
     public int getPageNumber(long jobID, int pageSize) {
-        return 0;
+        Job job = em.find(Job.class, jobID);
+        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(a) FROM Applicant a WHERE a.jobID =:job", Long.class);
+        filteredQuery.setParameter("job", job);
+        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
+
     }
 
     @Override

@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="<c:url value="/public/javascript/viewProfile.js"/>"></script>
+    <script src="<c:url value="/public/javascript/utils.js"/>"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
     <title><spring:message code="viewProfile.title"/></title>
 </head>
@@ -155,7 +156,7 @@
                                     </div>
                                 </li>
                             </c:forEach>
-                            <c:url value="/opiniones/${employee.id.id}" var="getPath"/>
+                            <c:url value="/verPerfil/${employee.id.id}" var="getPath"/>
                             <form method="get" action="${getPath}">
                                 <c:if test="${maxPage > 0 && page + 1 <= maxPage}">
                                 <div class="flex flex-row justify-center mt-4">

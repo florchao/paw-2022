@@ -34,7 +34,6 @@ public class JobJpaDao implements  JobDao{
         return Optional.of(query.getResultList());
     }
 
-    //todo
     @Override
     public Optional<Job> getJobById(long jobId) {
         return Optional.ofNullable(em.find(Job.class, jobId));
