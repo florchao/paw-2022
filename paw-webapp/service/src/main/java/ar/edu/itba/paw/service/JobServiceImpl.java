@@ -52,7 +52,7 @@ public class JobServiceImpl implements JobService{
     @Override
     public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, String availability, String abilities, Long page, long pageSize) {
         if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0) {
-            return jobDao.getAllJobs(pageSize);
+            return jobDao.getAllActiveJobs(pageSize);
         }
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
@@ -94,5 +94,11 @@ public class JobServiceImpl implements JobService{
     @Override
     public void deleteJob(long jobId){
         jobDao.deleteJob(jobId);
+    }
+
+    @Transactional
+    @Override
+    public void closeJob(long jobId) {
+        jobDao.closeJob(jobId);
     }
 }

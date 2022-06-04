@@ -11,10 +11,11 @@ public interface JobDao {
     Optional<List<Job>> getUserJobs(Employer employerID);
     Optional<Job> getJobById(long jobId);
     Optional<Boolean> alreadyApplied(long jobId, long employeeId);
-    Optional<List<Job>> getAllJobs(long pageSize);
+    Optional<List<Job>> getAllActiveJobs(long pageSize);
     Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize);
     int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize);
     String getJobNameById(long jobID);
-
     void deleteJob(long jobId);
+
+    void closeJob(long jobId);
 }

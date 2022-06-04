@@ -16,6 +16,6 @@ public interface JobService {
     Optional<Boolean> alreadyApplied(long jobId, long employeeId);
     int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize);
     String getJobNameById(long jobID);
-
     void deleteJob(long jobId);
+    void closeJob(long jobId);
 }
