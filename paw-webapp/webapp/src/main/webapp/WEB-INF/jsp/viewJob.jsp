@@ -90,7 +90,12 @@
                 <div class="col-start-3 row-start-3">
                     <sec:authorize access="hasAuthority('EMPLOYER')">
                         <form:form action="${deletePath}" method="delete">
-                            <button type="submit" class="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.delete"/></button>
+                            <button type="submit" class="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
+                                <div class="grid grid-rows-1 grid-cols-3">
+                                    <img src="<c:url value='/public/bin.png'/>" alt="bin" class="mr-3 h-6 sm:h-5 col-start-1">
+                                    <p class="col-span-2"><spring:message code="viewJob.delete"/></p>
+                                </div>
+                            </button>
                         </form:form>
                     </sec:authorize>
                 </div>
