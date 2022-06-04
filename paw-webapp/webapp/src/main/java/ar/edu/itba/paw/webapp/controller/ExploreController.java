@@ -52,15 +52,12 @@ public class ExploreController {
         if (page == null)
             page = 0L;
         Map<Employee, Boolean> list = new HashMap<>();
-        Map<Long, Boolean> connected = new HashMap<>();
         List<Experience> experiencesList = null;
         for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE).get()) {
             employee.firstWordsToUpper();
             Optional<Boolean> connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
             if(connection.isPresent() && connection.get()){
                 list.put(employee, true);
-                System.out.println("NOMBRE" + employee.getName());
-                System.out.println("CONNECTIONNNN" + true);
             }
             else{
                 list.put(employee, false);

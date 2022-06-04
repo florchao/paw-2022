@@ -37,7 +37,7 @@
         </c:choose>
     </div>
     <div class="grid grid-col-2 w-80 justify-center">
-        <div>
+        <div class="mb-2">
             <a href="<c:url value="/trabajo/${param.jobid}"/>" style="margin-right: 15px" class="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="jobCard.publication"/></a>
             <sec:authorize access="hasAuthority('EMPLOYER')">
                 <a href="<c:url value="/aplicantes/${param.jobid}"/>" class="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="jobCard.applicants"/></a>
@@ -47,6 +47,13 @@
             </sec:authorize>
         </div>
     </div>
+    <c:if test="${param.apply != null && param.apply}">
+        <div class="grid grid-col-2 w-80 justify-center">
+            <div class="mt-2">
+                <p class="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2.5 mb-2"><spring:message code="jobCard.alreadyApplied"/></p>
+            </div>
+        </div>
+    </c:if>
 </div>
 </body>
 </html>

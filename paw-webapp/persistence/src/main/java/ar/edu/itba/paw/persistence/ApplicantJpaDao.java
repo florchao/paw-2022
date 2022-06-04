@@ -46,8 +46,7 @@ public class ApplicantJpaDao implements ApplicantDao{
 
     @Override
     public Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize) {
-        System.out.println("en persistencia mi page y pageSize son: "+ page + " " + pageSize);
-        final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where u.jobID =:jobID", Applicant.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+        final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where u.jobID =:jobID order by u.status", Applicant.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("jobID", jobID);
         return Optional.ofNullable(query.getResultList());
     }
@@ -69,7 +68,11 @@ public class ApplicantJpaDao implements ApplicantDao{
 
     }
 
-
+    @Override
+    public int getStatus(Employee employee, Job job) {
+        TypedQuery<Applicant> query = em.createQuery("SELECT a FROM Applicant a WHERE a.employeeID =:employee AND a.jobID = :job", Applicant.class);
+        return query.getSingleResult().getStatus();
+    }
 
     @Override
     public int changeStatus(int status, Employee employee, Job job) {

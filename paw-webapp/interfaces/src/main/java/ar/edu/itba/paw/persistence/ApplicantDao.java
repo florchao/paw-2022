@@ -21,4 +21,7 @@ public interface ApplicantDao {
     int getPageNumber(long jobID, int pageSize);
 
     int getPageNumberForAppliedJobs(Employee employee, int pageSize);
+
+    int getStatus(Employee employee, Job job);
+
 }

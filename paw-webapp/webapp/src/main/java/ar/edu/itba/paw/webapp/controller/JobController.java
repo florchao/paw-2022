@@ -20,10 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class JobController {
@@ -102,14 +99,22 @@ public class JobController {
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "abilities", required = false) String abilities,
             @RequestParam(value = "page", required = false) Long page) {
+        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
+        HogarUser user = (HogarUser) authority.getPrincipal();
         if (page == null)
             page = 0L;
-        List<Job> jobList = new ArrayList<>();
+        Map<Job, Boolean> jobList = new HashMap<>();
         Optional<List<Job>> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
         if (opJob.isPresent()) {
             for (Job job : opJob.get()) {
+                Optional<Boolean> applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
                 job.firstWordsToUpper();
-                jobList.add(job);
+                if(applied.isPresent() && applied.get()) {
+                    jobList.put(job, true);
+                }
+                else {
+                    jobList.put(job, false);
+                }
             }
         }
         final ModelAndView mav = new ModelAndView("searchJobs");

@@ -150,8 +150,9 @@
             </c:when>
             <c:otherwise>
             <div class="flex flex-wrap content-start justify-center">
-                <c:forEach var="job" items="${jobList}">
-                    <c:set var="job" value="${job}" scope="request"/>
+                <c:forEach var="entry" items="${jobList}">
+                    <c:set var="job" value="${entry.key}" scope="request"/>
+                    <c:set var="applied" value="${entry.value}" scope="request"/>
                     <div>
                         <% request.setCharacterEncoding("utf-8");%>
                         <jsp:include page="components/jobCard.jsp">
@@ -159,6 +160,7 @@
                             <jsp:param name="description" value="${job.description}"/>
                             <jsp:param name = "location" value = "${job.location}"/>
                             <jsp:param name="jobid" value="${job.jobId}"/>
+                            <jsp:param name="apply" value="${applied}"/>
                         </jsp:include>
                     </div>
                 </c:forEach>
