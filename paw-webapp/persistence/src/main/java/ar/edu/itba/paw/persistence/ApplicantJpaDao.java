@@ -64,7 +64,7 @@ public class ApplicantJpaDao implements ApplicantDao{
 
     @Override
     public int getStatus(Employee employee, Job job) {
-        TypedQuery<Applicant> query = em.createQuery("SELECT c FROM Applicant c WHERE a.employeeID =:employee AND a.jobID = :job", Applicant.class);
+        TypedQuery<Applicant> query = em.createQuery("SELECT a FROM Applicant a WHERE a.employeeID =:employee AND a.jobID = :job", Applicant.class);
         return query.getSingleResult().getStatus();
     }
 
