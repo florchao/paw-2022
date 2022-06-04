@@ -36,7 +36,7 @@ public class Job implements Serializable {
     @ElementCollection
     private List<String> abilitiesArr;
 
-    @Column(nullable = false)
+    @Column
     private boolean opened;
 
     public Job(){}
@@ -49,7 +49,7 @@ public class Job implements Serializable {
         this.experienceYears = experienceYears;
         this.abilities = abilities;
         this.description = description;
-        this.opened = true;
+        this.opened=true;
     }
 
     public Job(String title, String location, long jobId, Employer employerId, String availability, long experienceYears, String abilities, String description) {
@@ -61,7 +61,6 @@ public class Job implements Serializable {
         this.experienceYears = experienceYears;
         this.abilities = abilities;
         this.description = description;
-        this.opened=true;
     }
 
     public Job(String title, String location, long jobId, Employer employerId,List<String> availabilityArr, long experienceYears, List<String> abilitiesArr, String description) {
@@ -73,7 +72,6 @@ public class Job implements Serializable {
         this.description = description;
         this.availabilityArr = availabilityArr;
         this.abilitiesArr = abilitiesArr;
-        this.opened=true;
     }
 
     public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description) {
@@ -84,7 +82,6 @@ public class Job implements Serializable {
         this.experienceYears = experienceYears;
         this.abilities = abilities;
         this.description = description;
-        this.opened=true;
     }
 
     public Job(String title, String location, long jobId, List<String>  availability, long experienceYears, List<String> abilities, String description) {
@@ -95,7 +92,6 @@ public class Job implements Serializable {
         this.experienceYears = experienceYears;
         this.abilitiesArr = abilities;
         this.description = description;
-        this.opened=true;
     }
 
     public Job(String title) {

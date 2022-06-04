@@ -81,6 +81,7 @@ public class JobController {
             job.get().firstWordsToUpper();
             mav.addObject("name", employerName);
             mav.addObject("job", job.get());
+            System.out.println("OPENED STATUS JOB " + job.get().isOpened());
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
@@ -149,5 +150,15 @@ public class JobController {
     public ModelAndView deleteJob(@PathVariable final long jobId){
         jobService.deleteJob(jobId);
         return new ModelAndView("redirect:/misTrabajos");
+    }
+
+    @RequestMapping(value = "/closeJob/{jobId}", method = {RequestMethod.POST})
+    public ModelAndView closeJob(@PathVariable final long jobId){
+        jobService.closeJob(jobId);
+        Optional<Job> job = jobService.getJobByID(jobId);
+        System.out.println("YA ESTA CERRADO" + job.get().isOpened());
+        System.out.println("DESPUES DEL BOTON");
+        System.out.println(job.get().isOpened());
+        return new ModelAndView("redirect:/trabajo/" + jobId);
     }
 }

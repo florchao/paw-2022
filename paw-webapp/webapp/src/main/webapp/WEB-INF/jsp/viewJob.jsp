@@ -32,6 +32,7 @@
 <jsp:include page="components/navbar.jsp"/>
 <c:url value="/apply/${id}" var="postPath"/>
 <c:url value="/deleteJob/${id}" var="deletePath"/>
+<c:url value="/closeJob/${id}" var="closePath"/>
 <div class="grid h-screen grid-cols-6 overflow-auto">
     <div class=" grid grid-row-4 col-span-4 col-start-2">
         <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
@@ -97,6 +98,16 @@
                                 </div>
                             </button>
                         </form:form>
+                        <c:if test="${job.opened}">
+                            <form:form action="${closePath}" method="post">
+                                <button type="submit" class="text-sm focus:outline-none text-violet-900 bg-yellow-500 hover:bg-yellow-700 font-small rounded-lg text-sm px-5 py-2.5">
+                                    <div class="grid grid-rows-1 grid-cols-3">
+                                        <img src="<c:url value='/public/bin.png'/>" alt="bin" class="mr-3 h-6 sm:h-5 col-start-1">
+                                        <p class="col-span-2"><spring:message code="viewJob.delete"/></p>
+                                    </div>
+                                </button>
+                            </form:form>
+                        </c:if>
                     </sec:authorize>
                 </div>
             </div>
