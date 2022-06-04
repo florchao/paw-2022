@@ -132,4 +132,11 @@ public class JobJpaDao implements  JobDao{
         if(!job.isPresent()) return;
         job.get().setOpened(false);
     }
+
+    @Override
+    public void openJob(long jobId) {
+        Optional<Job> job = getJobById(jobId);
+        if(!job.isPresent()) return;
+        job.get().setOpened(true);
+    }
 }

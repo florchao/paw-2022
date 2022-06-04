@@ -155,10 +155,12 @@ public class JobController {
     @RequestMapping(value = "/closeJob/{jobId}", method = {RequestMethod.POST})
     public ModelAndView closeJob(@PathVariable final long jobId){
         jobService.closeJob(jobId);
-        Optional<Job> job = jobService.getJobByID(jobId);
-        System.out.println("YA ESTA CERRADO" + job.get().isOpened());
-        System.out.println("DESPUES DEL BOTON");
-        System.out.println(job.get().isOpened());
+        return new ModelAndView("redirect:/trabajo/" + jobId);
+    }
+
+    @RequestMapping(value = "/openJob/{jobId}", method = {RequestMethod.POST})
+    public ModelAndView openJob(@PathVariable final long jobId){
+        jobService.openJob(jobId);
         return new ModelAndView("redirect:/trabajo/" + jobId);
     }
 }

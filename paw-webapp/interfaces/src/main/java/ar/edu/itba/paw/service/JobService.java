@@ -18,4 +18,5 @@ public interface JobService {
     String getJobNameById(long jobID);
     void deleteJob(long jobId);
     void closeJob(long jobId);
+    void openJob(long jobId);
 }

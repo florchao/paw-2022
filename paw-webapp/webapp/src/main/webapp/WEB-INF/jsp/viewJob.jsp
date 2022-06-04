@@ -33,6 +33,7 @@
 <c:url value="/apply/${id}" var="postPath"/>
 <c:url value="/deleteJob/${id}" var="deletePath"/>
 <c:url value="/closeJob/${id}" var="closePath"/>
+<c:url value="/openJob/${id}" var="openPath"/>
 <div class="grid h-screen grid-cols-6 overflow-auto">
     <div class=" grid grid-row-4 col-span-4 col-start-2">
         <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
@@ -87,8 +88,8 @@
                     <h1 class="block ml-2 mb-2 text-sm font-medium text-gray-600 text-ellipsis overflow-hidden"> <c:out value="${job.description}"/></h1>
                 </div>
             </div>
-            <div class="grid grid-rows-3 grid-cols-6">
-                <div class="col-start-3 row-start-3">
+            <div class="grid grid-rows-3 grid-cols-5">
+                <div class="col-start-2 row-start-3">
                     <sec:authorize access="hasAuthority('EMPLOYER')">
                         <form:form action="${deletePath}" method="delete">
                             <button type="submit" class="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
@@ -98,12 +99,26 @@
                                 </div>
                             </button>
                         </form:form>
+                    </sec:authorize>
+                </div>
+                <div class="col-start-4 row-start-3">
+                    <sec:authorize access="hasAuthority('EMPLOYER')">
                         <c:if test="${job.opened}">
                             <form:form action="${closePath}" method="post">
                                 <button type="submit" class="text-sm focus:outline-none text-violet-900 bg-yellow-500 hover:bg-yellow-700 font-small rounded-lg text-sm px-5 py-2.5">
                                     <div class="grid grid-rows-1 grid-cols-3">
-                                        <img src="<c:url value='/public/bin.png'/>" alt="bin" class="mr-3 h-6 sm:h-5 col-start-1">
-                                        <p class="col-span-2"><spring:message code="viewJob.delete"/></p>
+                                        <img src="<c:url value='/public/editing.png'/>" alt="edit" class="mr-3 h-6 sm:h-5 col-start-1">
+                                        <p class="col-span-2"><spring:message code="viewJob.close"/></p>
+                                    </div>
+                                </button>
+                            </form:form>
+                        </c:if>
+                        <c:if test="${!job.opened}">
+                            <form:form action="${openPath}" method="post">
+                                <button type="submit" class="text-sm focus:outline-none text-white bg-green-500 hover:bg-green-700 font-small rounded-lg text-sm px-5 py-2.5">
+                                    <div class="grid grid-rows-1 grid-cols-3">
+                                        <img src="<c:url value='/public/editing.png'/>" alt="edit" class="mr-3 h-6 sm:h-5 col-start-1">
+                                        <p class="col-span-2"><spring:message code="viewJob.open"/></p>
                                     </div>
                                 </button>
                             </form:form>

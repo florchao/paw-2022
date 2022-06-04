@@ -16,6 +16,6 @@ public interface JobDao {
     int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize);
     String getJobNameById(long jobID);
     void deleteJob(long jobId);
-
     void closeJob(long jobId);
+    void openJob(long jobId);
 }
