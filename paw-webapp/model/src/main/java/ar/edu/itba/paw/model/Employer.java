@@ -6,8 +6,6 @@ import java.io.Serializable;
 
 @Entity(name = "Employer")
 @Table(name = "employer")
-@SecondaryTable(name = "users",
-        pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
 @Embeddable
 public class Employer implements Serializable {
     @Column(length = 100, nullable = false)
