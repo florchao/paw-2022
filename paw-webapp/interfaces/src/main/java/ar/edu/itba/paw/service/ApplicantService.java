@@ -16,4 +16,7 @@ public interface ApplicantService {
     Optional<List<Job>> getJobsByApplicant(long employeeID);
 
     int changeStatus(int status, long employeeId, long jobId);
+
+    int getStatus(long employeeId, long jobId);
+
 }

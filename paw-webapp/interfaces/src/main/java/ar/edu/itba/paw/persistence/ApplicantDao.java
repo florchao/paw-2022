@@ -19,4 +19,7 @@ public interface ApplicantDao {
     Optional<Boolean> existsApplicant(Employee employeeId, Job jobId);
 
     int getPageNumber(long jobID, int pageSize);
+
+    int getStatus(Employee employee, Job job);
+
 }
