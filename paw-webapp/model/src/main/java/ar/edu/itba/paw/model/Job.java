@@ -36,6 +36,9 @@ public class Job implements Serializable {
     @ElementCollection
     private List<String> abilitiesArr;
 
+    @Column
+    private boolean opened;
+
     public Job(){}
 
     public Job(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
@@ -46,6 +49,7 @@ public class Job implements Serializable {
         this.experienceYears = experienceYears;
         this.abilities = abilities;
         this.description = description;
+        this.opened=true;
     }
 
     public Job(String title, String location, long jobId, Employer employerId, String availability, long experienceYears, String abilities, String description) {
@@ -59,7 +63,7 @@ public class Job implements Serializable {
         this.description = description;
     }
 
-    public Job(String title, String location, long jobId, Employer employerId,List<String> availabilityArr, long experienceYears, List<String> abilitiesArr, String description) {
+    public Job(String title, String location, long jobId, Employer employerId,List<String> availabilityArr, long experienceYears, List<String> abilitiesArr, String description, boolean opened) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
@@ -68,6 +72,7 @@ public class Job implements Serializable {
         this.description = description;
         this.availabilityArr = availabilityArr;
         this.abilitiesArr = abilitiesArr;
+        this.opened = opened;
     }
 
     public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description) {
@@ -189,5 +194,13 @@ public class Job implements Serializable {
         }
         finalName.setLength(finalName.length() - 1);
         return finalName.toString();
+    }
+
+    public boolean isOpened() {
+        return opened;
+    }
+
+    public void setOpened(boolean opened) {
+        this.opened = opened;
     }
 }

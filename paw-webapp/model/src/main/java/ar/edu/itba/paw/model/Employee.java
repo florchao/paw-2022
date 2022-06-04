@@ -6,8 +6,6 @@ import java.util.List;
 
 @Entity(name = "Employee")
 @Table(name = "employee")
-@SecondaryTable(name = "users",
-        pkJoinColumns = @PrimaryKeyJoinColumn(name = "userId"))
 public class Employee implements Serializable {
     @Column(length = 100, nullable = false)
     private String name;
