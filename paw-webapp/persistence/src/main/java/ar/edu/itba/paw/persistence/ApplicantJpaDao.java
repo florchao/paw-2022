@@ -31,10 +31,17 @@ public class ApplicantJpaDao implements ApplicantDao{
     }
 
     @Override
-    public Optional<List<Job>> getJobsByApplicant(Employee employeeID) {
-        final TypedQuery<Job> query = em.createQuery("select a.jobID from Applicant a where a.employeeID =:employeeID", Job.class);
+    public Optional<List<Job>> getJobsByApplicant(Employee employeeID, Long page, int pageSize) {
+        final TypedQuery<Job> query = em.createQuery("select a.jobID from Applicant a where a.employeeID =:employeeID", Job.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("employeeID", employeeID);
         return Optional.ofNullable(query.getResultList());
+    }
+
+    @Override
+    public int getPageNumberForAppliedJobs(Employee employee, int pageSize) {
+        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(a) FROM Applicant a WHERE a.employeeID =:employee", Long.class);
+        filteredQuery.setParameter("employee", employee);
+        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
     }
 
     @Override
@@ -61,6 +68,8 @@ public class ApplicantJpaDao implements ApplicantDao{
         return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
 
     }
+
+
 
     @Override
     public int changeStatus(int status, Employee employee, Job job) {

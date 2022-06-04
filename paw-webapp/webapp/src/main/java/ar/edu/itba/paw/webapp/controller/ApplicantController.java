@@ -27,7 +27,7 @@ import java.util.Optional;
 @Controller
 public class ApplicantController {
 
-    private final int PAGE_SIZE = 1;
+    private final int PAGE_SIZE = 4;
 
     @Autowired
     JobService jobService;
@@ -86,7 +86,10 @@ public class ApplicantController {
         if (page == null)
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<List<Job>> list = applicantService.getJobsByApplicant(principal.getUserID());
+        Optional<List<Job>> list = applicantService.getJobsByApplicant(principal.getUserID(), page, PAGE_SIZE);
+        mav.addObject("page", page);
+        mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
+
 
         if (list.isPresent()) {
             for (Job job : list.get()) {

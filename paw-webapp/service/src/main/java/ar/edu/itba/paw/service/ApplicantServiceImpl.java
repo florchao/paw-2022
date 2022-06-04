@@ -44,9 +44,15 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Job>> getJobsByApplicant(long employeeID) {
+    public Optional<List<Job>> getJobsByApplicant(long employeeID, Long page, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
-        return employee.flatMap(value -> applicantDao.getJobsByApplicant(value));
+        return employee.flatMap(value -> applicantDao.getJobsByApplicant(value, page, pageSize));
+    }
+
+    @Override
+    public int getPageNumberForAppliedJobs(Long employeeId, int pageSize) {
+        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
+        return applicantDao.getPageNumberForAppliedJobs(employee.get(), pageSize);
     }
 
     //todo hay que adaptarla con los parmetros

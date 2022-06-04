@@ -12,11 +12,13 @@ public interface ApplicantDao {
 
     Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize);
 
-    Optional<List<Job>> getJobsByApplicant(Employee employeeID);
+    Optional<List<Job>> getJobsByApplicant(Employee employeeID, Long page, int pageSize);
 
     int changeStatus(int status, Employee employee, Job job);
 
     Optional<Boolean> existsApplicant(Employee employeeId, Job jobId);
 
     int getPageNumber(long jobID, int pageSize);
+
+    int getPageNumberForAppliedJobs(Employee employee, int pageSize);
 }
