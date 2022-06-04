@@ -63,7 +63,7 @@ public class Job implements Serializable {
         this.description = description;
     }
 
-    public Job(String title, String location, long jobId, Employer employerId,List<String> availabilityArr, long experienceYears, List<String> abilitiesArr, String description) {
+    public Job(String title, String location, long jobId, Employer employerId,List<String> availabilityArr, long experienceYears, List<String> abilitiesArr, String description, boolean opened) {
         this.title = title;
         this.location = location;
         this.jobId = jobId;
@@ -72,6 +72,7 @@ public class Job implements Serializable {
         this.description = description;
         this.availabilityArr = availabilityArr;
         this.abilitiesArr = abilitiesArr;
+        this.opened = opened;
     }
 
     public Job(String title, String location, long jobId, String availability, long experienceYears, String abilities, String description) {

@@ -44,7 +44,7 @@ public class JobServiceImpl implements JobService{
         System.out.println("EN EL IMPL DEL SERVICE" + job.isOpened());
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(job.getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(job.getAbilities().split(",")));
-        Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), job.getEmployerId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription());
+        Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), job.getEmployerId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription(), job.isOpened());
         return Optional.of(aux);
     }
 

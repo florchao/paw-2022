@@ -105,9 +105,9 @@
                     <sec:authorize access="hasAuthority('EMPLOYER')">
                         <c:if test="${job.opened}">
                             <form:form action="${closePath}" method="post">
-                                <button type="submit" class="text-sm focus:outline-none text-violet-900 bg-yellow-500 hover:bg-yellow-700 font-small rounded-lg text-sm px-5 py-2.5">
+                                <button type="submit" class="text-sm focus:outline-none text-purple-700 bg-yellow-300 border-violet-700 hover:bg-yellow-200 font-small rounded-lg text-sm px-5 py-2.5">
                                     <div class="grid grid-rows-1 grid-cols-3">
-                                        <img src="<c:url value='/public/editing.png'/>" alt="edit" class="mr-3 h-6 sm:h-5 col-start-1">
+                                        <img src="<c:url value='/public/editing_purple.png'/>" alt="edit" class="mr-3 h-6 sm:h-5 col-start-1">
                                         <p class="col-span-2"><spring:message code="viewJob.close"/></p>
                                     </div>
                                 </button>
