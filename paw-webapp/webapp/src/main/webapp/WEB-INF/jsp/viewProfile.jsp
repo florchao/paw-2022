@@ -68,9 +68,7 @@
                         <form:form method="post" action="${postPath}">
                             <input type="number" name="rating"/>
                         </form:form>
-                        <c:if test="${voteCount != null}">
-                            <c:out value="(${voteCount})"/>
-                        </c:if>
+                        <c:out value="${rating}"/>
                         <c:out value="(${voteCount})"/>
                     </div>
                 </sec:authorize>

@@ -36,4 +36,6 @@ public interface EmployeeService {
     float updateRating(long employeeId, Long rating);
 
     long getRatingVoteCount(long idRating);
+
+    float getRating(long employeeId);
 }

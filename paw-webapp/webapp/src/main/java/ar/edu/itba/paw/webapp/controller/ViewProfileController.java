@@ -100,6 +100,8 @@ public class ViewProfileController {
             maxPage = reviewService.getPageNumber(userId, null, PAGE_SIZE);
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
         }
+        mav.addObject("rating", employeeService.getRating(userId));
+        mav.addObject("voteCount",employeeService.getRatingVoteCount(userId));
         List<Review> reviewsWithUpperCase = null;
         if (reviews.isPresent()) {
             //TODO SE ROMPE ESTO

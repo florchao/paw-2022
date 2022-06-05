@@ -140,4 +140,9 @@ public class EmployeeServiceImpl implements EmployeeService{
     public long getRatingVoteCount(long idRating) {
         return employeeDao.getRatingVoteCount(idRating);
     }
+
+    @Override
+    public float getRating(long employeeId) {
+        return employeeDao.getPrevRating(employeeId);
+    }
 }
