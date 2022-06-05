@@ -76,6 +76,46 @@ public class MailingServiceImpl implements MailingService{
         sendEmail(mimeMessage, new ArrayList<>(), subject, message, from);
     }
 
+    private void sendRejection(String to, String title){
+        MimeMessage mimeMessage = new MimeMessage(session);
+        String subject = "Lamentamos informarle que no fue aceptado/a para " + title;
+        String message = "<div style = \"justify-content: center;\n" +
+                "  align-items: center;\">\n" +
+                "<h1 style=\"color: #a78bfa;\">No has sido aceptado/a</h1>\n" +
+                "<p>&iexcl;No te preocupes, hay muchas mas opciones para vos! Para ir a verlas</p>\n" +
+                "  <a href=\"http://pawserver.it.itba.edu.ar/paw-2022a-02//trabajos\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
+                "        onmouseout=\"mouseout()\" style=\"color: #581c87; background-color: #a78bfa;\n" +
+                "  padding: 14px 40px;\n" +
+                "  border-radius: 8px;\n" +
+                "  cursor: pointer;\n" +
+                "  font-family: Arial, Helvetica, sans-serif;\n" +
+                "  font-size: 14px; \"> Haz click aqu&iacute; </button></a>\n" +
+                "</div>";
+        sendEmail(mimeMessage, Collections.singletonList(to), subject, message, null);
+    }
+
+    private void sendAcceptance(String to, String from, String title){
+        MimeMessage mimeMessage = new MimeMessage(session);
+        String subject = "¡Felicitaciones!";
+        String message = String.format("<div style = \"justify-content: center;\n" +
+                "  align-items: center;\">\n" +
+                "<h1 style=\"color: #a78bfa;\">&iexcl;Nos emociona contarte que has sido aceptado/a para %s!</h1>\n" +
+                "<p>Nos alegra mucho esta noticia y esperamos que este trabajo sea todo lo que estas buscando.</p>\n" +
+                "<p>Para conectarte con tu nuevo empleador podes contestar este mail o escribirle a %s</p>\n" +
+                "</div>",title, from);
+        sendEmail(mimeMessage, Collections.singletonList(to), subject, message, from);
+    }
+
+    @Override
+    @Async
+    public void sendChangeStatus(int status, String to, String from, String title) {
+        if(status == 1)
+            sendAcceptance(to, from, title);
+        else if (status == 2) {
+            sendRejection(to, title);
+        }
+    }
+
     private void sendEmail(Message mimeMessage, List<String> to, String subject, String message, String from) {
         try {
             String SERVER_MAIL = "hogarempleos22@gmail.com";

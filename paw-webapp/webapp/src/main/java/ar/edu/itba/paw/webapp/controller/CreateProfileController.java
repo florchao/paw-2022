@@ -53,7 +53,7 @@ public class CreateProfileController {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.setName(form.getName());
         LOGGER.debug(String.format("employee created under userid %d", principal.getUserID()));
-        return new ModelAndView("redirect:/verPerfil/"+employee.getId().getId());
+        return new ModelAndView("redirect:/verPerfil");
     }
 
     @RequestMapping(value = "/crearPerfilEmpleador/{userID}", method = {RequestMethod.GET})

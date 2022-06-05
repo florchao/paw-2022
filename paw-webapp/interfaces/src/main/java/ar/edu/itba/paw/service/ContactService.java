@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Contact;
+import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 
@@ -19,6 +21,8 @@ public interface ContactService {
     void contact(User to, String message, String name, String phoneNumber);
 
     void contactUS(String message, String from, String name);
+
+    void changedStatus(int status, Job job, Employee employee);
 
     Optional<Boolean> existsContact(long employeeId, long employerId);
 }

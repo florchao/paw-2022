@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.Contact;
-import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Employer;
-import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.persistence.ContactDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +70,12 @@ public class ContactServiceImpl implements ContactService{
     @Override
     public void contactUS(String message, String from, String name) {
         mailingService.sendContactUsMail(name, from, message);
+    }
+
+    @Transactional
+    @Override
+    public void changedStatus(int status, Job job, Employee employee) {
+        mailingService.sendChangeStatus(status, employee.getId().getEmail(), job.getEmployerId().getId().getEmail(), job.getTitle());
     }
 
     @Override

@@ -79,10 +79,10 @@
                                                     </form:form>
                                                 </c:when>
                                                 <c:when test="${applicant.status == 1}">
-                                                    <p class="font-semibold text-lg text-green-400"><spring:message code="applicants.accepted"/></p>
+                                                    <p class="font-semibold text-lg text-green-400 px-8"><spring:message code="applicants.accepted"/></p>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <p class="font-semibold text-lg text-rose-400"><spring:message code="applicants.rejected"/></p>
+                                                    <p class="font-semibold text-lg text-rose-400 px-8"><spring:message code="applicants.rejected"/></p>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>

@@ -1,14 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Applicant;
-import ar.edu.itba.paw.model.Contact;
-import ar.edu.itba.paw.model.Job;
-import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
-import ar.edu.itba.paw.service.ApplicantService;
-import ar.edu.itba.paw.service.EmployerService;
-import ar.edu.itba.paw.service.JobService;
-import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +33,12 @@ public class ApplicantController {
 
     @Autowired
     EmployerService employerService;
+
+    @Autowired
+    EmployeeService employeeService;
+
+    @Autowired
+    ContactService contactService;
 
     @Autowired
     ApplicantService applicantService;
@@ -74,10 +74,12 @@ public class ApplicantController {
 
     @RequestMapping(value = "/changeStatus/{jobId}/{employeeId}/{status}", method = {RequestMethod.POST})
     ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status){
-        System.out.println("STATUS");
-        int aaaaa = applicantService.changeStatus(status, employeeId, jobId);
-        System.out.print("AFTER: ");
-        System.out.println(aaaaa);
+        applicantService.changeStatus(status, employeeId, jobId);
+        Optional<Job> job = jobService.getJobByID(jobId);
+        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
+        if(job.isPresent() && employee.isPresent()){
+            contactService.changedStatus(status, job.get(), employee.get());
+        }
         return new ModelAndView("redirect:/aplicantes/" + jobId);
     }
 
