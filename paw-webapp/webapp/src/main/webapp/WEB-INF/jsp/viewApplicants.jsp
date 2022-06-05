@@ -72,17 +72,17 @@
                                             <c:choose>
                                                 <c:when test="${applicant.status == 0}">
                                                     <form:form action="${accept}" method="post">
-                                                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Aceptar</button>
+                                                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="applicants.accept"/></button>
                                                     </form:form>
                                                     <form:form action="${refuse}" method="post">
-                                                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Rechazar</button>
+                                                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="applicants.reject"/></button>
                                                     </form:form>
                                                 </c:when>
                                                 <c:when test="${applicant.status == 1}">
-                                                    <p>Aceptada</p>
+                                                    <p class="font-semibold text-lg text-green-400"><spring:message code="applicants.accepted"/></p>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <p>Rechazada</p>
+                                                    <p class="font-semibold text-lg text-rose-400"><spring:message code="applicants.rejected"/></p>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
