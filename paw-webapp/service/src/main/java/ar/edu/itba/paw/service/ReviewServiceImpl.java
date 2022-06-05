@@ -37,7 +37,11 @@ public class ReviewServiceImpl implements ReviewService{
     @Transactional(readOnly = true)
     @Override
     public Optional<Review> getMyReview(long employeeId, long id) {
-        Optional<Review> review =  reviewDao.getMyReview(employeeId, id);
-        return review;
+        return reviewDao.getMyReview(employeeId, id);
+    }
+
+    @Override
+    public Optional<List<Review>> getMyProfileReviews(long employeeId) {
+        return reviewDao.getMyProfileReviews(employeeId);
     }
 }

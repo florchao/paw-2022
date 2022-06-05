@@ -69,4 +69,14 @@ public class ReviewJpaDao implements ReviewDao{
         return Optional.empty();
     }
 
+    @Override
+    public Optional<List<Review>> getMyProfileReviews(long employeeId) {
+        Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
+        if (employee.isPresent()){
+            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId ", Review.class);
+            query.setParameter("employeeId", employee.get());
+            return Optional.ofNullable(query.getResultList());
+        }
+        return Optional.empty();
+    }
 }

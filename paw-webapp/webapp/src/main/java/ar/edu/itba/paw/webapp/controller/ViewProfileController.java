@@ -59,6 +59,9 @@ public class ViewProfileController {
             employee.ifPresent(Employee::firstWordsToUpper);
             employee.ifPresent(value -> mav.addObject("employee", value));
             mav.addObject("userId", user.get().getId());
+            Optional<List<Review>> myReviews = reviewService.getMyProfileReviews(user.get().getId());
+            //todo pasar a mayusculas
+            myReviews.ifPresent(reviews -> mav.addObject("ReviewList", reviews));
         }
         return mav;
     }

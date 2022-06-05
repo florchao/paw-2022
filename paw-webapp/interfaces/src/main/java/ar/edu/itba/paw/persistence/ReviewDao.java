@@ -12,5 +12,6 @@ public interface ReviewDao {
 
     int getPageNumber(long employeeId, Long id, int pageSize);
 
+    Optional<List<Review>> getMyProfileReviews(long employeeId);
     Optional<Review> getMyReview(long employeeId, long id);
 }
