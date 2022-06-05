@@ -64,6 +64,14 @@
                         <c:if test="${contacted != null && contacted}">
                             <p class="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.alreadyConnected"/></p>
                         </c:if>
+                        <c:url value="/addRating/${employee.id.id}" var="postPath"/>
+                        <form:form method="post" action="${postPath}">
+                            <input type="number" name="rating"/>
+                        </form:form>
+                        <c:if test="${voteCount != null}">
+                            <c:out value="(${voteCount})"/>
+                        </c:if>
+                        <c:out value="(${voteCount})"/>
                     </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE')">

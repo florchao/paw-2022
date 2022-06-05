@@ -135,4 +135,16 @@ public class ViewProfileController {
         InputStream is = new ByteArrayInputStream(image.get());
         IOUtils.copy(is,response.getOutputStream());
     }
+
+    @RequestMapping(value = "/addRating/{idRating}", method = {RequestMethod.POST})
+    ModelAndView addRating(@RequestParam(value = "rating", required = false) Long rating,
+                           @PathVariable final long idRating) {
+
+        float finalRating = employeeService.updateRating(idRating, rating);
+        long voteCount = employeeService.getRatingVoteCount(idRating);
+        final ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+idRating);
+        mav.addObject("rating",finalRating);
+        mav.addObject("voteCount", voteCount);
+        return mav;
+    }
 }

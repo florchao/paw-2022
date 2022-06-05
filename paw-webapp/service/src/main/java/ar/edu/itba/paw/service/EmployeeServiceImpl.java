@@ -117,8 +117,27 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-//        System.out.println("aka en service");
-//        System.out.println(experienceYears);
         return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
+    }
+
+    @Transactional
+    @Override
+    public float updateRating(long employeeId, Long rating) {
+
+        float prevRating = employeeDao.getPrevRating(employeeId);
+        float voteCount = employeeDao.getRatingVoteCount(employeeId);
+
+        float newRating = (prevRating*voteCount + rating) / (voteCount+1L);
+
+        employeeDao.updateRating(employeeId, newRating);
+
+        employeeDao.incrementVoteCountValue(employeeId);
+
+        return newRating;
+    }
+
+    @Override
+    public long getRatingVoteCount(long idRating) {
+        return employeeDao.getRatingVoteCount(idRating);
     }
 }

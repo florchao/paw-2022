@@ -20,4 +20,12 @@ public interface EmployeeDao {
     Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities,Long page, long pageSize);
 
     int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long pageSize);
+
+    void updateRating(long employeeId, float rating);
+
+    float getPrevRating(long employeeId);
+
+    long getRatingVoteCount(long employeeId);
+
+    void incrementVoteCountValue(long employeeId);
 }

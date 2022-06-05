@@ -25,6 +25,10 @@ public class Employee implements Serializable {
     private String abilities;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> abilitiesArr;
+    @Column(nullable = false)
+    private float rating;
+    @Column(nullable = false)
+    private long voteCount;
 
     public Employee() {
     }
@@ -76,6 +80,22 @@ public class Employee implements Serializable {
 
     public void setExperienceYears(long experienceYears) {
         this.experienceYears = experienceYears;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(long rating) {
+        this.rating = rating;
+    }
+
+    public long getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(long voteCount) {
+        this.voteCount = voteCount;
     }
 
     public String getAbilities() {
