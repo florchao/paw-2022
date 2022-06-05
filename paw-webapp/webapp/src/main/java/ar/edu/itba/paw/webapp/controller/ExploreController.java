@@ -48,19 +48,27 @@ public class ExploreController {
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
             throw new AccessIsDeniedException("Acces is denied");
         Authentication authority = SecurityContextHolder.getContext().getAuthentication();
-        HogarUser user = (HogarUser) authority.getPrincipal();
+
+        System.out.println("despues?");
+        boolean anonymousSession = true;
+        if (!auth.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+            anonymousSession = false;
+        }
+
         if (page == null)
             page = 0L;
         Map<Employee, Boolean> list = new HashMap<>();
         List<Experience> experiencesList = null;
         for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE).get()) {
             employee.firstWordsToUpper();
-            Optional<Boolean> connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
-            if(connection.isPresent() && connection.get()){
-                list.put(employee, true);
-            }
-            else{
-                list.put(employee, false);
+            list.put(employee, false);
+            if (!anonymousSession) {
+                HogarUser user = (HogarUser) authority.getPrincipal();
+                Optional<Boolean> connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
+                if(connection.isPresent() && connection.get()){
+                    System.out.println("cargando adentro" + employee);
+                    list.put(employee, true);
+                }
             }
         }
         final ModelAndView mav = new ModelAndView("searchPage");
