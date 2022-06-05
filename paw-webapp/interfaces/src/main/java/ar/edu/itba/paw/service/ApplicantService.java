@@ -13,7 +13,8 @@ public interface ApplicantService {
     Optional<List<Applicant>> getApplicantsByJob(long jobID, Long page, int pageSize);
     int getPageNumber(long jobID, int pageSize);
     void apply(long jobID, User user);
-    Optional<List<Job>> getJobsByApplicant(long employeeID);
+    Optional<List<Job>> getJobsByApplicant(long employeeID, Long page, int pageSize);
+    int getPageNumberForAppliedJobs(Long employeeId, int pageSize);
 
     int changeStatus(int status, long employeeId, long jobId);
 

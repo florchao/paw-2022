@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.UserService;
@@ -32,6 +33,9 @@ public class JobController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ApplicantService applicantService;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE = 8;
 
@@ -81,6 +85,7 @@ public class JobController {
             job.get().firstWordsToUpper();
             mav.addObject("name", employerName);
             mav.addObject("job", job.get());
+            System.out.println("OPENED STATUS JOB " + job.get().isOpened());
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
@@ -103,17 +108,18 @@ public class JobController {
         HogarUser user = (HogarUser) authority.getPrincipal();
         if (page == null)
             page = 0L;
-        Map<Job, Boolean> jobList = new HashMap<>();
+        Map<Job, Integer> jobList = new HashMap<>();
         Optional<List<Job>> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
         if (opJob.isPresent()) {
             for (Job job : opJob.get()) {
                 Optional<Boolean> applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
                 job.firstWordsToUpper();
                 if(applied.isPresent() && applied.get()) {
-                    jobList.put(job, true);
+                    int status = applicantService.getStatus(user.getUserID(), job.getJobId());
+                    jobList.put(job, status);
                 }
                 else {
-                    jobList.put(job, false);
+                    jobList.put(job, -1);
                 }
             }
         }
@@ -149,5 +155,17 @@ public class JobController {
     public ModelAndView deleteJob(@PathVariable final long jobId){
         jobService.deleteJob(jobId);
         return new ModelAndView("redirect:/misTrabajos");
+    }
+
+    @RequestMapping(value = "/closeJob/{jobId}", method = {RequestMethod.POST})
+    public ModelAndView closeJob(@PathVariable final long jobId){
+        jobService.closeJob(jobId);
+        return new ModelAndView("redirect:/trabajo/" + jobId);
+    }
+
+    @RequestMapping(value = "/openJob/{jobId}", method = {RequestMethod.POST})
+    public ModelAndView openJob(@PathVariable final long jobId){
+        jobService.openJob(jobId);
+        return new ModelAndView("redirect:/trabajo/" + jobId);
     }
 }
