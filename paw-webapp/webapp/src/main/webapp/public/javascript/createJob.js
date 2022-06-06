@@ -1,5 +1,4 @@
 function validateExpYears() {
-    console.log("algo")
     var el = document.getElementById('expYears');
     if (el.value ==="") {
         el.value=0;

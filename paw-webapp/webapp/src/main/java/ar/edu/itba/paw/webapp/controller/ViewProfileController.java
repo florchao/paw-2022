@@ -141,7 +141,8 @@ public class ViewProfileController {
     @RequestMapping(value = "/addRating/{idRating}", method = {RequestMethod.POST})
     ModelAndView addRating(@RequestParam(value = "rating", required = false) Long rating,
                            @PathVariable final long idRating) {
-
+        if (rating == null)
+            rating = 0L;
         float finalRating = employeeService.updateRating(idRating, rating);
         long voteCount = employeeService.getRatingVoteCount(idRating);
         final ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+idRating);
