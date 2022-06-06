@@ -34,11 +34,19 @@ public class ReviewJpaDao implements ReviewDao{
     @Override
     public Optional<List<Review>> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
         Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
-        Optional<Employer> employer=  Optional.ofNullable(em.find(Employer.class, id));
-        if(employee.isPresent() && employer.isPresent()) {
-            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId and u.employerId <>:employerId", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+        if(id!=null) {
+            Optional<Employer> employer = Optional.ofNullable(em.find(Employer.class, id));
+            if (employee.isPresent() && employer.isPresent()) {
+                final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId and u.employerId <>:employerId", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+                query.setParameter("userId", employee.get());
+                query.setParameter("employerId", employer.get());
+                return Optional.ofNullable(query.getResultList());
+            }
+            return Optional.empty();
+        }
+        if(employee.isPresent()) {
+            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
             query.setParameter("userId", employee.get());
-            query.setParameter("employerId", employer.get());
             return Optional.ofNullable(query.getResultList());
         }
         return Optional.empty();
@@ -47,9 +55,14 @@ public class ReviewJpaDao implements ReviewDao{
     @Override
     public int getPageNumber(long employeeId, Long id, int pageSize) {
         Employee employee = em.find(Employee.class, employeeId);
-        Employer employer = em.find(Employer.class, id);
-        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employeeId =:employee and u.employerId <>:employer", Long.class);
-        filteredQuery.setParameter("employer", employer);
+        if(id != null) {
+            Employer employer = em.find(Employer.class, id);
+            TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employeeId =:employee and u.employerId <>:employer", Long.class);
+            filteredQuery.setParameter("employer", employer);
+            filteredQuery.setParameter("employee", employee);
+            return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
+        }
+        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employeeId =:employee", Long.class);
         filteredQuery.setParameter("employee", employee);
         return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
     }
