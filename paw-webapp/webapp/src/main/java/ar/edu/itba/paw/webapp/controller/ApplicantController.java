@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -90,6 +92,7 @@ public class ApplicantController {
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<List<Job>> list = applicantService.getJobsByApplicant(principal.getUserID(), page, PAGE_SIZE);
+        Map<Job, Integer> jobList = new HashMap<>();
         mav.addObject("page", page);
         mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
 
@@ -97,11 +100,11 @@ public class ApplicantController {
         if (list.isPresent()) {
             for (Job job : list.get()) {
                 job.firstWordsToUpper();
+                int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
+                jobList.put(job, status);
             }
+            mav.addObject("jobList", jobList);
         }
-
-        list.ifPresent(jobs -> mav.addObject("JobsList", jobs));
-
         return mav;
     }
 }
