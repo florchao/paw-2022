@@ -1,18 +1,35 @@
 package ar.edu.itba.paw.model;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
-public class Employee {
+@Entity(name = "Employee")
+@Table(name = "employee")
+public class Employee implements Serializable {
+    @Column(length = 100, nullable = false)
     private String name;
+    @Column(length = 100, nullable = false)
     private String location;
-    private long id;
+    @OneToOne
+    @EmbeddedId
+    @JoinColumn(name = "employeeID", nullable = false)
+    private User id;
+    @Column(length = 100, nullable = false)
     private String availability;
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> availabilityArr;
+    @Column(nullable = false)
     private long experienceYears;
+    @Column(length = 100, nullable = false)
     private String abilities;
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> abilitiesArr;
 
-    public Employee(String name, String location, long id, String availability, long experienceYears, String abilities) {
+    public Employee() {
+    }
+
+    public Employee(String name, String location, User id, String availability, long experienceYears, String abilities) {
         this.name = name;
         this.location = location;
         this.id = id;
@@ -20,7 +37,7 @@ public class Employee {
         this.experienceYears = experienceYears;
         this.abilities = abilities;
     }
-    public Employee(String name, String location, long id, List<String> availabilityArr, long experienceYears, List<String> abilitiesArr) {
+    public Employee(String name, String location, User id, List<String> availabilityArr, long experienceYears, List<String> abilitiesArr) {
         this.name = name;
         this.location = location;
         this.id = id;
@@ -45,11 +62,11 @@ public class Employee {
         this.location = location;
     }
 
-    public long getId() {
+    public User getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(User id) {
         this.id = id;
     }
 

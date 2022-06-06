@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.Optional;
-
+        /*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
@@ -26,9 +26,10 @@ public class EmployerJbcDaoTest {
     DataSource dataSource;
 
     @Autowired
-    private EmployerJdbcDao employerJdbcDao;
+    private EmployerJpaDao employerJdbcDao;
 
     private JdbcTemplate jdbcTemplate;
+
 
     @Before
     public void setUp(){
@@ -63,5 +64,7 @@ public class EmployerJbcDaoTest {
         Assert.assertEquals(NAME, employer.get().getName());
 
     }
-
 }
+     */
+
+

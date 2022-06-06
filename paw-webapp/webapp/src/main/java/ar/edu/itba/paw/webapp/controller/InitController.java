@@ -22,7 +22,6 @@ public class InitController {
 
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private EmployerService employerService;
 

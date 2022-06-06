@@ -12,12 +12,10 @@ public class ContactUsForm {
     @NotBlank
     @Size(max = 100)
     private String name;
-
     @Email
     @NotBlank
     // source: https://www.w3resource.com/javascript/form/email-validation.php
     private String mail;
-
     @NotBlank
     private String content;
 

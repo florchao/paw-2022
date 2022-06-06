@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.service.ContactService;
@@ -28,16 +29,12 @@ import java.util.Optional;
 public class ContactController {
 
     private final int PAGE_SIZE = 4;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private ContactService contactService;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
     @RequestMapping(value = "/contactos", method = {RequestMethod.GET})
@@ -46,19 +43,16 @@ public class ContactController {
         if (page == null)
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
-        if (list.isPresent()) {
-            for (Contact contact : list.get()) {
-                contact.firstWordsToUpper();
-            }
+        List<Contact> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
+        for (Contact contact : list) {
+            contact.firstWordsToUpper();
         }
-        list.ifPresent(contacts -> mav.addObject("ContactList", contacts));
+        mav.addObject("ContactList", list);
         mav.addObject("page", page);
         int maxPage = contactService.getPageNumber(principal.getUserID(), PAGE_SIZE);
-        System.out.println("mi page number es: "+page);
-        System.out.println("mi maxPage number es: "+maxPage);
-//        mav.addObject("maxPage",contactService.getPageNumber(principal.getUserID(), PAGE_SIZE));
         mav.addObject("maxPage", maxPage);
+        System.out.println("mi page es: " + page);
+        System.out.println("mi maxPage es: " + maxPage);
         return mav;
     }
 

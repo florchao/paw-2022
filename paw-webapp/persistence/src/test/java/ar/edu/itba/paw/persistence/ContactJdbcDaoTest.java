@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.Date;
 
+   /*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
@@ -25,7 +26,7 @@ public class ContactJdbcDaoTest {
     DataSource dataSource;
 
     @Autowired
-    private ContactJdbcDao contactJdbcDao;
+    private ContactJpaDao contactJdbcDao;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -54,6 +55,8 @@ public class ContactJdbcDaoTest {
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "contact"));
 
     }
-
-
 }
+    */
+
+
+

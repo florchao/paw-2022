@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.service.ApplicantService;
+import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -18,74 +21,82 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class JobController {
     @Autowired
-    JobService jobService;
-
+    private JobService jobService;
     @Autowired
-    UserService userService;
+    private EmployerService employerService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ApplicantService applicantService;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE = 8;
 
     @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
-    ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
+    public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
         return new ModelAndView("createJob");
     }
 
     @RequestMapping(value = "/createJob", method = RequestMethod.POST)
-    ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
-        if(errors.hasErrors()) {
-            LOGGER.debug("couldn't create job");
-            return crearTrabajo(form);
+    public ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
+        if(!errors.hasErrors()) {
+            HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                Job job = jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
+                LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
+                return new ModelAndView("redirect:/trabajo/" + job.getJobId());
         }
-        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Job job = jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
-        LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
-        return new ModelAndView("redirect:/trabajo/" + job.getJobId());
+        LOGGER.debug("couldn't create job");
+        return crearTrabajo(form);
     }
 
     @RequestMapping(value = "/misTrabajos", method = {RequestMethod.GET})
-    ModelAndView verTrabajos(){
+    public ModelAndView verTrabajos(){
         ModelAndView mav = new ModelAndView("publishedJobs");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<List<Job>> jobs = jobService.getUserJobs(principal.getUserID());
-        List<Job> jobList = new ArrayList<>();
-        if (jobs.isPresent()) {
-            for (Job job : jobs.get()) {
-                job.firstWordsToUpper();
-                jobList.add(job);
-            }
+        Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
+        if(employer.isPresent()) {
+            List<Job> jobs = jobService.getUserJobs(employer.get());
+            List<Job> jobList = new ArrayList<>();
+                for (Job job : jobs) {
+                    job.firstWordsToUpper();
+                    jobList.add(job);
+                }
+            mav.addObject("JobList", jobList);
+            return mav;
         }
-        mav.addObject("JobList", jobList);
-        return mav;
+        return null;
     }
 
     @RequestMapping(value = "/trabajo/{id}", method = {RequestMethod.GET})
-    ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
+    public ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
+        int jobStatus = -1;
         if (job.isPresent()) {
-            job.get().employerNameToUpper();
+            job.get().employerNameToUpper(job.get().getEmployerId());
             job.get().firstWordsToUpper();
             mav.addObject("job", job.get());
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
-        Optional<Boolean> exists = jobService.alreadyApplied(id, principal.getUserID());
-        exists.ifPresent(aBoolean -> mav.addObject("alreadyApplied", aBoolean));
-        System.out.println(exists.get());
+        Boolean existsApplied = jobService.alreadyApplied(id, principal.getUserID());
+        System.out.println(existsApplied);
+        if(existsApplied && job.isPresent()){
+            jobStatus = applicantService.getStatus(principal.getUserID(), job.get().getJobId());
+            System.out.println(jobStatus);
+        }
+        System.out.println(jobStatus);
+        mav.addObject("alreadyApplied", jobStatus);
         mav.addObject("status", status);
         return mav;
     }
 
     @RequestMapping(value = "/trabajos", method = {RequestMethod.GET})
-    ModelAndView searchJobs(
+    public ModelAndView searchJobs(
             @ModelAttribute("filterJobsBy") FilterForm jobForm,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "experienceYears", required = false) Long experienceYears,
@@ -93,18 +104,23 @@ public class JobController {
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "abilities", required = false) String abilities,
             @RequestParam(value = "page", required = false) Long page) {
+        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
+        HogarUser user = (HogarUser) authority.getPrincipal();
         if (page == null)
             page = 0L;
-        List<Job> jobList = new ArrayList<>();
-        Optional<List<Job>> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
-        if (opJob.isPresent()) {
-            for (Job job : opJob.get()) {
-                job.firstWordsToUpper();
-                jobList.add(job);
+        Map<Job, Integer> jobList = new HashMap<>();
+        List<Job> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
+        for (Job job : opJob) {
+            Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
+            job.firstWordsToUpper();
+            if(applied) {
+                int status = applicantService.getStatus(user.getUserID(), job.getJobId());
+                jobList.put(job, status);
+            }
+            else {
+                jobList.put(job, -1);
             }
         }
-
-
         final ModelAndView mav = new ModelAndView("searchJobs");
         mav.addObject("jobList", jobList);
         mav.addObject("page", page);
@@ -131,5 +147,23 @@ public class JobController {
             redirectAttributes.addAttribute("page", form.getPageNumber());
 
         return new ModelAndView("redirect:/trabajos");
+    }
+
+    @RequestMapping(value = "/deleteJob/{jobId}", method = {RequestMethod.POST, RequestMethod.DELETE})
+    public ModelAndView deleteJob(@PathVariable final long jobId){
+        jobService.deleteJob(jobId);
+        return new ModelAndView("redirect:/misTrabajos");
+    }
+
+    @RequestMapping(value = "/closeJob/{jobId}", method = {RequestMethod.POST})
+    public ModelAndView closeJob(@PathVariable final long jobId){
+        jobService.closeJob(jobId);
+        return new ModelAndView("redirect:/trabajo/" + jobId);
+    }
+
+    @RequestMapping(value = "/openJob/{jobId}", method = {RequestMethod.POST})
+    public ModelAndView openJob(@PathVariable final long jobId){
+        jobService.openJob(jobId);
+        return new ModelAndView("redirect:/trabajo/" + jobId);
     }
 }

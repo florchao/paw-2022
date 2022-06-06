@@ -1,14 +1,27 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Applicant;
+import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Job;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ApplicantDao {
     Applicant create(long jobID, long employeeID);
-    Optional<List<Applicant>> getApplicantsByJob(long jobID, Long page, int pageSize);
+
+    List<Applicant> getApplicantsByJob(Job jobID, Long page, int pageSize);
+
+    List<Job> getJobsByApplicant(Employee employeeID, Long page, int pageSize);
+
+    int changeStatus(int status, Employee employee, Job job);
+
+    Boolean existsApplicant(Employee employeeId, Job jobId);
+
     int getPageNumber(long jobID, int pageSize);
-    Optional<Applicant> getInfoMail(long jobID);
-    Optional<Boolean> existsApplicant(long employeeId, long jobId);
+
+    int getPageNumberForAppliedJobs(Employee employee, int pageSize);
+
+    int getStatus(Employee employee, Job job);
+
 }

@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+    /*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
@@ -40,7 +41,7 @@ public class EmployeeJdbcDaoTest {
     DataSource dataSource;
 
     @Autowired
-    private EmployeeJdbcDao employeeJdbcDao;
+    private EmployeeJpaDao employeeJdbcDao;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -188,6 +189,8 @@ public class EmployeeJdbcDaoTest {
 
 
     }
-
-
 }
+     */
+
+
+

@@ -50,12 +50,6 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div class="grid content-center justify-center">
-                <a href="<c:url value="/crearTrabajo"/>">
-                    <button type="button" class="text-lg focus:outline-none text-purple-700 bg-yellow-300 hover:bg-yellow-200 font-small rounded-lg text-lg px-5 py-2.5"><spring:message code="publishedJobs.addAnother"/></button>
-                </a>
-            </div>
-            <br/><br/>
             <div class="flex flex-wrap content-start justify-center h-screen pl-5 pr-5">
                 <c:forEach var="job" items="${JobList}">
                     <c:set var="job" value="${job}" scope="request"/>
@@ -69,16 +63,15 @@
                         </jsp:include>
                     </div>
                 </c:forEach>
+                <div class="grid content-center justify-center">
+                    <a href="<c:url value="/crearTrabajo"/>">
+                        <button type="button" class="text-lg focus:outline-none text-purple-700 bg-yellow-300 hover:bg-yellow-200 font-small rounded-lg text-lg px-5 py-2.5"><spring:message code="publishedJobs.addAnother"/></button>
+                    </a>
+                </div>
             </div>
+
         </c:otherwise>
     </c:choose>
-    <div class="fixed bottom-5 right-10">
-        <a href="<c:url value="/crearTrabajo"/>">
-            <button class="rounded-full text-3xl text-purple-700 h-14 w-14 bg-yellow-300 hover:bg-yellow-200">
-                +
-            </button>
-        </a>
-    </div>
 </div>
 
 </body>

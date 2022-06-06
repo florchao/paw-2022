@@ -28,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         }
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.get().getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.get().getAbilities().split(",")));
-        Employee aux = new Employee(employee.get().getName(), employee.get().getLocation(), id, availabilityArr, employee.get().getExperienceYears(), abilitiesArr);
+        Employee aux = new Employee(employee.get().getName(), employee.get().getLocation(), employee.get().getId(), availabilityArr, employee.get().getExperienceYears(), abilitiesArr);
         return Optional.of(aux);
     }
 
@@ -64,21 +64,23 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.create(id, name, location, availability, experienceYears, abilities, image);
     }
 
+
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Employee>> getEmployees() {
+    public List<Employee> getEmployees() {
         return employeeDao.getEmployees(0);
     }
 
     @Transactional(readOnly = true)
     @Override
     public void isEmployee(long id) {
-        Optional<Boolean> exists = employeeDao.isEmployee(id);
-        if(exists.isPresent() && exists.get() )
+        Boolean exists = employeeDao.isEmployee(id);
+        if(exists)
             return;
         throw new UserNotFoundException("Employee " + id + " not found");
     }
 
+    @Transactional
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
         List<String> availabilityList = new ArrayList<>();
@@ -92,8 +94,9 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.getPageNumber(name, experienceYears, location, experiences, availabilityList, abilitiesList, pageSize);
     }
 
+    @Transactional
     @Override
-    public Optional<List<Employee>> getFilteredEmployees(
+    public List<Employee> getFilteredEmployees(
             String name,
             Long experienceYears,
             String location,
