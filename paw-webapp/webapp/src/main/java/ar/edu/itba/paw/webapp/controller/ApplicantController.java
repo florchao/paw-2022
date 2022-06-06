@@ -59,6 +59,9 @@ public class ApplicantController {
         if (page == null)
             page = 0L;
         List<Applicant> list = applicantService.getApplicantsByJob(jobID,page,PAGE_SIZE);
+        for(Applicant applicant : list){
+            applicant.firstWordsToUpper(applicant.getEmployeeID());
+        }
         mav.addObject("ApplicantList", list);
         mav.addObject("title", jobService.getJobNameById(jobID));
         mav.addObject("page", page);
@@ -87,17 +90,13 @@ public class ApplicantController {
         Map<Job, Integer> jobList = new HashMap<>();
         mav.addObject("page", page);
         mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
-
-
-            for (Job job : list) {
-                job.firstWordsToUpper();
-                int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
-                jobList.put(job, status);
-            }
-            mav.addObject("jobList", jobList);
-
-        mav.addObject("JobsList", list);
-
+        for (Job job : list) {
+            job.firstWordsToUpper();
+            job.getEmployerId().firstWordsToUpper(job.getEmployerId());
+            int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
+            jobList.put(job, status);
+        }
+        mav.addObject("jobList", jobList);
         return mav;
     }
 }

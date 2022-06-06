@@ -76,11 +76,9 @@ public class JobController {
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
         if (job.isPresent()) {
-            String employerName = job.get().employerNameToUpper(job.get().getEmployerId());
+            job.get().employerNameToUpper(job.get().getEmployerId());
             job.get().firstWordsToUpper();
-            mav.addObject("name", employerName);
             mav.addObject("job", job.get());
-            System.out.println("OPENED STATUS JOB " + job.get().isOpened());
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();

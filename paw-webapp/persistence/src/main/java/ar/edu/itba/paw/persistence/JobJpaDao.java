@@ -116,6 +116,7 @@ public class JobJpaDao implements  JobDao{
     @Override
     public String getJobNameById(long jobID) {
        Job job = em.find(Job.class, jobID);
+       job.firstWordsToUpper();
        return job.getTitle();
     }
 

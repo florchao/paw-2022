@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,11 +53,15 @@ public class ViewProfileController {
         if(user.isPresent()){
             mav.addObject("user", user.get());
             Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
-            employee.ifPresent(Employee::firstWordsToUpper);
-            employee.ifPresent(value -> mav.addObject("employee", value));
+            if(employee.isPresent()){
+                employee.get().firstWordsToUpper();
+                mav.addObject("employee", employee.get());
+            }
             mav.addObject("userId", user.get().getId());
             List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId());
-            //todo pasar a mayusculas
+            for(Review rev : myReviews){
+                rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
+            }
              mav.addObject("ReviewList", myReviews);
         }
         return mav;
@@ -92,18 +97,21 @@ public class ViewProfileController {
             Boolean exists = contactService.existsContact(userId, user.getUserID());
             mav.addObject("contacted", exists);
             Optional<Review> myReview = reviewService.getMyReview(userId, user.getUserID());
-            myReview.ifPresent(review -> mav.addObject("myReview", review));
+            if(myReview.isPresent()){
+                myReview.get().getEmployerId().firstWordsToUpper(myReview.get().getEmployerId());
+                mav.addObject("myReview", myReview.get());
+            }
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
             maxPage = reviewService.getPageNumber(userId, user.getUserID(), PAGE_SIZE);
         } else {
             maxPage = reviewService.getPageNumber(userId, null, PAGE_SIZE);
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
         }
-        List<Review> reviewsWithUpperCase = reviews;
-        //TODO SE ROMPE ESTO
-        //reviewsWithUpperCase = reviews.get().stream().map(Review::firstWordsToUpper).collect(Collectors.toList()).;
-
-        mav.addObject("ReviewList", reviewsWithUpperCase);
+        for (Review rev : reviews) {
+            rev.firstWordsToUpper(rev);
+            rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
+        }
+        mav.addObject("ReviewList", reviews);
         mav.addObject("page", page);
         mav.addObject("maxPage", maxPage);
         return mav;
@@ -121,7 +129,6 @@ public class ViewProfileController {
 
     @RequestMapping(value = "/user/profile-image/{userId}", method = {RequestMethod.GET})
     public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
-        System.out.println("FOTO ID" + userId);
         Optional<byte[]> image = imagesService.getProfileImage(userId);
         if(!image.isPresent()){
             LOGGER.debug("User {} does not have an image", userId);

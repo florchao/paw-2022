@@ -187,13 +187,14 @@ public class Job implements Serializable {
         setTitle(finalName.toString());
     }
 
-    public String employerNameToUpper(Employer employerId) {
+    public void employerNameToUpper(Employer employerId) {
         StringBuilder finalName = new StringBuilder();
         for (String word : employerId.getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        return finalName.toString();
+        employerId.setName(finalName.toString());
+        return;
     }
 
     public boolean isOpened() {

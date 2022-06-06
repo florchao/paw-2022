@@ -74,12 +74,12 @@ public class Review implements Serializable {
         this.reviewId = reviewId;
     }
 
-    public String firstWordsToUpper() {
+    public void firstWordsToUpper(Review review) {
         StringBuilder finalName = new StringBuilder();
         for (String word : employerId.getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        return finalName.toString();
+        review.setReview(finalName.toString());
     }
 }

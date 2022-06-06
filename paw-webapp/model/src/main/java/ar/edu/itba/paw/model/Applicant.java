@@ -56,8 +56,16 @@ public class Applicant implements Serializable {
         return status;
     }
 
-
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public void firstWordsToUpper(Employee employee) {
+        StringBuilder finalName = new StringBuilder();
+        for (String word : employee.getName().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        employee.setName(finalName.toString());
     }
 }
