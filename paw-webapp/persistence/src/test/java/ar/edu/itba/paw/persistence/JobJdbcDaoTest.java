@@ -11,7 +11,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-
+        /*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
@@ -34,13 +34,13 @@ public class JobJdbcDaoTest {
     private static final long EXPERIENCE_YEARS = 10;
     private static final String DESCRIPTION = "Description";
 
+
     @Before
     public void setUp(){
         jdbcTemplate = new JdbcTemplate(dataSource);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "jobs");
     }
 
-    /*
 
     @Test
     public void testCreate(){
@@ -110,6 +110,6 @@ public class JobJdbcDaoTest {
 
 
     }
-
-     */
 }
+     */
+

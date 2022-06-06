@@ -13,7 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.Silent.class)
+/*@RunWith(MockitoJUnitRunner.Silent.class)
 public class JobServiceImplTest {
     @Mock
     private JobDao mockDao;
@@ -42,6 +42,6 @@ public class JobServiceImplTest {
         Assert.assertNotNull(jobEmployee);
         Assert.assertFalse(jobEmployee.isPresent());
     }
-
-     */
 }
+     */
+

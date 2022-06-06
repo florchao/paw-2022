@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
-
+    /*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
@@ -34,6 +34,7 @@ public class UserJdbcDaoTest {
     private UserJpaDao userJpaDao;
 
     private JdbcTemplate jdbcTemplate;
+
 
     @Before
     public void setUp(){
@@ -110,4 +111,7 @@ public class UserJdbcDaoTest {
         Assert.assertEquals(1, list.size());
     }
 
+
+
 }
+     */

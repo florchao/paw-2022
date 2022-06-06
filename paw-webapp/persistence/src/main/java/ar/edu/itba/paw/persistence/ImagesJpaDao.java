@@ -18,15 +18,17 @@ public class ImagesJpaDao implements ImagesDao{
 
     @Override
     public Optional<byte[]> getProfileImage(long userId) {
-       Images images = em.find(Images.class, userId);
-       return Optional.ofNullable(images.getImage());
+       Optional<Images> images = Optional.ofNullable(em.find(Images.class, userId));
+       if(images.isPresent())
+        return Optional.ofNullable(images.get().getImage());
+       return Optional.empty();
     }
 
     @Override
     public boolean updateProfileImage(long userId, byte[] image) {
-        Images images = em.find(Images.class, userId);
-        if(images != null){
-            images.setImage(image);
+        Optional<Images> images = Optional.ofNullable(em.find(Images.class, userId));
+        if(images.isPresent()){
+            images.get().setImage(image);
             return true;
         }
         return false;

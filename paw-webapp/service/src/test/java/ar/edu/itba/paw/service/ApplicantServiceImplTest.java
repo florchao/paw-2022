@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
-
+    /*
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ApplicantServiceImplTest {
     private static final long JOB_ID = 1;
@@ -25,7 +25,7 @@ public class ApplicantServiceImplTest {
     @InjectMocks
     private ApplicantService applicantService = new ApplicantServiceImpl();
 
-    /*
+
     @Test
     public void testCreate(){
         Mockito.when(mockDao.create(Mockito.eq(JOB_ID), Mockito.eq(EMPLOYEE_ID)))
@@ -38,7 +38,7 @@ public class ApplicantServiceImplTest {
         Assert.assertEquals(JOB_ID, applicant.get().getJobID());
         Assert.assertEquals(EMPLOYEE_ID, applicant.get().getEmployeeID());
     }
-
+}
      */
 
-}
+
