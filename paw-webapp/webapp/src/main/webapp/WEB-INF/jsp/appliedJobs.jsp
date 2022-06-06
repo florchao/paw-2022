@@ -1,11 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <script src="<c:url value="/public/javascript/utils.js"/>"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
 <html>
 <head>
@@ -51,7 +47,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div class="flex flex-wrap content-start justify-center h-screen pl-5 pr-5">
+            <div class="flex flex-wrap content-start justify-center">
                 <c:forEach var="entry" items="${jobList}">
                     <c:set var="job" value="${entry.key}" scope="request"/>
                     <c:set var="applied" value="${entry.value}" scope="request"/>
@@ -66,6 +62,8 @@
                         </jsp:include>
                     </div>
                 </c:forEach>
+            </div>
+            <div class="flex flex-row justify-center">
                 <c:url value="/trabajosAplicados" var="getPath"/>
                 <form method="get" action="${getPath}">
                     <c:if test="${maxPage > 0 && page + 1 <= maxPage}">

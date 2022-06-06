@@ -14,12 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class JobServiceImpl implements JobService{
     @Autowired
-    JobDao jobDao;
-
-    @Autowired
-    EmployerService employerService;
+    private JobDao jobDao;
 
     @Transactional
     @Override
@@ -31,7 +29,7 @@ public class JobServiceImpl implements JobService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Job>> getUserJobs(Employer employerID) {
+    public List<Job> getUserJobs(Employer employerID) {
         return jobDao.getUserJobs(employerID);
     }
 
@@ -49,7 +47,7 @@ public class JobServiceImpl implements JobService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, String availability, String abilities, Long page, long pageSize) {
+    public List<Job> getFilteredJobs(String name, Long experienceYears, String location, String availability, String abilities, Long page, long pageSize) {
         if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0) {
             return jobDao.getAllActiveJobs(pageSize);
         }
@@ -65,7 +63,7 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    public Optional<Boolean> alreadyApplied(long jobId, long employeeId) {
+    public Boolean alreadyApplied(long jobId, long employeeId) {
         return jobDao.alreadyApplied(jobId, employeeId);
     }
 

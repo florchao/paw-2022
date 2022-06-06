@@ -9,7 +9,6 @@ public class ContactForm {
     @Pattern(regexp = "[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
     // source: https://www.w3resource.com/javascript/form/email-validation.php
     private String phone;
-
     @NotBlank
     private String content;
 

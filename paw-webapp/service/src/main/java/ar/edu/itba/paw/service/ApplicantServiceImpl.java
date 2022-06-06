@@ -12,21 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ApplicantServiceImpl implements ApplicantService{
     @Autowired
-    ApplicantDao applicantDao;
+    private ApplicantDao applicantDao;
     @Autowired
-    JobDao jobDao;
-
+    private JobDao jobDao;
     @Autowired
-    EmployeeDao employeeDao;
-
+    private EmployeeDao employeeDao;
     @Autowired
-    MailingService mailingService;
+    private MailingService mailingService;
 
     @Transactional
     @Override
@@ -34,8 +33,8 @@ public class ApplicantServiceImpl implements ApplicantService{
         Optional<Job> job = jobDao.getJobById(jobID);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
         if(employee.isPresent() && job.isPresent()) {
-            Optional<Boolean> exists = applicantDao.existsApplicant(employee.get(), job.get());
-            if (exists.isPresent() && exists.get())
+            Boolean exists = applicantDao.existsApplicant(employee.get(), job.get());
+            if (exists)
                 throw new AlreadyExistsException("You already applied for this job");
             return applicantDao.create(jobID, employeeID);
         }
@@ -44,21 +43,24 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Job>> getJobsByApplicant(long employeeID, Long page, int pageSize) {
+    public List<Job> getJobsByApplicant(long employeeID, Long page, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
-        return employee.flatMap(value -> applicantDao.getJobsByApplicant(value, page, pageSize));
+       if(employee.isPresent()){
+           return applicantDao.getJobsByApplicant(employee.get(), page, pageSize);
+       }
+       return Collections.emptyList();
     }
 
     @Override
     public int getPageNumberForAppliedJobs(Long employeeId, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        return applicantDao.getPageNumberForAppliedJobs(employee.get(), pageSize);
+        return employee.map(value -> applicantDao.getPageNumberForAppliedJobs(value, pageSize)).orElse(0);
     }
 
     //todo hay que adaptarla con los parmetros
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Applicant>> getApplicantsByJob(long jobID, Long page, int pageSize) {
+    public List<Applicant> getApplicantsByJob(long jobID, Long page, int pageSize) {
         Optional<Job> job = jobDao.getJobById(jobID);
         return job.map(value -> applicantDao.getApplicantsByJob(value, page, pageSize)).orElse(null);
     }

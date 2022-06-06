@@ -10,13 +10,13 @@ import java.util.Optional;
 public interface ApplicantDao {
     Applicant create(long jobID, long employeeID);
 
-    Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize);
+    List<Applicant> getApplicantsByJob(Job jobID, Long page, int pageSize);
 
-    Optional<List<Job>> getJobsByApplicant(Employee employeeID, Long page, int pageSize);
+    List<Job> getJobsByApplicant(Employee employeeID, Long page, int pageSize);
 
     int changeStatus(int status, Employee employee, Job job);
 
-    Optional<Boolean> existsApplicant(Employee employeeId, Job jobId);
+    Boolean existsApplicant(Employee employeeId, Job jobId);
 
     int getPageNumber(long jobID, int pageSize);
 

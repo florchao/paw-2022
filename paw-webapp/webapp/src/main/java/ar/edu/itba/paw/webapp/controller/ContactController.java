@@ -29,16 +29,12 @@ import java.util.Optional;
 public class ContactController {
 
     private final int PAGE_SIZE = 4;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private ContactService contactService;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
     @RequestMapping(value = "/contactos", method = {RequestMethod.GET})
@@ -47,14 +43,11 @@ public class ContactController {
         if (page == null)
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
-
-        if (list.isPresent()) {
-            for (Contact contact : list.get()) {
-                contact.firstWordsToUpper();
-            }
+        List<Contact> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
+        for (Contact contact : list) {
+            contact.firstWordsToUpper();
         }
-        list.ifPresent(contacts -> mav.addObject("ContactList", contacts));
+        mav.addObject("ContactList", list);
         mav.addObject("page", page);
         int maxPage = contactService.getPageNumber(principal.getUserID(), PAGE_SIZE);
         mav.addObject("maxPage", maxPage);

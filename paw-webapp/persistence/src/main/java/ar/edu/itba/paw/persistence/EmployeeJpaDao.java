@@ -48,25 +48,21 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public Optional<List<Employee>> getEmployees(long pageSize) {
+    public List<Employee> getEmployees(long pageSize) {
         final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e", Employee.class)
                 .setFirstResult(0)
                 .setMaxResults((int) pageSize);
-        return Optional.ofNullable(employeeList.getResultList());
+        return employeeList.getResultList();
     }
 
     @Override
-    public Optional<Boolean> isEmployee(long id) {
+    public Boolean isEmployee(long id) {
         Optional<Employee> employee = getEmployeeById(id);
-        if(employee.isPresent()) {
-            if (employee.get().getId().getRole() == 1)
-                return Optional.of(true);
-        }
-        return Optional.of(false);
+        return employee.filter(value -> value.getId().getRole() == 1).isPresent();
     }
 
     @Override
-    public Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page, long pageSize) {
+    public List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page, long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT e FROM Employee e where ");
         if (name != null) {
@@ -91,8 +87,7 @@ public class EmployeeJpaDao implements EmployeeDao{
         }
         stringBuilder.setLength(stringBuilder.length() - 7);
         TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
-        System.out.println("FILTERED: "+ filteredQuery.getResultList());
-        return Optional.ofNullable(filteredQuery.getResultList());
+        return filteredQuery.getResultList();
     }
 
     @Override

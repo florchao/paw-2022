@@ -29,7 +29,6 @@ import java.util.*;
 public class ExploreController {
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private ContactService contactService;
     private final static long PAGE_SIZE = 4;
@@ -50,23 +49,19 @@ public class ExploreController {
         Authentication authority = SecurityContextHolder.getContext().getAuthentication();
 
         System.out.println("despues?");
-        boolean anonymousSession = true;
-        if (!auth.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
-            anonymousSession = false;
-        }
+        boolean anonymousSession = auth.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
 
         if (page == null)
             page = 0L;
         Map<Employee, Boolean> list = new HashMap<>();
         List<Experience> experiencesList = null;
-        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE).get()) {
+        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE)) {
             employee.firstWordsToUpper();
             list.put(employee, false);
             if (!anonymousSession) {
                 HogarUser user = (HogarUser) authority.getPrincipal();
-                Optional<Boolean> connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
-                if(connection.isPresent() && connection.get()){
-                    System.out.println("cargando adentro" + employee);
+                Boolean connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
+                if(connection){
                     list.put(employee, true);
                 }
             }

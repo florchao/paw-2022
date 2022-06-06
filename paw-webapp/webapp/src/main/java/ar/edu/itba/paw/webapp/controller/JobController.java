@@ -26,26 +26,23 @@ import java.util.*;
 @Controller
 public class JobController {
     @Autowired
-    JobService jobService;
-
+    private JobService jobService;
     @Autowired
-    EmployerService employerService;
-
+    private EmployerService employerService;
     @Autowired
-    UserService userService;
-
+    private UserService userService;
     @Autowired
-    ApplicantService applicantService;
+    private ApplicantService applicantService;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE = 8;
 
     @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
-    ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
+    public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
         return new ModelAndView("createJob");
     }
 
     @RequestMapping(value = "/createJob", method = RequestMethod.POST)
-    ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
+    public ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
         if(!errors.hasErrors()) {
             HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 Job job = jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
@@ -57,19 +54,17 @@ public class JobController {
     }
 
     @RequestMapping(value = "/misTrabajos", method = {RequestMethod.GET})
-    ModelAndView verTrabajos(){
+    public ModelAndView verTrabajos(){
         ModelAndView mav = new ModelAndView("publishedJobs");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
         if(employer.isPresent()) {
-            Optional<List<Job>> jobs = jobService.getUserJobs(employer.get());
+            List<Job> jobs = jobService.getUserJobs(employer.get());
             List<Job> jobList = new ArrayList<>();
-            if (jobs.isPresent()) {
-                for (Job job : jobs.get()) {
+                for (Job job : jobs) {
                     job.firstWordsToUpper();
                     jobList.add(job);
                 }
-            }
             mav.addObject("JobList", jobList);
             return mav;
         }
@@ -77,26 +72,24 @@ public class JobController {
     }
 
     @RequestMapping(value = "/trabajo/{id}", method = {RequestMethod.GET})
-    ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
+    public ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
         if (job.isPresent()) {
-            String employerName = job.get().employerNameToUpper(job.get().getEmployerId());
+            job.get().employerNameToUpper(job.get().getEmployerId());
             job.get().firstWordsToUpper();
-            mav.addObject("name", employerName);
             mav.addObject("job", job.get());
-            System.out.println("OPENED STATUS JOB " + job.get().isOpened());
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
-        Optional<Boolean> exists = jobService.alreadyApplied(id, principal.getUserID());
-        exists.ifPresent(aBoolean -> mav.addObject("alreadyApplied", aBoolean));
+        Boolean exists = jobService.alreadyApplied(id, principal.getUserID());
+         mav.addObject("alreadyApplied", exists);
         mav.addObject("status", status);
         return mav;
     }
 
     @RequestMapping(value = "/trabajos", method = {RequestMethod.GET})
-    ModelAndView searchJobs(
+    public ModelAndView searchJobs(
             @ModelAttribute("filterJobsBy") FilterForm jobForm,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "experienceYears", required = false) Long experienceYears,
@@ -109,18 +102,16 @@ public class JobController {
         if (page == null)
             page = 0L;
         Map<Job, Integer> jobList = new HashMap<>();
-        Optional<List<Job>> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
-        if (opJob.isPresent()) {
-            for (Job job : opJob.get()) {
-                Optional<Boolean> applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
-                job.firstWordsToUpper();
-                if(applied.isPresent() && applied.get()) {
-                    int status = applicantService.getStatus(user.getUserID(), job.getJobId());
-                    jobList.put(job, status);
-                }
-                else {
-                    jobList.put(job, -1);
-                }
+        List<Job> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
+        for (Job job : opJob) {
+            Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
+            job.firstWordsToUpper();
+            if(applied) {
+                int status = applicantService.getStatus(user.getUserID(), job.getJobId());
+                jobList.put(job, status);
+            }
+            else {
+                jobList.put(job, -1);
             }
         }
         final ModelAndView mav = new ModelAndView("searchJobs");

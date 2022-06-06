@@ -18,20 +18,17 @@ public class ContactServiceImpl implements ContactService{
 
     @Autowired
     private ContactDao contactDao;
-
     @Autowired
     private MailingService mailingService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private EmployeeService employeeService;
 
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize) {
+    public List<Contact> getAllContacts(long id, Long page, int pageSize) {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         return employee.map(value -> contactDao.getAllContacts(value, page, pageSize)).orElse(null);
     }
@@ -46,8 +43,8 @@ public class ContactServiceImpl implements ContactService{
     @Transactional
     @Override
     public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
-        Optional<Boolean> exists = contactDao.existsContact(employeeId, employerId);
-        if(exists.isPresent() && exists.get()){
+        Boolean exists = contactDao.existsContact(employeeId, employerId);
+        if(exists){
             throw new AlreadyExistsException("You already have a contact with this employee");
         }
         return contactDao.create(employeeId, employerId, created, contactMessage, phoneNumber);
@@ -63,7 +60,6 @@ public class ContactServiceImpl implements ContactService{
             create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber);
             mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
         }
-
     }
 
     @Transactional
@@ -79,7 +75,7 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public Optional<Boolean> existsContact(long employeeId, long employerId) {
+    public Boolean existsContact(long employeeId, long employerId) {
         return contactDao.existsContact(employeeId, employerId);
     }
 
