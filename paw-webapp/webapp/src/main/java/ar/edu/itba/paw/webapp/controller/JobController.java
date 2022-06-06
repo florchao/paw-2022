@@ -26,26 +26,23 @@ import java.util.*;
 @Controller
 public class JobController {
     @Autowired
-    JobService jobService;
-
+    private JobService jobService;
     @Autowired
-    EmployerService employerService;
-
+    private EmployerService employerService;
     @Autowired
-    UserService userService;
-
+    private UserService userService;
     @Autowired
-    ApplicantService applicantService;
+    private ApplicantService applicantService;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE = 8;
 
     @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
-    ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
+    public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
         return new ModelAndView("createJob");
     }
 
     @RequestMapping(value = "/createJob", method = RequestMethod.POST)
-    ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
+    public ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
         if(!errors.hasErrors()) {
             HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 Job job = jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
@@ -57,7 +54,7 @@ public class JobController {
     }
 
     @RequestMapping(value = "/misTrabajos", method = {RequestMethod.GET})
-    ModelAndView verTrabajos(){
+    public ModelAndView verTrabajos(){
         ModelAndView mav = new ModelAndView("publishedJobs");
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
@@ -75,7 +72,7 @@ public class JobController {
     }
 
     @RequestMapping(value = "/trabajo/{id}", method = {RequestMethod.GET})
-    ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
+    public ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
         if (job.isPresent()) {
@@ -94,7 +91,7 @@ public class JobController {
     }
 
     @RequestMapping(value = "/trabajos", method = {RequestMethod.GET})
-    ModelAndView searchJobs(
+    public ModelAndView searchJobs(
             @ModelAttribute("filterJobsBy") FilterForm jobForm,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "experienceYears", required = false) Long experienceYears,

@@ -24,13 +24,10 @@ import java.util.regex.Pattern;
 public class PawUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
-
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private EmployerService employerService;
-
     private final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
     @Override

@@ -18,13 +18,10 @@ public class ContactServiceImpl implements ContactService{
 
     @Autowired
     private ContactDao contactDao;
-
     @Autowired
     private MailingService mailingService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private EmployeeService employeeService;
 
@@ -63,7 +60,6 @@ public class ContactServiceImpl implements ContactService{
             create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber);
             mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
         }
-
     }
 
     @Transactional

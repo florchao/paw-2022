@@ -15,7 +15,6 @@ public class EmployerServiceImpl implements EmployerService{
 
     @Autowired
     private EmployerDao employerDao;
-
     @Autowired
     private ImagesDao imagesDao;
 

@@ -14,12 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class JobServiceImpl implements JobService{
     @Autowired
-    JobDao jobDao;
-
-    @Autowired
-    EmployerService employerService;
+    private JobDao jobDao;
 
     @Transactional
     @Override

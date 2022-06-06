@@ -14,7 +14,7 @@ import java.util.Optional;
 public class ReviewServiceImpl implements ReviewService{
 
     @Autowired
-    ReviewDao reviewDao;
+    private ReviewDao reviewDao;
 
     @Transactional
     @Override

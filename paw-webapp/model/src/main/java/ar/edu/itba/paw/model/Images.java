@@ -10,10 +10,10 @@ public class Images implements Serializable {
     @OneToOne
     @EmbeddedId
     @JoinColumn(name = "userId", nullable = false)
-    User userId;
+    private User userId;
 
     @Column(nullable = false)
-    byte[] image;
+    private byte[] image;
 
     public Images(User userId, byte[] image) {
         this.userId = userId;

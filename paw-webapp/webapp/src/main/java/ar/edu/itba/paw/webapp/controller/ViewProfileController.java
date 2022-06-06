@@ -33,16 +33,12 @@ public class ViewProfileController {
     private final int PAGE_SIZE = 4;
     @Autowired
     private UserService userService;
-
     @Autowired
     private ReviewService reviewService;
-
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private ContactService contactService;
-
     @Autowired
     private ImagesService imagesService;
 
@@ -114,7 +110,7 @@ public class ViewProfileController {
     }
 
     @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})
-    ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id){
+    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id){
         if(errors.hasErrors())
             return userProfile(id,status, reviewForm, null);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

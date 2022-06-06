@@ -29,16 +29,12 @@ import java.util.Optional;
 public class ContactController {
 
     private final int PAGE_SIZE = 4;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private ContactService contactService;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
     @RequestMapping(value = "/contactos", method = {RequestMethod.GET})

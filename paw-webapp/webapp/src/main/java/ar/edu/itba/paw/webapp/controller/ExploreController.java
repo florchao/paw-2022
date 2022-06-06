@@ -29,7 +29,6 @@ import java.util.*;
 public class ExploreController {
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private ContactService contactService;
     private final static long PAGE_SIZE = 4;

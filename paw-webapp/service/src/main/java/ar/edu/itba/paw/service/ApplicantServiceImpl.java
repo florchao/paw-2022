@@ -19,15 +19,13 @@ import java.util.Optional;
 @Service
 public class ApplicantServiceImpl implements ApplicantService{
     @Autowired
-    ApplicantDao applicantDao;
+    private ApplicantDao applicantDao;
     @Autowired
-    JobDao jobDao;
-
+    private JobDao jobDao;
     @Autowired
-    EmployeeDao employeeDao;
-
+    private EmployeeDao employeeDao;
     @Autowired
-    MailingService mailingService;
+    private MailingService mailingService;
 
     @Transactional
     @Override

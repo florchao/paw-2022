@@ -13,10 +13,9 @@ import java.util.Optional;
 public class ImagesServiceImpl implements ImagesService{
 
     @Autowired
-    ImagesDao imagesDao;
-
+    private ImagesDao imagesDao;
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public Optional<byte[]> getProfileImage(Long userId) {
