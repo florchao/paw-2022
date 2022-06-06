@@ -88,6 +88,7 @@ public class ViewProfileController {
 
         Optional<List<Review>> reviews;
         int maxPage;
+        boolean hasAlreadyRated = false;
         if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser user = (HogarUser) auth.getPrincipal();
             Optional<Boolean> exists = contactService.existsContact(userId, user.getUserID());
@@ -96,10 +97,12 @@ public class ViewProfileController {
             myReview.ifPresent(review -> mav.addObject("myReview", review));
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
             maxPage = reviewService.getPageNumber(userId, user.getUserID(), PAGE_SIZE);
+            hasAlreadyRated = employeeService.hasAlreadyRated(userId, user.getUserID());
         } else {
             maxPage = reviewService.getPageNumber(userId, null, PAGE_SIZE);
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
         }
+        mav.addObject("alreadyRated",hasAlreadyRated);
         mav.addObject("rating", employeeService.getRating(userId));
         mav.addObject("voteCount",employeeService.getRatingVoteCount(userId));
         List<Review> reviewsWithUpperCase = null;
@@ -143,7 +146,9 @@ public class ViewProfileController {
                            @PathVariable final long idRating) {
         if (rating == null)
             rating = 0L;
-        float finalRating = employeeService.updateRating(idRating, rating);
+        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
+        HogarUser user = (HogarUser) authority.getPrincipal();
+        float finalRating = employeeService.updateRating(idRating, rating, user.getUserID());
         long voteCount = employeeService.getRatingVoteCount(idRating);
         final ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+idRating);
         mav.addObject("rating",finalRating);

@@ -122,7 +122,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional
     @Override
-    public float updateRating(long employeeId, Long rating) {
+    public float updateRating(long employeeId, Long rating, Long employerId) {
 
         float prevRating = employeeDao.getPrevRating(employeeId);
         float voteCount = employeeDao.getRatingVoteCount(employeeId);
@@ -130,6 +130,8 @@ public class EmployeeServiceImpl implements EmployeeService{
         float newRating = (prevRating*voteCount + rating) / (voteCount+1L);
 
         employeeDao.updateRating(employeeId, newRating);
+
+        employeeDao.udpateRatingsTable(employeeId, employerId, rating);
 
         employeeDao.incrementVoteCountValue(employeeId);
 
@@ -144,5 +146,10 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public float getRating(long employeeId) {
         return employeeDao.getPrevRating(employeeId);
+    }
+
+    @Override
+    public boolean hasAlreadyRated(long idRating, long userID) {
+        return employeeDao.hasAlreadyRated(idRating, userID);
     }
 }

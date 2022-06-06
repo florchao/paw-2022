@@ -133,15 +133,16 @@
                             </c:choose>
                             <c:out value="(${voteCount})"/>
                         </ul>
-                            <%--                        <div class="flex place-items-center">--%>
-                        <a href="#alguno" rel="modal:open" class="transition hover:scale-105">
-                            <div class="flex place-items-center">
-                                <i class="text-blue-500 fa fa-star-o"></i>
-                                <p class="font-semibold text-blue-500 ml-1">Rate</p>
-                            </div>
-                        </a>
 
-                            <%--                        </div>--%>
+                        <c:if test="${!alreadyRated}">
+                            <a href="#alguno" rel="modal:open" class="transition hover:scale-105">
+                                <div class="flex place-items-center">
+                                    <i class="text-blue-500 fa fa-star-o"></i>
+                                    <p class="font-semibold text-blue-500 ml-1">Rate</p>
+                                </div>
+                            </a>
+                        </c:if>
+
 <%--                        <div id="alguno" class="modal w-fit">--%>
 <%--                            <h1>buenass</h1>--%>
 <%--                        </div>--%>
@@ -149,7 +150,7 @@
                             <div class="flex grid grid-cols-3 items-center py-8 w-fit">
                                 <div class="col-span-2 row-span-2">
                                     <form:form method="post" action="${postPath}">
-                                        <p>INTERNALIZACION</p>
+                                        <p class="text-lg font-semibold"><spring:message code="viewProfile.rateUser"/>${employee.name}</p>
                                         <br>
                                         <ul class="flex items-center gap-x-1" >
                                             <li>
@@ -170,7 +171,7 @@
                                         </ul>
                                         <input style="visibility: hidden" id="ratingInput" type="text" name="rating"/>
                                         <input style="visibility: hidden" id="sendRatingButton" type="submit" name="submit" />
-                                        <p>Gracias por su participacion! (INTERNALIZACION)</p>
+                                        <p class="text-lg font-semibold"><spring:message code="viewProfile.thankEmployer"/></p>
                                     </form:form>
                                 </div>
                             </div>

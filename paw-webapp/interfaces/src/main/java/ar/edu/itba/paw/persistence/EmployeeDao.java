@@ -28,4 +28,8 @@ public interface EmployeeDao {
     long getRatingVoteCount(long employeeId);
 
     void incrementVoteCountValue(long employeeId);
+
+    void udpateRatingsTable(long employeeId, Long employerId, Long rating);
+
+    boolean hasAlreadyRated(long employeeId, long employerId);
 }
