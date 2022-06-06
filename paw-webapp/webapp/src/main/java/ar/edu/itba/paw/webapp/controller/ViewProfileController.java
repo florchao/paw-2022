@@ -33,16 +33,12 @@ public class ViewProfileController {
     private final int PAGE_SIZE = 4;
     @Autowired
     private UserService userService;
-
     @Autowired
     private ReviewService reviewService;
-
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private ContactService contactService;
-
     @Autowired
     private ImagesService imagesService;
 
@@ -59,9 +55,9 @@ public class ViewProfileController {
             employee.ifPresent(Employee::firstWordsToUpper);
             employee.ifPresent(value -> mav.addObject("employee", value));
             mav.addObject("userId", user.get().getId());
-            Optional<List<Review>> myReviews = reviewService.getMyProfileReviews(user.get().getId());
+            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId());
             //todo pasar a mayusculas
-            myReviews.ifPresent(reviews -> mav.addObject("ReviewList", reviews));
+             mav.addObject("ReviewList", myReviews);
         }
         return mav;
     }
@@ -89,12 +85,12 @@ public class ViewProfileController {
         if (page == null)
             page = 0L;
 
-        Optional<List<Review>> reviews;
+       List<Review> reviews;
         int maxPage;
         if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser user = (HogarUser) auth.getPrincipal();
-            Optional<Boolean> exists = contactService.existsContact(userId, user.getUserID());
-            exists.ifPresent(aBoolean -> mav.addObject("contacted", aBoolean));
+            Boolean exists = contactService.existsContact(userId, user.getUserID());
+            mav.addObject("contacted", exists);
             Optional<Review> myReview = reviewService.getMyReview(userId, user.getUserID());
             myReview.ifPresent(review -> mav.addObject("myReview", review));
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
@@ -103,14 +99,10 @@ public class ViewProfileController {
             maxPage = reviewService.getPageNumber(userId, null, PAGE_SIZE);
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
         }
-        List<Review> reviewsWithUpperCase = null;
-        if (reviews.isPresent()) {
-            //TODO SE ROMPE ESTO
-            //reviewsWithUpperCase = reviews.get().stream().map(Review::firstWordsToUpper).collect(Collectors.toList()).;
-            //Lo arregle con esto, pero esta mal
-            reviewsWithUpperCase = reviews.get();
+        List<Review> reviewsWithUpperCase = reviews;
+        //TODO SE ROMPE ESTO
+        //reviewsWithUpperCase = reviews.get().stream().map(Review::firstWordsToUpper).collect(Collectors.toList()).;
 
-        }
         mav.addObject("ReviewList", reviewsWithUpperCase);
         mav.addObject("page", page);
         mav.addObject("maxPage", maxPage);
@@ -118,7 +110,7 @@ public class ViewProfileController {
     }
 
     @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})
-    ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id){
+    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id){
         if(errors.hasErrors())
             return userProfile(id,status, reviewForm, null);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

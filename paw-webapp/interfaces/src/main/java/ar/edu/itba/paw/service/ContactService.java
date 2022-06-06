@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ContactService {
 
-    Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize);
+    List<Contact> getAllContacts(long id, Long page, int pageSize);
 
     int getPageNumber(long id, int pageSize);
 
@@ -24,6 +24,6 @@ public interface ContactService {
 
     void changedStatus(int status, Job job, Employee employee);
 
-    Optional<Boolean> existsContact(long employeeId, long employerId);
+    Boolean existsContact(long employeeId, long employerId);
 }
 

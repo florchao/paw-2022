@@ -31,10 +31,10 @@ public class ApplicantJpaDao implements ApplicantDao{
     }
 
     @Override
-    public Optional<List<Job>> getJobsByApplicant(Employee employeeID, Long page, int pageSize) {
+    public List<Job> getJobsByApplicant(Employee employeeID, Long page, int pageSize) {
         final TypedQuery<Job> query = em.createQuery("select a.jobID from Applicant a where a.employeeID =:employeeID", Job.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("employeeID", employeeID);
-        return Optional.ofNullable(query.getResultList());
+        return query.getResultList();
     }
 
     @Override
@@ -45,18 +45,18 @@ public class ApplicantJpaDao implements ApplicantDao{
     }
 
     @Override
-    public Optional<List<Applicant>> getApplicantsByJob(Job jobID, Long page, int pageSize) {
+    public List<Applicant> getApplicantsByJob(Job jobID, Long page, int pageSize) {
         final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where u.jobID =:jobID order by u.status", Applicant.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("jobID", jobID);
-        return Optional.ofNullable(query.getResultList());
+        return (query.getResultList());
     }
 
     @Override
-    public Optional<Boolean> existsApplicant(Employee employeeId, Job jobId) {
+    public Boolean existsApplicant(Employee employeeId, Job jobId) {
         TypedQuery<Applicant> contactTypedQuery = em.createQuery("SELECT c FROM Applicant c WHERE c.employeeID =:employee AND c.jobID = :jobID", Applicant.class);
         contactTypedQuery.setParameter("jobID", jobId);
         contactTypedQuery.setParameter("employee", employeeId);
-        return Optional.of(!contactTypedQuery.getResultList().isEmpty());
+        return!contactTypedQuery.getResultList().isEmpty();
     }
 
     @Override

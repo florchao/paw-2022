@@ -67,15 +67,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Employee>> getEmployees() {
+    public List<Employee> getEmployees() {
         return employeeDao.getEmployees(0);
     }
 
     @Transactional(readOnly = true)
     @Override
     public void isEmployee(long id) {
-        Optional<Boolean> exists = employeeDao.isEmployee(id);
-        if(exists.isPresent() && exists.get() )
+        Boolean exists = employeeDao.isEmployee(id);
+        if(exists)
             return;
         throw new UserNotFoundException("Employee " + id + " not found");
     }
@@ -96,7 +96,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional
     @Override
-    public Optional<List<Employee>> getFilteredEmployees(
+    public List<Employee> getFilteredEmployees(
             String name,
             Long experienceYears,
             String location,
@@ -117,8 +117,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-//        System.out.println("aka en service");
-//        System.out.println(experienceYears);
         return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
     }
 }

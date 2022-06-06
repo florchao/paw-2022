@@ -18,10 +18,10 @@ public class ContactJpaDao implements ContactDao{
     private EntityManager em;
 
     @Override
-    public Optional<List<Contact>> getAllContacts(Employee userId,  Long page, int pageSize) {
+    public List<Contact> getAllContacts(Employee userId,  Long page, int pageSize) {
         final TypedQuery<Contact> query = em.createQuery("select u from Contact u where u.employeeID =:userId", Contact.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("userId", userId);
-        return Optional.ofNullable(query.getResultList());
+        return query.getResultList();
     }
 
     @Override
@@ -46,12 +46,12 @@ public class ContactJpaDao implements ContactDao{
     }
 
     @Override
-    public Optional<Boolean> existsContact(long employeeId, long employerId) {
+    public Boolean existsContact(long employeeId, long employerId) {
         Employer employer = em.find(Employer.class, employerId);
         Employee employee = em.find(Employee.class, employeeId);
         TypedQuery<Contact> contactTypedQuery = em.createQuery("SELECT c FROM Contact c WHERE c.employerID =:employer AND c.employeeID =:employee", Contact.class);
         contactTypedQuery.setParameter("employer", employer);
         contactTypedQuery.setParameter("employee", employee);
-        return Optional.of(!contactTypedQuery.getResultList().isEmpty());
+        return !contactTypedQuery.getResultList().isEmpty();
     }
 }

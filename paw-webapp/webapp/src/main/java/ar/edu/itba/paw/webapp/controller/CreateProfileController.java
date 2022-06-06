@@ -28,13 +28,10 @@ public class CreateProfileController {
 
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private EmployerService employerService;
-
     @Autowired
     private UserService userService;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateProfileController.class);
 
 

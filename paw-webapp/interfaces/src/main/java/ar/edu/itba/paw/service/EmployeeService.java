@@ -12,7 +12,7 @@ public interface EmployeeService {
     Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities, byte[] image);
 
     void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities);
-    Optional<List<Employee>> getEmployees();
+   List<Employee> getEmployees();
     void isEmployee(long id);
     int getPageNumber(
             String name,
@@ -23,7 +23,7 @@ public interface EmployeeService {
             String abilities,
             long pageSize);
 
-    Optional<List<Employee>> getFilteredEmployees(
+    List<Employee> getFilteredEmployees(
             String name,
             Long experienceYears,
             String location,

@@ -11,9 +11,9 @@ public interface ContactDao {
 
     int getPageNumber(long id, int pageSize);
 
-    Optional<List<Contact>> getAllContacts(Employee userId,Long page, int pageSize);
+    List<Contact> getAllContacts(Employee userId,Long page, int pageSize);
 
     Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber);
 
-    Optional<Boolean> existsContact(long employeeId, long employerId);
+    Boolean existsContact(long employeeId, long employerId);
 }

@@ -56,7 +56,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
     @Autowired
-    Environment environment;
+    private Environment environment;
 
     @Bean
     public DataSource dataSource() {
