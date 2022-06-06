@@ -44,7 +44,7 @@ public class JobJpaDao implements  JobDao{
         TypedQuery<Applicant> typedQuery = em.createQuery("select a from Applicant a where a.employeeID =:employee and a.jobID =:job", Applicant.class);
         typedQuery.setParameter("employee", employee);
         typedQuery.setParameter("job", job);
-        return !typedQuery.getResultList().isEmpty());
+        return !typedQuery.getResultList().isEmpty();
     }
 
     @Override
