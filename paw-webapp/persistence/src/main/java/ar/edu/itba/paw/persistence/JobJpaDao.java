@@ -26,10 +26,10 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public Optional<List<Job>> getUserJobs(Employer employerID) {
+    public List<Job> getUserJobs(Employer employerID) {
         final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId =:employerId", Job.class);
         query.setParameter("employerId", employerID);
-        return Optional.of(query.getResultList());
+        return query.getResultList();
     }
 
     @Override
@@ -48,13 +48,13 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public Optional<List<Job>> getAllActiveJobs(long pageSize) {
+    public List<Job> getAllActiveJobs(long pageSize) {
         final TypedQuery<Job> jobList = em.createQuery("select e from Job e where e.opened=TRUE", Job.class);
-        return Optional.ofNullable(jobList.setMaxResults((int)pageSize).getResultList());
+        return jobList.setMaxResults((int)pageSize).getResultList();
     }
 
     @Override
-    public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
+    public List<Job> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT e FROM Job e where e.opened=TRUE and ");
         if (name != null) {
@@ -79,7 +79,7 @@ public class JobJpaDao implements  JobDao{
         }
         stringBuilder.setLength(stringBuilder.length() - 4);
         TypedQuery<Job> filteredQuery = em.createQuery(stringBuilder.toString(), Job.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
-        return Optional.ofNullable(filteredQuery.getResultList());
+        return filteredQuery.getResultList();
     }
 
     @Override

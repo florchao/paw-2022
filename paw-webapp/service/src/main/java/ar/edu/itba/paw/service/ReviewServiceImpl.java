@@ -24,7 +24,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Review>> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
+    public List<Review> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
         return reviewDao.getAllReviews(employeeId, id, page, pageSize);
     }
 
@@ -41,7 +41,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public Optional<List<Review>> getMyProfileReviews(long employeeId) {
+    public List<Review> getMyProfileReviews(long employeeId) {
         return reviewDao.getMyProfileReviews(employeeId);
     }
 }

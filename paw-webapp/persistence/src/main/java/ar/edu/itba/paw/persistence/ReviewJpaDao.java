@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,24 +32,25 @@ public class ReviewJpaDao implements ReviewDao{
     }
 
     @Override
-    public Optional<List<Review>> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
+    public List<Review> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
         Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
-        if(id!=null) {
-            Optional<Employer> employer = Optional.ofNullable(em.find(Employer.class, id));
-            if (employee.isPresent() && employer.isPresent()) {
-                final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId and u.employerId <>:employerId", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-                query.setParameter("userId", employee.get());
-                query.setParameter("employerId", employer.get());
-                return Optional.ofNullable(query.getResultList());
-            }
-            return Optional.empty();
-        }
         if(employee.isPresent()) {
-            final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-            query.setParameter("userId", employee.get());
-            return Optional.ofNullable(query.getResultList());
+            if(id!=null) {
+                Optional<Employer> employer = Optional.ofNullable(em.find(Employer.class, id));
+                if (employer.isPresent()) {
+                    final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId and u.employerId <>:employerId", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+                    query.setParameter("userId", employee.get());
+                    query.setParameter("employerId", employer.get());
+                    return query.getResultList();
+                }
+                return Collections.emptyList();
+            }else {
+                final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId =:userId", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+                query.setParameter("userId", employee.get());
+                return query.getResultList();
+            }
         }
-        return Optional.empty();
+        return Collections.emptyList();
     }
 
     @Override
@@ -82,13 +84,13 @@ public class ReviewJpaDao implements ReviewDao{
     }
 
     @Override
-    public Optional<List<Review>> getMyProfileReviews(long employeeId) {
+    public List<Review> getMyProfileReviews(long employeeId) {
         Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
         if (employee.isPresent()){
             final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId ", Review.class);
             query.setParameter("employeeId", employee.get());
-            return Optional.ofNullable(query.getResultList());
+            return query.getResultList();
         }
-        return Optional.empty();
+        return Collections.emptyList();
     }
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ContactService {
 
-    Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize);
+    List<Contact> getAllContacts(long id, Long page, int pageSize);
 
     int getPageNumber(long id, int pageSize);
 

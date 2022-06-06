@@ -47,14 +47,11 @@ public class ContactController {
         if (page == null)
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
-
-        if (list.isPresent()) {
-            for (Contact contact : list.get()) {
-                contact.firstWordsToUpper();
-            }
+        List<Contact> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
+        for (Contact contact : list) {
+            contact.firstWordsToUpper();
         }
-        list.ifPresent(contacts -> mav.addObject("ContactList", contacts));
+        mav.addObject("ContactList", list);
         mav.addObject("page", page);
         int maxPage = contactService.getPageNumber(principal.getUserID(), PAGE_SIZE);
         mav.addObject("maxPage", maxPage);

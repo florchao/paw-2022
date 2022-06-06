@@ -62,14 +62,12 @@ public class JobController {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
         if(employer.isPresent()) {
-            Optional<List<Job>> jobs = jobService.getUserJobs(employer.get());
+            List<Job> jobs = jobService.getUserJobs(employer.get());
             List<Job> jobList = new ArrayList<>();
-            if (jobs.isPresent()) {
-                for (Job job : jobs.get()) {
+                for (Job job : jobs) {
                     job.firstWordsToUpper();
                     jobList.add(job);
                 }
-            }
             mav.addObject("JobList", jobList);
             return mav;
         }
@@ -109,18 +107,16 @@ public class JobController {
         if (page == null)
             page = 0L;
         Map<Job, Integer> jobList = new HashMap<>();
-        Optional<List<Job>> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
-        if (opJob.isPresent()) {
-            for (Job job : opJob.get()) {
-                Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
-                job.firstWordsToUpper();
-                if(applied) {
-                    int status = applicantService.getStatus(user.getUserID(), job.getJobId());
-                    jobList.put(job, status);
-                }
-                else {
-                    jobList.put(job, -1);
-                }
+        List<Job> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
+        for (Job job : opJob) {
+            Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
+            job.firstWordsToUpper();
+            if(applied) {
+                int status = applicantService.getStatus(user.getUserID(), job.getJobId());
+                jobList.put(job, status);
+            }
+            else {
+                jobList.put(job, -1);
             }
         }
         final ModelAndView mav = new ModelAndView("searchJobs");

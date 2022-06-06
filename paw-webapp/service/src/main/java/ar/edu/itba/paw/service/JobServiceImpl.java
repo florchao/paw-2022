@@ -31,7 +31,7 @@ public class JobServiceImpl implements JobService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Job>> getUserJobs(Employer employerID) {
+    public List<Job> getUserJobs(Employer employerID) {
         return jobDao.getUserJobs(employerID);
     }
 
@@ -49,7 +49,7 @@ public class JobServiceImpl implements JobService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Job>> getFilteredJobs(String name, Long experienceYears, String location, String availability, String abilities, Long page, long pageSize) {
+    public List<Job> getFilteredJobs(String name, Long experienceYears, String location, String availability, String abilities, Long page, long pageSize) {
         if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0) {
             return jobDao.getAllActiveJobs(pageSize);
         }

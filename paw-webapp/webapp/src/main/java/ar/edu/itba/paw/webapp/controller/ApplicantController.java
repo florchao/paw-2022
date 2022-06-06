@@ -64,8 +64,8 @@ public class ApplicantController {
         ModelAndView mav = new ModelAndView("viewApplicants");
         if (page == null)
             page = 0L;
-        Optional<List<Applicant>> list = applicantService.getApplicantsByJob(jobID,page,PAGE_SIZE);
-        list.ifPresent(applicants -> mav.addObject("ApplicantList", applicants));
+        List<Applicant> list = applicantService.getApplicantsByJob(jobID,page,PAGE_SIZE);
+        mav.addObject("ApplicantList", list);
         mav.addObject("title", jobService.getJobNameById(jobID));
         mav.addObject("page", page);
         mav.addObject("maxPage",applicantService.getPageNumber(jobID, PAGE_SIZE));
@@ -89,18 +89,14 @@ public class ApplicantController {
         if (page == null)
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<List<Job>> list = applicantService.getJobsByApplicant(principal.getUserID(), page, PAGE_SIZE);
+        List<Job> list = applicantService.getJobsByApplicant(principal.getUserID(), page, PAGE_SIZE);
         mav.addObject("page", page);
         mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
 
+        for (Job job : list)
+            job.firstWordsToUpper();
 
-        if (list.isPresent()) {
-            for (Job job : list.get()) {
-                job.firstWordsToUpper();
-            }
-        }
-
-        list.ifPresent(jobs -> mav.addObject("JobsList", jobs));
+        mav.addObject("JobsList", list);
 
         return mav;
     }

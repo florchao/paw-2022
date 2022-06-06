@@ -31,7 +31,7 @@ public class ContactServiceImpl implements ContactService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize) {
+    public List<Contact> getAllContacts(long id, Long page, int pageSize) {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         return employee.map(value -> contactDao.getAllContacts(value, page, pageSize)).orElse(null);
     }

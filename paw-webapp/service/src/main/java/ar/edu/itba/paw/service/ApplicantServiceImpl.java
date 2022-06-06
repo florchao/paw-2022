@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,21 +45,24 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Job>> getJobsByApplicant(long employeeID, Long page, int pageSize) {
+    public List<Job> getJobsByApplicant(long employeeID, Long page, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
-        return employee.flatMap(value -> applicantDao.getJobsByApplicant(value, page, pageSize));
+       if(employee.isPresent()){
+           return applicantDao.getJobsByApplicant(employee.get(), page, pageSize);
+       }
+       return Collections.emptyList();
     }
 
     @Override
     public int getPageNumberForAppliedJobs(Long employeeId, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        return applicantDao.getPageNumberForAppliedJobs(employee.get(), pageSize);
+        return employee.map(value -> applicantDao.getPageNumberForAppliedJobs(value, pageSize)).orElse(0);
     }
 
     //todo hay que adaptarla con los parmetros
     @Transactional(readOnly = true)
     @Override
-    public Optional<List<Applicant>> getApplicantsByJob(long jobID, Long page, int pageSize) {
+    public List<Applicant> getApplicantsByJob(long jobID, Long page, int pageSize) {
         Optional<Job> job = jobDao.getJobById(jobID);
         return job.map(value -> applicantDao.getApplicantsByJob(value, page, pageSize)).orElse(null);
     }
