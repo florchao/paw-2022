@@ -51,17 +51,23 @@
                     <h1 class="block mb-2 ml-2 text-sm font-medium text-gray-600 "> <c:out value="${job.experienceYears}"/></h1>
                 </div>
                 <sec:authorize access="hasAuthority('EMPLOYEE')">
-                <div class="ml-3 col-start-5 row-start-2">
-<%--                    <form:form action="${postPath}" method="post">--%>
-<%--                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewJob.apply"/></button>--%>
-<%--                    </form:form>--%>
-                    <c:if test="${alreadyApplied == null || !alreadyApplied}">
+                <div class="col-start-5 row-start-2">
+                    <c:if test="${alreadyApplied == -1}">
                         <form:form action="${postPath}" method="post">
-                            <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewJob.apply"/></button>
+                            <button class="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="viewJob.apply"/></button>
                         </form:form>
                     </c:if>
-                    <c:if test="${alreadyApplied != null && alreadyApplied}">
-                        <p class="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2 mb-2"><spring:message code="viewJob.alreadyApplied"/></p>
+                    <c:if test="${alreadyApplied >= 0}">
+                        <h1 class="pb-3 pt-3 font-semibold text-purple-900"><spring:message code="viewJob.status"/></h1>
+                        <c:if test="${alreadyApplied == 0}">
+                            <a class="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.pending"/> </a>
+                        </c:if>
+                        <c:if test="${alreadyApplied == 1}">
+                            <a class="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.accepted"/> </a>
+                        </c:if>
+                        <c:if test="${alreadyApplied == 2}">
+                            <a class="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.denied"/> </a>
+                        </c:if>
                     </c:if>
                 </div>
                 </sec:authorize>

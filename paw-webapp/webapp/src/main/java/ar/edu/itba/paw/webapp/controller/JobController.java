@@ -75,6 +75,7 @@ public class JobController {
     public ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
         ModelAndView mav = new ModelAndView("viewJob");
         Optional<Job> job = jobService.getJobByID(id);
+        int jobStatus = -1;
         if (job.isPresent()) {
             job.get().employerNameToUpper(job.get().getEmployerId());
             job.get().firstWordsToUpper();
@@ -82,8 +83,14 @@ public class JobController {
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
-        Boolean exists = jobService.alreadyApplied(id, principal.getUserID());
-         mav.addObject("alreadyApplied", exists);
+        Boolean existsApplied = jobService.alreadyApplied(id, principal.getUserID());
+        System.out.println(existsApplied);
+        if(existsApplied && job.isPresent()){
+            jobStatus = applicantService.getStatus(principal.getUserID(), job.get().getJobId());
+            System.out.println(jobStatus);
+        }
+        System.out.println(jobStatus);
+        mav.addObject("alreadyApplied", jobStatus);
         mav.addObject("status", status);
         return mav;
     }
