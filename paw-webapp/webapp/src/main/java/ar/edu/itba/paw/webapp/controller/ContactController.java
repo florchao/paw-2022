@@ -51,8 +51,6 @@ public class ContactController {
         mav.addObject("page", page);
         int maxPage = contactService.getPageNumber(principal.getUserID(), PAGE_SIZE);
         mav.addObject("maxPage", maxPage);
-        System.out.println("mi page es: " + page);
-        System.out.println("mi maxPage es: " + maxPage);
         return mav;
     }
 

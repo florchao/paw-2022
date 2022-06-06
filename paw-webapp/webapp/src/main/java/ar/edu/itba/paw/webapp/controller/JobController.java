@@ -84,7 +84,6 @@ public class JobController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
         Boolean existsApplied = jobService.alreadyApplied(id, principal.getUserID());
-        System.out.println(existsApplied);
         if(existsApplied && job.isPresent()){
             jobStatus = applicantService.getStatus(principal.getUserID(), job.get().getJobId());
             System.out.println(jobStatus);

@@ -62,7 +62,7 @@ public class ApplicantServiceImpl implements ApplicantService{
     @Override
     public List<Applicant> getApplicantsByJob(long jobID, Long page, int pageSize) {
         Optional<Job> job = jobDao.getJobById(jobID);
-        return job.map(value -> applicantDao.getApplicantsByJob(value, page, pageSize)).orElse(null);
+        return job.map(value -> applicantDao.getApplicantsByJob(value, page, pageSize)).orElse(Collections.emptyList());
     }
 
     @Override

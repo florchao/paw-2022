@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Review;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.exception.AccessIsDeniedException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
@@ -11,7 +10,6 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -73,11 +71,6 @@ public class ViewProfileController {
         final ModelAndView mav = new ModelAndView("viewProfile");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE")))
-            throw new AccessIsDeniedException("Access is denied");
-
-        employeeService.isEmployee(userId);
 
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
 

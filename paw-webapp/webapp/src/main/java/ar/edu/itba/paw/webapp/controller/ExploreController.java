@@ -44,11 +44,8 @@ public class ExploreController {
             @RequestParam(value = "page", required = false) Long page) {
 
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
-            throw new AccessIsDeniedException("Acces is denied");
         Authentication authority = SecurityContextHolder.getContext().getAuthentication();
 
-        System.out.println("despues?");
         boolean anonymousSession = auth.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
 
         if (page == null)
