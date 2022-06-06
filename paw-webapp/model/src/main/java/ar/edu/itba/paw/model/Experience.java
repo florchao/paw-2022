@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.model;
 
 import java.sql.Date;
-
 public class Experience {
     private long id;
     private long employeeId;

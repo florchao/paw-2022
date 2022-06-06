@@ -55,16 +55,4 @@ public class UserServiceImpl implements UserService{
         String passEncoder = passwordEncoder.encode(password);
         return userDao.update(username, passEncoder);
     }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<byte[]> getProfileImage(Long userId) {
-        return userDao.getProfileImage(userId);
-    }
-
-    @Transactional
-    @Override
-    public boolean updateProfileImage(Long userId, byte[] image) {
-        return userDao.updateProfileImage(userId, image);
-    }
 }

@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;
+import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
 import ar.edu.itba.paw.webapp.form.EmployerForm;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class CreateProfileController {
@@ -28,6 +31,9 @@ public class CreateProfileController {
 
     @Autowired
     private EmployerService employerService;
+
+    @Autowired
+    private UserService userService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateProfileController.class);
 
@@ -47,7 +53,7 @@ public class CreateProfileController {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.setName(form.getName());
         LOGGER.debug(String.format("employee created under userid %d", principal.getUserID()));
-        return new ModelAndView("redirect:/verPerfil/"+employee.getId());
+        return new ModelAndView("redirect:/verPerfil");
     }
 
     @RequestMapping(value = "/crearPerfilEmpleador/{userID}", method = {RequestMethod.GET})
@@ -62,7 +68,8 @@ public class CreateProfileController {
             return createProfileEmployer(form, userID);
         }
         String name = form.getName() + " " + form.getLastname();
-        employerService.create(name.toLowerCase(), Long.parseLong(userID), form.getImage().getBytes());
+        Optional<User> user = userService.getUserById(Long.parseLong(userID));
+        employerService.create(name.toLowerCase(), user.get(), form.getImage().getBytes());
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.setName(name);
         LOGGER.debug(String.format("employer created under userid %d", principal.getUserID()));

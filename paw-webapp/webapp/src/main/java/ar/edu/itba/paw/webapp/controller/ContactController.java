@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.service.ContactService;
@@ -47,6 +48,7 @@ public class ContactController {
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<List<Contact>> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
+
         if (list.isPresent()) {
             for (Contact contact : list.get()) {
                 contact.firstWordsToUpper();
@@ -55,10 +57,9 @@ public class ContactController {
         list.ifPresent(contacts -> mav.addObject("ContactList", contacts));
         mav.addObject("page", page);
         int maxPage = contactService.getPageNumber(principal.getUserID(), PAGE_SIZE);
-        System.out.println("mi page number es: "+page);
-        System.out.println("mi maxPage number es: "+maxPage);
-//        mav.addObject("maxPage",contactService.getPageNumber(principal.getUserID(), PAGE_SIZE));
         mav.addObject("maxPage", maxPage);
+        System.out.println("mi page es: " + page);
+        System.out.println("mi maxPage es: " + maxPage);
         return mav;
     }
 

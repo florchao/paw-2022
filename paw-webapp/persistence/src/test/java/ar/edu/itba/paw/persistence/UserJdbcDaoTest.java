@@ -31,7 +31,7 @@ public class UserJdbcDaoTest {
     DataSource dataSource;
 
     @Autowired
-    private UserJdbcDao userJdbcDao;
+    private UserJpaDao userJpaDao;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -43,10 +43,10 @@ public class UserJdbcDaoTest {
 
     @Test
     public void testCreate(){
-        final User user = userJdbcDao.create(USERNAME, PASSWORD, ROLE);
+        final User user = userJpaDao.create(USERNAME, PASSWORD, ROLE);
 
         Assert.assertNotNull(user);
-        Assert.assertEquals(USERNAME, user.getUsername());
+        Assert.assertEquals(USERNAME, user.getEmail());
         Assert.assertEquals(PASSWORD, user.getPassword());
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
 
@@ -57,11 +57,11 @@ public class UserJdbcDaoTest {
         String query = "INSERT INTO users values(0,'Username', 'Password', 1)";
         jdbcTemplate.execute(query);
 
-        final Optional<User> user = userJdbcDao.getUserById(0);
+        final Optional<User> user = userJpaDao.getUserById(0);
 
         Assert.assertNotNull(user);
         Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals(USERNAME, user.get().getEmail());
         Assert.assertEquals(PASSWORD, user.get().getPassword());
         Assert.assertEquals(ROLE, user.get().getRole());
 
@@ -72,11 +72,11 @@ public class UserJdbcDaoTest {
         String query = "INSERT INTO users values(0,'Username', 'Password', 1)";
         jdbcTemplate.execute(query);
 
-        final Optional<User> user = userJdbcDao.getUserByUsername("Username");
+        final Optional<User> user = userJpaDao.getUserByUsername("Username");
 
         Assert.assertNotNull(user);
         Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals(USERNAME, user.get().getEmail());
         Assert.assertEquals(PASSWORD, user.get().getPassword());
         Assert.assertEquals(ROLE, user.get().getRole());
 
@@ -87,12 +87,12 @@ public class UserJdbcDaoTest {
         String query = "INSERT INTO users values(0,'Username', 'Password', 1)";
         jdbcTemplate.execute(query);
 
-        userJdbcDao.update("Username", "Password2");
-        final Optional<User> user = userJdbcDao.getUserById(0);
+        userJpaDao.update("Username", "Password2");
+        final Optional<User> user = userJpaDao.getUserById(0);
 
         Assert.assertNotNull(user);
         Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(USERNAME, user.get().getUsername());
+        Assert.assertEquals(USERNAME, user.get().getEmail());
         Assert.assertEquals("Password2", user.get().getPassword());
         Assert.assertEquals(ROLE, user.get().getRole());
 
@@ -104,17 +104,10 @@ public class UserJdbcDaoTest {
         String query = "INSERT INTO users values(0,'Username', 'Password', 1)";
         jdbcTemplate.execute(query);
 
-        final List<User> list = userJdbcDao.getAll(1);
+        final List<User> list = userJpaDao.getAll(1);
 
         Assert.assertNotNull(list);
         Assert.assertEquals(1, list.size());
-    }
-
-    @Test
-    public void testGetProfileImage() {
-        Optional<byte[]> image = userJdbcDao.getProfileImage(0L);
-        Assert.assertNotNull(image);
-        Assert.assertFalse(image.isPresent());
     }
 
 }

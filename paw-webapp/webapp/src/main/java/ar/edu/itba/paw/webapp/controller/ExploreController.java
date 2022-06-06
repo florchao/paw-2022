@@ -3,9 +3,13 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.model.exception.AccessIsDeniedException;
+import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,17 +23,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class ExploreController {
     @Autowired
     private EmployeeService employeeService;
 
-    private final static long PAGE_SIZE = 8;
+    @Autowired
+    private ContactService contactService;
+    private final static long PAGE_SIZE = 4;
 
     @RequestMapping(value = "/buscarEmpleadas", method = {RequestMethod.GET})
     public ModelAndView searchPage(
@@ -44,14 +47,29 @@ public class ExploreController {
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
             throw new AccessIsDeniedException("Acces is denied");
+        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
+
+        System.out.println("despues?");
+        boolean anonymousSession = true;
+        if (!auth.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+            anonymousSession = false;
+        }
 
         if (page == null)
             page = 0L;
-        List<Employee> list = new ArrayList<>();
+        Map<Employee, Boolean> list = new HashMap<>();
         List<Experience> experiencesList = null;
         for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE).get()) {
             employee.firstWordsToUpper();
-            list.add(employee);
+            list.put(employee, false);
+            if (!anonymousSession) {
+                HogarUser user = (HogarUser) authority.getPrincipal();
+                Optional<Boolean> connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
+                if(connection.isPresent() && connection.get()){
+                    System.out.println("cargando adentro" + employee);
+                    list.put(employee, true);
+                }
+            }
         }
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);

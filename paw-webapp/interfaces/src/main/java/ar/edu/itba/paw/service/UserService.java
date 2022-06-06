@@ -16,7 +16,4 @@ public interface UserService {
 
     boolean update(String username, String password);
 
-    Optional<byte[]> getProfileImage(Long userId);
-
-    boolean updateProfileImage(Long userId, byte[] image);
 }

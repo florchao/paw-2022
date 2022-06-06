@@ -26,6 +26,7 @@ public class EmployerServiceImplTest {
     @InjectMocks
     private EmployerService employerService = new EmployerServiceImpl();
 
+    /*
     @Test
     public void testCreate(){
 
@@ -50,4 +51,5 @@ public class EmployerServiceImplTest {
         Assert.assertFalse(maybeEmployer.isPresent());
     }
 
+     */
 }

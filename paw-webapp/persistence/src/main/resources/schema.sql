@@ -64,6 +64,7 @@ create table if not exists jobs(
     experienceYears INT,
     abilities TEXT,
     description TEXT,
+    opened BOOLEAN,
     FOREIGN KEY (employerID) REFERENCES employer(employerID) ON DELETE CASCADE
 );
 

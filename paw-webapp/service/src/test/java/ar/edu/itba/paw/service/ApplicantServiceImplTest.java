@@ -25,6 +25,7 @@ public class ApplicantServiceImplTest {
     @InjectMocks
     private ApplicantService applicantService = new ApplicantServiceImpl();
 
+    /*
     @Test
     public void testCreate(){
         Mockito.when(mockDao.create(Mockito.eq(JOB_ID), Mockito.eq(EMPLOYEE_ID)))
@@ -38,5 +39,6 @@ public class ApplicantServiceImplTest {
         Assert.assertEquals(EMPLOYEE_ID, applicant.get().getEmployeeID());
     }
 
+     */
 
 }

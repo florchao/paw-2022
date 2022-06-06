@@ -1,76 +1,63 @@
 package ar.edu.itba.paw.model;
 
-public class Applicant {
-    private long jobID;
-    private long employeeID;
-    private String employerUsername;
-    private String employeeUsername;
-    private String jobName;
-    private String employeeName;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-    public Applicant(long jobID, long employeeID) {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity(name = "Applicant")
+@Table(name = "applicants")
+@Embeddable
+public class Applicant implements Serializable {
+    @OneToOne
+    @EmbeddedId
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "jobID", nullable = false)
+    private Job jobID;
+    @OneToOne
+    @EmbeddedId
+    @JoinColumn(name = "employeeID", nullable = false, referencedColumnName = "employeeID")
+    private Employee employeeID;
+
+    @Column(nullable = false)
+    private int status;
+
+    public Applicant(){
+    }
+
+    public Applicant(Job jobID) {
+        this.jobID = jobID;
+    }
+
+    public Applicant(Job jobID, Employee employeeID) {
         this.jobID = jobID;
         this.employeeID = employeeID;
+        this.status = 0;
     }
 
-    public Applicant(long jobID, String employerUsername, String jobName) {
-        this.jobID = jobID;
-        this.employerUsername = employerUsername;
-        this.jobName = jobName;
-    }
-
-    public Applicant(long jobID, long employeeID, String employeeName, String employeeUsername) {
-        this.jobID = jobID;
-        this.employeeID = employeeID;
-        this.employeeName = employeeName;
-        this.employeeUsername = employeeUsername;
-    }
-
-    public long getJobID() {
+    public Job getJobID() {
         return jobID;
     }
 
-    public void setJobID(long jobID) {
+    public void setJobID(Job jobID) {
         this.jobID = jobID;
     }
 
-    public long getEmployeeID() {
+    public Employee getEmployeeID() {
         return employeeID;
     }
 
-    public void setEmployeeID(long employeeID) {
+    public void setEmployeeID(Employee employeeID) {
         this.employeeID = employeeID;
     }
 
-    public String getEmployerUsername() {
-        return employerUsername;
+    public int getStatus() {
+        return status;
     }
 
-    public void setEmployerUsername(String employerUsername) {
-        this.employerUsername = employerUsername;
-    }
 
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
-    public String getEmployeeUsername() {
-        return employeeUsername;
-    }
-
-    public void setEmployeeUsername(String employeeUsername) {
-        this.employeeUsername = employeeUsername;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

@@ -40,7 +40,7 @@ public class EmployeeJdbcDaoTest {
     DataSource dataSource;
 
     @Autowired
-    private EmployeeJdbcDao employeeJdbcDao;
+    private EmployeeJpaDao employeeJdbcDao;
 
     private JdbcTemplate jdbcTemplate;
 

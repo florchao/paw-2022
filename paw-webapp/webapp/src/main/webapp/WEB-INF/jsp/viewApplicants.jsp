@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
@@ -52,20 +53,38 @@
                         <ul role="list" class="divide-y divide-gray-300">
                             <c:forEach var="applicant" items="${ApplicantList}">
                                 <c:url value="/user/profile-image/${applicant.employeeID}" var="image" />
+                                <c:url value="/changeStatus/${jobID}/${applicant.employeeID.id.id}/1" var="accept"/>
+                                <c:url value="/changeStatus/${jobID}/${applicant.employeeID.id.id}/2" var="refuse"/>
                                 <li class="py-3 sm:py-4 hover:bg-gray-300 rounded">
-                                    <a href="<c:url value="/verPerfil/${applicant.employeeID}"/>">
+                                    <a href="<c:url value="/verPerfil/${applicant.employeeID.id.id}"/>">
                                         <div class="flex items-center space-x-4">
                                             <div class="flex-shrink-0">
                                                 <img class="w-8 h-8 rounded-full" src="${image}" alt="Employee Photo" onerror="this.src = '<c:url value="/public/user.png"/>'"/>
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p class="text-xl font-medium text-gray-900 truncate">
-                                                    <c:out value="${applicant.employeeName}"/>
+                                                    <c:out value="${applicant.employeeID.name}"/>
                                                 </p>
                                                 <p class="text-sm text-gray-500 truncate">
-                                                    <c:out value="${applicant.employeeUsername}"/>
+                                                    <c:out value="${applicant.employeeID.id.email}"/>
                                                 </p>
                                             </div>
+                                            <c:choose>
+                                                <c:when test="${applicant.status == 0}">
+                                                    <form:form action="${accept}" method="post">
+                                                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="applicants.accept"/></button>
+                                                    </form:form>
+                                                    <form:form action="${refuse}" method="post">
+                                                        <button class="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"><spring:message code="applicants.reject"/></button>
+                                                    </form:form>
+                                                </c:when>
+                                                <c:when test="${applicant.status == 1}">
+                                                    <p class="font-semibold text-lg text-green-400 px-8"><spring:message code="applicants.accepted"/></p>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="font-semibold text-lg text-rose-400 px-8"><spring:message code="applicants.rejected"/></p>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                     </a>
                                 </li>

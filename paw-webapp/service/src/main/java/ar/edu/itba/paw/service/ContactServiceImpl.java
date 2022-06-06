@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.Contact;
-import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.persistence.ContactDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +25,23 @@ public class ContactServiceImpl implements ContactService{
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EmployeeService employeeService;
 
+
+    @Transactional(readOnly = true)
     @Override
     public Optional<List<Contact>> getAllContacts(long id, Long page, int pageSize) {
-        return contactDao.getAllContacts(id, page, pageSize);
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        return employee.map(value -> contactDao.getAllContacts(value, page, pageSize)).orElse(null);
     }
+
 
     @Override
     public int getPageNumber(long id, int pageSize) {
         return contactDao.getPageNumber(id, pageSize);
     }
+
 
     @Transactional
     @Override
@@ -47,6 +53,7 @@ public class ContactServiceImpl implements ContactService{
         return contactDao.create(employeeId, employerId, created, contactMessage, phoneNumber);
     }
 
+    @Transactional
     @Override
     public void contact(User to, String message, String name, String phoneNumber) {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -54,14 +61,21 @@ public class ContactServiceImpl implements ContactService{
         if(optional.isPresent()) {
             User from = optional.get();
             create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber);
-            mailingService.sendContactMail(from.getUsername(), to.getUsername(), name);
+            mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
         }
 
     }
 
+    @Transactional
     @Override
     public void contactUS(String message, String from, String name) {
         mailingService.sendContactUsMail(name, from, message);
+    }
+
+    @Transactional
+    @Override
+    public void changedStatus(int status, Job job, Employee employee) {
+        mailingService.sendChangeStatus(status, employee.getId().getEmail(), job.getEmployerId().getId().getEmail(), job.getTitle());
     }
 
     @Override

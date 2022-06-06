@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </c:if>
-            <div class="flex felx-wrap grid grid-cols-5 items-center justify-items-center col-span-5 col-start-6">
+            <div class="flex felx-wrap grid grid-cols-6 items-center justify-items-center col-span-5 col-start-6">
                 <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
                     <div class = "flex items-center justify-items-end">
                             <c:choose>
@@ -78,6 +78,18 @@
                             </c:when>
                             <c:otherwise>
                                 <a href="<c:url value="/misTrabajos"/>"  class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.jobs"/></a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </sec:authorize>
+                <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
+                    <div class = "flex items-center justify-items-end">
+                        <c:choose>
+                            <c:when test="${param.currentUrl.equals('trabajosAplicados')}">
+                                <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.appliedJobs"/></p>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<c:url value="/trabajosAplicados"/>" class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.appliedJobs"/></a>
                             </c:otherwise>
                         </c:choose>
                     </div>
