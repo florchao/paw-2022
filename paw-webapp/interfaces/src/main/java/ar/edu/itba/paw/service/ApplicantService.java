@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Applicant;
-import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
 
