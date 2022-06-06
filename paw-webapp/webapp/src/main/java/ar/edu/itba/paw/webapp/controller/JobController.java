@@ -89,8 +89,8 @@ public class JobController {
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
-        Optional<Boolean> exists = jobService.alreadyApplied(id, principal.getUserID());
-        exists.ifPresent(aBoolean -> mav.addObject("alreadyApplied", aBoolean));
+        Boolean exists = jobService.alreadyApplied(id, principal.getUserID());
+         mav.addObject("alreadyApplied", exists);
         mav.addObject("status", status);
         return mav;
     }
@@ -112,9 +112,9 @@ public class JobController {
         Optional<List<Job>> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
         if (opJob.isPresent()) {
             for (Job job : opJob.get()) {
-                Optional<Boolean> applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
+                Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
                 job.firstWordsToUpper();
-                if(applied.isPresent() && applied.get()) {
+                if(applied) {
                     int status = applicantService.getStatus(user.getUserID(), job.getJobId());
                     jobList.put(job, status);
                 }

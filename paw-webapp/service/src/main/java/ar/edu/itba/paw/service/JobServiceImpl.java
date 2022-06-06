@@ -65,7 +65,7 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    public Optional<Boolean> alreadyApplied(long jobId, long employeeId) {
+    public Boolean alreadyApplied(long jobId, long employeeId) {
         return jobDao.alreadyApplied(jobId, employeeId);
     }
 

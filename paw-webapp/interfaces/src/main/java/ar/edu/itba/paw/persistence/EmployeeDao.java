@@ -15,7 +15,7 @@ public interface EmployeeDao {
 
     Optional<List<Employee>> getEmployees(long pageSize);
 
-    Optional<Boolean> isEmployee(long id);
+   Boolean isEmployee(long id);
 
     Optional<List<Employee>> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities,Long page, long pageSize);
 

@@ -56,13 +56,9 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public Optional<Boolean> isEmployee(long id) {
+    public Boolean isEmployee(long id) {
         Optional<Employee> employee = getEmployeeById(id);
-        if(employee.isPresent()) {
-            if (employee.get().getId().getRole() == 1)
-                return Optional.of(true);
-        }
-        return Optional.of(false);
+        return employee.filter(value -> value.getId().getRole() == 1).isPresent();
     }
 
     @Override

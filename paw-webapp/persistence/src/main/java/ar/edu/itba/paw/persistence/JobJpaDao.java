@@ -38,13 +38,13 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public Optional<Boolean> alreadyApplied(long jobId, long employeeId) {
+    public Boolean alreadyApplied(long jobId, long employeeId) {
         Employee employee = em.find(Employee.class, employeeId);
         Job job = em.find(Job.class, jobId);
         TypedQuery<Applicant> typedQuery = em.createQuery("select a from Applicant a where a.employeeID =:employee and a.jobID =:job", Applicant.class);
         typedQuery.setParameter("employee", employee);
         typedQuery.setParameter("job", job);
-        return Optional.of(!typedQuery.getResultList().isEmpty());
+        return !typedQuery.getResultList().isEmpty());
     }
 
     @Override

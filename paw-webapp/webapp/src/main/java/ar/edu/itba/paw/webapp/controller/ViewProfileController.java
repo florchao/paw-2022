@@ -93,8 +93,8 @@ public class ViewProfileController {
         int maxPage;
         if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser user = (HogarUser) auth.getPrincipal();
-            Optional<Boolean> exists = contactService.existsContact(userId, user.getUserID());
-            exists.ifPresent(aBoolean -> mav.addObject("contacted", aBoolean));
+            Boolean exists = contactService.existsContact(userId, user.getUserID());
+            mav.addObject("contacted", exists);
             Optional<Review> myReview = reviewService.getMyReview(userId, user.getUserID());
             myReview.ifPresent(review -> mav.addObject("myReview", review));
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);

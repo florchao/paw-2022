@@ -24,6 +24,6 @@ public interface ContactService {
 
     void changedStatus(int status, Job job, Employee employee);
 
-    Optional<Boolean> existsContact(long employeeId, long employerId);
+    Boolean existsContact(long employeeId, long employerId);
 }
 

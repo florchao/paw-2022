@@ -64,9 +64,8 @@ public class ExploreController {
             list.put(employee, false);
             if (!anonymousSession) {
                 HogarUser user = (HogarUser) authority.getPrincipal();
-                Optional<Boolean> connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
-                if(connection.isPresent() && connection.get()){
-                    System.out.println("cargando adentro" + employee);
+                Boolean connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
+                if(connection){
                     list.put(employee, true);
                 }
             }

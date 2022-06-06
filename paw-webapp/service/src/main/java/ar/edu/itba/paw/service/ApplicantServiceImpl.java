@@ -34,8 +34,8 @@ public class ApplicantServiceImpl implements ApplicantService{
         Optional<Job> job = jobDao.getJobById(jobID);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
         if(employee.isPresent() && job.isPresent()) {
-            Optional<Boolean> exists = applicantDao.existsApplicant(employee.get(), job.get());
-            if (exists.isPresent() && exists.get())
+            Boolean exists = applicantDao.existsApplicant(employee.get(), job.get());
+            if (exists)
                 throw new AlreadyExistsException("You already applied for this job");
             return applicantDao.create(jobID, employeeID);
         }

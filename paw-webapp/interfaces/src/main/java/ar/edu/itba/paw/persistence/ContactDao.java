@@ -15,5 +15,5 @@ public interface ContactDao {
 
     Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber);
 
-    Optional<Boolean> existsContact(long employeeId, long employerId);
+    Boolean existsContact(long employeeId, long employerId);
 }

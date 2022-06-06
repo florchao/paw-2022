@@ -74,8 +74,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Transactional(readOnly = true)
     @Override
     public void isEmployee(long id) {
-        Optional<Boolean> exists = employeeDao.isEmployee(id);
-        if(exists.isPresent() && exists.get() )
+        Boolean exists = employeeDao.isEmployee(id);
+        if(exists)
             return;
         throw new UserNotFoundException("Employee " + id + " not found");
     }

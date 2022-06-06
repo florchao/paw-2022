@@ -52,11 +52,11 @@ public class ApplicantJpaDao implements ApplicantDao{
     }
 
     @Override
-    public Optional<Boolean> existsApplicant(Employee employeeId, Job jobId) {
+    public Boolean existsApplicant(Employee employeeId, Job jobId) {
         TypedQuery<Applicant> contactTypedQuery = em.createQuery("SELECT c FROM Applicant c WHERE c.employeeID =:employee AND c.jobID = :jobID", Applicant.class);
         contactTypedQuery.setParameter("jobID", jobId);
         contactTypedQuery.setParameter("employee", employeeId);
-        return Optional.of(!contactTypedQuery.getResultList().isEmpty());
+        return!contactTypedQuery.getResultList().isEmpty();
     }
 
     @Override
