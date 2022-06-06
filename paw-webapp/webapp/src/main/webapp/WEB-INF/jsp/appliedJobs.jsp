@@ -51,7 +51,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div class="flex flex-wrap content-start justify-center h-screen pl-5 pr-5">
+            <div class="flex flex-wrap content-start justify-center">
                 <c:forEach var="entry" items="${jobList}">
                     <c:set var="job" value="${entry.key}" scope="request"/>
                     <c:set var="applied" value="${entry.value}" scope="request"/>
@@ -66,6 +66,8 @@
                         </jsp:include>
                     </div>
                 </c:forEach>
+            </div>
+            <div class="flex flex-row justify-center">
                 <c:url value="/trabajosAplicados" var="getPath"/>
                 <form method="get" action="${getPath}">
                     <c:if test="${maxPage > 0 && page + 1 <= maxPage}">
