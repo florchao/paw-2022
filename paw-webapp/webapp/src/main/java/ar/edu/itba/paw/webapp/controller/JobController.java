@@ -53,12 +53,14 @@ public class JobController {
     }
 
     @RequestMapping(value = "/misTrabajos", method = {RequestMethod.GET})
-    ModelAndView verTrabajos(){
+    ModelAndView verTrabajos(@RequestParam(value = "publishedPage", required = false) Long page){
         ModelAndView mav = new ModelAndView("publishedJobs");
+        if (page == null)
+            page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
         if(employer.isPresent()) {
-            Optional<List<Job>> jobs = jobService.getUserJobs(employer.get());
+            Optional<List<Job>> jobs = jobService.getUserJobs(employer.get(), page, PAGE_SIZE);
             List<Job> jobList = new ArrayList<>();
             if (jobs.isPresent()) {
                 for (Job job : jobs.get()) {
@@ -67,6 +69,8 @@ public class JobController {
                 }
             }
             mav.addObject("JobList", jobList);
+            mav.addObject("publishedPage", page);
+            mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(employer.get().getId().getId(), PAGE_SIZE));
             return mav;
         }
         return null;
