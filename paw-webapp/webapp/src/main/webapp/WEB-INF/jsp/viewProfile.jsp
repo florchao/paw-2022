@@ -10,6 +10,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <script src="<c:url value="/public/javascript/viewProfile.js"/>"></script>
     <script src="<c:url value="/public/javascript/utils.js"/>"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
@@ -53,7 +57,6 @@
                     <h1 class="block mb-2 text-sm font-medium text-gray-600 "> <c:out value="${employee.experienceYears}"/></h1>
                 </div>
                 <sec:authorize access="hasAuthority('EMPLOYER')">
-
                     <div class="ml-3 col-start-5 row-start-2">
                         <c:if test="${contacted == null || !contacted}">
                             <a href="<c:url value="/contacto/${employee.id.id}"/>">
@@ -64,8 +67,6 @@
                             <p class="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.alreadyConnected"/></p>
                         </c:if>
                         <c:url value="/addRating/${employee.id.id}" var="postPath"/>
-
-
                         <ul class="flex items-center gap-x-1">
                             <c:choose>
                                 <c:when test="${rating >= 0.75}">
@@ -138,10 +139,6 @@
                                 </div>
                             </a>
                         </c:if>
-
-<%--                        <div id="alguno" class="modal w-fit">--%>
-<%--                            <h1>buenass</h1>--%>
-<%--                        </div>--%>
                         <div id="alguno" class="modal w-fit">
                             <div class="flex grid grid-cols-3 items-center py-8 w-fit">
                                 <div class="col-span-2 row-span-2">

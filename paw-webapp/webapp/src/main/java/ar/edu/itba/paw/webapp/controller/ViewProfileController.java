@@ -69,29 +69,24 @@ public class ViewProfileController {
     public ModelAndView userProfile(@PathVariable("userId") final long userId, @RequestParam(value = "status", required = false) String status, @ModelAttribute("reviewForm") final ReviewForm reviewForm,
                                     @RequestParam(value = "page", required = false) Long page) {
         final ModelAndView mav = new ModelAndView("viewProfile");
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
-
         if (employee.isPresent()) {
             employee.get().firstWordsToUpper();
             mav.addObject("employee", employee.get());
         }
         mav.addObject("status", status);
-
         if (page == null)
             page = 0L;
-
-       List<Review> reviews;
+        List<Review> reviews;
         int maxPage;
         boolean hasAlreadyRated = false;
-        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser user = (HogarUser) auth.getPrincipal();
             Boolean exists = contactService.existsContact(userId, user.getUserID());
             mav.addObject("contacted", exists);
             Optional<Review> myReview = reviewService.getMyReview(userId, user.getUserID());
-            if(myReview.isPresent()){
+            if (myReview.isPresent()) {
                 myReview.get().getEmployerId().firstWordsToUpper(myReview.get().getEmployerId());
                 mav.addObject("myReview", myReview.get());
             }
@@ -105,9 +100,10 @@ public class ViewProfileController {
         for (Review rev : reviews) {
             rev.firstWordsToUpper(rev);
             rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
-        mav.addObject("alreadyRated",hasAlreadyRated);
+        }
+        mav.addObject("alreadyRated", hasAlreadyRated);
         mav.addObject("rating", employeeService.getRating(userId));
-        mav.addObject("voteCount",employeeService.getRatingVoteCount(userId));
+        mav.addObject("voteCount", employeeService.getRatingVoteCount(userId));
         mav.addObject("ReviewList", reviews);
         mav.addObject("page", page);
         mav.addObject("maxPage", maxPage);

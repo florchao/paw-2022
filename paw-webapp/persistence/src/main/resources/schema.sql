@@ -12,6 +12,8 @@ create table if not exists employee(
     availability TEXT,
     experienceYears INT,
     abilities TEXT,
+    voteCount INT,
+    rating float4,
     FOREIGN KEY (employeeID) REFERENCES users(userID) ON DELETE CASCADE,
     PRIMARY KEY (employeeID)
 
@@ -86,11 +88,11 @@ create table if not exists review(
     UNIQUE (employeeId, employerId)
 );
 CREATE TABLE IF NOT EXISTS  ratings (
-                                        employeeID INT,
-                                        employerID INT,
-                                        rating INT,
-                                        FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
-                                        FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
-                                        PRIMARY KEY (employeeID, employerID)
+        employeeID INT,
+        employerID INT,
+        rating INT,
+        FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
+        FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
+        PRIMARY KEY (employeeID, employerID)
 
 );

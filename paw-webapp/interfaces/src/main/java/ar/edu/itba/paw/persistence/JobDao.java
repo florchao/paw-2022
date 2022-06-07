@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface JobDao {
     Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description);
-    List<Job> getUserJobs(Employer employerID);
+    List<Job> getUserJobs(Employer employerID,  Long page, long pageSize);
     Optional<Job> getJobById(long jobId);
     Boolean alreadyApplied(long jobId, long employeeId);
     List<Job> getAllActiveJobs(long pageSize);

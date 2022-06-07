@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="<c:url value="/public/javascript/viewJob.js"/>"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
+    <script src="<c:url value="/public/javascript/utils.js"/>"></script>
     <title><spring:message code="viewJob.title"/></title>
 </head>
 <body>

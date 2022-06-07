@@ -61,7 +61,7 @@ public class JobController {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
         if(employer.isPresent()) {
-            List<Job> jobs = jobService.getUserJobs(employer.get());
+            List<Job> jobs = jobService.getUserJobs(employer.get(), page, PAGE_SIZE);
             List<Job> jobList = new ArrayList<>();
                 for (Job job : jobs) {
                     job.firstWordsToUpper();
