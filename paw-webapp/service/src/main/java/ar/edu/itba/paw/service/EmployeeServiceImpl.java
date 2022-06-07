@@ -75,9 +75,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public void isEmployee(long id) {
         Boolean exists = employeeDao.isEmployee(id);
-        if(exists)
-            return;
-        throw new UserNotFoundException("Employee " + id + " not found");
+        if(!exists)
+            throw new UserNotFoundException("Employee " + id + " not found");
     }
 
     @Transactional
