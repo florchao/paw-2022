@@ -41,7 +41,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/registrarse", "/register", "/nuevaContrasena", "/newPassword" ).anonymous()
                 .antMatchers("/verPerfil/{userId}", "/buscarEmpleadas").not().hasAuthority("EMPLOYEE")
                 .antMatchers("/contactos", "/verPerfil", "/crearPerfil/{userID}", "/createEmployee/{userID}", "/editarPerfil", "/editEmployee", "/trabajos", "/filterJobs", "/apply/{jobID}").hasAuthority("EMPLOYEE")
-                .antMatchers("/contacto/{id}", "/contactEmployee/{id}", "/crearPerfilEmpleador/{userID}", "/createEmployer/{userID}", "/misTrabajos", "/crearTrabajo", "/createJob", "/aplicantes/{jobID}").hasAuthority("EMPLOYER")
+                .antMatchers("/contacto/{id}", "/contactEmployee/{id}", "/crearPerfilEmpleador/{userID}", "/createEmployer/{userID}", "/misTrabajos", "/crearTrabajo", "/createJob", "/aplicantes/{jobID}", "/addRating/{idRating}").hasAuthority("EMPLOYER")
                 .antMatchers("/**").authenticated()
                 .and().formLogin()
                 .usernameParameter("j_username")

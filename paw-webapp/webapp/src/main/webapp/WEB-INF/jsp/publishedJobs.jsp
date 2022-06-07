@@ -2,9 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<script src="<c:url value="/public/javascript/utils.js"/>"></script>
 
 <html>
 <head>
@@ -68,8 +66,34 @@
                         <button type="button" class="text-lg focus:outline-none text-purple-700 bg-yellow-300 hover:bg-yellow-200 font-small rounded-lg text-lg px-5 py-2.5"><spring:message code="publishedJobs.addAnother"/></button>
                     </a>
                 </div>
+                <c:url value="/misTrabajos" var="getPath"/>
+                <form method="get" action="${getPath}">
+                    <c:if test="${publishedMaxPage > 0 && publishedPage + 1 <= publishedMaxPage}">
+                        <div class="flex flex-row justify-center mt-4">
+                        <c:choose>
+                            <c:when test="${publishedPage < 1}">
+                                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${publishedPage})"><</button>
+                            </c:when>
+                            <c:otherwise>
+                                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${publishedPage})"><</button>
+                            </c:otherwise>
+                        </c:choose>
+                        <div class="bg--300 w-16 flex justify-center">
+                            <h1 class="text-purple-900">${publishedPage + 1} of ${publishedMaxPage}</h1>
+                        </div>
+                        <c:choose>
+                            <c:when test="${publishedPage + 1 == publishedMaxPage}">
+                                <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${publishedPage})">></button>
+                            </c:when>
+                            <c:otherwise>
+                                <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${publishedPage})">></button>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                    </div>
+                    <input style="visibility: hidden" type="number" name="publishedPage" id="pageNumber"/>
+                </form>
             </div>
-
         </c:otherwise>
     </c:choose>
 </div>

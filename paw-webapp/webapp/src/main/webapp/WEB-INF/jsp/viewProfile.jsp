@@ -63,6 +63,115 @@
                         <c:if test="${contacted != null && contacted}">
                             <p class="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2 mb-2"><spring:message code="viewProfile.alreadyConnected"/></p>
                         </c:if>
+                        <c:url value="/addRating/${employee.id.id}" var="postPath"/>
+
+
+                        <ul class="flex items-center gap-x-1">
+                            <c:choose>
+                                <c:when test="${rating >= 0.75}">
+                                    <li>
+                                        <i class=" text-yellow-300 fa-lg fa fa-star"></i>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li>
+                                        <i class="text-yellow-300 fa-lg fa fa-star-o"></i>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${rating >= 1.75}">
+                                    <li>
+                                        <i class="text-yellow-300 fa fa-lg fa-star"></i>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li>
+                                        <i class="text-yellow-300 fa fa-lg fa-star-o"></i>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${rating >= 2.75}">
+                                    <li>
+                                        <i class="text-yellow-300 fa fa-lg fa-star"></i>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li>
+                                        <i class="text-yellow-300 fa-lg fa fa-star-o"></i>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${rating >= 3.75}">
+                                    <li>
+                                        <i class="text-yellow-300 fa-lg fa fa-star"></i>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li>
+                                        <i class="text-yellow-300 fa-lg fa fa-star-o"></i>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${rating >= 4.75}">
+                                    <li>
+                                        <i class="text-yellow-300 fa-lg fa fa-star"></i>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li>
+                                        <i class="text-yellow-300 fa-lg fa fa-star-o"></i>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:out value="(${voteCount})"/>
+                        </ul>
+
+                        <c:if test="${!alreadyRated}">
+                            <a href="#alguno" rel="modal:open" class="transition hover:scale-105">
+                                <div class="flex place-items-center">
+                                    <i class="text-blue-500 fa fa-star-o"></i>
+                                    <p class="font-semibold text-blue-500 ml-1">Rate</p>
+                                </div>
+                            </a>
+                        </c:if>
+
+<%--                        <div id="alguno" class="modal w-fit">--%>
+<%--                            <h1>buenass</h1>--%>
+<%--                        </div>--%>
+                        <div id="alguno" class="modal w-fit">
+                            <div class="flex grid grid-cols-3 items-center py-8 w-fit">
+                                <div class="col-span-2 row-span-2">
+                                    <form:form method="post" action="${postPath}">
+                                        <p class="text-lg font-semibold"><spring:message code="viewProfile.rateUser"/>${employee.name}</p>
+                                        <br>
+                                        <ul class="flex items-center gap-x-1" >
+                                            <li>
+                                                <i id="star1" class="text-yellow-300 fa-2x fa fa-star-o" onclick="setRatingAndSend(1)" onmouseleave="leaveHoverOnRating(1)" onmouseover="hoverOnRatings(1)"></i>
+                                            </li>
+                                            <li>
+                                                <i id="star2" class="text-yellow-300 fa-2x fa fa-star-o" onclick="setRatingAndSend(2)" onmouseleave="leaveHoverOnRating(2)" onmouseover="hoverOnRatings(2)"></i>
+                                            </li>
+                                            <li>
+                                                <i id="star3" class="text-yellow-300 fa-2x fa fa-star-o" onclick="setRatingAndSend(3)" onmouseleave="leaveHoverOnRating(3)" onmouseover="hoverOnRatings(3)"></i>
+                                            </li>
+                                            <li>
+                                                <i id="star4" class="text-yellow-300 fa-2x fa fa-star-o" onclick="setRatingAndSend(4)" onclick="" onmouseleave="leaveHoverOnRating(4)" onmouseover="hoverOnRatings(4)"></i>
+                                            </li>
+                                            <li>
+                                                <i id="star5" class="text-yellow-300 fa-2x fa fa-star-o" onclick="setRatingAndSend(5)" onmouseleave="leaveHoverOnRating(5)" onmouseover="hoverOnRatings(5)"></i>
+                                            </li>
+                                        </ul>
+                                        <input style="visibility: hidden" id="ratingInput" type="text" name="rating"/>
+                                        <input style="visibility: hidden" id="sendRatingButton" type="submit" name="submit" />
+                                        <p class="text-lg font-semibold"><spring:message code="viewProfile.thankEmployer"/></p>
+                                    </form:form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('EMPLOYEE')">

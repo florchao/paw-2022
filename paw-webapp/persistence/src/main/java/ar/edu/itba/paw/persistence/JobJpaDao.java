@@ -26,8 +26,8 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public List<Job> getUserJobs(Employer employerID) {
-        final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId =:employerId", Job.class);
+    public List<Job> getUserJobs(Employer employerID, Long page, long pageSize) {
+        final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId =:employerId", Job.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
         query.setParameter("employerId", employerID);
         return query.getResultList();
     }
@@ -139,5 +139,13 @@ public class JobJpaDao implements  JobDao{
         Optional<Job> job = getJobById(jobId);
         if(!job.isPresent()) return;
         job.get().setOpened(true);
+    }
+
+    @Override
+    public int getMyJobsPageNumber(long id, long pageSize) {
+        Employer employer = em.find(Employer.class, id);
+        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(j) FROM Job j WHERE j.employerId =:employer", Long.class);
+        filteredQuery.setParameter("employer", employer);
+        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
     }
 }

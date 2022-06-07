@@ -18,4 +18,5 @@ public interface JobDao {
     void deleteJob(long jobId);
     void closeJob(long jobId);
     void openJob(long jobId);
+    int getMyJobsPageNumber(long id, long pageSize);
 }

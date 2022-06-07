@@ -85,6 +85,7 @@ public class ViewProfileController {
 
        List<Review> reviews;
         int maxPage;
+        boolean hasAlreadyRated = false;
         if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser user = (HogarUser) auth.getPrincipal();
             Boolean exists = contactService.existsContact(userId, user.getUserID());
@@ -96,6 +97,7 @@ public class ViewProfileController {
             }
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
             maxPage = reviewService.getPageNumber(userId, user.getUserID(), PAGE_SIZE);
+            hasAlreadyRated = employeeService.hasAlreadyRated(userId, user.getUserID());
         } else {
             maxPage = reviewService.getPageNumber(userId, null, PAGE_SIZE);
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
@@ -103,7 +105,9 @@ public class ViewProfileController {
         for (Review rev : reviews) {
             rev.firstWordsToUpper(rev);
             rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
-        }
+        mav.addObject("alreadyRated",hasAlreadyRated);
+        mav.addObject("rating", employeeService.getRating(userId));
+        mav.addObject("voteCount",employeeService.getRatingVoteCount(userId));
         mav.addObject("ReviewList", reviews);
         mav.addObject("page", page);
         mav.addObject("maxPage", maxPage);
@@ -129,5 +133,20 @@ public class ViewProfileController {
         }
         InputStream is = new ByteArrayInputStream(image.get());
         IOUtils.copy(is,response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/addRating/{idRating}", method = {RequestMethod.POST})
+    public ModelAndView addRating(@RequestParam(value = "rating", required = false) Long rating,
+                           @PathVariable final long idRating) {
+        if (rating == null)
+            rating = 0L;
+        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
+        HogarUser user = (HogarUser) authority.getPrincipal();
+        float finalRating = employeeService.updateRating(idRating, rating, user.getUserID());
+        long voteCount = employeeService.getRatingVoteCount(idRating);
+        final ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+idRating);
+        mav.addObject("rating",finalRating);
+        mav.addObject("voteCount", voteCount);
+        return mav;
     }
 }
