@@ -75,9 +75,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public void isEmployee(long id) {
         Boolean exists = employeeDao.isEmployee(id);
-        if(exists)
-            return;
-        throw new UserNotFoundException("Employee " + id + " not found");
+        if(!exists)
+            throw new UserNotFoundException("Employee " + id + " not found");
     }
 
     @Transactional
@@ -118,5 +117,38 @@ public class EmployeeServiceImpl implements EmployeeService{
             abilitiesList = Arrays.asList(abilities.split(","));
         }
         return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
+    }
+
+    @Transactional
+    @Override
+    public float updateRating(long employeeId, Long rating, Long employerId) {
+
+        float prevRating = employeeDao.getPrevRating(employeeId);
+        float voteCount = employeeDao.getRatingVoteCount(employeeId);
+
+        float newRating = (prevRating*voteCount + rating) / (voteCount+1L);
+
+        employeeDao.updateRating(employeeId, newRating);
+
+        employeeDao.udpateRatingsTable(employeeId, employerId, rating);
+
+        employeeDao.incrementVoteCountValue(employeeId);
+
+        return newRating;
+    }
+
+    @Override
+    public long getRatingVoteCount(long idRating) {
+        return employeeDao.getRatingVoteCount(idRating);
+    }
+
+    @Override
+    public float getRating(long employeeId) {
+        return employeeDao.getPrevRating(employeeId);
+    }
+
+    @Override
+    public boolean hasAlreadyRated(long idRating, long userID) {
+        return employeeDao.hasAlreadyRated(idRating, userID);
     }
 }

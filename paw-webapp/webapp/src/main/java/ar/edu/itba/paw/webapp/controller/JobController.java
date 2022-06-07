@@ -54,18 +54,22 @@ public class JobController {
     }
 
     @RequestMapping(value = "/misTrabajos", method = {RequestMethod.GET})
-    public ModelAndView verTrabajos(){
+    public ModelAndView verTrabajos(@RequestParam(value = "publishedPage", required = false) Long page){
         ModelAndView mav = new ModelAndView("publishedJobs");
+        if (page == null)
+            page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
         if(employer.isPresent()) {
-            List<Job> jobs = jobService.getUserJobs(employer.get());
+            List<Job> jobs = jobService.getUserJobs(employer.get(), page, PAGE_SIZE);
             List<Job> jobList = new ArrayList<>();
                 for (Job job : jobs) {
                     job.firstWordsToUpper();
                     jobList.add(job);
                 }
             mav.addObject("JobList", jobList);
+            mav.addObject("publishedPage", page);
+            mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(employer.get().getId().getId(), PAGE_SIZE));
             return mav;
         }
         return null;
@@ -84,12 +88,9 @@ public class JobController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
         Boolean existsApplied = jobService.alreadyApplied(id, principal.getUserID());
-        System.out.println(existsApplied);
         if(existsApplied && job.isPresent()){
             jobStatus = applicantService.getStatus(principal.getUserID(), job.get().getJobId());
-            System.out.println(jobStatus);
         }
-        System.out.println(jobStatus);
         mav.addObject("alreadyApplied", jobStatus);
         mav.addObject("status", status);
         return mav;

@@ -32,4 +32,12 @@ public interface EmployeeService {
             String abilities,
             Long page,
             long pageSize);
+
+    float updateRating(long employeeId, Long rating, Long employerId);
+
+    long getRatingVoteCount(long idRating);
+
+    float getRating(long employeeId);
+
+    boolean hasAlreadyRated(long idRating, long userID);
 }

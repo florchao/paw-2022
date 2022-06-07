@@ -1,16 +1,12 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Experience;
-import ar.edu.itba.paw.model.User;
-import org.hibernate.Session;
+import ar.edu.itba.paw.model.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 @Repository
@@ -120,5 +116,56 @@ public class EmployeeJpaDao implements EmployeeDao{
 
         return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
 
+    }
+
+    @Override
+    public void updateRating(long employeeId, float rating) {
+        System.out.println("mi nuevo rating es: " + rating);
+        User user = em.find(User.class, employeeId);
+        Query contactQuery = em.createQuery("UPDATE Employee e SET e.rating=:newRating where e.id=:user");
+        contactQuery.setParameter("user", user);
+        contactQuery.setParameter("newRating", rating);
+        contactQuery.executeUpdate();
+    }
+
+    @Override
+    public float getPrevRating(long employeeId) {
+        User user = em.find(User.class, employeeId);
+        TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE e.id=:user", Employee.class);
+        query.setParameter("user", user);
+        return query.getSingleResult().getRating();
+    }
+
+    @Override
+    public long getRatingVoteCount(long employeeId) {
+        User user = em.find(User.class, employeeId);
+        TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE e.id=:user", Employee.class);
+        query.setParameter("user", user);
+        return query.getSingleResult().getVoteCount();
+    }
+
+    @Override
+    public void incrementVoteCountValue(long employeeId) {
+        User user = em.find(User.class, employeeId);
+        Query contactQuery = em.createQuery("UPDATE Employee e SET e.voteCount =(e.voteCount + 1) where e.id =:user");
+        contactQuery.setParameter("user", user);
+        contactQuery.executeUpdate();
+    }
+
+    @Override
+    public void udpateRatingsTable(long employeeId, Long employerId, Long rating) {
+        Employee employee = em.find(Employee.class, employeeId);
+        Employer employer = em.find(Employer.class, employerId);
+        final Ratings newRating = new Ratings(employee, employer, rating.intValue());
+        em.persist(newRating);
+    }
+
+    public boolean hasAlreadyRated(long employeeId, long employerId) {
+        Employee employee = em.find(Employee.class, employeeId);
+        Employer employer = em.find(Employer.class, employerId);
+        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(r) FROM Ratings r WHERE r.employerID=:employer AND r.employeeID=:employee", Long.class);
+        filteredQuery.setParameter("employer", employer);
+        filteredQuery.setParameter("employee", employee);
+        return filteredQuery.getSingleResult() > 0;
     }
 }

@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Review;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.exception.AccessIsDeniedException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
@@ -11,7 +10,6 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -71,38 +69,30 @@ public class ViewProfileController {
     public ModelAndView userProfile(@PathVariable("userId") final long userId, @RequestParam(value = "status", required = false) String status, @ModelAttribute("reviewForm") final ReviewForm reviewForm,
                                     @RequestParam(value = "page", required = false) Long page) {
         final ModelAndView mav = new ModelAndView("viewProfile");
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE")))
-            throw new AccessIsDeniedException("Access is denied");
-
-        employeeService.isEmployee(userId);
-
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
-
         if (employee.isPresent()) {
             employee.get().firstWordsToUpper();
             mav.addObject("employee", employee.get());
         }
         mav.addObject("status", status);
-
         if (page == null)
             page = 0L;
-
-       List<Review> reviews;
+        List<Review> reviews;
         int maxPage;
-        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+        boolean hasAlreadyRated = false;
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser user = (HogarUser) auth.getPrincipal();
             Boolean exists = contactService.existsContact(userId, user.getUserID());
             mav.addObject("contacted", exists);
             Optional<Review> myReview = reviewService.getMyReview(userId, user.getUserID());
-            if(myReview.isPresent()){
+            if (myReview.isPresent()) {
                 myReview.get().getEmployerId().firstWordsToUpper(myReview.get().getEmployerId());
                 mav.addObject("myReview", myReview.get());
             }
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
             maxPage = reviewService.getPageNumber(userId, user.getUserID(), PAGE_SIZE);
+            hasAlreadyRated = employeeService.hasAlreadyRated(userId, user.getUserID());
         } else {
             maxPage = reviewService.getPageNumber(userId, null, PAGE_SIZE);
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
@@ -111,6 +101,9 @@ public class ViewProfileController {
             rev.firstWordsToUpper(rev);
             rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
         }
+        mav.addObject("alreadyRated", hasAlreadyRated);
+        mav.addObject("rating", employeeService.getRating(userId));
+        mav.addObject("voteCount", employeeService.getRatingVoteCount(userId));
         mav.addObject("ReviewList", reviews);
         mav.addObject("page", page);
         mav.addObject("maxPage", maxPage);
@@ -136,5 +129,20 @@ public class ViewProfileController {
         }
         InputStream is = new ByteArrayInputStream(image.get());
         IOUtils.copy(is,response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/addRating/{idRating}", method = {RequestMethod.POST})
+    public ModelAndView addRating(@RequestParam(value = "rating", required = false) Long rating,
+                           @PathVariable final long idRating) {
+        if (rating == null)
+            rating = 0L;
+        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
+        HogarUser user = (HogarUser) authority.getPrincipal();
+        float finalRating = employeeService.updateRating(idRating, rating, user.getUserID());
+        long voteCount = employeeService.getRatingVoteCount(idRating);
+        final ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+idRating);
+        mav.addObject("rating",finalRating);
+        mav.addObject("voteCount", voteCount);
+        return mav;
     }
 }

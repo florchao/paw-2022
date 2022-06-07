@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.persistence.JobDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-
 public class JobServiceImpl implements JobService{
     @Autowired
     private JobDao jobDao;
@@ -29,8 +29,8 @@ public class JobServiceImpl implements JobService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Job> getUserJobs(Employer employerID) {
-        return jobDao.getUserJobs(employerID);
+    public List<Job> getUserJobs(Employer employerID, Long page, long pageSize) {
+        return jobDao.getUserJobs(employerID, page, pageSize);
     }
 
     @Transactional(readOnly = true)
@@ -103,5 +103,10 @@ public class JobServiceImpl implements JobService{
     @Override
     public void openJob(long jobId) {
         jobDao.openJob(jobId);
+    }
+
+    @Override
+    public int getMyJobsPageNumber(long id, long pageSize) {
+        return jobDao.getMyJobsPageNumber(id, pageSize);
     }
 }
