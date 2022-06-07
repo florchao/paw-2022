@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.constraint.annotation.PasswordMatchesAnnotation;
 import ar.edu.itba.paw.webapp.constraint.annotation.RolesAnnotation;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+@PasswordMatchesAnnotation
 public class RegisterForm {
 
     @Email(regexp = "[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}")
