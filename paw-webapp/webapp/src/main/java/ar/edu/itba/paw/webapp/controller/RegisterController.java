@@ -62,7 +62,6 @@ public class RegisterController {
             }
         }catch (UserFoundException uaeEx){
             LOGGER.warn(String.format("Error registering account under username %s", form.getMail()));
-            mav.addObject("UserError", "An account for that username/email already exists.");
             return mav;
         }catch (PassMatchException psEx){
             LOGGER.warn("Passwords don't match");

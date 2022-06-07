@@ -40,7 +40,6 @@
                 <form:label for="mail" path="mail" class="text-sm font-medium text-gray-900" ><spring:message code="register.mail"/> </form:label>
                 <form:input id="mail" path="mail" type="mail" class="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                 <form:errors path="mail" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
-                <p style="color:red" class="col-start-2 col-span-5">${UserError}</p>
             </div>
             <div class="form-group mb-6 grid grid-cols-6">
                 <form:label for="password" path="password" class="text-sm font-medium text-gray-900"><spring:message code="register.password"/></form:label>
