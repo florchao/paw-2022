@@ -1,11 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.service.ApplicantService;
-import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
-import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
@@ -27,10 +24,6 @@ import java.util.*;
 public class JobController {
     @Autowired
     private JobService jobService;
-    @Autowired
-    private EmployerService employerService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private ApplicantService applicantService;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
@@ -60,22 +53,18 @@ public class JobController {
         if (page == null)
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
-        if(employer.isPresent()) {
-            List<Job> jobs = jobService.getUserJobs(employer.get(), page, PAGE_SIZE);
-            List<Job> jobList = new ArrayList<>();
-                for (Job job : jobs) {
-                    job.firstWordsToUpper();
-                    job.locationNameToUpper();
-                    jobList.add(job);
-                }
-            mav.addObject("JobList", jobList);
-            mav.addObject("publishedPage", page);
-            mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(employer.get().getId().getId(), PAGE_SIZE));
-            return mav;
-        }
-        return null;
-    }
+        List<Job> jobs = jobService.getUserJobs(principal.getUserID(), page, PAGE_SIZE);
+        List<Job> jobList = new ArrayList<>();
+            for (Job job : jobs) {
+                job.firstWordsToUpper();
+                job.locationNameToUpper();
+                jobList.add(job);
+            }
+        mav.addObject("JobList", jobList);
+        mav.addObject("publishedPage", page);
+        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));
+        return mav;
+}
 
     @RequestMapping(value = "/trabajo/{id}", method = {RequestMethod.GET})
     public ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){

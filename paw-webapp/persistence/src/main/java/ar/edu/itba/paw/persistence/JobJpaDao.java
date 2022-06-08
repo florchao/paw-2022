@@ -18,9 +18,8 @@ public class JobJpaDao implements  JobDao{
     @PersistenceContext
     private EntityManager em;
     @Override
-    public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
-        Employer employer = em.find(Employer.class, employerId);
-        final Job job = new Job(title, location, employer, availability, experienceYears, abilities, description);
+    public Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
+        final Job job = new Job(title, location, employerId, availability, experienceYears, abilities, description);
         em.persist(job);
         return job;
     }
@@ -38,12 +37,10 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public Boolean alreadyApplied(long jobId, long employeeId) {
-        Employee employee = em.find(Employee.class, employeeId);
-        Job job = em.find(Job.class, jobId);
+    public Boolean alreadyApplied(Job jobId, Employee employeeId) {
         TypedQuery<Applicant> typedQuery = em.createQuery("select a from Applicant a where a.employeeID =:employee and a.jobID =:job", Applicant.class);
-        typedQuery.setParameter("employee", employee);
-        typedQuery.setParameter("job", job);
+        typedQuery.setParameter("employee", employeeId);
+        typedQuery.setParameter("job", jobId);
         return !typedQuery.getResultList().isEmpty();
     }
 
@@ -114,13 +111,6 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public String getJobNameById(long jobID) {
-       Job job = em.find(Job.class, jobID);
-       job.firstWordsToUpper();
-       return job.getTitle();
-    }
-
-    @Override
     public void deleteJob(long jobId) {
         Optional<Job> job = getJobById(jobId);
         if(!job.isPresent()) return;
@@ -142,10 +132,9 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public int getMyJobsPageNumber(long id, long pageSize) {
-        Employer employer = em.find(Employer.class, id);
+    public int getMyJobsPageNumber(Employer id, long pageSize) {
         TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(j) FROM Job j WHERE j.employerId =:employer", Long.class);
-        filteredQuery.setParameter("employer", employer);
+        filteredQuery.setParameter("employer", id);
         return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
     }
 }

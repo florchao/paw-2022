@@ -63,7 +63,7 @@ public class ApplicantController {
             applicant.firstWordsToUpper(applicant.getEmployeeID());
         }
         mav.addObject("ApplicantList", list);
-        mav.addObject("title", jobService.getJobNameById(jobID));
+        mav.addObject("title", jobService.getJobByID(jobID).get().getTitle());
         mav.addObject("page", page);
         mav.addObject("maxPage",applicantService.getPageNumber(jobID, PAGE_SIZE));
         return mav;

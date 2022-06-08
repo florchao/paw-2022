@@ -1,36 +1,45 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
+import ar.edu.itba.paw.persistence.EmployeeDao;
+import ar.edu.itba.paw.persistence.EmployerDao;
 import ar.edu.itba.paw.persistence.JobDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class JobServiceImpl implements JobService{
     @Autowired
     private JobDao jobDao;
+    @Autowired
+    private EmployeeDao employeeDao;
+    @Autowired
+    private EmployerDao employerDao;
 
     @Transactional
     @Override
     public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
         title = title.toLowerCase().trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
-        return jobDao.create(title, location.toLowerCase(), employerId, availability, experienceYears, abilities, description);
+        Optional<Employer> employer = employerDao.getEmployerById(employerId);
+        if(employer.isPresent())
+            return jobDao.create(title, location.toLowerCase(), employer.get(), availability, experienceYears, abilities, description);
+        return null;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Job> getUserJobs(Employer employerID, Long page, long pageSize) {
-        return jobDao.getUserJobs(employerID, page, pageSize);
+    public List<Job> getUserJobs(long employerID, Long page, long pageSize) {
+        Optional<Employer> employer = employerDao.getEmployerById(employerID);
+        if(employer.isPresent())
+            return jobDao.getUserJobs(employer.get(), page, pageSize);
+        return Collections.emptyList();
     }
 
     @Transactional(readOnly = true)
@@ -64,7 +73,11 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public Boolean alreadyApplied(long jobId, long employeeId) {
-        return jobDao.alreadyApplied(jobId, employeeId);
+        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
+        Optional<Job> job = jobDao.getJobById(jobId);
+        if(employee.isPresent() && job.isPresent())
+            return jobDao.alreadyApplied(job.get(), employee.get());
+        return false;
     }
 
     @Transactional(readOnly = true)
@@ -79,12 +92,6 @@ public class JobServiceImpl implements JobService{
             abilitiesList = Arrays.asList(abilities.split(","));
         }
         return jobDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public String getJobNameById(long jobID) {
-        return jobDao.getJobNameById(jobID);
     }
 
     @Transactional
@@ -107,6 +114,7 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public int getMyJobsPageNumber(long id, long pageSize) {
-        return jobDao.getMyJobsPageNumber(id, pageSize);
+        Optional<Employer> employer = employerDao.getEmployerById(id);
+        return employer.map(value -> jobDao.getMyJobsPageNumber(value, pageSize)).orElse(0);
     }
 }
