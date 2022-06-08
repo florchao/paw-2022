@@ -19,15 +19,10 @@ public class ApplicantJpaDao implements ApplicantDao{
     private EntityManager em;
 
     @Override
-    public Applicant create(long jobID, long employeeID) {
-        Optional<Job> job = Optional.ofNullable(em.find(Job.class, jobID));
-        Optional<Employee> employee = Optional.ofNullable(em.find(Employee.class, employeeID));
-        if(job.isPresent() && employee.isPresent()) {
-            final Applicant applicant = new Applicant(job.get(), employee.get());
+    public Applicant create(Job jobID, Employee employeeID) {
+            final Applicant applicant = new Applicant(jobID, employeeID);
             em.persist(applicant);
             return applicant;
-        }
-        return null;
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ApplicantDao {
-    Applicant create(long jobID, long employeeID);
+    Applicant create(Job jobID, Employee employeeID);
 
     List<Applicant> getApplicantsByJob(Job jobID, Long page, int pageSize);
 
