@@ -22,6 +22,7 @@ public class Contact implements Serializable {
     @Column(name = "phone", length = 100, nullable = false)
     private String phoneNumber;
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date created;
 
     public Contact() {

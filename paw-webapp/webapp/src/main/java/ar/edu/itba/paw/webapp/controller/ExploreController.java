@@ -29,7 +29,7 @@ public class ExploreController {
     private EmployeeService employeeService;
     @Autowired
     private ContactService contactService;
-    private final static long PAGE_SIZE = 4;
+    private final static long PAGE_SIZE = 9;
 
     @RequestMapping(value = "/buscarEmpleadas", method = {RequestMethod.GET})
     public ModelAndView searchPage(
