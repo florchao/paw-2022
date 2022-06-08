@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,11 +18,13 @@ public class Review implements Serializable {
 
     @ManyToOne
     @Embedded
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "employeeId", nullable = false, referencedColumnName = "employeeID")
     private Employee employeeId;
 
     @ManyToOne
     @Embedded
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "employerId", nullable = false, referencedColumnName = "employerID")
     private Employer employerId;
 

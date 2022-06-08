@@ -17,6 +17,7 @@ public class Applicant implements Serializable {
     private Job jobID;
     @OneToOne
     @EmbeddedId
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "employeeID", nullable = false, referencedColumnName = "employeeID")
     private Employee employeeID;
 
