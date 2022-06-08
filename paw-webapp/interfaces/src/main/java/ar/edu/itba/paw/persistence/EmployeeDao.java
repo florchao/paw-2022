@@ -11,25 +11,22 @@ public interface EmployeeDao {
 
     Employee create(long id, String name, String location, String availability, long experienceYears, String abilites, byte[] image);
 
-    void update(long id, String name, String location, String availability, long experienceYears, String abilites);
+    void update(Employee id, String name, String location, String availability, long experienceYears, String abilites);
 
    List<Employee> getEmployees(long pageSize);
 
-   Boolean isEmployee(long id);
+   Boolean isEmployee(Employee id);
 
    List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities,Long page, long pageSize);
 
     int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long pageSize);
 
-    void updateRating(long employeeId, float rating);
+    void updateRating(Employee employeeId, float rating);
 
-    float getPrevRating(long employeeId);
+    float getPrevRating(Employee employeeId);
 
-    long getRatingVoteCount(long employeeId);
+    long getRatingVoteCount(Employee employeeId);
 
-    void incrementVoteCountValue(long employeeId);
+    void incrementVoteCountValue(Employee employeeId);
 
-    void udpateRatingsTable(long employeeId, Long employerId, Long rating);
-
-    boolean hasAlreadyRated(long employeeId, long employerId);
 }

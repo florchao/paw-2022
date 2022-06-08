@@ -35,6 +35,8 @@ public class ViewProfileController {
     @Autowired
     private ReviewService reviewService;
     @Autowired
+    private RaitingService raitingService;
+    @Autowired
     private EmployeeService employeeService;
     @Autowired
     private ContactService contactService;
@@ -94,7 +96,7 @@ public class ViewProfileController {
             }
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
             maxPage = reviewService.getPageNumber(userId, user.getUserID(), PAGE_SIZE);
-            hasAlreadyRated = employeeService.hasAlreadyRated(userId, user.getUserID());
+            hasAlreadyRated = raitingService.hasAlreadyRated(userId, user.getUserID());
         } else {
             maxPage = reviewService.getPageNumber(userId, null, PAGE_SIZE);
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
@@ -140,7 +142,7 @@ public class ViewProfileController {
             rating = 0L;
         Authentication authority = SecurityContextHolder.getContext().getAuthentication();
         HogarUser user = (HogarUser) authority.getPrincipal();
-        float finalRating = employeeService.updateRating(idRating, rating, user.getUserID());
+        float finalRating = raitingService.updateRating(idRating, rating, user.getUserID());
         long voteCount = employeeService.getRatingVoteCount(idRating);
         final ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+idRating);
         mav.addObject("rating",finalRating);

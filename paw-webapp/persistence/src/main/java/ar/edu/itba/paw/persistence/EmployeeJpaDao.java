@@ -32,15 +32,12 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public void update(long id, String name, String location, String availability, long experienceYears, String abilites) {
-        Optional<Employee> employee = getEmployeeById(id);
-        if (!employee.isPresent())
-            return;
-        employee.get().setName(name);
-        employee.get().setAbilities(abilites);
-        employee.get().setLocation(location);
-        employee.get().setExperienceYears(experienceYears);
-        employee.get().setAvailability(availability);
+    public void update(Employee employee, String name, String location, String availability, long experienceYears, String abilites) {
+        employee.setName(name);
+        employee.setAbilities(abilites);
+        employee.setLocation(location);
+        employee.setExperienceYears(experienceYears);
+        employee.setAvailability(availability);
     }
 
     @Override
@@ -52,9 +49,8 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public Boolean isEmployee(long id) {
-        Optional<Employee> employee = getEmployeeById(id);
-        return employee.filter(value -> value.getId().getRole() == 1).isPresent();
+    public Boolean isEmployee(Employee id) {
+        return id.getId().getRole() == 1;
     }
 
     @Override
@@ -119,53 +115,31 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public void updateRating(long employeeId, float rating) {
-        System.out.println("mi nuevo rating es: " + rating);
-        User user = em.find(User.class, employeeId);
+    public void updateRating(Employee employeeId, float rating) {
         Query contactQuery = em.createQuery("UPDATE Employee e SET e.rating=:newRating where e.id=:user");
-        contactQuery.setParameter("user", user);
+        contactQuery.setParameter("user", employeeId.getId());
         contactQuery.setParameter("newRating", rating);
         contactQuery.executeUpdate();
     }
 
     @Override
-    public float getPrevRating(long employeeId) {
-        User user = em.find(User.class, employeeId);
+    public float getPrevRating(Employee employeeId) {
         TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE e.id=:user", Employee.class);
-        query.setParameter("user", user);
+        query.setParameter("user", employeeId.getId());
         return query.getSingleResult().getRating();
     }
 
     @Override
-    public long getRatingVoteCount(long employeeId) {
-        User user = em.find(User.class, employeeId);
+    public long getRatingVoteCount(Employee employeeId) {
         TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE e.id=:user", Employee.class);
-        query.setParameter("user", user);
+        query.setParameter("user", employeeId.getId());
         return query.getSingleResult().getVoteCount();
     }
 
     @Override
-    public void incrementVoteCountValue(long employeeId) {
-        User user = em.find(User.class, employeeId);
+    public void incrementVoteCountValue(Employee employeeId) {
         Query contactQuery = em.createQuery("UPDATE Employee e SET e.voteCount =(e.voteCount + 1) where e.id =:user");
-        contactQuery.setParameter("user", user);
+        contactQuery.setParameter("user", employeeId.getId());
         contactQuery.executeUpdate();
-    }
-
-    @Override
-    public void udpateRatingsTable(long employeeId, Long employerId, Long rating) {
-        Employee employee = em.find(Employee.class, employeeId);
-        Employer employer = em.find(Employer.class, employerId);
-        final Ratings newRating = new Ratings(employee, employer, rating.intValue());
-        em.persist(newRating);
-    }
-
-    public boolean hasAlreadyRated(long employeeId, long employerId) {
-        Employee employee = em.find(Employee.class, employeeId);
-        Employer employer = em.find(Employer.class, employerId);
-        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(r) FROM Ratings r WHERE r.employerID=:employer AND r.employeeID=:employee", Long.class);
-        filteredQuery.setParameter("employer", employer);
-        filteredQuery.setParameter("employee", employee);
-        return filteredQuery.getSingleResult() > 0;
     }
 }

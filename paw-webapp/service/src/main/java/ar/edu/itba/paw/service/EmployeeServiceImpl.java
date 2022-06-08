@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.EmployeeDao;
+import ar.edu.itba.paw.persistence.EmployerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
     private EmployeeDao employeeDao;
+
+    @Autowired
+    private EmployerDao employerDao;
 
     @Transactional(readOnly = true)
     @Override
@@ -53,7 +58,9 @@ public class EmployeeServiceImpl implements EmployeeService{
             availabilitySB.setLength(0);
         else
             availabilitySB.setLength(availabilitySB.length() - 1);
-        employeeDao.update(id, name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString());
+        Optional<Employee> employee = employeeDao.getEmployeeById(id);
+        if(employee.isPresent())
+            employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString());
     }
 
     @Transactional
@@ -74,9 +81,12 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Transactional(readOnly = true)
     @Override
     public void isEmployee(long id) {
-        Boolean exists = employeeDao.isEmployee(id);
-        if(!exists)
-            throw new UserNotFoundException("Employee " + id + " not found");
+        Optional<Employee> employee = employeeDao.getEmployeeById(id);
+        if(employee.isPresent()) {
+            Boolean exists = employeeDao.isEmployee(employee.get());
+            if (!exists)
+                throw new UserNotFoundException("Employee " + id + " not found");
+        }
     }
 
     @Transactional
@@ -119,36 +129,15 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
     }
 
-    @Transactional
-    @Override
-    public float updateRating(long employeeId, Long rating, Long employerId) {
-
-        float prevRating = employeeDao.getPrevRating(employeeId);
-        float voteCount = employeeDao.getRatingVoteCount(employeeId);
-
-        float newRating = (prevRating*voteCount + rating) / (voteCount+1L);
-
-        employeeDao.updateRating(employeeId, newRating);
-
-        employeeDao.udpateRatingsTable(employeeId, employerId, rating);
-
-        employeeDao.incrementVoteCountValue(employeeId);
-
-        return newRating;
-    }
-
     @Override
     public long getRatingVoteCount(long idRating) {
-        return employeeDao.getRatingVoteCount(idRating);
+        Optional<Employee> employee = employeeDao.getEmployeeById(idRating);
+        return employee.map(value -> employeeDao.getRatingVoteCount(value)).orElse(0L);
     }
 
     @Override
     public float getRating(long employeeId) {
-        return employeeDao.getPrevRating(employeeId);
-    }
-
-    @Override
-    public boolean hasAlreadyRated(long idRating, long userID) {
-        return employeeDao.hasAlreadyRated(idRating, userID);
+        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
+        return employee.map(value -> employeeDao.getPrevRating(value)).orElse(0F);
     }
 }
