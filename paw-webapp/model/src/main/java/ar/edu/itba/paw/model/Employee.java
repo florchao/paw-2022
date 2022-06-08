@@ -139,6 +139,15 @@ public class Employee implements Serializable {
         setName(finalName.toString());
     }
 
+    public void locationFirstWordsToUpper() {
+        StringBuilder finalLocation = new StringBuilder();
+        for (String word : getLocation().split(" ")) {
+            finalLocation.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalLocation.setLength(finalLocation.length() - 1);
+        setLocation(finalLocation.toString());
+    }
+
     @Override
     public String toString() {
         return getId()+ " - "

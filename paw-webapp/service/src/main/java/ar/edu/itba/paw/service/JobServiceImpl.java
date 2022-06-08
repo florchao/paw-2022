@@ -24,7 +24,7 @@ public class JobServiceImpl implements JobService{
     public Job create(String title, String location, long employerId, String availability, long experienceYears, String abilities, String description) {
         title = title.toLowerCase().trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
-        return jobDao.create(title, location, employerId, availability, experienceYears, abilities, description);
+        return jobDao.create(title, location.toLowerCase(), employerId, availability, experienceYears, abilities, description);
     }
 
     @Transactional(readOnly = true)

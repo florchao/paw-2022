@@ -197,6 +197,15 @@ public class Job implements Serializable {
         return;
     }
 
+    public void locationNameToUpper(){
+        StringBuilder finalName = new StringBuilder();
+        for (String word : getLocation().split(" ")) {
+            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        finalName.setLength(finalName.length() - 1);
+        setLocation(finalName.toString());
+    }
+
     public boolean isOpened() {
         return opened;
     }

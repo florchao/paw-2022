@@ -53,6 +53,7 @@ public class ViewProfileController {
             Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
             if(employee.isPresent()){
                 employee.get().firstWordsToUpper();
+                employee.get().locationFirstWordsToUpper();
                 mav.addObject("employee", employee.get());
             }
             mav.addObject("userId", user.get().getId());
@@ -73,6 +74,7 @@ public class ViewProfileController {
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
         if (employee.isPresent()) {
             employee.get().firstWordsToUpper();
+            employee.get().locationFirstWordsToUpper();
             mav.addObject("employee", employee.get());
         }
         mav.addObject("status", status);

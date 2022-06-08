@@ -65,6 +65,7 @@ public class JobController {
             List<Job> jobList = new ArrayList<>();
                 for (Job job : jobs) {
                     job.firstWordsToUpper();
+                    job.locationNameToUpper();
                     jobList.add(job);
                 }
             mav.addObject("JobList", jobList);
@@ -83,6 +84,7 @@ public class JobController {
         if (job.isPresent()) {
             job.get().employerNameToUpper(job.get().getEmployerId());
             job.get().firstWordsToUpper();
+            job.get().locationNameToUpper();
             mav.addObject("job", job.get());
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -114,6 +116,7 @@ public class JobController {
         for (Job job : opJob) {
             Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
             job.firstWordsToUpper();
+            job.locationNameToUpper();
             if(applied) {
                 int status = applicantService.getStatus(user.getUserID(), job.getJobId());
                 jobList.put(job, status);
