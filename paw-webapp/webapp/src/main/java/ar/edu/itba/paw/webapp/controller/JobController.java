@@ -34,7 +34,8 @@ public class JobController {
     @Autowired
     private ApplicantService applicantService;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
-    private final static long PAGE_SIZE = 8;
+    private final static long PAGE_SIZE_JOBS = 9;
+    private static final long PAGE_SIZE = 8;
 
     @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
     public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
@@ -112,7 +113,7 @@ public class JobController {
         if (page == null)
             page = 0L;
         Map<Job, Integer> jobList = new HashMap<>();
-        List<Job> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
+        List<Job> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE_JOBS);
         for (Job job : opJob) {
             Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
             job.firstWordsToUpper();
@@ -128,7 +129,7 @@ public class JobController {
         final ModelAndView mav = new ModelAndView("searchJobs");
         mav.addObject("jobList", jobList);
         mav.addObject("page", page);
-        mav.addObject("maxPage", jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE));
+        mav.addObject("maxPage", jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE_JOBS));
         return mav;
     }
 

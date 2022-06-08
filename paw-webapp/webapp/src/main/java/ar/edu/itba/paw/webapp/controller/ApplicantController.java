@@ -92,6 +92,7 @@ public class ApplicantController {
         mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
         for (Job job : list) {
             job.firstWordsToUpper();
+            job.locationNameToUpper();
             job.getEmployerId().firstWordsToUpper(job.getEmployerId());
             int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
             jobList.put(job, status);
