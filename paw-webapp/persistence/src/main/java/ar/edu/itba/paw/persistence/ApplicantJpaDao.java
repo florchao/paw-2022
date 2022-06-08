@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ApplicantJpaDao implements ApplicantDao{
@@ -55,10 +54,9 @@ public class ApplicantJpaDao implements ApplicantDao{
     }
 
     @Override
-    public int getPageNumber(long jobID, int pageSize) {
-        Job job = em.find(Job.class, jobID);
+    public int getPageNumber(Job jobID, int pageSize) {
         TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(a) FROM Applicant a WHERE a.jobID =:job", Long.class);
-        filteredQuery.setParameter("job", job);
+        filteredQuery.setParameter("job", jobID);
         return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
 
     }

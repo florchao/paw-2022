@@ -67,7 +67,8 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Override
     public int getPageNumber(long jobID, int pageSize) {
-        return applicantDao.getPageNumber(jobID, pageSize);
+        Optional<Job> job = jobDao.getJobById(jobID);
+        return job.map(value -> applicantDao.getPageNumber(value, pageSize)).orElse(0);
     }
 
     @Transactional

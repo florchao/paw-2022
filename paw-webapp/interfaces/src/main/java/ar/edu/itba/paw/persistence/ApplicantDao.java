@@ -18,7 +18,7 @@ public interface ApplicantDao {
 
     Boolean existsApplicant(Employee employeeId, Job jobId);
 
-    int getPageNumber(long jobID, int pageSize);
+    int getPageNumber(Job jobID, int pageSize);
 
     int getPageNumberForAppliedJobs(Employee employee, int pageSize);
 
