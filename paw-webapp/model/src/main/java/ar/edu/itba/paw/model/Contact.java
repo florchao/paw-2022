@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,16 +15,19 @@ public class Contact implements Serializable {
     @OneToOne
     @JoinColumn(name = "employeeID", referencedColumnName = "employeeID", nullable = false)
     @EmbeddedId
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Employee employeeID;
     @OneToOne
     @JoinColumn(name = "employerID",referencedColumnName = "employerID", nullable = false)
     @EmbeddedId
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Employer employerID;
     @Column(name = "message", length = 100, nullable = false)
     private String contactMessage;
     @Column(name = "phone", length = 100, nullable = false)
     private String phoneNumber;
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date created;
 
     public Contact() {

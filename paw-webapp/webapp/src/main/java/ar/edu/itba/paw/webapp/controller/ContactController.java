@@ -28,7 +28,7 @@ import java.util.Optional;
 @Controller
 public class ContactController {
 
-    private final int PAGE_SIZE = 4;
+    private final int PAGE_SIZE = 8;
     @Autowired
     private UserService userService;
     @Autowired
@@ -46,6 +46,7 @@ public class ContactController {
         List<Contact> list = contactService.getAllContacts(principal.getUserID(), page, PAGE_SIZE);
         for (Contact contact : list) {
             contact.firstWordsToUpper();
+
         }
         mav.addObject("ContactList", list);
         mav.addObject("page", page);

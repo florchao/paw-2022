@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -21,6 +24,7 @@ public class Job implements Serializable {
 
     @ManyToOne
     @Embedded
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "employerID", nullable = false)
     private Employer employerId;
     @Column(length = 100, nullable = false)
