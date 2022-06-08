@@ -25,16 +25,10 @@ public class ContactJpaDao implements ContactDao{
     }
 
     @Override
-    public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
-        Optional<Employee> employee=  Optional.ofNullable(em.find(Employee.class, employeeId));
-        Optional<Employer> employer=  Optional.ofNullable(em.find(Employer.class, employerId));
-        if(employee.isPresent() && employer.isPresent()) {
-            final Contact contact = new Contact(employee.get(), employer.get(), contactMessage, phoneNumber, created);
-            em.persist(contact);
-            return contact;
-
-        }
-        return null;
+    public Contact create(Employee employeeId, Employer employerId, Date created, String contactMessage, String phoneNumber) {
+        final Contact contact = new Contact(employeeId, employerId, contactMessage, phoneNumber, created);
+        em.persist(contact);
+        return contact;
     }
 
     @Override
@@ -46,12 +40,10 @@ public class ContactJpaDao implements ContactDao{
     }
 
     @Override
-    public Boolean existsContact(long employeeId, long employerId) {
-        Employer employer = em.find(Employer.class, employerId);
-        Employee employee = em.find(Employee.class, employeeId);
+    public Boolean existsContact(Employee employeeId, Employer employerId) {
         TypedQuery<Contact> contactTypedQuery = em.createQuery("SELECT c FROM Contact c WHERE c.employerID =:employer AND c.employeeID =:employee", Contact.class);
-        contactTypedQuery.setParameter("employer", employer);
-        contactTypedQuery.setParameter("employee", employee);
+        contactTypedQuery.setParameter("employer", employerId);
+        contactTypedQuery.setParameter("employee", employeeId);
         return !contactTypedQuery.getResultList().isEmpty();
     }
 }

@@ -25,6 +25,9 @@ public class ContactServiceImpl implements ContactService{
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private EmployerService employerService;
+
 
     @Transactional(readOnly = true)
     @Override
@@ -43,11 +46,15 @@ public class ContactServiceImpl implements ContactService{
     @Transactional
     @Override
     public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
-        Boolean exists = contactDao.existsContact(employeeId, employerId);
+        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
+        Optional<Employer> employer = employerService.getEmployerById(employerId);
+        Boolean exists = false;
+        if(employee.isPresent() && employer.isPresent())
+            exists = contactDao.existsContact(employee.get(), employer.get());
         if(exists){
             throw new AlreadyExistsException("You already have a contact with this employee");
         }
-        return contactDao.create(employeeId, employerId, created, contactMessage, phoneNumber);
+        return contactDao.create(employee.get(), employer.get(), created, contactMessage, phoneNumber);
     }
 
     @Transactional
@@ -76,7 +83,11 @@ public class ContactServiceImpl implements ContactService{
 
     @Override
     public Boolean existsContact(long employeeId, long employerId) {
-        return contactDao.existsContact(employeeId, employerId);
+        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
+        Optional<Employer> employer = employerService.getEmployerById(employerId);
+        if(employee.isPresent() && employer.isPresent())
+            return contactDao.existsContact(employee.get(), employer.get());
+        return false;
     }
 
 
