@@ -102,7 +102,6 @@ public class ViewProfileController {
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
         }
         for (Review rev : reviews) {
-            rev.firstWordsToUpper(rev);
             rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
         }
         mav.addObject("alreadyRated", hasAlreadyRated);

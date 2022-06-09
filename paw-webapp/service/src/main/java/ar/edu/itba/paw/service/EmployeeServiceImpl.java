@@ -21,9 +21,6 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
     private EmployeeDao employeeDao;
 
-    @Autowired
-    private EmployerDao employerDao;
-
     @Transactional(readOnly = true)
     @Override
     public Optional<Employee> getEmployeeById(long id) {

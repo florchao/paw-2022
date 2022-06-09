@@ -38,9 +38,14 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<Review> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        Optional<Employer> employer = employerDao.getEmployerById(id);
-        if (employee.isPresent() && employer.isPresent())
-            return reviewDao.getAllReviews(employee.get(), employer.get(), page, pageSize);
+        if(id!=null) {
+            Optional<Employer> employer = employerDao.getEmployerById(id);
+            if (employee.isPresent() && employer.isPresent())
+                return reviewDao.getAllReviews(employee.get(), employer.get(), page, pageSize);
+        }else {
+            if(employee.isPresent())
+                return reviewDao.getAllReviews(employee.get(), null, page, pageSize);
+        }
         return Collections.emptyList();
     }
 
@@ -48,9 +53,11 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public int getPageNumber(long employeeId, Long id, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        Optional<Employer> employer = employerDao.getEmployerById(id);
-        if (employee.isPresent() && employer.isPresent())
-            return reviewDao.getPageNumber(employee.get(), employer.get(), pageSize);
+        if(id!=null) {
+            Optional<Employer> employer = employerDao.getEmployerById(id);
+            if (employee.isPresent() && employer.isPresent())
+                return reviewDao.getPageNumber(employee.get(), employer.get(), pageSize);
+        }
         return 0;
     }
 
