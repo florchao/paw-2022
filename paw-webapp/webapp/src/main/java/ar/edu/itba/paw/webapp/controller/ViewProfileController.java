@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Review;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.*;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -40,6 +40,8 @@ public class ViewProfileController {
     @Autowired
     private EmployeeService employeeService;
     @Autowired
+    private EmployerService employerService;
+    @Autowired
     private ContactService contactService;
     @Autowired
     private ImagesService imagesService;
@@ -48,23 +50,36 @@ public class ViewProfileController {
 
     @RequestMapping(value = "/verPerfil", method = {RequestMethod.GET})
     public ModelAndView viewProfile() {
-        final ModelAndView mav = new ModelAndView("viewProfile");
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails principal = (UserDetails) auth.getPrincipal();
         Optional<User> user = userService.findByUsername(principal.getUsername());
-        if(user.isPresent()){
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+            final ModelAndView mav = new ModelAndView("viewProfileEmployer");
+            if (user.isPresent()) {
+                Optional<Employer> employer = employerService.getEmployerById(user.get().getId());
+                if(employer.isPresent()){
+                    System.out.println("EMPLOYER ID" + employer.get().getId().getId());
+                    employer.get().firstWordsToUpper(employer.get());
+                    mav.addObject("employer", employer.get());
+                }
+            }
+            return mav;
+        }
+        final ModelAndView mav = new ModelAndView("viewProfile");
+        if (user.isPresent()) {
             mav.addObject("user", user.get());
             Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
-            if(employee.isPresent()){
+            if (employee.isPresent()) {
                 employee.get().firstWordsToUpper();
                 employee.get().locationFirstWordsToUpper();
                 mav.addObject("employee", employee.get());
             }
             mav.addObject("userId", user.get().getId());
             List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId());
-            for(Review rev : myReviews){
+            for (Review rev : myReviews) {
                 rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
             }
-             mav.addObject("ReviewList", myReviews);
+            mav.addObject("ReviewList", myReviews);
         }
         return mav;
     }
@@ -137,7 +152,7 @@ public class ViewProfileController {
 
     @RequestMapping(value = "/addRating/{idRating}", method = {RequestMethod.POST})
     public ModelAndView addRating(@RequestParam(value = "rating", required = false) Long rating,
-                           @PathVariable final long idRating) {
+                                  @PathVariable final long idRating) {
         if (rating == null)
             rating = 0L;
         Authentication authority = SecurityContextHolder.getContext().getAuthentication();

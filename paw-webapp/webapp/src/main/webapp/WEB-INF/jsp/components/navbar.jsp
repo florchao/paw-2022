@@ -106,20 +106,6 @@
                         </c:choose>
                 </div>
                 </sec:authorize>
-                <sec:authorize access="hasAuthority('EMPLOYEE') && isAuthenticated()">
-                <div class = "flex items-center justify-items-end">
-                    <form:form method="get" action="${contacts}" pageEncoding="UTF-8">
-                        <c:choose>
-                            <c:when test="${param.currentUrl.equals('verPerfil')}">
-                                <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.profile"/></p>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="<c:url value="/verPerfil"/>" class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.profile"/></a>
-                            </c:otherwise>
-                        </c:choose>
-                    </form:form>
-                </div>
-                </sec:authorize>
                 <sec:authorize access="!isAuthenticated()">
                     <div class = "items-center ">
                         <c:choose>
@@ -152,6 +138,20 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
+                <sec:authorize access="isAuthenticated()">
+                    <div class = "flex items-center justify-items-end">
+                        <form:form method="get" action="${contacts}" pageEncoding="UTF-8">
+                            <c:choose>
+                                <c:when test="${param.currentUrl.equals('verPerfil')}">
+                                    <p class="text-sm whitespace-nowrap font-semibold text-violet-900"><spring:message code="navbar.profile"/></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="<c:url value="/verPerfil"/>" class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.profile"/></a>
+                                </c:otherwise>
+                            </c:choose>
+                        </form:form>
+                    </div>
+                </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
                     <div class = "items-center">
                         <a href="<c:url value="/logout"/>" class="text-sm whitespace-nowrap font-semibold hover:text-violet-300 text-white"><spring:message code="navbar.logout"/></a>
