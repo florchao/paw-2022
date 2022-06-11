@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -48,5 +49,12 @@ public class UserJpaDao implements UserDao{
         if(!dbUser.isPresent()) return false;
         dbUser.get().setPassword(password);
         return true;
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        Optional<User> user = getUserById(id);
+        if(!user.isPresent()) return;
+        em.remove(user.get());
     }
 }

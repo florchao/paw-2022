@@ -14,4 +14,5 @@ public interface UserDao {
     Optional<User> getUserByUsername(String username);
     boolean update(String username, String password);
 
+    void deleteUser(long id);
 }

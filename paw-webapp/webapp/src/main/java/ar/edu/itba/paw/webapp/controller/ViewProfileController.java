@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -147,5 +148,11 @@ public class ViewProfileController {
         mav.addObject("rating",finalRating);
         mav.addObject("voteCount", voteCount);
         return mav;
+    }
+    @RequestMapping(value = "/deleteProfile", method = {RequestMethod.POST, RequestMethod.DELETE})
+    public ModelAndView deleteJob(){
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.deleteUser(principal.getUserID());
+        return new ModelAndView("redirect:/logout");
     }
 }

@@ -54,4 +54,10 @@ public class UserServiceImpl implements UserService{
         String passEncoder = passwordEncoder.encode(password);
         return userDao.update(username, passEncoder);
     }
+
+    @Transactional
+    @Override
+    public void deleteUser(long id) {
+        userDao.deleteUser(id);
+    }
 }

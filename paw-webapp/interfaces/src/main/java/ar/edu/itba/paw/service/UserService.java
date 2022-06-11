@@ -16,4 +16,6 @@ public interface UserService {
 
     boolean update(String username, String password);
 
+    void deleteUser(long id);
+
 }
