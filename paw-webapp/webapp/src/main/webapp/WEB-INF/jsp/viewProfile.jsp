@@ -40,7 +40,7 @@
 <c:url value="/user/profile-image/${employee.id.id}" var="image" />
 <c:url value="/deleteProfile" var="deletePath"/>
 <div class="grid overflow-auto h-screen grid-cols-6">
-    <div class=" grid grid-row-4 col-span-4 col-start-2">
+    <div class=" grid grid-row-4 col-span-4 col-start-2 h-fit">
         <div class=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
                 <div class="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">

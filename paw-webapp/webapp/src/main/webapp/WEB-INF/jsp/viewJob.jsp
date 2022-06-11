@@ -37,7 +37,7 @@
 <c:url value="/closeJob/${id}" var="closePath"/>
 <c:url value="/openJob/${id}" var="openPath"/>
 <div class="grid h-screen grid-cols-6 overflow-auto">
-    <div class=" grid grid-row-4 col-span-4 col-start-2">
+    <div class=" grid grid-row-4 col-span-4 col-start-2 h-fit">
         <div class=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
             <div class="grid grid-cols-5 justify-center">
                 <div class="mb-2 col-span-5">
