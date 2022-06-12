@@ -68,13 +68,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.create(id, name, location, availability, experienceYears, abilities, image);
     }
 
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Employee> getEmployees() {
-        return employeeDao.getEmployees(0);
-    }
-
     @Transactional(readOnly = true)
     @Override
     public void isEmployee(long id) {
@@ -110,10 +103,11 @@ public class EmployeeServiceImpl implements EmployeeService{
             String availability,
             String abilities,
             Long page,
-            long pageSize
+            long pageSize,
+            String orderCriteria
     ) {
-        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == 0) {
-            return employeeDao.getEmployees(pageSize);
+        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == 0 && orderCriteria == null) {
+            return employeeDao.getEmployees(pageSize, orderCriteria);
         }
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
@@ -123,7 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
+        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize, orderCriteria);
     }
 
     @Override

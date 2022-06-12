@@ -13,11 +13,11 @@ public interface EmployeeDao {
 
     void update(Employee id, String name, String location, String availability, long experienceYears, String abilites);
 
-   List<Employee> getEmployees(long pageSize);
+   List<Employee> getEmployees(long pageSize, String orderCriteria);
 
    Boolean isEmployee(Employee id);
 
-   List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities,Long page, long pageSize);
+   List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities,Long page, long pageSize, String orderCriteria);
 
     int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long pageSize);
 

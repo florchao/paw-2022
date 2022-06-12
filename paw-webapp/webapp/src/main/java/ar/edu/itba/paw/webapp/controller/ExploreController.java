@@ -7,6 +7,7 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,7 +40,8 @@ public class ExploreController {
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "abilities", required = false) String abilities,
-            @RequestParam(value = "page", required = false) Long page) {
+            @RequestParam(value = "page", required = false) Long page,
+            @RequestParam(value = "orderCriteria", required = false) String orderCriteria) {
 
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         Authentication authority = SecurityContextHolder.getContext().getAuthentication();
@@ -50,7 +52,10 @@ public class ExploreController {
             page = 0L;
         Map<Employee, Boolean> list = new HashMap<>();
         List<Experience> experiencesList = null;
-        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE)) {
+        List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page, PAGE_SIZE, orderCriteria);
+        System.out.println("mi lista de employees");
+        System.out.println(employees);
+        for (Employee employee : employees) {
             employee.firstWordsToUpper();
             employee.locationFirstWordsToUpper();
             list.put(employee, false);
@@ -62,6 +67,8 @@ public class ExploreController {
                 }
             }
         }
+        System.out.println("mi lista de employees");
+        System.out.println(list);
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
         mav.addObject("page", page);
@@ -72,7 +79,7 @@ public class ExploreController {
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
-            return searchPage(null, null,null,null,null,null,null);
+            return searchPage(null, null,null,null,null,null,null, null);
         }
         if (!Objects.equals(form.getName(),"") && !form.getName().contains("\'") && !form.getName().contains("\"") )
             redirectAttributes.addAttribute("name",form.getName());
@@ -86,6 +93,10 @@ public class ExploreController {
             redirectAttributes.addAttribute("abilities", form.getAbilities());
         if (form.getPageNumber() > 0)
             redirectAttributes.addAttribute("page", form.getPageNumber());
+        if (form.getOrderCriteria() != null && !form.getOrderCriteria().equals("")) {
+            redirectAttributes.addAttribute("orderCriteria", form.getOrderCriteria());
+        }
+        System.out.println("mi ordercriteria es: "+form.getOrderCriteria());
 
         return new ModelAndView("redirect:/buscarEmpleadas");
     }

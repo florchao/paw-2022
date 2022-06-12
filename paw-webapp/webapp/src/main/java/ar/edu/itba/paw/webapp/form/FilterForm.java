@@ -37,6 +37,10 @@ public class FilterForm {
     @CheckboxesAvailability
     private String[] availability;
 
+    @Pattern(regexp = "[a-z A-z\\s0-9,]+|")
+    @Size(max = 100)
+    private String orderCriteria;
+
     public String getName() {
         return name;
     }
@@ -91,5 +95,13 @@ public class FilterForm {
 
     public void setAvailability(String[] availability) {
         this.availability = availability;
+    }
+
+    public void setOrderCriteria(String orderCriteria) {
+        this.orderCriteria = orderCriteria;
+    }
+
+    public String getOrderCriteria() {
+        return orderCriteria;
     }
 }

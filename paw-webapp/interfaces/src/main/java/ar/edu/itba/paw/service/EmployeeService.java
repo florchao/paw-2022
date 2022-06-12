@@ -12,7 +12,6 @@ public interface EmployeeService {
     Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities, byte[] image);
 
     void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities);
-   List<Employee> getEmployees();
     void isEmployee(long id);
     int getPageNumber(
             String name,
@@ -31,7 +30,8 @@ public interface EmployeeService {
             String availability,
             String abilities,
             Long page,
-            long pageSize);
+            long pageSize,
+            String orderCriteria);
 
     long getRatingVoteCount(long idRating);
 
