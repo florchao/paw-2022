@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 
 import java.util.List;
@@ -17,7 +16,6 @@ public interface EmployeeService {
             String name,
             Long experienceYears,
             String location,
-            List<Experience> experiences,
             String availability,
             String abilities,
             long pageSize);
@@ -26,7 +24,6 @@ public interface EmployeeService {
             String name,
             Long experienceYears,
             String location,
-            List<Experience> experiences,
             String availability,
             String abilities,
             Long page,
