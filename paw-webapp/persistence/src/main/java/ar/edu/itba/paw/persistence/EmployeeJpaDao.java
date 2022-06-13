@@ -32,12 +32,13 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public void update(Employee employee, String name, String location, String availability, long experienceYears, String abilites) {
+    public void update(Employee employee, String name, String location, String availability, long experienceYears, String abilites, byte [] image) {
         employee.setName(name);
         employee.setAbilities(abilites);
         employee.setLocation(location);
         employee.setExperienceYears(experienceYears);
         employee.setAvailability(availability);
+        employee.getId().setImage(image);
     }
 
     @Override

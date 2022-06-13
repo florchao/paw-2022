@@ -36,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional
     @Override
-    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities) {
+    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities, byte [] image) {
         StringBuilder abilitiesSB = new StringBuilder();
         StringBuilder availabilitySB = new StringBuilder();
         name = name.trim().replaceAll(" +", " ");
@@ -57,7 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService{
             availabilitySB.setLength(availabilitySB.length() - 1);
         Optional<Employee> employee = employeeDao.getEmployeeById(id);
         if(employee.isPresent())
-            employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString());
+            employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString(), image);
     }
 
     @Transactional

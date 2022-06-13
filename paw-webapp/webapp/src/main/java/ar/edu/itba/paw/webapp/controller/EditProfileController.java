@@ -54,10 +54,7 @@ public class EditProfileController {
             return editProfile(form);
         }
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), (principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities());
-        if(!form.getImage().isEmpty()) {
-            imagesService.updateProfileImage((principal.getUserID()), form.getImage().getBytes());
-        }
+        employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), (principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities(), form.getImage().getBytes());
         LOGGER.debug(String.format("updated profile for userid %d", principal.getUserID()));
         return new ModelAndView("redirect:/verPerfil/");
     }

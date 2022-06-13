@@ -11,7 +11,7 @@ public interface EmployeeDao {
 
     Employee create(long id, String name, String location, String availability, long experienceYears, String abilites, byte[] image);
 
-    void update(Employee id, String name, String location, String availability, long experienceYears, String abilites);
+    void update(Employee id, String name, String location, String availability, long experienceYears, String abilites, byte [] image);
 
    List<Employee> getEmployees(long pageSize);
 
