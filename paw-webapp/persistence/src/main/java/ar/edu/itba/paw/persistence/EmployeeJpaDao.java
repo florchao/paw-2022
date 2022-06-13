@@ -57,7 +57,7 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria) {
+    public List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT e FROM Employee e where ");
         if (name != null) {
