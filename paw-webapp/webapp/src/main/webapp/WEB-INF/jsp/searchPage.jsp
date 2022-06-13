@@ -165,6 +165,7 @@
                                     <jsp:param name="id" value="${employee.id.id}"/>
                                     <jsp:param name = "years" value = "${employee.experienceYears}"/>
                                     <jsp:param name="contacted" value="${connected}"/>
+                                    <jsp:param name="rating" value="${employee.rating}"/>
                                 </jsp:include>
                             </c:forEach>
                         </c:otherwise>
