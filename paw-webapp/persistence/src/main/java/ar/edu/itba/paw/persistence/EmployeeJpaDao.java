@@ -42,10 +42,9 @@ public class EmployeeJpaDao implements EmployeeDao{
 
     @Override
     public List<Employee> getEmployees(long pageSize, String orderCriteria) {
-        System.out.println("me meti en getemployees!");
-        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e order by e.rating", Employee.class);
-//                .setFirstResult(0)
-//                .setMaxResults((int) pageSize);
+        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e order by e.rating desc", Employee.class)
+                .setFirstResult(0)
+                .setMaxResults((int) pageSize);
         return employeeList.getResultList();
     }
 

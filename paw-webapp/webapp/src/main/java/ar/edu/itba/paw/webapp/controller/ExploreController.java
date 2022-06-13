@@ -50,11 +50,9 @@ public class ExploreController {
 
         if (page == null)
             page = 0L;
-        Map<Employee, Boolean> list = new HashMap<>();
+        Map<Employee, Boolean> list = new LinkedHashMap<>();
         List<Experience> experiencesList = null;
         List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page, PAGE_SIZE, orderCriteria);
-        System.out.println("mi lista de employees");
-        System.out.println(employees);
         for (Employee employee : employees) {
             employee.firstWordsToUpper();
             employee.locationFirstWordsToUpper();
@@ -67,8 +65,6 @@ public class ExploreController {
                 }
             }
         }
-        System.out.println("mi lista de employees");
-        System.out.println(list);
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
         mav.addObject("page", page);

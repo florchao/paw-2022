@@ -30,7 +30,6 @@ function prevPageValidation(current) {
 }
 
 function setColor(btn) {
-    console.log('algo')
     let property = document.getElementById(btn);
     if (property.style.backgroundColor === 'rgb(255, 255, 255)' || property.style.backgroundColor === '') {
         property.style.backgroundColor = "#c4b5fd";
@@ -39,6 +38,14 @@ function setColor(btn) {
     else {
         property.style.backgroundColor = "#ffffff";
     }
+}
+
+function changeOrderCriteria(orderCriteria, inputId, submitButtonId) {
+    console.log("consoleando");
+    let property = document.getElementById(inputId);
+    property.value = orderCriteria;
+    let submitButton = document.getElementById(submitButtonId);
+    submitButton.click();
 }
 
 var loadFile = function(event) {
