@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilitiesEdit;
 import org.hibernate.validator.constraints.NotBlank;
@@ -11,7 +10,6 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.sql.Time;
 import java.util.List;
 
 public class EmployeeEditForm {
@@ -25,8 +23,6 @@ public class EmployeeEditForm {
     @DecimalMax("100")
     @NumberFormat(style = NumberFormat.Style.NUMBER)
     private long experienceYears;
-
-    private List<Experience> experiencesList;
 
     @Pattern(regexp = "[a-z A-z\\s0-9,]+")
     @Size(max = 100)
@@ -62,14 +58,6 @@ public class EmployeeEditForm {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Experience> getExperiencesList() {
-        return experiencesList;
-    }
-
-    public void setExperiencesList(List<Experience> experiencesList) {
-        this.experiencesList = experiencesList;
     }
 
     public String[] getAbilities() {

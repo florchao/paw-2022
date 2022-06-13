@@ -26,18 +26,6 @@ create table if not exists employer(
     PRIMARY KEY (employerID)
 );
 
-
-CREATE TABLE IF NOT EXISTS  experiences (
-                experiencesID SERIAL PRIMARY KEY,
-                employeeID INT,
-                title TEXT,
-                since DATE,
-                until DATE,
-                description TEXT,
-                FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE
-
-);
-
 CREATE TABLE IF NOT EXISTS  contact (
                 employeeID INT,
                 employerID INT,
@@ -83,6 +71,7 @@ create table if not exists review(
     employeeId INT NOT NULL,
     employerId INT NOT NULL,
     review TEXT,
+    created DATE,
     FOREIGN KEY (employeeId) REFERENCES employee(employeeid) ON DELETE CASCADE,
     FOREIGN KEY (employerId) REFERENCES employer(employerid) ON DELETE CASCADE,
     UNIQUE (employeeId, employerId)

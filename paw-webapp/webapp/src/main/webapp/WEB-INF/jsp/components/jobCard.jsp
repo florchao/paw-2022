@@ -20,11 +20,11 @@
     </div>
     <div class="flex flex-col items-center pb-6 ">
         <c:choose>
-            <c:when test="${param.title.length() <= 20}">
-                <h5 class="mb-1 text-xl font-medium text-gray-900"><c:out value="${param.title}"/></h5>
+            <c:when test="${param.title.length() <= 25}">
+                <h5 class="mb-1 text-xl font-medium text-gray-900 flex flex-wrap"><c:out value="${param.title}"/></h5>
             </c:when>
             <c:otherwise>
-                <h5 class="mb-1 text-xl font-medium text-gray-900"><c:out value="${param.title.substring(0, 20)}"/>...</h5>
+                <h5 class="mb-1 text-xl font-medium text-gray-900"><c:out value="${param.title.substring(0, 25)}"/>...</h5>
             </c:otherwise>
         </c:choose>
         <c:choose>

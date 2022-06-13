@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -51,8 +50,7 @@ public class ExploreController {
         if (page == null)
             page = 0L;
         Map<Employee, Boolean> list = new LinkedHashMap<>();
-        List<Experience> experiencesList = null;
-        List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page, PAGE_SIZE, orderCriteria);
+        List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities,page, PAGE_SIZE, orderCriteria);
         for (Employee employee : employees) {
             employee.firstWordsToUpper();
             employee.locationFirstWordsToUpper();
@@ -68,7 +66,7 @@ public class ExploreController {
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
         mav.addObject("page", page);
-        mav.addObject("maxPage", employeeService.getPageNumber(name, experienceYears, location, experiencesList, availability, abilities, PAGE_SIZE));
+        mav.addObject("maxPage", employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE));
         return mav;
     }
 

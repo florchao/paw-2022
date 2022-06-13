@@ -34,6 +34,7 @@
 </jsp:include>
         <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
             <div class="my-9 w-full"></div>
+            <p class="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center"><spring:message code="searchPage.searchEmployees"/></p>
             <div class="grid grid-cols-4">
                 <div class="col-start-1 bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-fit" >
                     <c:url value="/buscarEmpleadas" var="getReturnPath"/>
@@ -134,7 +135,6 @@
                         </div>
                 </div>
                 <div class="col-span-3 col-start-2">
-                    <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="searchPage.searchEmployees"/></p>
                     <form:input type="text" path="name" cssClass="hidden" cssStyle="border-radius: 5px;"/>
                     <form:input type="text" path="orderCriteria" cssClass="hidden" id="criteriaInputId" cssStyle="background-color: red"/>
                     <c:choose>

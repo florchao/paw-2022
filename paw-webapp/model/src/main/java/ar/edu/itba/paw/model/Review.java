@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity(name = "Review")
 @Table(name = "review")
@@ -28,20 +29,26 @@ public class Review implements Serializable {
     @JoinColumn(name = "employerId", nullable = false, referencedColumnName = "employerID")
     private Employer employerId;
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date created;
+
     @Column(name = "review", nullable = false)
     private String review;
 
-    public Review(long reviewId, Employee employeeId, Employer employerId, String review) {
+    public Review(long reviewId, Employee employeeId, Employer employerId, String review, Date created) {
         this.reviewId = reviewId;
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
+        this.created = created;
     }
 
-    public Review(Employee employeeId, Employer employerId, String review) {
+    public Review(Employee employeeId, Employer employerId, String review, Date created) {
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
+        this.created = created;
     }
 
     public Review() {
@@ -79,4 +86,11 @@ public class Review implements Serializable {
         this.reviewId = reviewId;
     }
 
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 }

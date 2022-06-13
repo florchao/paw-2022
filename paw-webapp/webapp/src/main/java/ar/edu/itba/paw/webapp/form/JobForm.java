@@ -5,12 +5,10 @@ import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilityJobAnn
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class JobForm {
+    @Size(max = 25)
     private String title;
 
     @Pattern(regexp = "[a-z A-z\\s0-9,]+")

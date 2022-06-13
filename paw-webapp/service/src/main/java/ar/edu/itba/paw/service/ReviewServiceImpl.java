@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,11 +27,11 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Transactional
     @Override
-    public Review create(long employeeId, long employerId, String review) {
+    public Review create(long employeeId, long employerId, String review, Date created) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
         if (employee.isPresent() && employer.isPresent())
-            return reviewDao.create(employee.get(), employer.get(), review);
+            return reviewDao.create(employee.get(), employer.get(), review, created);
         return null;
     }
 

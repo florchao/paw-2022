@@ -33,7 +33,7 @@
 </jsp:include>
 <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
     <div class="py-9 w-full"></div>
-    <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="publishedJobs.publications"/></p>
+    <p class="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center"><spring:message code="publishedJobs.publications"/></p>
     <c:choose>
         <c:when test="${JobList.size() == 0}">
             <div class = "grid content-center justify-center h-5/6 mt-16">

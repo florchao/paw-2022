@@ -33,8 +33,8 @@
     <jsp:param name="currentUrl" value="contactos"/>
 </jsp:include>
 <div class="grid content-start h-screen overflow-auto pl-5 pr-5">
-<div class="my-8 w-full"></div>
-    <p class="text-3xl font-semibold text-violet-900 mb-4"><spring:message code="contacts.myContacts"/></p>
+<div class="my-9 w-full"></div>
+    <p class="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center"><spring:message code="contacts.myContacts"/></p>
     <c:choose>
         <c:when test="${ContactList.size() == 0}">
             <div class = "grid content-center justify-center h-5/6 mt-16">

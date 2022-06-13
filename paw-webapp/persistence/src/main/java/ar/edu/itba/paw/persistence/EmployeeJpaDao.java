@@ -34,12 +34,13 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public void update(Employee employee, String name, String location, String availability, long experienceYears, String abilites) {
+    public void update(Employee employee, String name, String location, String availability, long experienceYears, String abilites, byte [] image) {
         employee.setName(name);
         employee.setAbilities(abilites);
         employee.setLocation(location);
         employee.setExperienceYears(experienceYears);
         employee.setAvailability(availability);
+        employee.getId().setImage(image);
     }
 
     @Override
@@ -94,7 +95,7 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long pageSize) {
+    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT count(e) FROM Employee e where ");
         if (name != null) {

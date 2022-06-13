@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +19,8 @@ public class ReviewJpaDao implements ReviewDao{
     private EntityManager em;
 
     @Override
-    public Review create(Employee employeeId, Employer employerId, String text) {
-        final Review review = new Review(employeeId, employerId, text);
+    public Review create(Employee employeeId, Employer employerId, String text, Date created) {
+        final Review review = new Review(employeeId, employerId, text, created);
         em.persist(review);
         return review;
     }
