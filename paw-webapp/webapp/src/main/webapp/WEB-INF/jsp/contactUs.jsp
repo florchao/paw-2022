@@ -32,13 +32,10 @@
    <jsp:param name="currentUrl" value="contactUs"/>
 </jsp:include>
 <div class="grid grid-cols-7 content-start justify-center h-full pt-5 overflow-auto">
-    <div class="my-16 w-full col-span-7"></div>
+    <div class="my-9 w-full col-span-7"></div>
     <div class = "col-start-3 col-span-3 grid h-full w-full">
-        <div class="grid justify-items-center mx-6">
-            <p class="text-xl font-semibold text-white mb-5">
-                <spring:message code="contactUs.title"/>
-            </p>
-        </div>
+
+        <p class="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center"><spring:message code="contactUs.title"/></p>
         <c:url value="/contactUs" var="postPath"/>
          <form:form modelAttribute="contactUsForm" action="${postPath}" method="post" pageEncoding="UTF-8">
             <div class="block p-6 rounded-3xl shadow-lg bg-gray-200">
