@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewDao {
-    Review create(Employee employeeId, Employer employerId, String review, Date created);
+    Review create(Employee employeeId, Employer employerId, String review, Date created, boolean forEmployee);
 
     List<Review> getAllReviews(Employee employeeId, Employer id, Long page, int pageSize);
 
@@ -18,4 +18,12 @@ public interface ReviewDao {
     List<Review> getMyProfileReviews(Employee employeeId);
 
     Optional<Review> getMyReview(Employee employeeId, Employer id);
+
+    List<Review> getAllReviewsEmployer(Employee employeeId, Employer id, Long page, int pageSize);
+
+    int getPageNumberEmployer(Employee employeeId, Employer id, int pageSize);
+
+    List<Review> getMyProfileReviewsEmployer(Employer employerId);
+
+    Optional<Review> getMyReviewEmployer(Employee employeeId, Employer id);
 }

@@ -84,10 +84,12 @@ create table if not exists review(
     employerId INT NOT NULL,
     review TEXT,
     created DATE,
+    forEmployee INT,
     FOREIGN KEY (employeeId) REFERENCES employee(employeeid) ON DELETE CASCADE,
     FOREIGN KEY (employerId) REFERENCES employer(employerid) ON DELETE CASCADE,
-    UNIQUE (employeeId, employerId)
+    UNIQUE (employeeId, employerId, forEmployee)
 );
+
 CREATE TABLE IF NOT EXISTS  ratings (
         employeeID INT,
         employerID INT,

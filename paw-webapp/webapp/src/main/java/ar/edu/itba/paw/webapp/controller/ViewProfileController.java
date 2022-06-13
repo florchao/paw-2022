@@ -59,10 +59,14 @@ public class ViewProfileController {
             if (user.isPresent()) {
                 Optional<Employer> employer = employerService.getEmployerById(user.get().getId());
                 if(employer.isPresent()){
-                    System.out.println("EMPLOYER ID" + employer.get().getId().getId());
                     employer.get().firstWordsToUpper(employer.get());
                     mav.addObject("employer", employer.get());
                 }
+                List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId());
+                for (Review rev : myReviews) {
+                    rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
+                }
+                mav.addObject("ReviewList", myReviews);
             }
             return mav;
         }
@@ -135,7 +139,7 @@ public class ViewProfileController {
         if(errors.hasErrors())
             return userProfile(id,status, reviewForm, null);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        reviewService.create(id, principal.getUserID(), reviewForm.getContent(), new Date(System.currentTimeMillis()));
+        reviewService.create(id, principal.getUserID(), reviewForm.getContent(), new Date(System.currentTimeMillis()), true);
         return new ModelAndView("redirect:/verPerfil/" + id);
     }
 

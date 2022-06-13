@@ -37,7 +37,7 @@
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="verPerfil"/>
 </jsp:include>
-<c:url value="/user/profile-image/${employee.id.id}" var="image" />
+<c:url value="/user/profile-image/${employer.id.id}" var="image" />
 <c:url value="/deleteProfile" var="deletePath"/>
 <div class="grid overflow-auto h-screen grid-cols-6">
     <div class=" grid grid-row-4 col-span-4 col-start-2 h-fit">
@@ -59,6 +59,73 @@
                         </button>
                     </form:form>
                 </div>
+            </div>
+            <div class="flow-root">
+                <h1 class="pb-3 pt-3 font-semibold"><spring:message code="reviews.title"/></h1>
+                <c:choose>
+                    <c:when test="${ReviewList.size() == 0}">
+                        <div class = "grid content-center justify-center h-5/6 mt-16">
+                            <div class = "grid justify-items-center">
+                                <img src="<c:url value='/public/sinEmpleadas.png'/>" alt="sinEmpleadas" class="mr-3 h-6 sm:h-52">
+                                <p class="text-3xl font-semibold text-purple-700"><spring:message code="reviews.noReviews"/></p>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <ul role="list" class="divide-y divide-gray-300">
+                            <c:forEach var="review" items="${ReviewList}">
+                                <c:url value="/user/profile-image/${review.employeeId.id.id}" var="image" />
+                                <li class="py-3 sm:py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex-shrink-0 self-start">
+                                            <img class="w-8 h-8 rounded-full object-cover" src="${image}" alt="Employee Photo" onerror="this.src = '<c:url value="/public/user.png"/>'"/>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-xl font-medium text-gray-900 text-ellipsis">
+                                                <c:out value="${review.review}"/>
+                                            </p>
+                                            <div class="grid grid-cols-2">
+                                                <p class="text-sm text-gray-500 col-start-1">
+                                                    <c:out value="${review.employeeId.name}"/>
+                                                </p>
+                                                <p class="text-sm text-gray-500 col-start-2 text-end">
+                                                    <c:out value="${review.created}"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                                <%--                            <c:url value="/verPerfil/${employee.id.id}" var="getPath"/>--%>
+                                <%--                            <form method="get" action="${getPath}">--%>
+                                <%--                                <c:if test="${maxPage > 0 && page + 1 <= maxPage}">--%>
+                                <%--                                <div class="flex flex-row justify-center mt-4">--%>
+                                <%--                                    <c:choose>--%>
+                                <%--                                        <c:when test="${page < 1}">--%>
+                                <%--                                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>--%>
+                                <%--                                        </c:when>--%>
+                                <%--                                        <c:otherwise>--%>
+                                <%--                                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>--%>
+                                <%--                                        </c:otherwise>--%>
+                                <%--                                    </c:choose>--%>
+                                <%--                                    <div class="bg--300 w-16 flex justify-center">--%>
+                                <%--                                        <h1 class="text-purple-900">${page + 1} of ${maxPage}</h1>--%>
+                                <%--                                    </div>--%>
+                                <%--                                    <c:choose>--%>
+                                <%--                                        <c:when test="${page + 1 == maxPage}">--%>
+                                <%--                                            <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>--%>
+                                <%--                                        </c:when>--%>
+                                <%--                                        <c:otherwise>--%>
+                                <%--                                            <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>--%>
+                                <%--                                        </c:otherwise>--%>
+                                <%--                                    </c:choose>--%>
+                                <%--                                    </c:if>--%>
+                                <%--                                </div>--%>
+                                <%--                                <input style="visibility: hidden" type="number" name="page" id="pageNumber"/>--%>
+                                <%--                            </form>--%>
+                        </ul>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>

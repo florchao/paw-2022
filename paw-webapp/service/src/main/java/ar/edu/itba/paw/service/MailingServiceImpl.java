@@ -82,7 +82,7 @@ public class MailingServiceImpl implements MailingService{
         String message = "<div style = \"justify-content: center;\n" +
                 "  align-items: center;\">\n" +
                 "<h1 style=\"color: #a78bfa;\">No has sido aceptado/a</h1>\n" +
-                "<p>&iexcl;No te preocupes, hay muchas mas opciones para vos! Para ir a verlas</p>\n" +
+                "<p style=\"font-size: 14px;\">&iexcl;No te preocupes, hay muchas mas opciones para vos! Para ir a verlas</p>\n" +
                 "  <a href=\"http://pawserver.it.itba.edu.ar/paw-2022a-02//trabajos\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
                 "        onmouseout=\"mouseout()\" style=\"color: #581c87; background-color: #a78bfa;\n" +
                 "  padding: 14px 40px;\n" +
@@ -100,8 +100,8 @@ public class MailingServiceImpl implements MailingService{
         String message = String.format("<div style = \"justify-content: center;\n" +
                 "  align-items: center;\">\n" +
                 "<h1 style=\"color: #a78bfa;\">&iexcl;Nos emociona contarte que has sido aceptado/a para %s!</h1>\n" +
-                "<p>Nos alegra mucho esta noticia y esperamos que este trabajo sea todo lo que estas buscando.</p>\n" +
-                "<p>Para conectarte con tu nuevo empleador podes contestar este mail o escribirle a %s</p>\n" +
+                "<p style=\"font-size: 14px;\">Nos alegra mucho esta noticia y esperamos que este trabajo sea todo lo que estas buscando.</p>\n" +
+                "<p style=\"font-size: 14px;\">Para conectarte con tu nuevo empleador podes contestar este mail o escribirle a %s</p>\n" +
                 "</div>",title, from);
         sendEmail(mimeMessage, Collections.singletonList(to), subject, message, from);
     }
