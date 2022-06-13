@@ -244,12 +244,17 @@
                                             <img class="w-8 h-8 rounded-full object-cover" src="${userImage}" alt="Employee Photo" onerror="this.src = '<c:url value="/public/user.png"/>'"/>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-xl font-medium text-gray-900 truncate">
-                                                <c:out value="${myReview.employerId.name}"/>
-                                            </p>
-                                            <p class="text-sm text-gray-500">
+                                            <p class="text-xl font-medium text-gray-900 text-ellipsis">
                                                 <c:out value="${myReview.review}"/>
                                             </p>
+                                            <div class="grid grid-cols-2">
+                                                <p class="text-sm text-gray-500 col-start-1">
+                                                    <c:out value="${myReview.employerId.name}"/>
+                                                </p>
+                                                <p class="text-sm text-gray-500 col-start-2 text-end">
+                                                    <c:out value="${myReview.created}"/>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -262,12 +267,17 @@
                                             <img class="w-8 h-8 rounded-full object-cover" src="${image}" alt="Employee Photo" onerror="this.src = '<c:url value="/public/user.png"/>'"/>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-xl font-medium text-gray-900 truncate">
-                                                <c:out value="${review.employerId.name}"/>
-                                            </p>
-                                            <p class="text-sm text-gray-500">
+                                            <p class="text-xl font-medium text-gray-900 text-ellipsis">
                                                 <c:out value="${review.review}"/>
                                             </p>
+                                            <div class="grid grid-cols-2">
+                                                <p class="text-sm text-gray-500 col-start-1">
+                                                    <c:out value="${review.employerId.name}"/>
+                                                </p>
+                                                <p class="text-sm text-gray-500 col-start-2 text-end">
+                                                    <c:out value="${review.created}"/>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
