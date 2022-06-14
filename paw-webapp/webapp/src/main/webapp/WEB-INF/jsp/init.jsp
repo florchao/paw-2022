@@ -23,9 +23,6 @@
             <div class="grid content-center">
                 <h3 class="text-3xl font-semibold text-purple-700"><spring:message code="init.title"/></h3>
                 <h3 class="text-2xl text-purple-700"><spring:message code="init.description"/></h3>
-                <a href="#roles">
-                    <h3 class="text-lg text-purple-700 underline hover:decoration-purple-400 hover:underline-offset-2"><spring:message code="init.roles"/></h3>
-                </a>
             </div>
             <div class="flex flex-col">
                 <div class="grid">
@@ -56,23 +53,6 @@
         </div>
         <div class="pt-8">
             <img src="<c:url value='/public/indexImage.jpg'/>" alt="primera foto">
-        </div>
-
-    </div>
-    <div id="roles" class="grid grid-cols-3 items-start p-10 gap-y-7">
-        <div class="h-96 w-96">
-            <img class="object-cover w-full h-full rounded-full" src="<c:url value='/public/empleador.jpg'/>" alt="employer"/>
-        </div>
-        <div class="col-span-2 ">
-            <h3 class="text-2xl text-purple-700 justify-self-center"><spring:message code="init.employer"/></h3>
-            <p class="font-thin text-lg mt-7"><spring:message code="init.employerDesc"/></p>
-        </div>
-        <div class="row-start-2 h-96 w-96">
-            <img class="object-cover w-full h-full rounded-full" src="<c:url value='/public/empl.jpg'/>" alt="employee"/>
-        </div>
-        <div class="row-start-2 col-span-2">
-            <h3 class="text-2xl text-purple-700 justify-self-center"><spring:message code="init.employee"/></h3>
-            <p class="font-thin text-lg mt-7"><spring:message code="init.employeeDesc"/></p>
         </div>
     </div>
 </body>

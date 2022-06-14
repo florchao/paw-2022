@@ -36,7 +36,10 @@ public class CreateProfileController {
     private UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateProfileController.class);
 
-
+    @RequestMapping(value = "/registrarse", method = {RequestMethod.GET})
+    public ModelAndView register(){
+        return new ModelAndView("register");
+    }
     @RequestMapping(value = "/crearPerfil", method = {RequestMethod.GET})
     public ModelAndView createProfile(@ModelAttribute("employeeForm") final EmployeeForm form) {
        return new ModelAndView("createProfile");

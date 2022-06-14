@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.constraint.validator;
 
-import ar.edu.itba.paw.webapp.constraint.annotation.PasswordMatchesAnnotation;
 import ar.edu.itba.paw.webapp.constraint.annotation.PasswordMatchesAnnotationEmployee;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
 

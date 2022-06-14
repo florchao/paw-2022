@@ -31,50 +31,39 @@
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="register"/>
 </jsp:include>
-<c:url value="/register" var="registerUrl"/>
-<div class="grid grid-cols-7 content-start justify-center h-screen pt-5">
-    <div class="my-16 w-full col-span-7"></div>
-    <form:form modelAttribute="registerForm" class="col-span-3 col-start-3" action="${registerUrl}" method="post" enctype = "application/x-www-form-urlencoded" pageEncoding="UTF-8">
-        <div class="block p-6 rounded-lg shadow-lg bg-white">
-            <div class="form-group mb-6 grid grid-cols-6">
-                <form:label for="mail" path="mail" class="text-sm font-medium text-gray-900" ><spring:message code="register.mail"/> </form:label>
-                <form:input id="mail" path="mail" type="mail" class="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                <form:errors path="mail" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
-            </div>
-            <div class="form-group mb-6 grid grid-cols-6">
-                <form:label for="password" path="password" class="text-sm font-medium text-gray-900"><spring:message code="register.password"/></form:label>
-                <form:input id="password" path="password" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                <form:errors path="password" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
-            </div>
-            <div class="form-group mb-6 grid grid-cols-6">
-                <form:label for="confirmPassword" path="confirmPassword" class="text-sm font-medium text-gray-900"><spring:message code="register.confirmPassword"/></form:label>
-                <form:input id="confirmPassword" path="confirmPassword" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                <form:errors path="confirmPassword" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
-                <form:errors element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
-            </div>
-            <div class="form-group grid grid-cols-6 mb-6">
-                <p class="col-span-1 text-sm font-medium text-gray-900"><spring:message code="register.role"/></p>
-                <div class="col-span-2">
-                    <form:radiobutton path="role" id="empleador" value="Empleador"/>
-                    <from:label path="role" for="empleador"><spring:message code="register.employer"/></from:label>
-                </div>
-                <div class="col-span-2">
-                    <form:radiobutton path="role" id="empleada" value="Empleada"/>
-                    <from:label path="role" for="empleada"><spring:message code="register.employee"/></from:label>
-                </div>
-                <form:errors path="role" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
-            </div>
-            <div class="form-group mb-6">
-                <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"> <spring:message code="register.button"/></button>
-            </div>
-            <div class="form-group mb-6">
-                <p class="text-sm font-medium text-gray-900">
-                    <spring:message code="register.login"/>
-                    <a class="text-violet-900" href="<c:url value="/login"/>"><spring:message code="register.log"/></a>
-                </p>
+<c:url value="/crearPerfil" var = "createProfile"/>
+<c:url value="/crearPerfilEmpleador" var = "createProfileEmployer"/>
+<div class="grid content-start h-screen overflow-auto pl-5 pr-5">
+    <div id="roles" class="grid grid-cols-3 items-start p-10 gap-y-7 mt-9">
+        <div class="h-96 w-96">
+            <img class="object-cover w-full h-full rounded-full" src="<c:url value='/public/empleador.jpg'/>" alt="employer"/>
+        </div>
+        <div class="col-span-2 ">
+            <h3 class="text-2xl text-purple-700 justify-self-center"><spring:message code="init.employer"/></h3>
+            <p class="font-thin text-lg mt-7"><spring:message code="init.employerDesc"/></p>
+            <div class="pb-4 grid col-start-2 col-span-2 mt-7">
+                <form:form method="get" action="${createProfileEmployer}" pageEncoding="UTF-8">
+                    <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
+                        <spring:message code="register.employer"/>
+                    </button>
+                </form:form>
             </div>
         </div>
-    </form:form>
+        <div class="row-start-2 h-96 w-96">
+            <img class="object-cover w-full h-full rounded-full" src="<c:url value='/public/empl.jpg'/>" alt="employee"/>
+        </div>
+        <div class="row-start-2 col-span-2">
+            <h3 class="text-2xl text-purple-700 justify-self-center"><spring:message code="init.employee"/></h3>
+            <p class="font-thin text-lg mt-7"><spring:message code="init.employeeDesc"/></p>
+            <div class="pb-4 grid col-start-2 col-span-2 mt-7">
+                <form:form method="get" action="${createProfile}" pageEncoding="UTF-8">
+                    <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
+                        <spring:message code="register.employee"/>
+                    </button>
+                </form:form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 
