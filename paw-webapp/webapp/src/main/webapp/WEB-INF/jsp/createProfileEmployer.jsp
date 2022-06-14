@@ -29,7 +29,7 @@
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="createProfile"/>
 </jsp:include>
-<c:url value="/createEmployer/${userID}" var="postPath"/>
+<c:url value="/createEmployer" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">
     <form:form modelAttribute="employerForm" action="${postPath}" method="post" pageEncoding="UTF-8" enctype="multipart/form-data">
         <div class="grid grid-cols-6">
@@ -49,12 +49,28 @@
                             <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                             <form:errors path="name" element="p" cssStyle="color:red"/>
                         </div>
-                        <div class="ml-3 col-span-3 w-4/5 justify-self-center">
+                        <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                             <form:label path="lastname" for="lastname" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employerForm.label.lastname"/></form:label>
                             <form:input path="lastname" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                             <form:errors path="lastname" element="p" cssStyle="color:red"/>
                         </div>
-                        <div class="mt-5 col-start-2 col-span-4 row-span-3">
+                        <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
+                            <form:label for="mail" path="mail" class="text-sm font-medium text-gray-900" ><spring:message code="register.mail"/> </form:label>
+                            <form:input id="mail" path="mail" type="mail" class="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                            <form:errors path="mail" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
+                        </div>
+                        <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
+                            <form:label for="password" path="password" class="text-sm font-medium text-gray-900"><spring:message code="register.password"/></form:label>
+                            <form:input id="password" path="password" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                            <form:errors path="password" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
+                        </div>
+                        <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
+                            <form:label for="confirmPassword" path="confirmPassword" class="text-sm font-medium text-gray-900"><spring:message code="register.confirmPassword"/></form:label>
+                            <form:input id="confirmPassword" path="confirmPassword" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                            <form:errors path="confirmPassword" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
+                            <form:errors element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
+                        </div>
+                        <div class="mt-5 col-span-5 row-span-3">
                             <button type="submit" class="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="employerForm.button"/></button>
                         </div>
                     </div>

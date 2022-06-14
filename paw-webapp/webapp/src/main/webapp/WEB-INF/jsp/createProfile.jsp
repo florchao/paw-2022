@@ -29,13 +29,13 @@
 <jsp:include page="components/navbar.jsp">
     <jsp:param name="currentUrl" value="createProfile"/>
 </jsp:include>
-<c:url value="/createEmployee/${userID}" var="postPath"/>
+<c:url value="/createEmployee" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">
     <form:form modelAttribute="employeeForm" action="${postPath}" method="post" pageEncoding="UTF-8" enctype="multipart/form-data">
         <div class="grid grid-cols-6">
             <div class="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                 <div class="bg-gray-200 rounded-3xl p-5 shadow-2xl">
-                    <div class="grid grid-cols-5 gap-6">
+                    <div class="grid grid-cols-6 gap-6">
                         <div class="row-span-4 col-span-2 m-6">
                             <div class="overflow-hidden bg-gray-100 rounded-full">
                                 <img id="picture" src="<c:url value='/public/user.png'/>" alt="user pic"/>
@@ -44,17 +44,33 @@
                                 <form:input type="file" path="image" accept="image/png, image/jpeg" onchange="loadFile(event);"/>
                                 <form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>
                        </div>
-                        <div class="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
+                        <div class="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                             <form:label path="name" for="name" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employeeForm.label.name"/></form:label>
                             <form:input path="name" type="text" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                             <form:errors path="name" element="p" cssStyle="color:red"/>
+                        </div>
+                        <div class="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
+                            <form:label for="mail" path="mail" class="text-sm font-medium text-gray-900" ><spring:message code="register.mail"/> </form:label>
+                            <form:input id="mail" path="mail" type="mail" class="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                            <form:errors path="mail" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
+                        </div>
+                        <div class="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
+                            <form:label for="password" path="password" class="text-sm font-medium text-gray-900"><spring:message code="register.password"/></form:label>
+                            <form:input id="password" path="password" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                            <form:errors path="password" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
+                        </div>
+                        <div class="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
+                            <form:label for="confirmPassword" path="confirmPassword" class="text-sm font-medium text-gray-900"><spring:message code="register.confirmPassword"/></form:label>
+                            <form:input id="confirmPassword" path="confirmPassword" type="password" class=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                            <form:errors path="confirmPassword" element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
+                            <form:errors element="p" cssStyle="color:red" class="col-start-2 col-span-5"/>
                         </div>
                         <div class="ml-3 col-span-3 w-4/5 justify-self-center">
                             <form:label path="location" for="location" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employeeForm.label.location"/></form:label>
                             <form:input type="text" path="location" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                             <form:errors path="location" element="p" cssStyle="color:red"/>
                         </div>
-                        <div class="ml-3 col-span-3 w-4/5 justify-self-center">
+                        <div class="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                             <form:label path="experienceYears" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="employeeForm.label.experienceYears"/></form:label>
                             <form:input type="number" id="expYears" onchange="validateExpYears()" path="experienceYears" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                             <form:errors path="experienceYears" element="p" cssStyle="color:red"/>

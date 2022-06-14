@@ -2,20 +2,20 @@ package ar.edu.itba.paw.webapp.constraint.validator;
 
 import ar.edu.itba.paw.webapp.constraint.annotation.PasswordMatchesAnnotation;
 import ar.edu.itba.paw.webapp.constraint.annotation.PasswordMatchesAnnotationEmployee;
-import ar.edu.itba.paw.webapp.form.EmployerForm;
+import ar.edu.itba.paw.webapp.form.EmployeeForm;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatchesAnnotation, Object> {
+public class PasswordMatchesValidatorEmployee implements ConstraintValidator<PasswordMatchesAnnotationEmployee, Object> {
     @Override
-    public void initialize(PasswordMatchesAnnotation passwordMatchesAnnotation) {
+    public void initialize(PasswordMatchesAnnotationEmployee passwordMatchesAnnotation) {
 
     }
 
     @Override
     public boolean isValid(Object candidate, ConstraintValidatorContext arg1) {
-        EmployerForm user = (EmployerForm) candidate;
+        EmployeeForm user = (EmployeeForm) candidate;
         return user.getPassword().equals(user.getConfirmPassword());
     }
 }

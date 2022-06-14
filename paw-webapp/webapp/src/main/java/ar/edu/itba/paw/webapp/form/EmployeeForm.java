@@ -1,8 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesEdit;
-import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailabilitiesEdit;
-import ar.edu.itba.paw.webapp.constraint.annotation.NotEmptyFile;
+import ar.edu.itba.paw.webapp.constraint.annotation.*;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -12,8 +11,19 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
-
+@PasswordMatchesAnnotationEmployee
 public class EmployeeForm {
+
+    @Email(regexp = "[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}")
+    @NotBlank
+    @UniqueEmailAnnotation
+    private String mail;
+
+    @NotBlank
+    private String password;
+
+    @NotBlank
+    private String confirmPassword;
 
     @Pattern(regexp = "[a-zA-z\\s']+|^$")
     @NotBlank
@@ -92,5 +102,29 @@ public class EmployeeForm {
             ret.append(str).append(",");
         }
         return ret.substring(0, ret.length() - 1);
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }
