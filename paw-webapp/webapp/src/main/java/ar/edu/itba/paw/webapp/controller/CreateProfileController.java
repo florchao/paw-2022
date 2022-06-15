@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;

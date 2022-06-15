@@ -26,14 +26,13 @@
         <li></li>
     </ul>
 </div>
-<jsp:include page="components/navbar.jsp">
-    <jsp:param name="currentUrl" value="createProfile"/>
-</jsp:include>
+<jsp:include page="components/navbar.jsp"/>
 <c:url value="/createEmployee" var="postPath"/>
 <div class = "h-screen overflow-auto pb-5">
     <form:form modelAttribute="employeeForm" action="${postPath}" method="post" pageEncoding="UTF-8" enctype="multipart/form-data">
         <div class="grid grid-cols-6">
             <div class="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
+                <p class="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center"><spring:message code="createProfile.formTitle"/></p>
                 <div class="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                     <div class="grid grid-cols-6 gap-6">
                         <div class="row-span-4 col-span-2 m-6">
