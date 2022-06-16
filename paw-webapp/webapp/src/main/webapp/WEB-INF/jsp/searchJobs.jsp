@@ -131,6 +131,9 @@
                         <form:checkbox id="bed" path="availability" value="${availability[2]}"/>
                     </div>
                 </div>
+                <div class="grid grid-cols-4 w-5/6">
+                    <form:errors path="availability" element="p"  class="col-start-2 col-span-full" cssStyle="color:red"/>
+                </div>
                 <button type="submit" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="searchJobs.filter"></spring:message></button>
             </div>
         </div>

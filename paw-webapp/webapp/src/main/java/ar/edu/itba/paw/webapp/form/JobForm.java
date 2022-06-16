@@ -20,10 +20,10 @@ public class JobForm {
     @NumberFormat(style = NumberFormat.Style.NUMBER)
     private long experienceYears;
 
-    //@CheckboxesAbilitiesEdit
+    @CheckboxesAbilitiesEdit
     private String[] abilities;
 
-    //@CheckboxesAvailabilityJobAnnotation
+    @CheckboxesAvailabilityJobAnnotation
     private String availability;
 
     @Size(max = 4000, min = 10)
