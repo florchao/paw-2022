@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.service.mails.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -21,11 +20,6 @@ public class MailingServiceImpl implements MailingService{
     public MessageSource messageSource;
 
     private final Locale locale = LocaleContextHolder.getLocale();
-
-    private boolean isEnglish(){
-        String defaultLanguage = locale.getDisplayLanguage();
-        return defaultLanguage.equals("English");
-    }
     @Autowired
     public MailingServiceImpl(Session session) {
         this.session = session;
@@ -60,17 +54,15 @@ public class MailingServiceImpl implements MailingService{
 
     private void sendRejection(String to, String title){
         MimeMessage mimeMessage = new MimeMessage(session);
-        RejectionMail rejectionMail = new RejectionMail(title);
-        if(isEnglish())
-            sendEmail(mimeMessage, Collections.singletonList(to), rejectionMail.getSubjectEn(), rejectionMail.getContentEn(), null);
-        else
-            sendEmail(mimeMessage, Collections.singletonList(to), rejectionMail.getSubjectEs(), rejectionMail.getContentEs(), null);
-    }
+        String content = messageSource.getMessage("rejectionMail.text", null, LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("rejectionMail.subject", new Object[]{title}, LocaleContextHolder.getLocale());
+        sendEmail(mimeMessage, Collections.singletonList(to), subject, content, null);
+   }
 
     private void sendAcceptance(String to, String from, String title){
         MimeMessage mimeMessage = new MimeMessage(session);
-        String content = messageSource.getMessage("acceptanceMail.text", new Object[]{title, from}, LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("acceptanceMail.subject", null, LocaleContextHolder.getLocale());
+        String content = messageSource.getMessage("acceptanceMail.text", null, LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("acceptanceMail.subject", new Object[]{title, from}, LocaleContextHolder.getLocale());
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, from);
     }
 
