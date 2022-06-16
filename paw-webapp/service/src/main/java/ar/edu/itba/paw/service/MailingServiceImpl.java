@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.service.mails.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -9,15 +10,15 @@ import org.springframework.stereotype.Service;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 public class MailingServiceImpl implements MailingService{
 
     private final Session session;
+
+    @Autowired
+    public MessageSource messageSource;
 
     private final Locale locale = LocaleContextHolder.getLocale();
 
@@ -44,12 +45,11 @@ public class MailingServiceImpl implements MailingService{
     @Override
     @Async
     public void sendApplyMail(String to, String jobTitle, String name, long jobid) {
+        System.out.println("ESTOY ACA");
         MimeMessage mimeMessage = new MimeMessage(session);
-        ApplyMail applyMail = new ApplyMail(name, jobTitle, jobid);
-        if(isEnglish())
-            sendEmail(mimeMessage, Collections.singletonList(to), applyMail.getSubjectEn(), applyMail.getContentEn(), null);
-        else
-            sendEmail(mimeMessage, Collections.singletonList(to), applyMail.getSubjectEs(), applyMail.getContentEs(), null);
+        String content = messageSource.getMessage("applyMail.text", new Object[]{name, jobid},LocaleContextHolder.getLocale());
+        String subject = "APPLY";
+        sendEmail(mimeMessage, Collections.singletonList(to), subject, content, null);
     }
 
     @Override
@@ -74,11 +74,9 @@ public class MailingServiceImpl implements MailingService{
 
     private void sendAcceptance(String to, String from, String title){
         MimeMessage mimeMessage = new MimeMessage(session);
-        AcceptanceMail acceptanceMail = new AcceptanceMail(title, from);
-        if(isEnglish())
-            sendEmail(mimeMessage, Collections.singletonList(to), acceptanceMail.getSubjectEn(), acceptanceMail.getContentEn(), from);
-        else
-            sendEmail(mimeMessage, Collections.singletonList(to), acceptanceMail.getSubjectEs(), acceptanceMail.getContentEs(), from);
+        String content = messageSource.getMessage("acceptanceMail.text", new Object[]{title, from}, LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("acceptanceMail.subject", null, LocaleContextHolder.getLocale());
+        sendEmail(mimeMessage, Collections.singletonList(to), subject, content, from);
     }
 
     @Override
@@ -112,6 +110,5 @@ public class MailingServiceImpl implements MailingService{
             throw new RuntimeException(mex.getMessage());
         }
     }
-
 
 }
