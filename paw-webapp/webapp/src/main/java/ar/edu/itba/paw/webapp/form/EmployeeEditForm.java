@@ -28,11 +28,11 @@ public class EmployeeEditForm {
     @Size(max = 100)
     private String location;
 
-    @CheckboxesAbilitiesEdit
-    private String abilities[];
+    //@CheckboxesAbilitiesEdit
+    private String[] abilities;
 
-    @CheckboxesAvailabilitiesEdit
-    private String availability[];
+    //@CheckboxesAvailabilitiesEdit
+    private String[] availability;
 
     private CommonsMultipartFile image;
 

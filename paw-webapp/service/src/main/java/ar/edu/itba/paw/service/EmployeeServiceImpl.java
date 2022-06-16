@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.Abilities;
+import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.EmployeeDao;
@@ -25,8 +27,8 @@ public class EmployeeServiceImpl implements EmployeeService{
         if(!employee.isPresent()){
             return employee;
         }
-        List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.get().getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.get().getAbilities().split(",")));
+        List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.get().getAvailability().split(",")));
         Employee aux = new Employee(employee.get().getName(), employee.get().getLocation(), employee.get().getId(), availabilityArr, employee.get().getExperienceYears(), abilitiesArr);
         return Optional.of(aux);
     }
@@ -127,4 +129,22 @@ public class EmployeeServiceImpl implements EmployeeService{
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         return employee.map(value -> employeeDao.getPrevRating(value)).orElse(0F);
     }
+
+    private ArrayList<String> getAbilitiesEs(String[] abilities){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (String ability: abilities) {
+            toReturn.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
+        }
+        return toReturn;
+    }
+
+    private ArrayList<String> getAvailability(String[] availabilities){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (String availability: availabilities) {
+            toReturn.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
+        }
+        return toReturn;
+    }
+
+
 }

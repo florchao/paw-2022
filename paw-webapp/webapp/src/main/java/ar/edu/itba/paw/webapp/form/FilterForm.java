@@ -28,10 +28,10 @@ public class FilterForm {
     @Size(max = 100)
     private String location;
 
-    @CheckboxesAbilitiesAnnotation
+    //@CheckboxesAbilitiesAnnotation
     private String[] abilities;
 
-    @CheckboxesAvailability
+    //@CheckboxesAvailability
     private String[] availability;
 
     @Pattern(regexp = "[a-z A-z\\s0-9,]+|")

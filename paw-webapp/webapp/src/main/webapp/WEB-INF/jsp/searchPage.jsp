@@ -57,50 +57,50 @@
                             <h1 class="font-semibold mt-4 "><spring:message code="searchPage.abilities"/></h1>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="abilities"><spring:message code="searchPage.abilities.cook"/></form:label>
+                                    <form:label for="cook" path="abilities"><spring:message code="searchPage.abilities.cook"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="abilities" value="Cocinar"/>
+                                    <form:checkbox id="cook" path="abilities" value="${abilities[0]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="abilities"><spring:message code="searchPage.abilities.iron"/></form:label>
+                                    <form:label for="iron" path="abilities"><spring:message code="searchPage.abilities.iron"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="abilities" value="Planchar"/>
+                                    <form:checkbox id="iron" path="abilities" value="${abilities[1]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="abilities"><spring:message code="searchPage.abilities.pets"/></form:label>
+                                    <form:label for="young" path="abilities"><spring:message code="searchPage.abilities.young"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="abilities" value="Cuidado de mascotas"/>
+                                    <form:checkbox id="young" path="abilities" value="${abilities[2]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="abilities"><spring:message code="searchPage.abilities.older"/></form:label>
+                                    <form:label for="older" path="abilities"><spring:message code="searchPage.abilities.older"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                <form:checkbox path="abilities" value="Cuidado de mayores"/>
+                                <form:checkbox id="older" path="abilities" value="${abilities[3]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="abilities"><spring:message code="searchPage.abilities.young"/></form:label>
+                                    <form:label for="specialNeeds" path="abilities"><spring:message code="searchPage.abilities.specialNeeds"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="abilities" value="Cuidado de menores"/>
+                                    <form:checkbox id="specialNeeds" path="abilities" value="${abilities[4]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="abilities"><spring:message code="searchPage.abilities.specialNeeds"/></form:label>
+                                    <form:label for="pets" path="abilities"><spring:message code="searchPage.abilities.pets"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="abilities" value="Cuidados especiales"/>
+                                    <form:checkbox id="pets" path="abilities" value="${abilities[5]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
@@ -109,26 +109,26 @@
                             <h1 class="font-semibold mt-4"><spring:message code="employeeForm.availability"/></h1>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="availability"><spring:message code="searchPage.availability.half"/></form:label>
+                                    <form:label for="half" path="availability"><spring:message code="searchPage.availability.half"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="availability" value="Media jornada"/>
+                                    <form:checkbox id="half" path="availability" value="${availability[0]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="availability"><spring:message code="searchPage.availability.complete"/></form:label>
+                                    <form:label for="complete" path="availability"><spring:message code="searchPage.availability.complete"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="availability" value="Jornada completa"/>
+                                    <form:checkbox id="complete" path="availability" value="${availability[0]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
                                 <div class="col-span-3">
-                                    <form:label path="availability"><spring:message code="searchPage.availability.bed"/></form:label>
+                                    <form:label for="bed" path="availability"><spring:message code="searchPage.availability.bed"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox path="availability" value="Con cama"/>
+                                    <form:checkbox id="bed" path="availability" value="${availability[0]}"/>
                                 </div>
                             </div>
                             <button type="submit" id="submitButtonId" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="searchPage.filter"/></button>
