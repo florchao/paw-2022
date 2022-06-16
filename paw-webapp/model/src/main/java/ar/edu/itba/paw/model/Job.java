@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -216,5 +217,31 @@ public class Job implements Serializable {
 
     public void setOpened(boolean opened) {
         this.opened = opened;
+    }
+
+    public void nameAbilities(String language){
+        ArrayList<String> jobAbilities = new ArrayList<>();
+        if(language.equals("es"))
+            for (String ability: abilitiesArr) {
+                jobAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
+            }
+        else
+            for (String ability: abilitiesArr) {
+                jobAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getName());
+            }
+        setAbilitiesArr(jobAbilities);
+    }
+
+    public void nameAvailability(String language){
+        ArrayList<String> jobAvailability = new ArrayList<>();
+        if(language.equals("es"))
+            for (String availability: availabilityArr) {
+                jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
+            }
+        else
+            for (String availability: availabilityArr) {
+                jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
+            }
+        setAvailabilityArr(jobAvailability);
     }
 }

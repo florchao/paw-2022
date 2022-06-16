@@ -13,10 +13,13 @@ public class CheckboxesAbilitiesValidator implements ConstraintValidator<Checkbo
     public boolean isValid(String []s, ConstraintValidatorContext cvc) {
         if(s == null)
             return true;
-        String abilities = "Cocinar;Planchar;Cuidado de mascotas;Cuidado de mayores;Cuidado de menores;Cuidados especiales";
         for (String l : s) {
-            if(!abilities.contains(l))
+            try {
+                if (Integer.parseInt(l) < 1 || Integer.parseInt(l) > 6)
+                    return false;
+            }catch (NumberFormatException e){
                 return false;
+            }
         }
         return true;
     }

@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Employee")
@@ -160,5 +161,27 @@ public class Employee implements Serializable {
                 + getAvailabilityArr() + " - "
                 + getExperienceYears() + " - "
                 + getAbilitiesArr();
+    }
+
+     public void nameAbilities(String language){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (String ability: abilitiesArr) {
+            if(language.equals("es"))
+                toReturn.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
+            else
+                toReturn.add(Abilities.getAbilityById(Integer.parseInt(ability)).getName());
+        }
+        setAbilitiesArr(toReturn);
+    }
+
+    public void nameAvailability(String language){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (String availability: availabilityArr) {
+            if(language.equals("es"))
+                toReturn.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
+            else
+                toReturn.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
+        }
+        setAvailabilityArr(toReturn);
     }
 }

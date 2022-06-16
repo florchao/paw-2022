@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -73,6 +74,9 @@ public class ViewProfileController {
             if (employee.isPresent()) {
                 employee.get().firstWordsToUpper();
                 employee.get().locationFirstWordsToUpper();
+                String language = LocaleContextHolder.getLocale().getLanguage();
+                employee.get().nameAvailability(language);
+                employee.get().nameAbilities(language);
                 mav.addObject("employee", employee.get());
             }
             mav.addObject("userId", user.get().getId());
@@ -94,6 +98,9 @@ public class ViewProfileController {
         if (employee.isPresent()) {
             employee.get().firstWordsToUpper();
             employee.get().locationFirstWordsToUpper();
+            String language = LocaleContextHolder.getLocale().getLanguage();
+            employee.get().nameAbilities(language);
+            employee.get().nameAvailability(language);
             mav.addObject("employee", employee.get());
         }
         mav.addObject("status", status);
