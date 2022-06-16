@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.service.mails.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +12,19 @@ import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class MailingServiceImpl implements MailingService{
 
     private final Session session;
+
+    private final Locale locale = LocaleContextHolder.getLocale();
+
+    private boolean isEnglish(){
+        String defaultLanguage = locale.getDisplayLanguage();
+        return defaultLanguage.equals("English");
+    }
     @Autowired
     public MailingServiceImpl(Session session) {
         this.session = session;
@@ -24,86 +34,51 @@ public class MailingServiceImpl implements MailingService{
     @Async
     public void sendContactMail(String replyTo, String to, String name) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String subject = "¡"+ name + " quiere contactarse con vos!";
-        String message = String.format("<div style = \"justify-content: center;\n" +
-                "  align-items: center;\">\n" +
-                "<h1 style=\"color: #a78bfa;\">&iexcl;%s te ha enviado un mensaje!</h1>\n" +
-                "<p>Te envi&oacute; su informaci&oacute;n que s&oacute;lo tu puedes ver para que se puedan conectar.</p>\n" +
-                "<p>Para ver este y todos tus otros mensajes</p>\n" +
-                "  <a href=\"http://pawserver.it.itba.edu.ar/paw-2022a-02/contactos\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
-                "        onmouseout=\"mouseout()\" style=\"color: #581c87; background-color: #a78bfa;\n" +
-                "  padding: 14px 40px;\n" +
-                "  border-radius: 8px;\n" +
-                "  cursor: pointer;\n" +
-                "  font-family: Arial, Helvetica, sans-serif;\n" +
-                "  font-size: 14px; \"> Haz click aqu&iacute; </button></a>\n" +
-                "<p style = \"font-size: 11px\">Para contestar el mensaje, puedes responder este mail o escribirle a %s</p>\n" +
-                "</div>",name, replyTo);
-        sendEmail(mimeMessage, Collections.singletonList(to), subject, message, replyTo);
+        ContactMail contactMail = new ContactMail(name, replyTo);
+        if(isEnglish())
+            sendEmail(mimeMessage, Collections.singletonList(to), contactMail.getSubjectEn(), contactMail.getContentEn(), replyTo);
+        else
+            sendEmail(mimeMessage, Collections.singletonList(to), contactMail.getSubjectEs(), contactMail.getContentEs(), replyTo);
     }
 
     @Override
     @Async
     public void sendApplyMail(String to, String jobTitle, String name, long jobid) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String subject = "¡"+ name + " aplicó para "+jobTitle+"!";
-        String message = String.format("<div style = \"justify-content: center;\n" +
-                "  align-items: center;\">\n" +
-                "<h1 style=\"color: #a78bfa;\">&iexcl;%s ha aplicado para trabajar con vos!</h1>\n" +
-                "<p>Para ver su informaci&oacute;n y el de todos los aplicantes.</p>\n" +
-                "  <a href=\"http://pawserver.it.itba.edu.ar/paw-2022a-02/aplicantes/%s\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
-                "        onmouseout=\"mouseout()\" style=\"color: #581c87; background-color: #a78bfa;\n" +
-                "  padding: 14px 40px;\n" +
-                "  border-radius: 8px;\n" +
-                "  cursor: pointer;\n" +
-                "  font-family: Arial, Helvetica, sans-serif;\n" +
-                "  font-size: 14px; \"> Haz click aqu&iacute; </button></a>\n" +
-                "</div>",name, jobid);
-        sendEmail(mimeMessage, Collections.singletonList(to), subject, message, null);
+        ApplyMail applyMail = new ApplyMail(name, jobTitle, jobid);
+        if(isEnglish())
+            sendEmail(mimeMessage, Collections.singletonList(to), applyMail.getSubjectEn(), applyMail.getContentEn(), null);
+        else
+            sendEmail(mimeMessage, Collections.singletonList(to), applyMail.getSubjectEs(), applyMail.getContentEs(), null);
     }
 
     @Override
     @Async
     public void sendContactUsMail(String name, String from, String content) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String subject = "¡" + name + " tiene una conulta!";
-        String message = String.format("<div style = \"justify-content: center;\n" +
-                "  align-items: center;\">\n" +
-                "<h1 style=\"color: #a78bfa;\">&iexcl;%s envió un mensaje!</h1>\n" +
-                "<p style = \"font-size: 18px\">%s</p>\n" +
-                "<p style = \"font-size: 11px\">Para contestar la consulta, puedes responder este mail o escribirle a %s</p>\n" +
-                "</div>", name, content, from);
-        sendEmail(mimeMessage, new ArrayList<>(), subject, message, from);
+        ContactUsMail contactUsMail = new ContactUsMail(name, content, from);
+        if(isEnglish())
+            sendEmail(mimeMessage, new ArrayList<>(), contactUsMail.getSubjectEn(), contactUsMail.getContentEn(), from);
+        else
+            sendEmail(mimeMessage, new ArrayList<>(), contactUsMail.getSubjectEs(), contactUsMail.getContentEs(), from);
     }
 
     private void sendRejection(String to, String title){
         MimeMessage mimeMessage = new MimeMessage(session);
-        String subject = "Lamentamos informarle que no fue aceptado/a para " + title;
-        String message = "<div style = \"justify-content: center;\n" +
-                "  align-items: center;\">\n" +
-                "<h1 style=\"color: #a78bfa;\">No has sido aceptado/a</h1>\n" +
-                "<p>&iexcl;No te preocupes, hay muchas mas opciones para vos! Para ir a verlas</p>\n" +
-                "  <a href=\"http://pawserver.it.itba.edu.ar/paw-2022a-02//trabajos\"><button id=\"gfg\" onmouseover=\"mouseover()\" \n" +
-                "        onmouseout=\"mouseout()\" style=\"color: #581c87; background-color: #a78bfa;\n" +
-                "  padding: 14px 40px;\n" +
-                "  border-radius: 8px;\n" +
-                "  cursor: pointer;\n" +
-                "  font-family: Arial, Helvetica, sans-serif;\n" +
-                "  font-size: 14px; \"> Haz click aqu&iacute; </button></a>\n" +
-                "</div>";
-        sendEmail(mimeMessage, Collections.singletonList(to), subject, message, null);
+        RejectionMail rejectionMail = new RejectionMail(title);
+        if(isEnglish())
+            sendEmail(mimeMessage, Collections.singletonList(to), rejectionMail.getSubjectEn(), rejectionMail.getContentEn(), null);
+        else
+            sendEmail(mimeMessage, Collections.singletonList(to), rejectionMail.getSubjectEs(), rejectionMail.getContentEs(), null);
     }
 
     private void sendAcceptance(String to, String from, String title){
         MimeMessage mimeMessage = new MimeMessage(session);
-        String subject = "¡Felicitaciones!";
-        String message = String.format("<div style = \"justify-content: center;\n" +
-                "  align-items: center;\">\n" +
-                "<h1 style=\"color: #a78bfa;\">&iexcl;Nos emociona contarte que has sido aceptado/a para %s!</h1>\n" +
-                "<p>Nos alegra mucho esta noticia y esperamos que este trabajo sea todo lo que estas buscando.</p>\n" +
-                "<p>Para conectarte con tu nuevo empleador podes contestar este mail o escribirle a %s</p>\n" +
-                "</div>",title, from);
-        sendEmail(mimeMessage, Collections.singletonList(to), subject, message, from);
+        AcceptanceMail acceptanceMail = new AcceptanceMail(title, from);
+        if(isEnglish())
+            sendEmail(mimeMessage, Collections.singletonList(to), acceptanceMail.getSubjectEn(), acceptanceMail.getContentEn(), from);
+        else
+            sendEmail(mimeMessage, Collections.singletonList(to), acceptanceMail.getSubjectEs(), acceptanceMail.getContentEs(), from);
     }
 
     @Override
