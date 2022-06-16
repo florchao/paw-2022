@@ -45,10 +45,9 @@ public class MailingServiceImpl implements MailingService{
     @Override
     @Async
     public void sendApplyMail(String to, String jobTitle, String name, long jobid) {
-        System.out.println("ESTOY ACA");
         MimeMessage mimeMessage = new MimeMessage(session);
         String content = messageSource.getMessage("applyMail.text", new Object[]{name, jobid},LocaleContextHolder.getLocale());
-        String subject = "APPLY";
+        String subject = messageSource.getMessage("applyMail.subject", new Object[]{name, jobTitle},LocaleContextHolder.getLocale());
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, null);
     }
 
