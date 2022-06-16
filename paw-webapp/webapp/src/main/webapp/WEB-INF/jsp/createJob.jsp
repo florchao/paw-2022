@@ -55,11 +55,14 @@
                             <form:errors path="experienceYears" element="p" cssStyle="color:red"/>
                         </div>
                         <div class="ml-3 col-span-3 w-4/5 justify-self-center">
+                            <spring:message code="jobForm.availability.half" var="half"/>
+                            <spring:message code="jobForm.availability.complete" var="complete"/>
+                            <spring:message code="jobForm.availability.bed" var="bed"/>
                             <form:label path="availability" class="block mb-2 text-sm font-medium text-gray-900 "><spring:message code="jobForm.availability"/></form:label>
                             <form:select path="availability" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
-                                <form:option value="Media jornada" label="Medio dia"/>
-                                <form:option value="Jornada completa" label="Dia completo"/>
-                                <form:option value="Con cama" label="Con cama"/>
+                                <form:option value="${availability[0]}" label="${half}"/>
+                                <form:option value="${availability[1]}" label="${complete}"/>
+                                <form:option value="${availability[2]}" label="${bed}"/>
                             </form:select>
                             <form:errors path="availability" element="p" cssStyle="color:red"/>
                         </div>
@@ -70,27 +73,27 @@
                     <div class="flex flex-wrap ml-8">
                         <div class = "mb-8">
                             <form:label path="abilities" for="cocinar-cb" id = "cocinar-label" onclick="setColor('cocinar');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"> <spring:message code="employeeForm.abilities.cook"/></form:label>
-                            <form:checkbox path="abilities" id="cocinar-cb" value = "Cocinar" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="abilities" id="cocinar-cb" value = "${abilities[0]}" cssStyle="visibility: hidden"/>
                         </div>
                         <div>
                             <form:label path="abilities" for="planchar-cb" id = "planchar-label" onclick="setColor('planchar');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.iron"/></form:label>
-                            <form:checkbox path="abilities" id="planchar-cb" value = "Planchar" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="abilities" id="planchar-cb" value = "${abilities[1]}" cssStyle="visibility: hidden"/>
                         </div>
                         <div>
                             <form:label path="abilities" for="menores-cb" id = "menores-label" onclick="setColor('menores');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.young"/></form:label>
-                            <form:checkbox path="abilities" id="menores-cb" value = "Cuidado de menores" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="abilities" id="menores-cb" value = "${abilities[2]}" cssStyle="visibility: hidden"/>
                         </div>
                         <div>
                             <form:label path="abilities" for="mayores-cb" id = "mayores-label" onclick="setColor('mayores');" class="mt-1 h-fit w-fit text-xs text-gray-900border bg-white border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.older"/></form:label>
-                            <form:checkbox path="abilities" id="mayores-cb" value = "Cuidado de mayores" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="abilities" id="mayores-cb" value = "${abilities[3]}" cssStyle="visibility: hidden"/>
                         </div>
                         <div>
                             <form:label path="abilities" for="especiales-cb" id = "especiales-label" onclick="setColor('especiales');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.specialNeeds"/></form:label>
-                            <form:checkbox path="abilities" id="especiales-cb" value = "Cuidados especiales" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="abilities" id="especiales-cb" value = "${abilities[4]}" cssStyle="visibility: hidden"/>
                         </div>
                         <div>
                             <form:label path="abilities" for="mascotas-cb" id = "mascotas-label" onclick="setColor('mascotas');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.pets"/></form:label>
-                            <form:checkbox path="abilities" id="mascotas-cb" value = "Cuidado de mascotas" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="abilities" id="mascotas-cb" value = "${abilities[5]}" cssStyle="visibility: hidden"/>
                         </div>
 
                     </div>

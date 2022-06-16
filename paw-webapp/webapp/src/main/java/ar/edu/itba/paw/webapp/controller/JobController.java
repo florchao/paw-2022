@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Abilities;
+import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
@@ -9,6 +11,7 @@ import ar.edu.itba.paw.webapp.form.JobForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -32,7 +35,10 @@ public class JobController {
 
     @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
     public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
-        return new ModelAndView("createJob");
+        ModelAndView mav = new ModelAndView("createJob");
+        mav.addObject("abilities", Abilities.getIds());
+        mav.addObject("availability", Availability.getIds());
+        return mav;
     }
 
     @RequestMapping(value = "/createJob", method = RequestMethod.POST)
@@ -75,6 +81,9 @@ public class JobController {
             job.get().employerNameToUpper(job.get().getEmployerId());
             job.get().firstWordsToUpper();
             job.get().locationNameToUpper();
+            String language = LocaleContextHolder.getLocale().getLanguage();
+            job.get().nameAbilities(language);
+            job.get().nameAvailability(language);
             mav.addObject("job", job.get());
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -119,6 +128,8 @@ public class JobController {
         mav.addObject("jobList", jobList);
         mav.addObject("page", page);
         mav.addObject("maxPage", jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE_JOBS));
+        mav.addObject("abilities", Abilities.getIds());
+        mav.addObject("availability", Availability.getIds());
         return mav;
     }
 
