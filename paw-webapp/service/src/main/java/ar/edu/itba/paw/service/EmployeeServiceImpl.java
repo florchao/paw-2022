@@ -54,7 +54,10 @@ public class EmployeeServiceImpl implements EmployeeService{
             availabilitySB.setLength(availabilitySB.length() - 1);
         Optional<Employee> employee = employeeDao.getEmployeeById(id);
         if(employee.isPresent())
-            employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString(), image);
+            if(image.length == 0)
+                employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString(), employee.get().getId().getImage());
+            else
+                employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString(), image);
     }
 
     @Transactional
