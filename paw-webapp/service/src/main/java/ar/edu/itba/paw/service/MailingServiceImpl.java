@@ -35,11 +35,9 @@ public class MailingServiceImpl implements MailingService{
     @Async
     public void sendContactMail(String replyTo, String to, String name) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        ContactMail contactMail = new ContactMail(name, replyTo);
-        if(isEnglish())
-            sendEmail(mimeMessage, Collections.singletonList(to), contactMail.getSubjectEn(), contactMail.getContentEn(), replyTo);
-        else
-            sendEmail(mimeMessage, Collections.singletonList(to), contactMail.getSubjectEs(), contactMail.getContentEs(), replyTo);
+        String content = messageSource.getMessage("contactMail.text", new Object[]{name, replyTo},LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("contactMail.subject", new Object[]{name},LocaleContextHolder.getLocale());
+        sendEmail(mimeMessage, Collections.singletonList(to), subject, content, replyTo);
     }
 
     @Override
@@ -55,11 +53,9 @@ public class MailingServiceImpl implements MailingService{
     @Async
     public void sendContactUsMail(String name, String from, String content) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        ContactUsMail contactUsMail = new ContactUsMail(name, content, from);
-        if(isEnglish())
-            sendEmail(mimeMessage, new ArrayList<>(), contactUsMail.getSubjectEn(), contactUsMail.getContentEn(), from);
-        else
-            sendEmail(mimeMessage, new ArrayList<>(), contactUsMail.getSubjectEs(), contactUsMail.getContentEs(), from);
+        String question = messageSource.getMessage("contactUsMail.text", new Object[]{name, content, from},LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("contactUsMail.subject", new Object[]{name},LocaleContextHolder.getLocale());
+        sendEmail(mimeMessage, new ArrayList<>(), subject, question, from);
     }
 
     private void sendRejection(String to, String title){
