@@ -18,11 +18,74 @@
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 "><spring:message code="employeeCardComponent.experience" htmlEscape="true" arguments="${param.years}"/>
             </p>
         </div>
+        <ul class="flex items-center gap-x-1">
+            <c:choose>
+                <c:when test="${param.rating >= 0.75}">
+                    <li>
+                        <i class=" text-yellow-300 fa-lg fa fa-star"></i>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li>
+                        <i class="text-yellow-300 fa-lg fa fa-star-o"></i>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${param.rating >= 1.75}">
+                    <li>
+                        <i class="text-yellow-300 fa fa-lg fa-star"></i>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li>
+                        <i class="text-yellow-300 fa fa-lg fa-star-o"></i>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${param.rating >= 2.75}">
+                    <li>
+                        <i class="text-yellow-300 fa fa-lg fa-star"></i>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li>
+                        <i class="text-yellow-300 fa-lg fa fa-star-o"></i>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${param.rating >= 3.75}">
+                    <li>
+                        <i class="text-yellow-300 fa-lg fa fa-star"></i>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li>
+                        <i class="text-yellow-300 fa-lg fa fa-star-o"></i>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${param.rating >= 4.75}">
+                    <li>
+                        <i class="text-yellow-300 fa-lg fa fa-star"></i>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li>
+                        <i class="text-yellow-300 fa-lg fa fa-star-o"></i>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
         <c:if test="${param.contacted != null && param.contacted}">
-            <div class="col-start-7 col-span-1">
+            <div class="col-start-7 col-span-2 ml-8 mr-8">
                 <p class="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2.5 mb-2"><spring:message code="viewProfile.alreadyConnected"/></p>
             </div>
         </c:if>
+
     </a>
 </body>
 

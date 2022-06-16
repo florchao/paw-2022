@@ -24,6 +24,8 @@ public class EmployeeJpaDao implements EmployeeDao{
         Optional<User> user=  Optional.ofNullable(em.find(User.class, id));
         if(user.isPresent()) {
             final Employee employee = new Employee(name, location, user.get(), availability, experienceYears, abilites);
+            employee.setRating(0);
+            employee.setVoteCount(0);
             employee.getId().setImage(image);
             em.persist(employee);
             return employee;
@@ -42,8 +44,8 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public List<Employee> getEmployees(long pageSize) {
-        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e", Employee.class)
+    public List<Employee> getEmployees(long pageSize, String orderCriteria) {
+        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e order by e.rating desc", Employee.class)
                 .setFirstResult(0)
                 .setMaxResults((int) pageSize);
         return employeeList.getResultList();
@@ -55,7 +57,7 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long page, long pageSize) {
+    public List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT e FROM Employee e where ");
         if (name != null) {
@@ -79,12 +81,21 @@ public class EmployeeJpaDao implements EmployeeDao{
             stringBuilder.append(" and   ");
         }
         stringBuilder.setLength(stringBuilder.length() - 7);
+        if (orderCriteria == null || orderCriteria.equals("")) {
+            stringBuilder.append(" order by e.rating desc");
+        } else {
+            stringBuilder.append(" order by ")
+                    .append(orderCriteria)
+                    .append(" desc");
+        }
+        System.out.println("en persistencia mi ordercriteria vale "+orderCriteria);
+        System.out.println(stringBuilder);
         TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
         return filteredQuery.getResultList();
     }
 
     @Override
-    public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, List<String> availability, List<String> abilities, Long pageSize) {
+    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT count(e) FROM Employee e where ");
         if (name != null) {

@@ -1,8 +1,7 @@
 package ar.edu.itba.paw.webapp.constraint.validator;
 
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.webapp.constraint.annotation.PasswordMatchesAnnotation;
-import ar.edu.itba.paw.webapp.form.RegisterForm;
+import ar.edu.itba.paw.webapp.form.EmployerForm;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -15,7 +14,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     @Override
     public boolean isValid(Object candidate, ConstraintValidatorContext arg1) {
-        RegisterForm user = (RegisterForm) candidate;
+        EmployerForm user = (EmployerForm) candidate;
         return user.getPassword().equals(user.getConfirmPassword());
     }
 }

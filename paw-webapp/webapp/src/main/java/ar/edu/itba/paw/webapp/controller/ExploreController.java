@@ -1,12 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,7 +39,8 @@ public class ExploreController {
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "abilities", required = false) String abilities,
-            @RequestParam(value = "page", required = false) Long page) {
+            @RequestParam(value = "page", required = false) Long page,
+            @RequestParam(value = "orderCriteria", required = false) String orderCriteria) {
 
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         Authentication authority = SecurityContextHolder.getContext().getAuthentication();
@@ -48,9 +49,9 @@ public class ExploreController {
 
         if (page == null)
             page = 0L;
-        Map<Employee, Boolean> list = new HashMap<>();
-        List<Experience> experiencesList = null;
-        for (Employee employee : employeeService.getFilteredEmployees(name, experienceYears, location, experiencesList, availability, abilities,page,PAGE_SIZE)) {
+        Map<Employee, Boolean> list = new LinkedHashMap<>();
+        List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities,page, PAGE_SIZE, orderCriteria);
+        for (Employee employee : employees) {
             employee.firstWordsToUpper();
             employee.locationFirstWordsToUpper();
             list.put(employee, false);
@@ -65,14 +66,14 @@ public class ExploreController {
         final ModelAndView mav = new ModelAndView("searchPage");
         mav.addObject("EmployeeList", list);
         mav.addObject("page", page);
-        mav.addObject("maxPage", employeeService.getPageNumber(name, experienceYears, location, experiencesList, availability, abilities, PAGE_SIZE));
+        mav.addObject("maxPage", employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE));
         return mav;
     }
 
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
     public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
         if (errors.hasErrors()) {
-            return searchPage(null, null,null,null,null,null,null);
+            return searchPage(null, null,null,null,null,null,null, null);
         }
         if (!Objects.equals(form.getName(),"") && !form.getName().contains("\'") && !form.getName().contains("\"") )
             redirectAttributes.addAttribute("name",form.getName());
@@ -86,6 +87,10 @@ public class ExploreController {
             redirectAttributes.addAttribute("abilities", form.getAbilities());
         if (form.getPageNumber() > 0)
             redirectAttributes.addAttribute("page", form.getPageNumber());
+        if (form.getOrderCriteria() != null && !form.getOrderCriteria().equals("")) {
+            redirectAttributes.addAttribute("orderCriteria", form.getOrderCriteria());
+        }
+        System.out.println("mi ordercriteria es: "+form.getOrderCriteria());
 
         return new ModelAndView("redirect:/buscarEmpleadas");
     }

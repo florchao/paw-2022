@@ -1,11 +1,8 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Employer;
-import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.EmployeeDao;
-import ar.edu.itba.paw.persistence.EmployerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,13 +65,6 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeDao.create(id, name, location, availability, experienceYears, abilities, image);
     }
 
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Employee> getEmployees() {
-        return employeeDao.getEmployees(0);
-    }
-
     @Transactional(readOnly = true)
     @Override
     public void isEmployee(long id) {
@@ -88,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional
     @Override
-    public int getPageNumber(String name, Long experienceYears, String location, List<Experience> experiences, String availability, String abilities, long pageSize) {
+    public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize) {
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
@@ -97,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getPageNumber(name, experienceYears, location, experiences, availabilityList, abilitiesList, pageSize);
+        return employeeDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize);
     }
 
     @Transactional
@@ -106,14 +96,14 @@ public class EmployeeServiceImpl implements EmployeeService{
             String name,
             Long experienceYears,
             String location,
-            List<Experience> experiences,
             String availability,
             String abilities,
             Long page,
-            long pageSize
+            long pageSize,
+            String orderCriteria
     ) {
-        if (name == null && experienceYears == null && location == null && experiences == null && availability == null && abilities == null && page == 0) {
-            return employeeDao.getEmployees(pageSize);
+        if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0 && orderCriteria == null) {
+            return employeeDao.getEmployees(pageSize, orderCriteria);
         }
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
@@ -123,7 +113,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(name,experienceYears,location,experiences, availabilityList,abilitiesList,page,pageSize);
+        return employeeDao.getFilteredEmployees(name,experienceYears,location, availabilityList,abilitiesList,page,pageSize, orderCriteria);
     }
 
     @Override

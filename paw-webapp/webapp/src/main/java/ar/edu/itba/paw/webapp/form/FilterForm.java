@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.model.Experience;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAbilitiesAnnotation;
 import ar.edu.itba.paw.webapp.constraint.annotation.CheckboxesAvailability;
 import org.springframework.format.annotation.NumberFormat;
@@ -20,8 +19,6 @@ public class FilterForm {
     @NumberFormat(style = NumberFormat.Style.NUMBER)
     private long experienceYears;
 
-    private List<Experience> experiencesList;
-
     @DecimalMin("0")
     @DecimalMax("100")
     @NumberFormat(style = NumberFormat.Style.NUMBER)
@@ -36,6 +33,10 @@ public class FilterForm {
 
     @CheckboxesAvailability
     private String[] availability;
+
+    @Pattern(regexp = "[a-z A-z\\s0-9,]+|")
+    @Size(max = 100)
+    private String orderCriteria;
 
     public String getName() {
         return name;
@@ -61,14 +62,6 @@ public class FilterForm {
         this.location = location;
     }
 
-    public List<Experience> getExperiencesList() {
-        return experiencesList;
-    }
-
-    public void setExperiencesList(List<Experience> experiencesList) {
-        this.experiencesList = experiencesList;
-    }
-
     public String[] getAbilities() {
         return abilities;
     }
@@ -91,5 +84,13 @@ public class FilterForm {
 
     public void setAvailability(String[] availability) {
         this.availability = availability;
+    }
+
+    public void setOrderCriteria(String orderCriteria) {
+        this.orderCriteria = orderCriteria;
+    }
+
+    public String getOrderCriteria() {
+        return orderCriteria;
     }
 }

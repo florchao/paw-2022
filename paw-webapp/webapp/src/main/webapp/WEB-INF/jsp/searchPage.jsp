@@ -131,11 +131,12 @@
                                     <form:checkbox path="availability" value="Con cama"/>
                                 </div>
                             </div>
-                            <button type="submit" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="searchPage.filter"/></button>
+                            <button type="submit" id="submitButtonId" class="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="searchPage.filter"/></button>
                         </div>
                 </div>
                 <div class="col-span-3 col-start-2">
                     <form:input type="text" path="name" cssClass="hidden" cssStyle="border-radius: 5px;"/>
+                    <form:input type="text" path="orderCriteria" cssClass="hidden" id="criteriaInputId" cssStyle="background-color: red"/>
                     <c:choose>
                         <c:when test="${EmployeeList.size() == 0}">
                             <div class = "grid content-center justify-center h-5/6 mt-16">
@@ -149,6 +150,11 @@
                             </div>
                         </c:when>
                         <c:otherwise>
+                            <div class="flex justify-end">
+                                <h1 class="font-semibold mr-2"><spring:message code="searchPage.orderBy"/></h1>
+                                <h5 class="hover:text-yellow-300 hover:underline hover:cursor-pointer mr-4" onclick="changeOrderCriteria('rating', 'criteriaInputId', 'submitButtonId')"><spring:message code="searchPage.popularity"/></h5>
+                                <h5 class="hover:text-yellow-300 hover:underline hover:cursor-pointer" onclick="changeOrderCriteria('experienceYears', 'criteriaInputId', 'submitButtonId')"><spring:message code="searchPage.experience"/></h5>
+                            </div>
                             <c:forEach var="entry" items="${EmployeeList}">
                                 <c:set var="employee" value="${entry.key}"/>
                                 <c:set var="connected" value="${entry.value}"/>
@@ -159,6 +165,7 @@
                                     <jsp:param name="id" value="${employee.id.id}"/>
                                     <jsp:param name = "years" value = "${employee.experienceYears}"/>
                                     <jsp:param name="contacted" value="${connected}"/>
+                                    <jsp:param name="rating" value="${employee.rating}"/>
                                 </jsp:include>
                             </c:forEach>
                         </c:otherwise>
@@ -196,7 +203,7 @@
 </html>
 <style>
     /* Links inside the dropdown */
-    .dropdown-content a {
+    .dropdown-content h4 {
         color: black;
         padding: 12px 16px;
         text-decoration: none;
@@ -204,6 +211,47 @@
     }
 
     /* Change color of dropdown links on hover */
-    .dropdown-content a:hover {background-color: #f1f1f1}
+    .dropdown-content h4:hover {background-color: #f1f1f1}
+
+    .dropbtn {
+        background-color: #04AA6D;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content h4 {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content h4:hover {background-color: #ddd;}
+
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {display: block;}
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 </style>

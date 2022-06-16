@@ -147,7 +147,7 @@ public class JobController {
         HogarUser user = (HogarUser) authority.getPrincipal();
         if (page == null)
             page = 0L;
-        Map<Job, Integer> jobList = new HashMap<>();
+        Map<Job, Integer> jobList = new LinkedHashMap<>();
         List<Job> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE_JOBS);
         for (Job job : opJob) {
             Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());

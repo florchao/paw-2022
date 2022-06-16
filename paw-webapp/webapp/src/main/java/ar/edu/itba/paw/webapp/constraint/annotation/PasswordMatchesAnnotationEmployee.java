@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.constraint.annotation;
 
-import ar.edu.itba.paw.webapp.constraint.validator.RolesValidator;
+import ar.edu.itba.paw.webapp.constraint.validator.PasswordMatchesValidatorEmployee;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,12 +9,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = RolesValidator.class)
-@Target( { ElementType.METHOD, ElementType.FIELD } )
+@Constraint(validatedBy = PasswordMatchesValidatorEmployee.class)
+@Target( { ElementType.TYPE} )
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RolesAnnotation {
-    //error message
-    String message() default "Invalid role";
+public @interface PasswordMatchesAnnotationEmployee {
+    String message() default "Passwords don't match";
     //represents group of constraints
     Class<?>[] groups() default {};
     //represents additional information about annotation

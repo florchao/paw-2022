@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class ApplicantController {
@@ -87,7 +84,7 @@ public class ApplicantController {
             page = 0L;
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Job> list = applicantService.getJobsByApplicant(principal.getUserID(), page, PAGE_SIZE);
-        Map<Job, Integer> jobList = new HashMap<>();
+        Map<Job, Integer> jobList = new LinkedHashMap<>();
         mav.addObject("page", page);
         mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
         for (Job job : list) {
