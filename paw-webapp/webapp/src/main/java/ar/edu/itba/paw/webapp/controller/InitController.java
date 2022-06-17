@@ -32,28 +32,24 @@ public class InitController {
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE")))
             return new ModelAndView("redirect:/trabajos");
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYER")))
-            return new ModelAndView("redirect:/buscarEmpleadas");
+            return new ModelAndView("redirect:/inicio");
         return new ModelAndView("init");
+    }
+
+    @RequestMapping(value = "/inicio", method = {RequestMethod.GET})
+    public ModelAndView employerInit() {
+        return new ModelAndView("employerLanding");
     }
 
 
     @RequestMapping(value = "/afterLogin", method = {RequestMethod.GET})
     public ModelAndView afterLogin() {
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(auth.contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
-            Optional<Employee> employee = employeeService.getEmployeeById(principal.getUserID());
-            if(!employee.isPresent()){
-                return new ModelAndView("redirect:/crearPerfil/"+principal.getUserID());
-            }
             return new ModelAndView("redirect:/trabajos");
         }
         else {
-            Optional<Employer> employer = employerService.getEmployerById(principal.getUserID());
-            if (!employer.isPresent()) {
-                return new ModelAndView("redirect:/crearPerfilEmpleador/"+principal.getUserID());
-            }
-            return new ModelAndView("redirect:/buscarEmpleadas");
+            return new ModelAndView("redirect:/inicio");
         }
     }
     @RequestMapping(value = "/login", method = RequestMethod.GET)
