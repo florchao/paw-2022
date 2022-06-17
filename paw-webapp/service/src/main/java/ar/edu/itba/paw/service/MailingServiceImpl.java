@@ -76,6 +76,11 @@ public class MailingServiceImpl implements MailingService{
     }
 
     private void sendEmail(Message mimeMessage, List<String> to, String subject, String message, String from) {
+        System.out.println("FROMMM " +to.toString());
+        System.out.println("FROMMM " +subject);
+        System.out.println("FROMMM " +message);
+        System.out.println("FROMMM " +from);
+
         try {
             String SERVER_MAIL = "hogarempleos22@gmail.com";
             String hogar = String.format("\"Hogar\" <%s>", SERVER_MAIL);
@@ -83,13 +88,18 @@ public class MailingServiceImpl implements MailingService{
             for (String destination : to) {
                 mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(destination));
             }
-            if(to.isEmpty())
+            if(to.isEmpty()) {
                 mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(SERVER_MAIL));
+            }
             mimeMessage.setSubject(subject);
-            if(from == null)
+            if(from == null) {
                 mimeMessage.setReplyTo(new Address[]{new InternetAddress(SERVER_MAIL)});
-            else
+                System.out.println("MAILS "+ SERVER_MAIL);
+            }
+            else {
                 mimeMessage.setReplyTo(new Address[]{new InternetAddress(from)});
+                System.out.println("MAILS" + from);
+            }
             mimeMessage.setContent(message, "text/html");
             Transport.send(mimeMessage);
         } catch (MessagingException mex) {
