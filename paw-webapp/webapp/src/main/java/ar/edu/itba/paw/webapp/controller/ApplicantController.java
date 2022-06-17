@@ -90,7 +90,7 @@ public class ApplicantController {
         for (Job job : list) {
             job.firstWordsToUpper();
             job.locationNameToUpper();
-            job.getEmployerId().firstWordsToUpper(job.getEmployerId());
+            job.getEmployerId().firstWordsToUpper();
             int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
             jobList.put(job, status);
         }

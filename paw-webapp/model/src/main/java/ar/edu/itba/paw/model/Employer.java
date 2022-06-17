@@ -42,13 +42,13 @@ public class Employer implements Serializable {
         return id;
     }
 
-    public void firstWordsToUpper(Employer employer) {
+    public void firstWordsToUpper() {
         StringBuilder finalName = new StringBuilder();
-        for (String word : employer.getName().split(" ")) {
+        for (String word : getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        employer.setName(finalName.toString());
+        setName(finalName.toString());
     }
 
 }

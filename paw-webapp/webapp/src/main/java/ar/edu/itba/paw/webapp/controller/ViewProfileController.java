@@ -60,8 +60,7 @@ public class ViewProfileController {
             if (user.isPresent()) {
                 Optional<Employer> employer = employerService.getEmployerById(user.get().getId());
                 if(employer.isPresent()){
-                    System.out.println("EMPLOYER ID" + employer.get().getId().getId());
-                    employer.get().firstWordsToUpper(employer.get());
+                    employer.get().firstWordsToUpper();
                     mav.addObject("employer", employer.get());
                 }
             }
@@ -82,7 +81,7 @@ public class ViewProfileController {
             mav.addObject("userId", user.get().getId());
             List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId());
             for (Review rev : myReviews) {
-                rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
+                rev.getEmployerId().firstWordsToUpper();
             }
             mav.addObject("ReviewList", myReviews);
         }
@@ -115,7 +114,7 @@ public class ViewProfileController {
             mav.addObject("contacted", exists);
             Optional<Review> myReview = reviewService.getMyReview(userId, user.getUserID());
             if (myReview.isPresent()) {
-                myReview.get().getEmployerId().firstWordsToUpper(myReview.get().getEmployerId());
+                myReview.get().getEmployerId().firstWordsToUpper();
                 mav.addObject("myReview", myReview.get());
             }
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
@@ -126,7 +125,7 @@ public class ViewProfileController {
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
         }
         for (Review rev : reviews) {
-            rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
+            rev.getEmployerId().firstWordsToUpper();
         }
         mav.addObject("alreadyRated", hasAlreadyRated);
         mav.addObject("rating", employeeService.getRating(userId));
