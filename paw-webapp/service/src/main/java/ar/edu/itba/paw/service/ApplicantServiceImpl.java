@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.Applicant;
-import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Job;
-import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.persistence.ApplicantDao;
 import ar.edu.itba.paw.persistence.EmployeeDao;
@@ -77,7 +74,12 @@ public class ApplicantServiceImpl implements ApplicantService{
         Optional<Job> job = jobDao.getJobById(jobID);
         if (job.isPresent()) {
             Optional<Employee> employee = employeeDao.getEmployeeById(user.getId());
-            employee.ifPresent(value -> mailingService.sendApplyMail(job.get().getEmployerId().getName(), job.get().getTitle(), value.getName(), jobID));
+            Employer employer= job.get().getEmployerId();
+            employer.firstWordsToUpper();
+            if(employee.isPresent()) {
+                employee.get().firstWordsToUpper();
+                mailingService.sendApplyMail(employer.getName(), job.get().getTitle(), employee.get().getName(), jobID);
+            }
             create(jobID, user.getId());
         }
     }
