@@ -86,7 +86,7 @@ public class CreateProfileController {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.setName(name);
         LOGGER.debug(String.format("employer created under userid %d", principal.getUserID()));
-        return new ModelAndView("redirect:/buscarEmpleadas");
+        return new ModelAndView("redirect:/inicio");
     }
 
 }
