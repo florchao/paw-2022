@@ -14,7 +14,8 @@ create table if not exists employee(
                                        abilities varchar(100),
                                        voteCount INT,
                                        rating float,
-                                       PRIMARY KEY (employeeID)
+                                       PRIMARY KEY (employeeID),
+                                       foreign key (employeeID) REFERENCES users(userID) ON DELETE CASCADE
 
 );
 
@@ -55,7 +56,9 @@ create table if not exists jobs(
 create table if not exists applicants(
                                          employeeID INT NOT NULL,
                                          jobID INT NOT NULL,
-                                         PRIMARY KEY(employeeID, jobID)
+                                         PRIMARY KEY(employeeID, jobID),
+                                         FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
+                                         FOREIGN KEY (jobID) REFERENCES jobs(jobid) ON DELETE CASCADE
 );
 
 create table if not exists review(
@@ -64,6 +67,8 @@ create table if not exists review(
                                      employerId INT NOT NULL,
                                      review varchar(100),
                                      created DATE,
+                                     FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
+                                     FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
                                      UNIQUE (employeeId, employerId)
 );
 CREATE TABLE IF NOT EXISTS  ratings (

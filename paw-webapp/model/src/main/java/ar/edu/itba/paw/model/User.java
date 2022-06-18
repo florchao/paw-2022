@@ -25,7 +25,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private int role;
 
-    @Column(table = "profile_images", nullable = false)
+    @Column(table = "profile_images")
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
 
@@ -92,13 +92,12 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && role == user.role && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Arrays.equals(image, user.image);
+        return id == user.id && role == user.role && Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(id, email, password, role);
-        result = 31 * result + Arrays.hashCode(image);
         return result;
     }
 }

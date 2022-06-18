@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.config;
 
 import org.hsqldb.jdbc.JDBCDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -24,36 +22,37 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @EnableTransactionManagement
-@ComponentScan({ "ar.edu.itba.paw.persistence", })
+@ComponentScan ( {"ar.edu.itba.paw.persistence"})
 @Configuration
 public class TestConfig {
 
     @Value("classpath:hsqldb.sql")
-    private Resource hsqldbSql;
+    private Resource hsqldb;
 
     @Bean
     public DataSource dataSource() {
-        final SingleConnectionDataSource sc = new SingleConnectionDataSource();
-        sc.setSuppressClose(true);
-        sc.setDriverClassName("org.hsqldb.jdbcDriver");
-        sc.setUrl("jdbc:hsqldb:mem:paw");
-        sc.setUsername("ha");
-        sc.setPassword("");
-        return sc;
+        final SimpleDriverDataSource ds = new SimpleDriverDataSource();
+
+        ds.setDriverClass(JDBCDriver.class);
+        ds.setUrl("jdbc:hsqldb:mem:paw");
+        ds.setUsername("ha");
+        ds.setPassword("");
+        return ds;
     }
 
     @Bean
-    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
+    public DataSourceInitializer dataSourceInitializerTest(final DataSource ds){
         final DataSourceInitializer dsi = new DataSourceInitializer();
         dsi.setDataSource(ds);
         dsi.setDatabasePopulator(databasePopulator());
+
         return dsi;
     }
 
-    private DatabasePopulator databasePopulator(){
-        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        dbp.addScript(hsqldbSql);
-        return dbp;
+    private DatabasePopulator databasePopulator() {
+        final ResourceDatabasePopulator dp = new ResourceDatabasePopulator();
+        //dp.addScript(hsqldb);
+        return dp;
     }
 
     @Bean
@@ -63,6 +62,7 @@ public class TestConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setPackagesToScan("ar.edu.itba.paw.model");
         factoryBean.setDataSource(dataSource());
@@ -70,15 +70,12 @@ public class TestConfig {
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factoryBean.setJpaVendorAdapter(vendorAdapter);
 
-        final Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("format_sql", "true");
+        final Properties jpaProperties = new Properties();
+        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+        jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 
-        factoryBean.setJpaProperties(properties);
+        factoryBean.setJpaProperties(jpaProperties);
 
         return factoryBean;
     }
-
 }
