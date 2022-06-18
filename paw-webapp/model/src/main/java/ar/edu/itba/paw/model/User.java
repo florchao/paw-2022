@@ -2,7 +2,6 @@ package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Entity(name = "User")
