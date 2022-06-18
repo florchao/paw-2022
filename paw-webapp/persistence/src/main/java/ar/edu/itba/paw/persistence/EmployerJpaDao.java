@@ -20,7 +20,7 @@ public class EmployerJpaDao implements EmployerDao{
 
     @Override
     public Employer create(String name, User id, byte[] image) {
-        final Employer employer = new Employer(name, id);
+        final Employer employer = new Employer(name.toLowerCase(), id);
         employer.getId().setImage(image);
         em.persist(employer);
         return employer;
