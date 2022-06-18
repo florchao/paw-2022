@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity(name = "Job")
@@ -243,5 +244,18 @@ public class Job implements Serializable {
                 jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
             }
         setAvailabilityArr(jobAvailability);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Job job = (Job) o;
+        return jobId == job.jobId && experienceYears == job.experienceYears && opened == job.opened && Objects.equals(title, job.title) && Objects.equals(location, job.location) && Objects.equals(employerId, job.employerId) && Objects.equals(availability, job.availability) && Objects.equals(abilities, job.abilities) && Objects.equals(description, job.description) && Objects.equals(availabilityArr, job.availabilityArr) && Objects.equals(abilitiesArr, job.abilitiesArr);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, location, jobId, employerId, availability, experienceYears, abilities, description, availabilityArr, abilitiesArr, opened);
     }
 }

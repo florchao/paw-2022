@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Table(name = "ratings")
 @Entity(name = "Ratings")
@@ -52,5 +53,18 @@ public class Ratings implements Serializable {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ratings ratings = (Ratings) o;
+        return rating == ratings.rating && Objects.equals(employeeID, ratings.employeeID) && Objects.equals(employerID, ratings.employerID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeID, employerID, rating);
     }
 }

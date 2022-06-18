@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(name = "Applicant")
 @Table(name = "applicants")
@@ -68,5 +69,18 @@ public class Applicant implements Serializable {
         }
         finalName.setLength(finalName.length() - 1);
         employee.setName(finalName.toString());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Applicant applicant = (Applicant) o;
+        return status == applicant.status && Objects.equals(jobID, applicant.jobID) && Objects.equals(employeeID, applicant.employeeID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jobID, employeeID, status);
     }
 }

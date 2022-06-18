@@ -1,84 +1,75 @@
 CREATE TABLE IF NOT EXISTS users (
-    userId INTEGER IDENTITY PRIMARY KEY,
-    email varchar(100) UNIQUE NOT NULL,
-    password varchar (100) NOT NULL,
-    role INTEGER NOT NULL
+                                     userId integer identity PRIMARY KEY,
+                                     email varchar(100) UNIQUE NOT NULL,
+                                     password varchar(100) NOT NULL,
+                                     role INT NOT NULL
 );
 
 create table if not exists employee(
-    employeeID INT,
-    name varchar(100),
-    location varchar(100),
-    availability varchar(100),
-    experienceYears INT,
-    abilities varchar(100),
-     PRIMARY KEY (employeeID)
+                                       employeeID INT,
+                                       name varchar(100),
+                                       location varchar(100),
+                                       availability varchar(100),
+                                       experienceYears INT,
+                                       abilities varchar(100),
+                                       voteCount INT,
+                                       rating float,
+                                       PRIMARY KEY (employeeID)
 
 );
 
 create table if not exists employer(
-    employerID INT,
-    name varchar(100),
-    PRIMARY KEY (employerID)
+                                       employerID INT,
+                                       name varchar(100),
+                                       PRIMARY KEY (employerID)
+);
 
+CREATE TABLE IF NOT EXISTS  contact (
+                                        employeeID INT,
+                                        employerID INT,
+                                        message varchar(100),
+                                        phone varchar(100),
+                                        created DATE,
+                                        PRIMARY KEY (employeeID, employerID)
 );
 
 CREATE TABLE IF NOT EXISTS profile_images
 (
-    image  BIT,
+    image  bit,
     userId INTEGER PRIMARY KEY
 
 );
 
-CREATE TABLE IF NOT EXISTS  experiences (
-    experiencesID INTEGER IDENTITY PRIMARY KEY,
-    employeeID INT,
-    title varchar(1000),
-    since DATE,
-    until DATE,
-    description varchar(1000)
-
-);
-
-CREATE TABLE IF NOT EXISTS contact (
-    employeeID INT,
-    employerID INT,
-    message varchar(1000),
-    phone varchar(1000),
-    created DATE,
-    PRIMARY KEY(employeeID, employerID)
-);
-
 create table if not exists jobs(
-    jobId INTEGER IDENTITY PRIMARY KEY,
-    employerID INT,
-    title varchar(100),
-    location varchar(100),
-    availability varchar(100),
-    experienceYears INT,
-    abilities varchar(100),
-    description varchar(100000)
+                                   jobID integer identity PRIMARY KEY,
+                                   employerID INT,
+                                   title varchar(100),
+                                   location varchar(100),
+                                   availability varchar(100),
+                                   experienceYears INT,
+                                   abilities varchar(100),
+                                   description varchar(100),
+                                   opened BOOLEAN
 );
 
 create table if not exists applicants(
-    employeeID INT NOT NULL,
-    jobID INT NOT NULL,
-    PRIMARY KEY(employeeID, jobID)
+                                         employeeID INT NOT NULL,
+                                         jobID INT NOT NULL,
+                                         PRIMARY KEY(employeeID, jobID)
 );
 
 create table if not exists review(
-    reviewID INTEGER IDENTITY PRIMARY KEY,
-    employeeId INT NOT NULL,
-    employerId INT NOT NULL,
-    review varchar(1000),
-    unique (employeeId, employerId)
-    );
+                                     reviewID integer identity PRIMARY KEY,
+                                     employeeId INT NOT NULL,
+                                     employerId INT NOT NULL,
+                                     review varchar(100),
+                                     created DATE,
+                                     UNIQUE (employeeId, employerId)
+);
 CREATE TABLE IF NOT EXISTS  ratings (
-    employeeID INT,
-    employerID INT,
-    rating INT,
-    FOREIGN KEY (employeeID) REFERENCES employee(employeeid) ON DELETE CASCADE,
-    FOREIGN KEY (employerID) REFERENCES users(userid) ON DELETE CASCADE,
-    PRIMARY KEY (employeeID, employerID)
+                                        employeeID INT,
+                                        employerID INT,
+                                        rating INT,
+                                        PRIMARY KEY (employeeID, employerID)
 
 );
