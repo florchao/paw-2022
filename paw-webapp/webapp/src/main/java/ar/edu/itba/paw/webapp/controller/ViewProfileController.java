@@ -50,9 +50,11 @@ public class ViewProfileController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
 
     @RequestMapping(value = "/verPerfil", method = {RequestMethod.GET})
-    public ModelAndView viewProfile() {
+    public ModelAndView viewProfile(@RequestParam(value = "page", required = false) Long page) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) auth.getPrincipal();
+        if (page == null)
+            page = 0L;
         Optional<User> user = userService.findByUsername(principal.getUsername());
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             final ModelAndView mav = new ModelAndView("viewProfileEmployer");
@@ -62,10 +64,13 @@ public class ViewProfileController {
                     employer.get().firstWordsToUpper(employer.get());
                     mav.addObject("employer", employer.get());
                 }
-                List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId());
+                System.out.println("soy el employer " + user.get().getId());
+                List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId(), page, PAGE_SIZE);
                 for (Review rev : myReviews) {
                     rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
                 }
+                mav.addObject("page", page);
+                mav.addObject("maxPage",reviewService.getMyProfileReviewsEmployerPageNumber(user.get().getId(), PAGE_SIZE));
                 mav.addObject("ReviewList", myReviews);
             }
             return mav;

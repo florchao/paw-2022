@@ -22,7 +22,9 @@ public interface ReviewService {
 
     int getPageNumberEmployer(Long employeeId, long id, int pageSize);
 
-    List<Review> getMyProfileReviewsEmployer(long employeeId);
+    List<Review> getMyProfileReviewsEmployer(long employeeId, long page, int pageSize);
 
     Optional<Review> getMyReviewEmployer(long employeeId, long id);
+
+    int getMyProfileReviewsEmployerPageNumber(long id, int page_size);
 }

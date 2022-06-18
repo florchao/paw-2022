@@ -109,9 +109,19 @@ public class ReviewJpaDao implements ReviewDao{
     }
 
     @Override
-    public List<Review> getMyProfileReviewsEmployer(Employer employerId) {
-        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employerId=:employerId and u.forEmployee = false", Review.class);
+    public List<Review> getMyProfileReviewsEmployer(Employer employerId, long page, int pageSize) {
+        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employerId=:employerId and u.forEmployee = false", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("employerId", employerId);
         return query.getResultList();
     }
+
+    @Override
+    public int getMyProfileReviewsEmployerPageNumber(Employer employerId, int pageSize) {
+        System.out.println("aca llegue????");
+        Employer employer = new Employer();;
+        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employerId =:employerId and u.forEmployee = false", Long.class);
+        filteredQuery.setParameter("employerId", employerId);
+        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
+    }
+
 }
