@@ -68,7 +68,7 @@ public class ViewProfileController {
                 System.out.println("soy el employer " + user.get().getId());
                 List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId(), page, PAGE_SIZE);
                 for (Review rev : myReviews) {
-                    rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
+                    rev.getEmployerId().firstWordsToUpper();
                 }
                 mav.addObject("page", page);
                 mav.addObject("maxPage",reviewService.getMyProfileReviewsEmployerPageNumber(user.get().getId(), PAGE_SIZE));

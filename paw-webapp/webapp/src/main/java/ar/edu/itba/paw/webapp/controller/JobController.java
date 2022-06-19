@@ -129,6 +129,8 @@ public class JobController {
         if(existsApplied && job.isPresent()){
             jobStatus = applicantService.getStatus(principal.getUserID(), job.get().getJobId());
         }
+        mav.addObject("abilities", Abilities.getIds());
+        mav.addObject("availability", Availability.getIds());
         mav.addObject("alreadyApplied", jobStatus);
         mav.addObject("status", status);
         return mav;
