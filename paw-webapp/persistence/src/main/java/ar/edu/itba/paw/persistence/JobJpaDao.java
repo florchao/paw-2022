@@ -56,7 +56,12 @@ public class JobJpaDao implements  JobDao{
         stringBuilder.append("SELECT e FROM Job e where e.opened=TRUE and ");
         if (name != null) {
             stringBuilder.append("e.title like '%").append(name.toLowerCase()).append("%'");
-            stringBuilder.append(" and ");
+            if (location == null) {
+                stringBuilder.append(" or e.location like '%").append(name.toLowerCase()).append("%' ");
+                stringBuilder.append(" and ");
+            } else {
+                stringBuilder.append(" and ");
+            }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
             stringBuilder.append("e.experienceYears >= ").append(experienceYears);
