@@ -108,7 +108,7 @@ public class EmployeeServiceImpl implements EmployeeService{
             String orderCriteria
     ) {
         if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0 && orderCriteria == null) {
-            return employeeDao.getEmployees(pageSize, orderCriteria);
+            return employeeDao.getEmployees(pageSize);
         }
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
