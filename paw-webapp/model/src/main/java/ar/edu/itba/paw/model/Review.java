@@ -37,19 +37,24 @@ public class Review implements Serializable {
     @Column(name = "review", nullable = false)
     private String review;
 
-    public Review(long reviewId, Employee employeeId, Employer employerId, String review, Date created) {
+    @Column(name = "forEmployee", nullable = false)
+    private boolean forEmployee;
+
+    public Review(long reviewId, Employee employeeId, Employer employerId, String review, Date created, boolean forEmployee) {
         this.reviewId = reviewId;
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
         this.created = created;
+        this.forEmployee = forEmployee;
     }
 
-    public Review(Employee employeeId, Employer employerId, String review, Date created) {
+    public Review(Employee employeeId, Employer employerId, String review, Date created, boolean forEmployee) {
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
         this.created = created;
+        this.forEmployee = forEmployee;
     }
 
     public Review() {
@@ -93,6 +98,14 @@ public class Review implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public boolean isForEmployee() {
+        return forEmployee;
+    }
+
+    public void setForEmployee(boolean forEmployee) {
+        this.forEmployee = forEmployee;
     }
 
     @Override

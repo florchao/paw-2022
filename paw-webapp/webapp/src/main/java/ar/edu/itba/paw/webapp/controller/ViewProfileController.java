@@ -51,9 +51,11 @@ public class ViewProfileController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
 
     @RequestMapping(value = "/verPerfil", method = {RequestMethod.GET})
-    public ModelAndView viewProfile() {
+    public ModelAndView viewProfile(@RequestParam(value = "page", required = false) Long page) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) auth.getPrincipal();
+        if (page == null)
+            page = 0L;
         Optional<User> user = userService.findByUsername(principal.getUsername());
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             final ModelAndView mav = new ModelAndView("viewProfileEmployer");
@@ -63,6 +65,14 @@ public class ViewProfileController {
                     employer.get().firstWordsToUpper();
                     mav.addObject("employer", employer.get());
                 }
+                System.out.println("soy el employer " + user.get().getId());
+                List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId(), page, PAGE_SIZE);
+                for (Review rev : myReviews) {
+                    rev.getEmployerId().firstWordsToUpper();
+                }
+                mav.addObject("page", page);
+                mav.addObject("maxPage",reviewService.getMyProfileReviewsEmployerPageNumber(user.get().getId(), PAGE_SIZE));
+                mav.addObject("ReviewList", myReviews);
             }
             return mav;
         }
@@ -79,10 +89,13 @@ public class ViewProfileController {
                 mav.addObject("employee", employee.get());
             }
             mav.addObject("userId", user.get().getId());
-            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId());
+            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId(), page, PAGE_SIZE);
             for (Review rev : myReviews) {
                 rev.getEmployerId().firstWordsToUpper();
             }
+            mav.addObject("myProfileFlag", true);
+            mav.addObject("page", page);
+            mav.addObject("maxPage",reviewService.getMyProfileReviewsPageNumber(user.get().getId(), PAGE_SIZE));
             mav.addObject("ReviewList", myReviews);
         }
         return mav;
@@ -141,7 +154,7 @@ public class ViewProfileController {
         if(errors.hasErrors())
             return userProfile(id,status, reviewForm, null);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        reviewService.create(id, principal.getUserID(), reviewForm.getContent(), new Date(System.currentTimeMillis()));
+        reviewService.create(id, principal.getUserID(), reviewForm.getContent(), new Date(System.currentTimeMillis()), true);
         return new ModelAndView("redirect:/verPerfil/" + id);
     }
 
