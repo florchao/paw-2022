@@ -15,9 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ar.edu.itba.paw.persistence.config.TestConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 @Transactional
 @Sql("classpath:schema.sql")
 @Rollback
@@ -45,17 +46,24 @@ public class UserJdbcDaoTest {
         Assert.assertEquals(PASSWORD, user.getPassword());
     }
 
-//    @Test
-//    public void testGetById(){
-//        final Optional<User> user = userJpaDao.getUserById(0);
-//
-//        Assert.assertNotNull(user);
-//        Assert.assertTrue(user.isPresent());
-//        Assert.assertEquals(USERNAME, user.get().getEmail());
-//        Assert.assertEquals(PASSWORD, user.get().getPassword());
-//        Assert.assertEquals(ROLE, user.get().getRole());
-//
-//    }
+    @Test
+    public void testGetById(){
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+
+        final Optional<User> user = userJpaDao.getUserById(0);
+
+        Assert.assertNotNull(user);
+        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals(USERNAME, user.get().getEmail());
+        Assert.assertEquals(PASSWORD, user.get().getPassword());
+        Assert.assertEquals(ROLE, user.get().getRole());
+
+    }
 //
 //    @Test
 //    public void testGetByUsername(){
