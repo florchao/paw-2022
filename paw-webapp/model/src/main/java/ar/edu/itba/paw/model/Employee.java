@@ -5,7 +5,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "Employee")
 @Table(name = "employee")
@@ -160,5 +162,40 @@ public class Employee implements Serializable {
                 + getAvailabilityArr() + " - "
                 + getExperienceYears() + " - "
                 + getAbilitiesArr();
+    }
+
+     public void nameAbilities(String language){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (String ability: abilitiesArr) {
+            if(language.equals("es"))
+                toReturn.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
+            else
+                toReturn.add(Abilities.getAbilityById(Integer.parseInt(ability)).getName());
+        }
+        setAbilitiesArr(toReturn);
+    }
+
+    public void nameAvailability(String language){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (String availability: availabilityArr) {
+            if(language.equals("es"))
+                toReturn.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
+            else
+                toReturn.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
+        }
+        setAvailabilityArr(toReturn);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return experienceYears == employee.experienceYears && Float.compare(employee.rating, rating) == 0 && voteCount == employee.voteCount && Objects.equals(name, employee.name) && Objects.equals(location, employee.location) && Objects.equals(id, employee.id) && Objects.equals(availability, employee.availability) && Objects.equals(availabilityArr, employee.availabilityArr) && Objects.equals(abilities, employee.abilities) && Objects.equals(abilitiesArr, employee.abilitiesArr);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, location, id, availability, availabilityArr, experienceYears, abilities, abilitiesArr, rating, voteCount);
     }
 }

@@ -29,10 +29,10 @@ public class EmployeeEditForm {
     private String location;
 
     @CheckboxesAbilitiesEdit
-    private String abilities[];
+    private String[] abilities;
 
     @CheckboxesAvailabilitiesEdit
-    private String availability[];
+    private String[] availability;
 
     private CommonsMultipartFile image;
 

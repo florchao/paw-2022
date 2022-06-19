@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Abilities;
+import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;
@@ -41,7 +43,10 @@ public class CreateProfileController {
     }
     @RequestMapping(value = "/crearPerfil", method = {RequestMethod.GET})
     public ModelAndView createProfile(@ModelAttribute("employeeForm") final EmployeeForm form) {
-       return new ModelAndView("createProfile");
+        ModelAndView mav = new ModelAndView("createProfile");
+        mav.addObject("abilities", Abilities.getIds());
+        mav.addObject("availability", Availability.getIds());
+        return mav;
     }
 
     @RequestMapping(value = "/createEmployee", method = {RequestMethod.POST})
@@ -81,7 +86,7 @@ public class CreateProfileController {
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.setName(name);
         LOGGER.debug(String.format("employer created under userid %d", principal.getUserID()));
-        return new ModelAndView("redirect:/buscarEmpleadas");
+        return new ModelAndView("redirect:/inicio");
     }
 
 }

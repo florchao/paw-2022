@@ -44,8 +44,8 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public List<Employee> getEmployees(long pageSize, String orderCriteria) {
-        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e order by e.rating desc", Employee.class)
+    public List<Employee> getEmployees(long pageSize) {
+        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e", Employee.class)
                 .setFirstResult(0)
                 .setMaxResults((int) pageSize);
         return employeeList.getResultList();

@@ -41,7 +41,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/registrarse", "/register", "/nuevaContrasena", "/newPassword", "/crearPerfilEmpleador", "/createEmployer", "/crearPerfil", "/createEmployee").anonymous()
                 .antMatchers("/verPerfil/{userId}", "/buscarEmpleadas").not().hasAuthority("EMPLOYEE")
                 .antMatchers("/contactos", "/editarPerfil", "/editEmployee", "/trabajos", "/filterJobs", "/apply/{jobID}", "/trabajosAplicados").hasAuthority("EMPLOYEE")
-                .antMatchers("/contacto/{id}", "/contactEmployee/{id}", "/misTrabajos", "/crearTrabajo", "/createJob", "/aplicantes/{jobID}", "/addRating/{idRating}", "/changeStatus/{jobId}/{employeeId}/{status}", "/deleteJob/{jobId}", "/closeJob/{jobId}", "/openJob/{jobId}", "addReview/{id}").hasAuthority("EMPLOYER")
+                .antMatchers("/contacto/{id}", "/contactEmployee/{id}", "/misTrabajos", "/crearTrabajo", "/createJob", "/aplicantes/{jobID}", "/addRating/{idRating}", "/changeStatus/{jobId}/{employeeId}/{status}", "/deleteJob/{jobId}", "/closeJob/{jobId}", "/openJob/{jobId}", "addReview/{id}", "/inicio").hasAuthority("EMPLOYER")
                 .antMatchers("/**").authenticated()
                 .and().formLogin()
                 .usernameParameter("j_username")

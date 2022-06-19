@@ -64,27 +64,27 @@
                     <div class="flex flex-wrap ml-8">
                         <div class = "mb-8">
                             <form:label path="abilities" for="cocinar-cb" id = "cocinar-label" onclick="setColor('cocinar');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"> <spring:message code="employeeForm.abilities.cook"/></form:label>
-                            <form:checkbox path="abilities" id="cocinar-cb" value = "Cocinar" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="abilities" id="cocinar-cb" value = "${abilities[0]}" cssStyle="visibility: hidden"/>
                         </div>
                         <div>
                             <form:label path="abilities" for="planchar-cb" id = "planchar-label" onclick="setColor('planchar');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.iron"/></form:label>
-                            <form:checkbox path="abilities" id="planchar-cb" value = "Planchar" cssStyle="visibility: hidden" />
+                            <form:checkbox path="abilities" id="planchar-cb" value = "${abilities[1]}" cssStyle="visibility: hidden" />
                         </div>
                         <div>
                             <form:label path="abilities" for="menores-cb" id = "menores-label" onclick="setColor('menores');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.young"/></form:label>
-                            <form:checkbox path="abilities" id="menores-cb" value = "Cuidado de menores" cssStyle="visibility: hidden" />
+                            <form:checkbox path="abilities" id="menores-cb" value = "${abilities[2]}" cssStyle="visibility: hidden" />
                         </div>
                         <div>
                             <form:label path="abilities" for="mayores-cb" id = "mayores-label" onclick="setColor('mayores');" class="mt-1 h-fit w-fit text-xs text-gray-900border bg-white border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.older"/></form:label>
-                            <form:checkbox path="abilities" id="mayores-cb" value = "Cuidado de mayores" cssStyle="visibility: hidden" />
+                            <form:checkbox path="abilities" id="mayores-cb" value = "${abilities[3]}" cssStyle="visibility: hidden" />
                         </div>
                         <div>
                             <form:label path="abilities" for="especiales-cb" id = "especiales-label" onclick="setColor('especiales');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.specialNeeds"/></form:label>
-                            <form:checkbox path="abilities" id="especiales-cb" value = "Cuidados especiales" cssStyle="visibility: hidden" />
+                            <form:checkbox path="abilities" id="especiales-cb" value = "${abilities[4]}" cssStyle="visibility: hidden" />
                         </div>
                         <div>
                             <form:label path="abilities" for="mascotas-cb" id = "mascotas-label" onclick="setColor('mascotas');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.abilities.pets"/></form:label>
-                            <form:checkbox path="abilities" id="mascotas-cb" value = "Cuidado de mascotas" cssStyle="visibility: hidden" />
+                            <form:checkbox path="abilities" id="mascotas-cb" value = "${abilities[5]}" cssStyle="visibility: hidden" />
                         </div>
 
                     </div>
@@ -95,15 +95,15 @@
                     <div class="flex flex-wrap ml-8">
                         <div>
                             <form:label path="abilities" for="media-cb" id = "media-label" onclick="setColor('media');" class="mt-1 h-fit w-fit text-xs text-gray-900 active:bg-violet-300 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.availability.half"/></form:label>
-                            <form:checkbox path="availability" id = "media-cb" value="Media jornada" cssStyle="visibility: hidden" />
+                            <form:checkbox path="availability" id = "media-cb" value="${availability[0]}" cssStyle="visibility: hidden" />
                         </div>
                         <div>
                             <form:label path="abilities" for="completa-cb" id = "completa-label" onclick="setColor('completa');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.availability.complete"/></form:label>
-                            <form:checkbox path="availability" id = "completa-cb" value="Jornada completa" cssStyle="visibility: hidden"/>
+                            <form:checkbox path="availability" id = "completa-cb" value="${availability[1]}" cssStyle="visibility: hidden"/>
                         </div>
                         <div>
                             <form:label path="abilities" for="cama-cb" id = "cama-label" onclick="setColor('cama');" class="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"><spring:message code="employeeForm.availability.bed"/></form:label>
-                            <form:checkbox path="availability" id = "cama-cb" value="Con cama" cssStyle="visibility: hidden" />
+                            <form:checkbox path="availability" id = "cama-cb" value="${availability[2]}" cssStyle="visibility: hidden" />
                         </div>
                     </div>
                     <form:errors path="availability" element="p" cssStyle="color: red; margin-top: 1.25rem"/>

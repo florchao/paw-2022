@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Abilities;
+import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
@@ -67,6 +69,8 @@ public class ExploreController {
         mav.addObject("EmployeeList", list);
         mav.addObject("page", page);
         mav.addObject("maxPage", employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE));
+        mav.addObject("abilities", Abilities.getIds());
+        mav.addObject("availability", Availability.getIds());
         return mav;
     }
 

@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,7 +62,7 @@ public class ViewProfileController {
             if (user.isPresent()) {
                 Optional<Employer> employer = employerService.getEmployerById(user.get().getId());
                 if(employer.isPresent()){
-                    employer.get().firstWordsToUpper(employer.get());
+                    employer.get().firstWordsToUpper();
                     mav.addObject("employer", employer.get());
                 }
                 System.out.println("soy el employer " + user.get().getId());
@@ -82,12 +83,15 @@ public class ViewProfileController {
             if (employee.isPresent()) {
                 employee.get().firstWordsToUpper();
                 employee.get().locationFirstWordsToUpper();
+                String language = LocaleContextHolder.getLocale().getLanguage();
+                employee.get().nameAvailability(language);
+                employee.get().nameAbilities(language);
                 mav.addObject("employee", employee.get());
             }
             mav.addObject("userId", user.get().getId());
             List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId(), page, PAGE_SIZE);
             for (Review rev : myReviews) {
-                rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
+                rev.getEmployerId().firstWordsToUpper();
             }
             mav.addObject("myProfileFlag", true);
             mav.addObject("page", page);
@@ -106,6 +110,9 @@ public class ViewProfileController {
         if (employee.isPresent()) {
             employee.get().firstWordsToUpper();
             employee.get().locationFirstWordsToUpper();
+            String language = LocaleContextHolder.getLocale().getLanguage();
+            employee.get().nameAbilities(language);
+            employee.get().nameAvailability(language);
             mav.addObject("employee", employee.get());
         }
         mav.addObject("status", status);
@@ -120,7 +127,7 @@ public class ViewProfileController {
             mav.addObject("contacted", exists);
             Optional<Review> myReview = reviewService.getMyReview(userId, user.getUserID());
             if (myReview.isPresent()) {
-                myReview.get().getEmployerId().firstWordsToUpper(myReview.get().getEmployerId());
+                myReview.get().getEmployerId().firstWordsToUpper();
                 mav.addObject("myReview", myReview.get());
             }
             reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
@@ -131,7 +138,7 @@ public class ViewProfileController {
             reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
         }
         for (Review rev : reviews) {
-            rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
+            rev.getEmployerId().firstWordsToUpper();
         }
         mav.addObject("alreadyRated", hasAlreadyRated);
         mav.addObject("rating", employeeService.getRating(userId));

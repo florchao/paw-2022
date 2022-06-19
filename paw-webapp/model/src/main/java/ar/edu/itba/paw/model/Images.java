@@ -5,6 +5,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 @Entity
 @Table(name = "profile_images")
@@ -41,5 +43,20 @@ public class Images implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Images images = (Images) o;
+        return Objects.equals(userId, images.userId) && Arrays.equals(image, images.image);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(userId);
+        result = 31 * result + Arrays.hashCode(image);
+        return result;
     }
 }

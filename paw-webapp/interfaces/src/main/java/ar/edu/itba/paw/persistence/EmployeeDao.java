@@ -12,7 +12,7 @@ public interface EmployeeDao {
 
     void update(Employee id, String name, String location, String availability, long experienceYears, String abilites, byte [] image);
 
-   List<Employee> getEmployees(long pageSize, String orderCriteria);
+   List<Employee> getEmployees(long pageSize);
 
    Boolean isEmployee(Employee id);
 

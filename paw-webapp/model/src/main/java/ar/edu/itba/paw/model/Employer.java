@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(name = "Employer")
 @Table(name = "employer")
@@ -42,13 +43,25 @@ public class Employer implements Serializable {
         return id;
     }
 
-    public void firstWordsToUpper(Employer employer) {
+    public void firstWordsToUpper() {
         StringBuilder finalName = new StringBuilder();
-        for (String word : employer.getName().split(" ")) {
+        for (String word : getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        employer.setName(finalName.toString());
+        setName(finalName.toString());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employer employer = (Employer) o;
+        return Objects.equals(name, employer.name) && Objects.equals(id, employer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id);
+    }
 }

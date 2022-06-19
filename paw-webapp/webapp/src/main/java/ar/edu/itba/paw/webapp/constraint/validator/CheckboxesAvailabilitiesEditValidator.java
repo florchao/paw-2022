@@ -14,10 +14,13 @@ public class CheckboxesAvailabilitiesEditValidator implements ConstraintValidato
     public boolean isValid(String []s, ConstraintValidatorContext cvc) {
         if(s.length == 0)
             return false;
-        String abilities = "Jornada completa;Con cama;Media jornada";
         for (String l : s) {
-            if(!abilities.contains(l))
+            try {
+                if (Integer.parseInt(l) < 1 || Integer.parseInt(l) > 3)
+                    return false;
+            }catch (NumberFormatException e){
                 return false;
+            }
         }
         return true;
     }
