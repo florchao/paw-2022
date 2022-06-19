@@ -218,22 +218,84 @@ public class EmployeeJdbcDaoTest {
 //        Assert.assertEquals(4,list.get().get(2).getId());
 //    }
 //
-//    @Test
-//    public void testGetEmployeeById(){
-//        String query = "INSERT INTO employee values(1,'Name', 'Location', 'Availability', 10, 'Abilities')";
-//        jdbcTemplate.execute(query);
-//
-//        Optional<Employee> employee = employeeJdbcDao.getEmployeeById(1);
-//        Assert.assertNotNull(employee);
-//        Assert.assertTrue(employee.isPresent());
-//        Assert.assertEquals(NAME, employee.get().getName());
-//        Assert.assertEquals(LOCATION, employee.get().getLocation());
-//        Assert.assertEquals(AVAILABILITY, employee.get().getAvailability());
-//        Assert.assertEquals(ABILITIES, employee.get().getAbilities());
-//        Assert.assertEquals(EXPERIENCE_YEARS, employee.get().getExperienceYears());
-//
-//
-//    }
+    @Test
+    public void testGetEmployeeById(){
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+
+        byte [] image = {};
+        employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+
+
+        Optional<Employee> employee = employeeJpaDao.getEmployeeById(0);
+        Assert.assertNotNull(employee);
+        Assert.assertTrue(employee.isPresent());
+        Assert.assertEquals(NAME, employee.get().getName());
+        Assert.assertEquals(LOCATION, employee.get().getLocation());
+        Assert.assertEquals(AVAILABILITY, employee.get().getAvailability());
+        Assert.assertEquals(ABILITIES, employee.get().getAbilities());
+        Assert.assertEquals(EXPERIENCE_YEARS, employee.get().getExperienceYears());
+
+
+    }
+
+    @Test
+    public void testIsEmployee(){
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        byte [] image = {};
+        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+
+
+        Boolean ans = employeeJpaDao.isEmployee(employee);
+        Assert.assertTrue(ans);
+    }
+
+    @Test
+    public void testGetRating(){
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        byte [] image = {};
+        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+
+
+        employeeJpaDao.getPrevRating(employee);
+        em.flush();
+
+        Assert.assertEquals(0, employee.getRating(), 0);
+    }
+
+    @Test
+    public void testGetRatingCount(){
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        byte [] image = {};
+        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+
+
+        employeeJpaDao.getRatingVoteCount(employee);
+        em.flush();
+
+        Assert.assertEquals(0, employee.getVoteCount(), 0);
+    }
+
+
 }
 
 
