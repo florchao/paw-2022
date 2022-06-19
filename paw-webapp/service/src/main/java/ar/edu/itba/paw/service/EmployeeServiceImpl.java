@@ -3,8 +3,10 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.Abilities;
 import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.EmployeeDao;
+import ar.edu.itba.paw.persistence.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
     private EmployeeDao employeeDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Transactional(readOnly = true)
     @Override
@@ -67,7 +72,10 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities, byte[] image) {
         name = name.trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
-        return employeeDao.create(id, name, location, availability, experienceYears, abilities, image);
+        Optional<User> user=  userDao.getUserById(id);
+        if(user.isPresent())
+            return employeeDao.create(user.get(), name, location, availability, experienceYears, abilities, image);
+        return null;
     }
 
     @Transactional(readOnly = true)
