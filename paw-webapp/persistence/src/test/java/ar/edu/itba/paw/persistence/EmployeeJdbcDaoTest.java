@@ -3,26 +3,18 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
-import sun.security.x509.AVA;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-import javax.swing.text.html.Option;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +43,8 @@ public class EmployeeJdbcDaoTest {
     @Autowired
     private EmployeeJpaDao employeeJpaDao;
 
+    @Autowired
+    private UserJpaDao userJpaDao;
 
     @PersistenceContext
     private EntityManager em;
@@ -63,8 +57,8 @@ public class EmployeeJdbcDaoTest {
                 .setParameter(3, PASSWORD)
                 .setParameter(4, ROLE)
                 .executeUpdate();
-
-        final Employee employee = employeeJpaDao.create(ID, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, IMAGE);
+        Optional<User> user = userJpaDao.getUserById(0);
+        final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, IMAGE);
 
         Assert.assertEquals(ID, employee.getId().getId());
         Assert.assertEquals(NAME, employee.getName());
@@ -85,7 +79,8 @@ public class EmployeeJdbcDaoTest {
                 .executeUpdate();
 
         byte [] image = {};
-        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Optional<User> user = userJpaDao.getUserById(0);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
         employeeJpaDao.update(employee, "NameAux",  "LocationAux", "AvailabilityAux", (long) 12, "AbilitiesAux", image);
 
@@ -108,7 +103,8 @@ public class EmployeeJdbcDaoTest {
                 .executeUpdate();
 
         byte [] image = {};
-        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Optional<User> user = userJpaDao.getUserById(0);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
         List<Employee> list = employeeJpaDao.getEmployees(10);
 
@@ -224,7 +220,8 @@ public class EmployeeJdbcDaoTest {
                 .executeUpdate();
 
         byte [] image = {};
-        employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Optional<User> user = userJpaDao.getUserById(0);
+        employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
 
         Optional<Employee> employee = employeeJpaDao.getEmployeeById(0);
@@ -248,7 +245,8 @@ public class EmployeeJdbcDaoTest {
                 .setParameter(4, ROLE)
                 .executeUpdate();
         byte [] image = {};
-        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Optional<User> user = userJpaDao.getUserById(0);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
 
         Boolean ans = employeeJpaDao.isEmployee(employee);
@@ -264,7 +262,8 @@ public class EmployeeJdbcDaoTest {
                 .setParameter(4, ROLE)
                 .executeUpdate();
         byte [] image = {};
-        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Optional<User> user = userJpaDao.getUserById(0);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
 
         employeeJpaDao.getPrevRating(employee);
@@ -282,7 +281,8 @@ public class EmployeeJdbcDaoTest {
                 .setParameter(4, ROLE)
                 .executeUpdate();
         byte [] image = {};
-        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Optional<User> user = userJpaDao.getUserById(0);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
 
         employeeJpaDao.getRatingVoteCount(employee);
