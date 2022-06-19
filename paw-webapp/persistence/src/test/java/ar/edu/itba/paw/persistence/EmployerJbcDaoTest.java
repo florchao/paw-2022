@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
 @Transactional
+@Rollback
 public class EmployerJbcDaoTest {
 
     @Autowired
@@ -33,7 +35,7 @@ public class EmployerJbcDaoTest {
 
     private static final String PASSWORD = "Password";
     private static final String USERNAME = "Username";
-    private static final int ROLE = 1;
+    private static final int ROLE = 2;
 
     @Autowired
     private EmployerJpaDao employerJdbcDao;

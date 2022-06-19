@@ -51,8 +51,6 @@ public class EmployeeJdbcDaoTest {
     @Autowired
     private EmployeeJpaDao employeeJpaDao;
 
-    @Autowired
-    private UserJpaDao userJpaDao;
 
     @PersistenceContext
     private EntityManager em;
@@ -67,7 +65,6 @@ public class EmployeeJdbcDaoTest {
                 .executeUpdate();
 
         final Employee employee = employeeJpaDao.create(ID, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, IMAGE);
-        em.flush();
 
         Assert.assertEquals(ID, employee.getId().getId());
         Assert.assertEquals(NAME, employee.getName());
