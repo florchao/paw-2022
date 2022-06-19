@@ -69,7 +69,6 @@ public class EmployeeJdbcDaoTest {
         final Employee employee = employeeJpaDao.create(ID, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, IMAGE);
         em.flush();
 
-        Assert.assertNotNull(employee);
         Assert.assertEquals(ID, employee.getId().getId());
         Assert.assertEquals(NAME, employee.getName());
         Assert.assertEquals(LOCATION, employee.getLocation());

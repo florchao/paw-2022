@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +14,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.util.Optional;
-        /*
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
@@ -25,46 +28,60 @@ public class EmployerJbcDaoTest {
     @Autowired
     DataSource dataSource;
 
+    @PersistenceContext
+    private EntityManager em;
+
+    private static final String PASSWORD = "Password";
+    private static final String USERNAME = "Username";
+    private static final int ROLE = 1;
+
     @Autowired
     private EmployerJpaDao employerJdbcDao;
 
-    private JdbcTemplate jdbcTemplate;
-
-
-    @Before
-    public void setUp(){
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "employer");
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "profile_images");
-    }
+    @Autowired
+    private UserJpaDao userJpaDao;
 
     private static final String NAME = "Name";
-    private static final long ID = 1;
+    private static final long ID = 0;
     private static final byte[] IMAGE = null;
 
     @Test
     public void testCreate(){
-        final Employer employer = employerJdbcDao.create(NAME,ID, null);
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        byte [] image = {};
+        Optional<User> user = userJpaDao.getUserById(0);
+        final Employer employer = employerJdbcDao.create(NAME,user.get(), image);
 
-        Assert.assertNotNull(employer);
-        Assert.assertEquals(ID, employer.getId());
+        Assert.assertEquals(ID, employer.getId().getId());
         Assert.assertEquals(NAME, employer.getName());
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "employer"));
 
     }
 
     @Test
     public void testGetEmployeeById(){
-        String query = "INSERT INTO employer values(1,'Name')";
-        jdbcTemplate.execute(query);
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        Optional<User> user = userJpaDao.getUserById(0);
+        byte [] image = {};
+        employerJdbcDao.create(NAME, user.get(), image );
 
-        Optional<Employer> employer = employerJdbcDao.getEmployerById(1);
+
+        Optional<Employer> employer = employerJdbcDao.getEmployerById(0);
         Assert.assertNotNull(employer);
         Assert.assertTrue(employer.isPresent());
         Assert.assertEquals(NAME, employer.get().getName());
 
     }
 }
-     */
+
 
 
