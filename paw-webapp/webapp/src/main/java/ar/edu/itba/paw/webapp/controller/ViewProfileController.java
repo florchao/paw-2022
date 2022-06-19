@@ -85,10 +85,13 @@ public class ViewProfileController {
                 mav.addObject("employee", employee.get());
             }
             mav.addObject("userId", user.get().getId());
-            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId());
+            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId(), page, PAGE_SIZE);
             for (Review rev : myReviews) {
                 rev.getEmployerId().firstWordsToUpper(rev.getEmployerId());
             }
+            mav.addObject("myProfileFlag", true);
+            mav.addObject("page", page);
+            mav.addObject("maxPage",reviewService.getMyProfileReviewsPageNumber(user.get().getId(), PAGE_SIZE));
             mav.addObject("ReviewList", myReviews);
         }
         return mav;

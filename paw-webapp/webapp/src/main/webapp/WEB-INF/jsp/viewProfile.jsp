@@ -282,7 +282,15 @@
                                     </div>
                                 </li>
                             </c:forEach>
-                            <c:url value="/verPerfil/${employee.id.id}" var="getPath"/>
+                            <c:choose>
+                                <c:when test="${myProfileFlag != null || myProfileFlag == true}">
+                                    <c:url value="/verPerfil" var="getPath"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:url value="/verPerfil/${employee.id.id}" var="getPath"/>
+                                </c:otherwise>
+                            </c:choose>
+<%--                            TODO: Tengo que diferenciar en el path si es que vengo de un myprofile o desde ver un perfil de otra employee. Hice un flag en controller --%>
                             <form method="get" action="${getPath}">
                                 <c:if test="${maxPage > 0 && page + 1 <= maxPage}">
                                 <div class="flex flex-row justify-center mt-4">

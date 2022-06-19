@@ -73,11 +73,19 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public List<Review> getMyProfileReviews(long employeeId) {
+    public List<Review> getMyProfileReviews(long employeeId, long page, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         if (employee.isPresent() )
-            return reviewDao.getMyProfileReviews(employee.get());
+            return reviewDao.getMyProfileReviews(employee.get(), page, pageSize);
         return Collections.emptyList();
+    }
+
+    @Override
+    public int getMyProfileReviewsPageNumber(long employeeId, int pageSize) {
+        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
+        if (employee.isPresent() )
+            return reviewDao.getMyProfileReviewsPageNumber(employee.get(), pageSize);
+        return 0;
     }
 
     @Transactional(readOnly = true)

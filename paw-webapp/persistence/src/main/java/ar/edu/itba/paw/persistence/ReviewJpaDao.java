@@ -64,10 +64,17 @@ public class ReviewJpaDao implements ReviewDao{
     }
 
     @Override
-    public List<Review> getMyProfileReviews(Employee employeeId) {
-        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId and u.forEmployee = true", Review.class);
+    public List<Review> getMyProfileReviews(Employee employeeId, long page, int pageSize) {
+        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId and u.forEmployee = true", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("employeeId", employeeId);
         return query.getResultList();
+    }
+
+    @Override
+    public int getMyProfileReviewsPageNumber(Employee employee, int pageSize) {
+        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employeeId =:employeeId and u.forEmployee = true", Long.class);
+        filteredQuery.setParameter("employeeId", employee);
+        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
     }
 
     @Override
@@ -117,11 +124,10 @@ public class ReviewJpaDao implements ReviewDao{
 
     @Override
     public int getMyProfileReviewsEmployerPageNumber(Employer employerId, int pageSize) {
-        System.out.println("aca llegue????");
-        Employer employer = new Employer();;
         TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employerId =:employerId and u.forEmployee = false", Long.class);
         filteredQuery.setParameter("employerId", employerId);
         return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
     }
+
 
 }

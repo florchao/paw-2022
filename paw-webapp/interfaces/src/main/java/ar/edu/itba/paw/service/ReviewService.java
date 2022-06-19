@@ -13,7 +13,7 @@ public interface ReviewService {
     Review create(long employeeId, long employerId, String review, Date created, boolean forEmployee);
     List<Review> getAllReviews(long employeeId, Long id, Long page, int pageSize);
 
-    List<Review> getMyProfileReviews(long employeeId);
+    List<Review> getMyProfileReviews(long employeeId, long page, int pageSize);
     int getPageNumber(long employeeId, Long id, int pageSize);
 
     Optional<Review> getMyReview(long employeeId, long id);
@@ -27,4 +27,6 @@ public interface ReviewService {
     Optional<Review> getMyReviewEmployer(long employeeId, long id);
 
     int getMyProfileReviewsEmployerPageNumber(long id, int page_size);
+
+    int getMyProfileReviewsPageNumber(long id, int page_size);
 }
