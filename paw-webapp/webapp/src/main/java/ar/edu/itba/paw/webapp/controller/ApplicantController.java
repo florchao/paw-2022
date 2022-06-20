@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
+import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.slf4j.Logger;
@@ -50,8 +51,7 @@ public class ApplicantController {
     }
 
     @RequestMapping(value = "/aplicantes/{jobID}", method = {RequestMethod.GET})
-    public ModelAndView applicants(@PathVariable final int jobID,
-                            @RequestParam(value = "page", required = false) Long page){
+    public ModelAndView applicants(@PathVariable final int jobID, @RequestParam(value = "page", required = false) Long page) throws JobNotFoundException{
         ModelAndView mav = new ModelAndView("viewApplicants");
         if (page == null)
             page = 0L;
@@ -59,21 +59,20 @@ public class ApplicantController {
         for(Applicant applicant : list){
             applicant.firstWordsToUpper(applicant.getEmployeeID());
         }
+        Job job = jobService.getJobByID(jobID).orElseThrow(()-> new JobNotFoundException("job" + jobID + "does not exists"));
         mav.addObject("ApplicantList", list);
-        mav.addObject("title", jobService.getJobByID(jobID).get().getTitle());
+        mav.addObject("title", job.getTitle());
         mav.addObject("page", page);
         mav.addObject("maxPage",applicantService.getPageNumber(jobID, PAGE_SIZE));
         return mav;
     }
 
     @RequestMapping(value = "/changeStatus/{jobId}/{employeeId}/{status}", method = {RequestMethod.POST})
-    public ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status){
+    public ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status) throws JobNotFoundException{
         applicantService.changeStatus(status, employeeId, jobId);
-        Optional<Job> job = jobService.getJobByID(jobId);
+        Job job = jobService.getJobByID(jobId).orElseThrow(()-> new JobNotFoundException("job" + jobId + "does not exists"));
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        if(job.isPresent() && employee.isPresent()){
-            contactService.changedStatus(status, job.get(), employee.get());
-        }
+        employee.ifPresent(value -> contactService.changedStatus(status, job, value));
         return new ModelAndView("redirect:/aplicantes/" + jobId);
     }
 

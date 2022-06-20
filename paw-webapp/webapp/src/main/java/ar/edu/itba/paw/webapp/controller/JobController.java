@@ -1,12 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Abilities;
-import ar.edu.itba.paw.model.Availability;
-import ar.edu.itba.paw.model.Employer;
-import ar.edu.itba.paw.model.Job;
-import ar.edu.itba.paw.model.Review;
+import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.service.ApplicantService;
-import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -86,21 +82,18 @@ public class JobController {
 
     @RequestMapping(value = "/trabajo/{id}", method = {RequestMethod.GET})
     public ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status, @ModelAttribute("reviewForm") final ReviewForm reviewForm,
-                                   @RequestParam(value = "page", required = false) Long page){
+                                   @RequestParam(value = "page", required = false) Long page) throws JobNotFoundException{
         ModelAndView mav = new ModelAndView("viewJob");
-        Optional<Job> job = jobService.getJobByID(id);
+        Job job = jobService.getJobByID(id).orElseThrow( ()->new  JobNotFoundException("job" + id + "does not exists"));
         int jobStatus = -1;
-        Employer employer = null;
-        if (job.isPresent()) {
-            job.get().employerNameToUpper(job.get().getEmployerId());
-            job.get().firstWordsToUpper();
-            job.get().locationNameToUpper();
-            String language = LocaleContextHolder.getLocale().getLanguage();
-            job.get().nameAbilities(language);
-            job.get().nameAvailability(language);
-            mav.addObject("job", job.get());
-            employer = job.get().getEmployerId();
-        }
+        job.employerNameToUpper(job.getEmployerId());
+        job.firstWordsToUpper();
+        job.locationNameToUpper();
+        String language = LocaleContextHolder.getLocale().getLanguage();
+        job.nameAbilities(language);
+        job.nameAvailability(language);
+        mav.addObject("job", job);
+        Employer employer = job.getEmployerId();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
         if (page == null)
@@ -126,8 +119,8 @@ public class JobController {
         mav.addObject("page", page);
         mav.addObject("maxPage", maxPage);
         Boolean existsApplied = jobService.alreadyApplied(id, principal.getUserID());
-        if(existsApplied && job.isPresent()){
-            jobStatus = applicantService.getStatus(principal.getUserID(), job.get().getJobId());
+        if(existsApplied){
+            jobStatus = applicantService.getStatus(principal.getUserID(), job.getJobId());
         }
         mav.addObject("abilities", Abilities.getIds());
         mav.addObject("availability", Availability.getIds());
@@ -137,7 +130,7 @@ public class JobController {
     }
 
     @RequestMapping(value = "addReviewEmployer/{jobId}/{employerId}", method = {RequestMethod.POST})
-    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long jobId, @PathVariable final long employerId){
+    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long jobId, @PathVariable final long employerId) throws JobNotFoundException {
         if(errors.hasErrors())
             return verTrabajo(jobId,status, reviewForm, null);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

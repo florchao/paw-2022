@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.Applicant;
+import ar.edu.itba.paw.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +13,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
 
-       /*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
@@ -31,29 +32,55 @@ public class ApplicantJdbcDaoTest {
     @Autowired
     private ApplicantJpaDao applicantJdbcDao;
 
-    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private EmployerJpaDao employerJdbcDao;
+
+    @Autowired
+    private UserJpaDao userJpaDao;
+    @Autowired
+    private JobJpaDao jobJdbcDao;
+    @Autowired
+    private EmployeeJpaDao employeeJpaDao;
+    @PersistenceContext
+    private EntityManager em;
 
     private static final long EMPLOYEE_ID = 1;
     private static final long JOB_ID = 1;
-
-    @Before
-    public void setUp(){
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "applicants");
-    }
+    private static final String PASSWORD = "Password";
+    private static final String USERNAME = "Username";
+    private static final int ROLE = 2;
+    private static final String NAME = "Name";
+    private static final String TITLE = "Name";
+    private static final String LOCATION = "Location";
+    private static final String AVAILABILITY = "Availability";
+    private static final String ABILITIES = "Abilities";
+    private static final long EXPERIENCE_YEARS = 10;
+    private static final String DESCRIPTION = "Description";
 
 
     @Test
     public void testCreate(){
-        Applicant applicant = applicantJdbcDao.create(JOB_ID, EMPLOYEE_ID);
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        byte [] image = {};
+        Optional<User> user = userJpaDao.getUserById(0);
+        User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employer employer = employerJdbcDao.create(NAME,user.get(), image);
+        Job job = jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
+
+        Applicant applicant = applicantJdbcDao.create(job, employee);
 
         Assert.assertNotNull(applicant);
-        Assert.assertEquals(EMPLOYEE_ID, applicant.getEmployeeID());
-        Assert.assertEquals(JOB_ID, applicant.getJobID());
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "applicants"));
+        Assert.assertEquals(employee.getId().getId(), applicant.getEmployeeID().getId().getId());
+        Assert.assertEquals(job.getJobId(), applicant.getJobID().getJobId());
     }
-    }
+}
 
-     */
+
 
 

@@ -26,7 +26,7 @@ import java.util.Optional;
 @Transactional
 public class ContactJdbcDaoTest {
     @Autowired
-    DataSource dataSource;
+    private DataSource dataSource;
 
     @Autowired
     private ContactJpaDao contactJdbcDao;
@@ -60,23 +60,11 @@ public class ContactJdbcDaoTest {
 
     @Test
     public void testCreate(){
-        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
-                .setParameter(1,0)
-                .setParameter(2, USERNAME)
-                .setParameter(3, PASSWORD)
-                .setParameter(4, ROLE)
-                .executeUpdate();
-        byte [] image = {};
-        Optional<User> user = userJpaDao.getUserById(0);
-        final Employer employer = employerJdbcDao.create(NAME,user.get(), image);
-        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
-                .setParameter(1,1)
-                .setParameter(2, "Employee")
-                .setParameter(3, PASSWORD)
-                .setParameter(4, 1)
-                .executeUpdate();
-
-        final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        byte[] image = {};
+        User user = userJpaDao.create(USERNAME, PASSWORD, ROLE);
+        final Employer employer = employerJdbcDao.create(NAME,user, image);
+        User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
         Contact contact = contactJdbcDao.create(employee, employer, DATE,MESSAGE, PHONE );
 
