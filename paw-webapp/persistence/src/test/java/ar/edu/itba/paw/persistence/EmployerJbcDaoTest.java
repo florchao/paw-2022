@@ -28,7 +28,7 @@ import java.util.Optional;
 public class EmployerJbcDaoTest {
 
     @Autowired
-    DataSource dataSource;
+    public DataSource dataSource;
 
     @PersistenceContext
     private EntityManager em;

@@ -76,7 +76,7 @@ public class ContactJdbcDaoTest {
                 .setParameter(4, 1)
                 .executeUpdate();
 
-        final Employee employee = employeeJpaDao.create(1, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
         Contact contact = contactJdbcDao.create(employee, employer, DATE,MESSAGE, PHONE );
 
@@ -107,7 +107,7 @@ public class ContactJdbcDaoTest {
                 .setParameter(4, 1)
                 .executeUpdate();
 
-        final Employee employee = employeeJpaDao.create(1, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
         contactJdbcDao.create(employee, employer, DATE,MESSAGE, PHONE );
 
         List<Contact> list = contactJdbcDao.getAllContacts(employee, 0L, 2);

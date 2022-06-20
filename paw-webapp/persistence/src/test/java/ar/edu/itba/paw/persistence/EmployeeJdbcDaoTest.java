@@ -38,7 +38,7 @@ public class EmployeeJdbcDaoTest {
     private static final byte[] IMAGE = null;
 
     @Autowired
-    DataSource dataSource;
+    public DataSource dataSource;
 
     @Autowired
     private EmployeeJpaDao employeeJpaDao;
