@@ -30,15 +30,15 @@ public class ApplicantJdbcDaoTest {
     DataSource dataSource;
 
     @Autowired
-    private ApplicantJpaDao applicantJdbcDao;
+    private ApplicantJpaDao applicantJpaDao;
 
     @Autowired
-    private EmployerJpaDao employerJdbcDao;
+    private EmployerJpaDao employerJpaDao;
 
     @Autowired
     private UserJpaDao userJpaDao;
     @Autowired
-    private JobJpaDao jobJdbcDao;
+    private JobJpaDao jobJpaDao;
     @Autowired
     private EmployeeJpaDao employeeJpaDao;
     @PersistenceContext
@@ -49,6 +49,8 @@ public class ApplicantJdbcDaoTest {
     private static final String PASSWORD = "Password";
     private static final String USERNAME = "Username";
     private static final int ROLE = 2;
+
+    private static final int STATUS = 0;
     private static final String NAME = "Name";
     private static final String TITLE = "Name";
     private static final String LOCATION = "Location";
@@ -70,14 +72,24 @@ public class ApplicantJdbcDaoTest {
         Optional<User> user = userJpaDao.getUserById(0);
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
         final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-        final Employer employer = employerJdbcDao.create(NAME,user.get(), image);
-        Job job = jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
+        final Employer employer = employerJpaDao.create(NAME,user.get(), image);
+        Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
-        Applicant applicant = applicantJdbcDao.create(job, employee);
+        Applicant applicant = applicantJpaDao.create(job, employee);
 
         Assert.assertNotNull(applicant);
         Assert.assertEquals(employee.getId().getId(), applicant.getEmployeeID().getId().getId());
         Assert.assertEquals(job.getJobId(), applicant.getJobID().getJobId());
+    }
+
+    @Test
+    public void testGetJobsByApplicant() {
+        byte [] image = {};
+        User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final List<Job> list = applicantJpaDao.getJobsByApplicant(employee, 0L, 1);
+        Assert.assertNotNull(list);
+        Assert.assertEquals(0, list.size());
     }
 }
 
