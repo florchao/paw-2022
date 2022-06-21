@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.ContactDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +32,7 @@ public class ContactServiceImpl implements ContactService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Contact> getAllContacts(long id, Long page, int pageSize) {
+    public List<Contact> getAllContacts(long id, Long page, int pageSize) throws UserNotFoundException {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         return employee.map(value -> contactDao.getAllContacts(value, page, pageSize)).orElse(null);
     }
@@ -45,7 +46,7 @@ public class ContactServiceImpl implements ContactService{
 
     @Transactional
     @Override
-    public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) {
+    public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         Optional<Employer> employer = employerService.getEmployerById(employerId);
         Boolean exists = false;
@@ -59,7 +60,7 @@ public class ContactServiceImpl implements ContactService{
 
     @Transactional
     @Override
-    public void contact(User to, String message, String name, String phoneNumber) {
+    public void contact(User to, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> optional = userService.findByUsername(principal.getUsername());
         if(optional.isPresent()) {
@@ -83,7 +84,7 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public Boolean existsContact(long employeeId, long employerId) {
+    public Boolean existsContact(long employeeId, long employerId) throws UserNotFoundException {
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         Optional<Employer> employer = employerService.getEmployerById(employerId);
         if(employee.isPresent() && employer.isPresent())

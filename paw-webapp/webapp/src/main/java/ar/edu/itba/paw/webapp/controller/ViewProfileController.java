@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Review;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
@@ -51,7 +52,7 @@ public class ViewProfileController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
 
     @RequestMapping(value = "/verPerfil", method = {RequestMethod.GET})
-    public ModelAndView viewProfile(@RequestParam(value = "page", required = false) Long page) {
+    public ModelAndView viewProfile(@RequestParam(value = "page", required = false) Long page) throws UserNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) auth.getPrincipal();
         if (page == null)
@@ -103,7 +104,7 @@ public class ViewProfileController {
 
     @RequestMapping(value = "/verPerfil/{userId}", method = RequestMethod.GET)
     public ModelAndView userProfile(@PathVariable("userId") final long userId, @RequestParam(value = "status", required = false) String status, @ModelAttribute("reviewForm") final ReviewForm reviewForm,
-                                    @RequestParam(value = "page", required = false) Long page) {
+                                    @RequestParam(value = "page", required = false) Long page) throws UserNotFoundException {
         final ModelAndView mav = new ModelAndView("viewProfile");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
@@ -150,7 +151,7 @@ public class ViewProfileController {
     }
 
     @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})
-    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id){
+    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id) throws UserNotFoundException {
         if(errors.hasErrors())
             return userProfile(id,status, reviewForm, null);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

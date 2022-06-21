@@ -5,11 +5,11 @@ import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class ContactController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
     @RequestMapping(value = "/contactos", method = {RequestMethod.GET})
-    public ModelAndView contactsPage(@RequestParam(value = "page", required = false) Long page) {
+    public ModelAndView contactsPage(@RequestParam(value = "page", required = false) Long page) throws UserNotFoundException {
         final ModelAndView mav = new ModelAndView("contacts");
         if (page == null)
             page = 0L;
@@ -56,9 +56,13 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/contacto/{id}", method = {RequestMethod.GET})
-    public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) {
+    public ModelAndView contactPage(@ModelAttribute("contactForm") final ContactForm form, @PathVariable final int id) throws UserNotFoundException {
         final ModelAndView mav = new ModelAndView("contactForm");
-        userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        try {
+            userService.getUserById(id);
+        } catch (ar.edu.itba.paw.model.exception.UserNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         employeeService.isEmployee(id);
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         if(employee.isPresent()){
@@ -69,22 +73,16 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/contactEmployee/{id}", method = {RequestMethod.POST})
-    public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) {
+    public ModelAndView contactEmployee(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors, @PathVariable int id) throws UserNotFoundException, AlreadyExistsException {
         ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+id);
         if(errors.hasErrors()) {
             LOGGER.debug("Couldn't contact employee");
             return contactPage(form, id);
         }
-        Optional<User> user = userService.getUserById(id);
+        User user = userService.getUserById(id);
         HogarUser principal = (HogarUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        try{
-            user.ifPresent(value -> contactService.contact(value, form.getContent(), principal.getName(), form.getPhone()));
-            mav.addObject("status", "sent");
-        }
-        catch (AlreadyExistsException alreadyExistsException){
-            LOGGER.error(String.format("there has already been made a contact for id %d by %s",id , principal.getName()));
-            mav.addObject("status", "error");
-        }
+        contactService.contact(user, form.getContent(), principal.getName(), form.getPhone());
+        mav.addObject("status", "sent");
         return mav;
     }
 

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.slf4j.Logger;
@@ -36,12 +37,12 @@ public class ApplicantController {
     private ApplicantService applicantService;
 
     @RequestMapping(value = "/apply/{jobID}", method = {RequestMethod.POST})
-    public ModelAndView apply(@PathVariable final long jobID){
+    public ModelAndView apply(@PathVariable final long jobID) throws UserNotFoundException {
         ModelAndView mav = new ModelAndView("redirect:/trabajo/"+jobID);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> optional = userService.getUserById(principal.getUserID());
+        User optional = userService.getUserById(principal.getUserID());
         try {
-            optional.ifPresent(user -> applicantService.apply(jobID, user));
+            applicantService.apply(jobID, optional);
             mav.addObject("status", "sent");
         } catch (AlreadyExistsException alreadyExistsException) {
             LOGGER.error(String.format("there has already been made a contact for %d by %s", jobID, principal.getName()));
@@ -68,7 +69,7 @@ public class ApplicantController {
     }
 
     @RequestMapping(value = "/changeStatus/{jobId}/{employeeId}/{status}", method = {RequestMethod.POST})
-    public ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status) throws JobNotFoundException{
+    public ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status) throws JobNotFoundException, UserNotFoundException {
         applicantService.changeStatus(status, employeeId, jobId);
         Job job = jobService.getJobByID(jobId).orElseThrow(()-> new JobNotFoundException("job" + jobId + "does not exists"));
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);

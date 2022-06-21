@@ -26,7 +26,7 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Transactional
     @Override
-    public Applicant create(long jobID, long employeeID) {
+    public Applicant create(long jobID, long employeeID) throws AlreadyExistsException {
         Optional<Job> job = jobDao.getJobById(jobID);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
         if(employee.isPresent() && job.isPresent()) {
@@ -70,7 +70,7 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Transactional
     @Override
-    public void apply(long jobID, User user) {
+    public void apply(long jobID, User user) throws AlreadyExistsException {
         Optional<Job> job = jobDao.getJobById(jobID);
         if (job.isPresent()) {
             Optional<Employee> employee = employeeDao.getEmployeeById(user.getId());
