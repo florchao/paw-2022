@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Abilities;
 import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -42,7 +43,7 @@ public class ExploreController {
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "abilities", required = false) String abilities,
             @RequestParam(value = "page", required = false) Long page,
-            @RequestParam(value = "orderCriteria", required = false) String orderCriteria) {
+            @RequestParam(value = "orderCriteria", required = false) String orderCriteria) throws UserNotFoundException {
 
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         Authentication authority = SecurityContextHolder.getContext().getAuthentication();
@@ -75,7 +76,7 @@ public class ExploreController {
     }
 
     @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})
-    public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
+    public ModelAndView filterEmployees(@Valid @ModelAttribute("filterBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) throws UserNotFoundException {
         if (errors.hasErrors()) {
             return searchPage(null, null,null,null,null,null,null, null);
         }
