@@ -4,10 +4,8 @@ import ar.edu.itba.paw.model.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 @Repository
 public class EmployeeJpaDao implements EmployeeDao{
     @PersistenceContext
@@ -54,6 +52,13 @@ public class EmployeeJpaDao implements EmployeeDao{
     @Override
     public List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria) {
 
+        // Para el parametro de ordernamiento implementamos un White List en vez de usar setParameter ya que no nos estaba funcionando como esperado la query,
+        // por mas de estar bien formada. Seguimos los lineamientos encontrados en el link pasado por la catedra, espeficicamente el punto 3.3
+        // https://www.baeldung.com/sql-injection
+        List<String> orderCriteriaWhiteList = new ArrayList<>();
+        orderCriteriaWhiteList.add("rating");
+        orderCriteriaWhiteList.add("experienceYears");
+
         Map<String, Object> paramMap = new HashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT e FROM Employee e where ");
@@ -79,21 +84,27 @@ public class EmployeeJpaDao implements EmployeeDao{
             paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and   ");
         }
+        String variableCount = "a";
         for (String av : availability) {
-            stringBuilder.append("e.availability like '%").append(av).append("%'");
+            stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
+            paramMap.put("availability" + variableCount, '%' + av + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
         for (String ability : abilities) {
-            stringBuilder.append("e.abilities like '%").append(ability).append("%'");
+            stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
+            paramMap.put("abilities" + variableCount, '%' + ability + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
+
         stringBuilder.setLength(stringBuilder.length() - 7);
-        if (orderCriteria == null || orderCriteria.equals("")) {
-            stringBuilder.append(" order by e.rating desc");
-        } else {
+        if (orderCriteria != null && orderCriteriaWhiteList.contains(orderCriteria)){
             stringBuilder.append(" order by ")
                     .append(orderCriteria)
                     .append(" desc");
+        } else {
+            stringBuilder.append(" order by e.rating desc");
         }
         TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
         for (String key : paramMap.keySet()) {
@@ -129,12 +140,17 @@ public class EmployeeJpaDao implements EmployeeDao{
             paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and   ");
         }
+        String variableCount = "a";
         for (String av : availability) {
-            stringBuilder.append("e.availability like '%").append(av).append("%'");
+            stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
+            paramMap.put("availability" + variableCount, '%' + av + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
         for (String ability : abilities) {
-            stringBuilder.append("e.abilities like '%").append(ability).append("%'");
+            stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
+            paramMap.put("abilities" + variableCount, '%' + ability + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
         stringBuilder.setLength(stringBuilder.length() - 7);
