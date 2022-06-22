@@ -34,6 +34,7 @@ public class EmployeeJpaDaoTest {
 
     private static final int ROLE = 1;
     private static final String NAME = "name";
+    private static final String NAME2 = "d'nofrio";
     private static final String LOCATION = "location";
     private static final String AVAILABILITY = "1";
     private static final long ID = 0;
@@ -131,15 +132,21 @@ public class EmployeeJpaDaoTest {
 
         Employee employee2 = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
-        Employee employee3 = employeeJpaDao.create(user3, NAME, "Almagro", AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Employee employee3 = employeeJpaDao.create(user3, NAME2, "Almagro", AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
         //String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria
         List<Employee> list = employeeJpaDao.getFilteredEmployees(NAME, EXPERIENCE_YEARS, LOCATION, new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
+
+        List<Employee> list2 = employeeJpaDao.getFilteredEmployees(NAME2, EXPERIENCE_YEARS, null, new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
 
         Assert.assertNotNull(list);
         Assert.assertEquals(user.getId() ,list.get(0).getId().getId());
         Assert.assertEquals(user2.getId(),list.get(1).getId().getId());
         Assert.assertEquals(2,list.size());
         Assert.assertTrue(list.get(0).getExperienceYears() >= list.get(1).getExperienceYears());
+
+        Assert.assertNotNull(list2);
+        Assert.assertEquals(user3.getId() ,list2.get(0).getId().getId());
+        Assert.assertEquals(1,list2.size());
     }
 
     @Test
