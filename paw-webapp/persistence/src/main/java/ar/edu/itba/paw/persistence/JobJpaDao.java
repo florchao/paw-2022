@@ -59,12 +59,12 @@ public class JobJpaDao implements  JobDao{
         stringBuilder.append("SELECT e FROM Job e where e.opened=TRUE and ");
         if (name != null) {
             if (location == null) {
-                stringBuilder.append("(e.title like :title or e.location like :titleLocation)");
+                stringBuilder.append("(lower(e.title) like :title or lower(e.location) like :titleLocation)");
                 paramMap.put("title", '%' + name.toLowerCase() + '%');
                 paramMap.put("titleLocation", '%' + name.toLowerCase() + '%');
                 stringBuilder.append(" and ");
             } else {
-                stringBuilder.append("e.title like :title ");
+                stringBuilder.append("lower(e.title) like :title ");
                 paramMap.put("title", '%' + name.toLowerCase() + '%');
                 stringBuilder.append(" and ");
             }
@@ -75,7 +75,7 @@ public class JobJpaDao implements  JobDao{
             stringBuilder.append(" and ");
         }
         if (location != null) {
-            stringBuilder.append("e.location like :location ");
+            stringBuilder.append("lower(e.location) like :location ");
             paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and ");
         }
@@ -107,12 +107,12 @@ public class JobJpaDao implements  JobDao{
         stringBuilder.append("SELECT count(e) FROM Job e where e.opened=TRUE and ");
         if (name != null) {
             if (location == null) {
-                stringBuilder.append("(e.title like :title or e.location like :titleLocation)");
+                stringBuilder.append("(lower(e.title) like :title or lower(e.location) like :titleLocation)");
                 paramMap.put("title", '%' + name.toLowerCase() + '%');
                 paramMap.put("titleLocation", '%' + name.toLowerCase() + '%');
                 stringBuilder.append(" and ");
             } else {
-                stringBuilder.append("e.title like :title ");
+                stringBuilder.append("lower(e.title) like :title ");
                 paramMap.put("title", '%' + name.toLowerCase() + '%');
                 stringBuilder.append(" and ");
             }
@@ -123,7 +123,7 @@ public class JobJpaDao implements  JobDao{
             stringBuilder.append(" and ");
         }
         if (location != null) {
-            stringBuilder.append("e.location like :location ");
+            stringBuilder.append("lower(e.location) like :location ");
             paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and ");
         }

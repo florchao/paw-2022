@@ -65,12 +65,12 @@ public class EmployeeJpaDao implements EmployeeDao{
 
         if (name != null) {
             if (location == null) {
-                stringBuilder.append("(e.name like :name or e.location like :nameLocation )");
+                stringBuilder.append("(lower(e.name) like :name or lower(e.location) like :nameLocation )");
                 paramMap.put("name", '%' + name.toLowerCase() + '%');
                 paramMap.put("nameLocation", '%' + name.toLowerCase() + '%');
                 stringBuilder.append(" and   ");
             } else {
-                stringBuilder.append("e.name like :name ");
+                stringBuilder.append("lower(e.name) like :name ");
                 paramMap.put("name", '%' + name.toLowerCase() + '%');
                 stringBuilder.append(" and   ");
             }
@@ -81,7 +81,7 @@ public class EmployeeJpaDao implements EmployeeDao{
             stringBuilder.append(" and   ");
         }
         if (location != null) {
-            stringBuilder.append("e.location like :location ");
+            stringBuilder.append("lower(e.location) like :location ");
             paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and   ");
         }
@@ -122,12 +122,12 @@ public class EmployeeJpaDao implements EmployeeDao{
 
         if (name != null) {
             if (location == null) {
-                stringBuilder.append("(e.name like :name or e.location like :nameLocation )");
+                stringBuilder.append("(lower(e.name) like :name or lower(e.location) like :nameLocation )");
                 paramMap.put("name", '%' + name.toLowerCase() + '%');
                 paramMap.put("nameLocation", '%' + name.toLowerCase() + '%');
                 stringBuilder.append(" and   ");
             } else {
-                stringBuilder.append("e.name like :name ");
+                stringBuilder.append("lower(e.name) like :name ");
                 paramMap.put("name", '%' + name.toLowerCase() + '%');
                 stringBuilder.append(" and   ");
             }
@@ -138,7 +138,7 @@ public class EmployeeJpaDao implements EmployeeDao{
             stringBuilder.append(" and   ");
         }
         if (location != null) {
-            stringBuilder.append("e.location like :location ");
+            stringBuilder.append("lower(e.location) like :location ");
             paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and   ");
         }
