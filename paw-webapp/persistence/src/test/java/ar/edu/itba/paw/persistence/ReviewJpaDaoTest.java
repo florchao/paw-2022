@@ -106,20 +106,6 @@ public class ReviewJpaDaoTest {
         Assert.assertNotNull(reviewList);
 
     }
-    @Test
-    public void testGetAllReviews(){
-        byte [] image = {};
-        final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
-        final Employer employer = employerJpaDao.create(NAME, user, image);
-        final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-        reviewJpaDao.create(employee, employer, TEXT, DATE, false);
-
-        List<Review> reviewList = reviewJpaDao.getAllReviewsEmployer(employee, employer, 0L,3 );
-
-        Assert.assertNotNull(reviewList);
-
-    }
 
     @Test
     public void testGetMyProfileReviews(){
