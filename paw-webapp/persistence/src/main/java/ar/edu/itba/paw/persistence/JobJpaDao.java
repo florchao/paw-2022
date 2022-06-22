@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -53,17 +55,28 @@ public class JobJpaDao implements  JobDao{
     @Override
     public List<Job> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
+        Map<String, Object> paramMap = new HashMap<>();
         stringBuilder.append("SELECT e FROM Job e where e.opened=TRUE and ");
         if (name != null) {
-            stringBuilder.append("e.title like '%").append(name.toLowerCase()).append("%'");
-            stringBuilder.append(" and ");
+            if (location == null) {
+                stringBuilder.append("(e.title like :title or e.location like :titleLocation)");
+                paramMap.put("title", '%' + name.toLowerCase() + '%');
+                paramMap.put("titleLocation", '%' + name.toLowerCase() + '%');
+                stringBuilder.append(" and ");
+            } else {
+                stringBuilder.append("e.title like :title ");
+                paramMap.put("title", '%' + name.toLowerCase() + '%');
+                stringBuilder.append(" and ");
+            }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
-            stringBuilder.append("e.experienceYears >= ").append(experienceYears);
+            stringBuilder.append("e.experienceYears >= :experienceYears ");
+            paramMap.put("experienceYears", experienceYears);
             stringBuilder.append(" and ");
         }
         if (location != null) {
-            stringBuilder.append("e.location like '%").append(location.toLowerCase()).append("%' ");
+            stringBuilder.append("e.location like :location ");
+            paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and ");
         }
         for (String av : availabilityList) {
@@ -76,36 +89,53 @@ public class JobJpaDao implements  JobDao{
         }
         stringBuilder.setLength(stringBuilder.length() - 4);
         TypedQuery<Job> filteredQuery = em.createQuery(stringBuilder.toString(), Job.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
+        for (String key : paramMap.keySet()) {
+            filteredQuery.setParameter(key, paramMap.get(key));
+        }
         return filteredQuery.getResultList();
     }
 
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize) {
-        StringBuilder strBuilder = new StringBuilder();
-        strBuilder.append("SELECT count(j) FROM Job j where j.opened=TRUE and ");
+        StringBuilder stringBuilder = new StringBuilder();
+        Map<String, Object> paramMap = new HashMap<>();
+        stringBuilder.append("SELECT count(e) FROM Job e where e.opened=TRUE and ");
         if (name != null) {
-            strBuilder.append("j.title like '%").append(name.toLowerCase()).append("%'");
-            strBuilder.append(" and ");
+            if (location == null) {
+                stringBuilder.append("(e.title like :title or e.location like :titleLocation)");
+                paramMap.put("title", '%' + name.toLowerCase() + '%');
+                paramMap.put("titleLocation", '%' + name.toLowerCase() + '%');
+                stringBuilder.append(" and ");
+            } else {
+                stringBuilder.append("e.title like :title ");
+                paramMap.put("title", '%' + name.toLowerCase() + '%');
+                stringBuilder.append(" and ");
+            }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
-            strBuilder.append("j.experienceYears >= ").append(experienceYears);
-            strBuilder.append(" and ");
+            stringBuilder.append("e.experienceYears >= :experienceYears ");
+            paramMap.put("experienceYears", experienceYears);
+            stringBuilder.append(" and ");
         }
         if (location != null) {
-            strBuilder.append("j.location like '%").append(location.toLowerCase()).append("%' ");
-            strBuilder.append(" and ");
+            stringBuilder.append("e.location like :location ");
+            paramMap.put("location", '%' + location.toLowerCase() + '%');
+            stringBuilder.append(" and ");
         }
         for (String av : availability) {
-            strBuilder.append("j.availability like '%").append(av).append("%'");
-            strBuilder.append(" and ");
+            stringBuilder.append("e.availability like '%").append(av).append("%'");
+            stringBuilder.append(" and ");
         }
         for (String ability : abilities) {
-            strBuilder.append("j.abilities like '%").append(ability).append("%'");
-            strBuilder.append(" and ");
+            stringBuilder.append("e.abilities like '%").append(ability).append("%'");
+            stringBuilder.append(" and ");
         }
-        strBuilder.setLength(strBuilder.length() - 4);
-
-        TypedQuery<Long> filteredQuery = em.createQuery(strBuilder.toString(), Long.class);
+        stringBuilder.setLength(stringBuilder.length() - 4);
+        System.out.println("en page number: "+ stringBuilder.toString());
+        TypedQuery<Long> filteredQuery = em.createQuery(stringBuilder.toString(), Long.class);
+        for (String key : paramMap.keySet()) {
+            filteredQuery.setParameter(key, paramMap.get(key));
+        }
 
         return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
     }

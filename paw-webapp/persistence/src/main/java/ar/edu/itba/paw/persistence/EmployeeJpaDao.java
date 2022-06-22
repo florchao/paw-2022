@@ -3,11 +3,10 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.model.*;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 @Repository
 public class EmployeeJpaDao implements EmployeeDao{
@@ -58,18 +57,30 @@ public class EmployeeJpaDao implements EmployeeDao{
 
     @Override
     public List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria) {
+
+        Map<String, Object> paramMap = new HashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT e FROM Employee e where ");
+
         if (name != null) {
-            stringBuilder.append("e.name like '%").append(name.toLowerCase()).append("%'");
-            stringBuilder.append(" and   ");
+            if (location == null) {
+                stringBuilder.append("(e.name like :name or e.location like :nameLocation )");
+                paramMap.put("name", '%' + name.toLowerCase() + '%');
+                paramMap.put("nameLocation", '%' + name.toLowerCase() + '%');
+                stringBuilder.append(" and   ");
+            } else {
+                stringBuilder.append("e.name like :name ");
+                paramMap.put("name", '%' + name.toLowerCase() + '%');
+            }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
-            stringBuilder.append("e.experienceYears >= ").append(experienceYears);
+            stringBuilder.append("e.experienceYears >= :experienceYears ");
+            paramMap.put("experienceYears", experienceYears);
             stringBuilder.append(" and   ");
         }
         if (location != null) {
-            stringBuilder.append("e.location like '%").append(location.toLowerCase()).append("%' ");
+            stringBuilder.append("e.location like :location ");
+            paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and   ");
         }
         for (String av : availability) {
@@ -88,26 +99,38 @@ public class EmployeeJpaDao implements EmployeeDao{
                     .append(orderCriteria)
                     .append(" desc");
         }
-        System.out.println("en persistencia mi ordercriteria vale "+orderCriteria);
-        System.out.println(stringBuilder);
         TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
+        for (String key : paramMap.keySet()) {
+            filteredQuery.setParameter(key, paramMap.get(key));
+        }
         return filteredQuery.getResultList();
     }
 
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
+        Map<String, Object> paramMap = new HashMap<>();
         stringBuilder.append("SELECT count(e) FROM Employee e where ");
+
         if (name != null) {
-            stringBuilder.append("e.name like '%").append(name.toLowerCase()).append("%'");
-            stringBuilder.append(" and   ");
+            if (location == null) {
+                stringBuilder.append("(e.name like :name or e.location like :nameLocation )");
+                paramMap.put("name", '%' + name.toLowerCase() + '%');
+                paramMap.put("nameLocation", '%' + name.toLowerCase() + '%');
+                stringBuilder.append(" and   ");
+            } else {
+                stringBuilder.append("e.name like :name ");
+                paramMap.put("name", '%' + name.toLowerCase() + '%');
+            }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
-            stringBuilder.append("e.experienceYears >= ").append(experienceYears);
+            stringBuilder.append("e.experienceYears >= :experienceYears ");
+            paramMap.put("experienceYears", experienceYears);
             stringBuilder.append(" and   ");
         }
         if (location != null) {
-            stringBuilder.append("e.location like '%").append(location.toLowerCase()).append("%' ");
+            stringBuilder.append("e.location like :location ");
+            paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and   ");
         }
         for (String av : availability) {
@@ -121,6 +144,9 @@ public class EmployeeJpaDao implements EmployeeDao{
         stringBuilder.setLength(stringBuilder.length() - 7);
 
         TypedQuery<Long> filteredQuery = em.createQuery(stringBuilder.toString(), Long.class);
+        for (String key : paramMap.keySet()) {
+            filteredQuery.setParameter(key, paramMap.get(key));
+        }
 
         return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
 
