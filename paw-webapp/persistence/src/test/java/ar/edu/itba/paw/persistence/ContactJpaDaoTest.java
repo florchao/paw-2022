@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,9 +24,6 @@ import java.util.Optional;
 @Sql("classpath:schema.sql")
 @Transactional
 public class ContactJpaDaoTest {
-    @Autowired
-    private DataSource dataSource;
-
     @Autowired
     private ContactJpaDao contactJpaDao;
 
@@ -51,9 +47,6 @@ public class ContactJpaDaoTest {
     private UserJpaDao userJpaDao;
     @Autowired
     private EmployeeJpaDao employeeJpaDao;
-
-    private static final long EMPLOYEE_ID = 1;
-    private static final long EMPLOYER_ID = 1;
     private static final String LOCATION = "Location";
     private static final String AVAILABILITY = "Availability";
     private static final Date DATE = new Date(10);

@@ -9,7 +9,6 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -95,8 +94,6 @@ public class ExploreController {
         if (form.getOrderCriteria() != null && !form.getOrderCriteria().equals("")) {
             redirectAttributes.addAttribute("orderCriteria", form.getOrderCriteria());
         }
-        System.out.println("mi ordercriteria es: "+form.getOrderCriteria());
-
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 }

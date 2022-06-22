@@ -71,9 +71,6 @@ public class ApplicantJpaDao implements ApplicantDao{
 
     @Override
     public int changeStatus(int status, Employee employee, Job job) {
-        System.out.println("CHANGE DAO");
-        System.out.println(employee.getId());
-        System.out.println(job.getJobId());
         Query contactQuery = em.createQuery("UPDATE Applicant a SET a.status =:newStatus WHERE a.employeeID =:employee AND a.jobID = :job");
         contactQuery.setParameter("job", job);
         contactQuery.setParameter("employee", employee);

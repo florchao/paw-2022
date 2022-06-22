@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ContactJpaDao implements ContactDao{

@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +29,19 @@ import java.util.Optional;
 public class EmployeeJpaDaoTest {
     private static final String PASSWORD = "Password";
     private static final String USERNAME = "Username";
+    private static final String USERNAME2 = "Username2";
+    private static final String USERNAME3 = "Username3";
+
     private static final int ROLE = 1;
     private static final String NAME = "name";
+    private static final String NAME2 = "d'nofrio";
     private static final String LOCATION = "location";
-    private static final String AVAILABILITY = "Availability";
+    private static final String AVAILABILITY = "1";
     private static final long ID = 0;
     private static final long EXPERIENCE_YEARS = 10;
-    private static final String ABILITIES = "Abilities";
+    private static final long EXPERIENCE_YEARS2 = 20;
+
+    private static final String ABILITIES = "4";
 
     private static final byte[] IMAGE = null;
 
@@ -113,104 +121,34 @@ public class EmployeeJpaDaoTest {
         Assert.assertEquals(1, list.size());
     }
 
-//    @Test
-//    public void testGetFilteredEmployeesByLocation() {
-//        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
-//                .setParameter(1,0)
-//                .setParameter(2, USERNAME)
-//                .setParameter(3, PASSWORD)
-//                .setParameter(4, ROLE)
-//                .executeUpdate();
-//
-//        byte [] image = {};
-//        Employee employee = employeeJpaDao.create(0, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-//
-//        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
-//                .setParameter(1,1)
-//                .setParameter(2, USERNAME)
-//                .setParameter(3, PASSWORD)
-//                .setParameter(4, ROLE)
-//                .executeUpdate();
-//
-//        byte [] image2 = {};
-//        Employee employee2 = employeeJpaDao.create(1, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-//
-//        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
-//                .setParameter(1,2)
-//                .setParameter(2, USERNAME)
-//                .setParameter(3, PASSWORD)
-//                .setParameter(4, ROLE)
-//                .executeUpdate();
-//
-//        byte [] image3 = {};
-//        Employee employee3 = employeeJpaDao.create(2, NAME, "Almargo", AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-//
-//        Optional<List<Employee>> list = employeeJpaDao.getFilteredEmployees(null, 0L, "Almagro", null, null, 0L, 2);
-//
-//        Assert.assertNotNull(list);
-//        Assert.assertTrue(list.isPresent());
-//        Assert.assertEquals(1,list.get().get(0).getId());
-//        Assert.assertEquals(3,list.get().get(1).getId());
-//    }
-//
-//    @Test
-//    public void testGetFilteredEmployeesByExperienceYearsAndName() {
-//        String query = "INSERT INTO employee values(1,'Luis', 'Almagro', 'Media jornada,Jornada completa', 10, 'Cocinar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(2,'Jose', 'Lanus', 'Media jornada', 5, 'Planchar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(3,'Tomas', 'Almagro', 'Con cama,Jornada completa', 0, 'Planchar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(4,'Luis', 'Villa Crespo', 'Jornada completa', 20, 'Cocinar')";
-//        jdbcTemplate.execute(query);
-//
-//        Optional<List<Employee>> list = employeeJdbcDao.getFilteredEmployees("Luis", 5L, null, null, new ArrayList<>(), new ArrayList<>(), 0L, 2);
-//
-//        Assert.assertNotNull(list);
-//        Assert.assertTrue(list.isPresent());
-//        Assert.assertEquals(1,list.get().get(0).getId());
-//        Assert.assertEquals(4,list.get().get(1).getId());
-//    }
-//
-//    @Test
-//    public void testGetFilteredEmployeesByAbilitiesAndNameAndExperienceYears() {
-//        String query = "INSERT INTO employee values(1,'Luis', 'Almagro', 'Media jornada,Jornada completa', 10, 'Cocinar,Planchar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(2,'Jose', 'Lanus', 'Media jornada', 5, 'Cocinar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(3,'Tomas', 'Almagro', 'Con cama,Jornada completa', 10, 'Planchar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(4,'Luis', 'Villa Crespo', 'Jornada completa', 20, 'Cocinar,Planchar')";
-//        jdbcTemplate.execute(query);
-//
-//        Optional<List<Employee>> list = employeeJdbcDao.getFilteredEmployees("Luis", 5L, null, null, new ArrayList<>(), Arrays.asList("Planchar"), 0L, 4);
-//
-//        Assert.assertNotNull(list);
-//        Assert.assertTrue(list.isPresent());
-//        Assert.assertEquals(1,list.get().get(0).getId());
-//        Assert.assertEquals(4,list.get().get(1).getId());
-//    }
-//
-//    @Test
-//    public void testGetFilteredEmployeesByAvailability() {
-//        String query = "INSERT INTO employee values(1,'Luis', 'Almagro', 'Media jornada,Jornada completa', 10, 'Cocinar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(2,'Jose', 'Lanus', 'Media jornada', 5, 'Planchar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(3,'Tomas', 'Almagro', 'Con cama,Jornada completa', 10, 'Planchar')";
-//        jdbcTemplate.execute(query);
-//        query = "INSERT INTO employee values(4,'Santiago', 'Villa Crespo', 'Jornada completa', 10, 'Cocinar')";
-//        jdbcTemplate.execute(query);
-//
-//        Optional<List<Employee>> list = employeeJdbcDao.getFilteredEmployees(null, 0L, null, null, Arrays.asList("Jornada completa"), new ArrayList<>(), 0L, 8);
-//
-//        Assert.assertNotNull(list);
-//        Assert.assertTrue(list.isPresent());
-//        Assert.assertEquals(1,list.get().get(0).getId());
-//        Assert.assertEquals(3,list.get().get(1).getId());
-//        Assert.assertEquals(4,list.get().get(2).getId());
-//    }
-//
+    @Test
+    public void testGetFilteredEmployees() {
+        byte[] image = {};
+        User user = userJpaDao.create(USERNAME, PASSWORD, ROLE);
+        User user2 = userJpaDao.create(USERNAME2, PASSWORD, ROLE);
+        User user3 = userJpaDao.create(USERNAME3, PASSWORD, ROLE);
+
+        Employee employee = employeeJpaDao.create(user, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS2, ABILITIES, image);
+
+        Employee employee2 = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+
+        Employee employee3 = employeeJpaDao.create(user3, NAME2, "Almagro", AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        //String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria
+        List<Employee> list = employeeJpaDao.getFilteredEmployees(NAME, EXPERIENCE_YEARS, LOCATION, new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
+
+        List<Employee> list2 = employeeJpaDao.getFilteredEmployees(NAME2, EXPERIENCE_YEARS, null, new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
+
+        Assert.assertNotNull(list);
+        Assert.assertEquals(user.getId() ,list.get(0).getId().getId());
+        Assert.assertEquals(user2.getId(),list.get(1).getId().getId());
+        Assert.assertEquals(2,list.size());
+        Assert.assertTrue(list.get(0).getExperienceYears() >= list.get(1).getExperienceYears());
+
+        Assert.assertNotNull(list2);
+        Assert.assertEquals(user3.getId() ,list2.get(0).getId().getId());
+        Assert.assertEquals(1,list2.size());
+    }
+
     @Test
     public void testGetEmployeeById(){
         em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
