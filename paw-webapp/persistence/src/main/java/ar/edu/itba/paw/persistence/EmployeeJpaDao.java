@@ -72,6 +72,7 @@ public class EmployeeJpaDao implements EmployeeDao{
             } else {
                 stringBuilder.append("e.name like :name ");
                 paramMap.put("name", '%' + name.toLowerCase() + '%');
+                stringBuilder.append(" and   ");
             }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
@@ -128,6 +129,7 @@ public class EmployeeJpaDao implements EmployeeDao{
             } else {
                 stringBuilder.append("e.name like :name ");
                 paramMap.put("name", '%' + name.toLowerCase() + '%');
+                stringBuilder.append(" and   ");
             }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {

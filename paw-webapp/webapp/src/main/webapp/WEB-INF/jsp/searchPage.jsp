@@ -125,7 +125,7 @@
                                     <form:label for="complete" path="availability"><spring:message code="searchPage.availability.complete"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox id="complete" path="availability" value="${availability[0]}"/>
+                                    <form:checkbox id="complete" path="availability" value="${availability[1]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
@@ -133,7 +133,7 @@
                                     <form:label for="bed" path="availability"><spring:message code="searchPage.availability.bed"/></form:label>
                                 </div>
                                 <div class="col-start-4 col-span-1 ml-2">
-                                    <form:checkbox id="bed" path="availability" value="${availability[0]}"/>
+                                    <form:checkbox id="bed" path="availability" value="${availability[2]}"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-5/6">
