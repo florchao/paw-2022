@@ -94,8 +94,6 @@ public class ExploreController {
         if (form.getOrderCriteria() != null && !form.getOrderCriteria().equals("")) {
             redirectAttributes.addAttribute("orderCriteria", form.getOrderCriteria());
         }
-        System.out.println("mi ordercriteria es: "+form.getOrderCriteria());
-
         return new ModelAndView("redirect:/buscarEmpleadas");
     }
 }
