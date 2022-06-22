@@ -13,12 +13,12 @@ import javax.validation.constraints.Size;
 @PasswordMatchesAnnotation
 public class EmployerForm {
 
-    @Pattern(regexp = "[a-zA-z\\s']+|^$")
+    @Pattern(regexp = "[a-zA-z\\s'-]+|^$")
     @NotBlank
     @Size(max = 100)
     private String name;
 
-    @Pattern(regexp = "[a-zA-z\\s']+|^$")
+    @Pattern(regexp = "[a-zA-z\\s'-]+|^$")
     @NotBlank
     @Size(max = 100)
     private String lastname;

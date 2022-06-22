@@ -179,7 +179,7 @@ public class JobController {
         if (errors.hasErrors()) {
             return searchJobs(null, null,null,null,null,null,null);
         }
-        if (!Objects.equals(form.getName(),"") && !form.getName().contains("\'") && !form.getName().contains("\""))
+        if (!Objects.equals(form.getName(),""))
             redirectAttributes.addAttribute("name",form.getName());
         if (form.getExperienceYears() > 0)
             redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());

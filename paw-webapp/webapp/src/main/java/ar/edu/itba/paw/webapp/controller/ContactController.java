@@ -92,6 +92,7 @@ public class ContactController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof HogarUser){
             HogarUser hogarUser = (HogarUser) principal;
+            hogarUser.firstWordsToUpper();
             mav.addObject("name", hogarUser.getName());
             mav.addObject("mail", hogarUser.getUsername());
         }

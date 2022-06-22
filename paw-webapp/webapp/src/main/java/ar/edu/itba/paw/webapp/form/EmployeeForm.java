@@ -25,7 +25,7 @@ public class EmployeeForm {
     @NotBlank
     private String confirmPassword;
 
-    @Pattern(regexp = "[a-zA-z\\s']+|^$")
+    @Pattern(regexp = "[a-zA-z\\s'-]+|^$")
     @NotBlank
     @Size(max = 100)
     private String name;
