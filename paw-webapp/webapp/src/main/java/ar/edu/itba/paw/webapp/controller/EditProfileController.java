@@ -39,8 +39,6 @@ public class EditProfileController {
         mav.addObject("abilities", Abilities.getIds());
         mav.addObject("availability", Availability.getIds());
         if(employee.isPresent()) {
-            System.out.print("array: ");
-            System.out.println(employee.get().getAbilitiesArr());
             form.setAbilities(new String[]{String.join(", ", employee.get().getAbilitiesArr())});
             form.setAbilities(employee.get().getAbilitiesArr().toArray(new String[0]));
             form.setAvailability(employee.get().getAvailabilityArr().toArray(new String[0]));

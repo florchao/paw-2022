@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,27 +120,27 @@ public class EmployeeJpaDaoTest {
         Assert.assertEquals(1, list.size());
     }
 
-//    @Test
-//    public void testGetFilteredEmployees() {
-//        byte[] image = {};
-//        User user = userJpaDao.create(USERNAME, PASSWORD, ROLE);
-//        User user2 = userJpaDao.create(USERNAME2, PASSWORD, ROLE);
-//        User user3 = userJpaDao.create(USERNAME2, PASSWORD, ROLE);
-//
-//        Employee employee = employeeJpaDao.create(user, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS2, ABILITIES, image);
-//
-//        Employee employee2 = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-//
-//        Employee employee3 = employeeJpaDao.create(user3, NAME, "Almagro", AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-//        List<String> av = new ArrayList<>();
-//        av.add("1");
-//        //String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria
-//        List<Employee> list = employeeJpaDao.getFilteredEmployees(NAME, EXPERIENCE_YEARS, LOCATION, av, av, 0L, 2, "rating");
-//
-//        Assert.assertNotNull(list);
-//        Assert.assertEquals(user.getId() ,list.get(0).getId().getId());
-//        Assert.assertEquals(user2.getId(),list.get(1).getId().getId());
-//    }
+    @Test
+    public void testGetFilteredEmployees() {
+        byte[] image = {};
+        User user = userJpaDao.create(USERNAME, PASSWORD, ROLE);
+        User user2 = userJpaDao.create(USERNAME2, PASSWORD, ROLE);
+        User user3 = userJpaDao.create(USERNAME3, PASSWORD, ROLE);
+
+        Employee employee = employeeJpaDao.create(user, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS2, ABILITIES, image);
+
+        Employee employee2 = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+
+        Employee employee3 = employeeJpaDao.create(user3, NAME, "Almagro", AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        //String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria
+        List<Employee> list = employeeJpaDao.getFilteredEmployees(NAME, EXPERIENCE_YEARS, LOCATION, new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
+
+        Assert.assertNotNull(list);
+        Assert.assertEquals(user.getId() ,list.get(0).getId().getId());
+        Assert.assertEquals(user2.getId(),list.get(1).getId().getId());
+        Assert.assertEquals(2,list.size());
+        Assert.assertTrue(list.get(0).getExperienceYears() >= list.get(1).getExperienceYears());
+    }
 
     @Test
     public void testGetEmployeeById(){
