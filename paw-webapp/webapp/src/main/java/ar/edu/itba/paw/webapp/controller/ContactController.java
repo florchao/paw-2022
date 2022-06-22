@@ -81,8 +81,10 @@ public class ContactController {
         }
         User user = userService.getUserById(id);
         HogarUser principal = (HogarUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        contactService.contact(user, form.getContent(), principal.getName(), form.getPhone());
-        mav.addObject("status", "sent");
+        if(contactService.contact(user, form.getContent(), principal.getName(), form.getPhone()))
+            mav.addObject("status", "sent");
+        else
+            mav.addObject("status", "error");
         return mav;
     }
 

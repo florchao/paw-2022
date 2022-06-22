@@ -66,7 +66,6 @@ public class ViewProfileController {
                     employer.get().firstWordsToUpper();
                     mav.addObject("employer", employer.get());
                 }
-                System.out.println("soy el employer " + user.get().getId());
                 List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId(), page, PAGE_SIZE);
                 for (Review rev : myReviews) {
                     rev.getEmployerId().firstWordsToUpper();

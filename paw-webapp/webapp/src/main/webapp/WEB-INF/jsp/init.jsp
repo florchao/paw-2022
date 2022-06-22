@@ -28,21 +28,21 @@
                 <div class="grid">
                     <div class="pb-4 grid col-start-2 col-span-2">
                         <form:form method="get" action="${search}" pageEncoding="UTF-8">
-                            <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
+                            <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent	border-2 hover:border-purple-300">
                                 <spring:message code="init.searchEmployee"/>
                             </button>
                         </form:form>
                     </div>
                     <div class="pb-4 grid col-start-2 col-span-2">
                         <form:form method="get" action="${createProfile}" pageEncoding="UTF-8">
-                            <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
+                            <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent	border-2 hover:border-purple-300">
                                 <spring:message code="init.profile"/>
                             </button>
                         </form:form>
                     </div>
                     <div class="grid col-start-2 col-span-2">
                         <form:form method="get" action="${login}" pageEncoding="UTF-8">
-                            <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
+                            <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent border-2 hover:border-purple-300">
                                 <spring:message code="init.login"/>
                             </button>
                         </form:form>

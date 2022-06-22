@@ -46,28 +46,32 @@ public class ContactServiceImpl implements ContactService{
 
     @Transactional
     @Override
-    public Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
+    public boolean create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         Optional<Employer> employer = employerService.getEmployerById(employerId);
         Boolean exists = false;
         if(employee.isPresent() && employer.isPresent())
             exists = contactDao.existsContact(employee.get(), employer.get());
         if(exists){
-            throw new AlreadyExistsException("You already have a contact with this employee");
+            return false;
         }
-        return contactDao.create(employee.get(), employer.get(), created, contactMessage, phoneNumber);
+        contactDao.create(employee.get(), employer.get(), created, contactMessage, phoneNumber);
+        return true;
     }
 
     @Transactional
     @Override
-    public void contact(User to, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
+    public boolean contact(User to, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> optional = userService.findByUsername(principal.getUsername());
         if(optional.isPresent()) {
             User from = optional.get();
-            create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber);
+            if(!create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
+                return false;
             mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
+            return true;
         }
+        return false;
     }
 
     @Transactional

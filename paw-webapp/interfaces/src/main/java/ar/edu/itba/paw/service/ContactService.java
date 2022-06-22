@@ -17,9 +17,9 @@ public interface ContactService {
 
     int getPageNumber(long id, int pageSize);
 
-    Contact create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws AlreadyExistsException, UserNotFoundException;
+    boolean create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws AlreadyExistsException, UserNotFoundException;
 
-    void contact(User to, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException;
+    boolean contact(User to, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException;
 
     void contactUS(String message, String from, String name);
 

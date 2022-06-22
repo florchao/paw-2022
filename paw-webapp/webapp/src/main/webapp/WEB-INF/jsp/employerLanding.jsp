@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title><spring:message code="register.title"/></title>
+    <title><spring:message code="landingEmployer.title"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value="/public/css/style.css"/>"/>
     <link rel="icon" type="image/x-icon" href="<c:url value="/public/favicon.png"/>"/>
@@ -44,7 +44,7 @@
                 <p class="font-thin text-lg mt-7"><spring:message code="landingEmployer.employerDesc"/></p>
                 <div class="pb-4 grid col-start-2 col-span-2 mt-7">
                     <form:form method="get" action="${searchEmployees}" pageEncoding="UTF-8">
-                        <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
+                        <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent	border-2 hover:border-purple-300">
                             <spring:message code="landingEmployer.search"/>
                         </button>
                     </form:form>
@@ -60,7 +60,7 @@
                 <p class="font-thin text-lg mt-7"><spring:message code="landingEmployer.jobDesc"/></p>
                 <div class="pb-4 grid col-start-2 col-span-2 mt-7">
                     <form:form method="get" action="${publishJob}" pageEncoding="UTF-8">
-                        <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
+                        <button class="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent	border-2 hover:border-purple-300">
                             <spring:message code="landingEmployer.jobs"/>
                         </button>
                     </form:form>
