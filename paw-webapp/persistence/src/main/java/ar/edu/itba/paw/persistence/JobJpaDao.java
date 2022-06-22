@@ -79,12 +79,17 @@ public class JobJpaDao implements  JobDao{
             paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and ");
         }
+        String variableCount = "a";
         for (String av : availabilityList) {
-            stringBuilder.append("e.availability like '%").append(av).append("%'");
+            stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
+            paramMap.put("availability" + variableCount, '%' + av + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and ");
         }
         for (String ability : abilitiesList) {
-            stringBuilder.append("e.abilities like '%").append(ability).append("%'");
+            stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
+            paramMap.put("abilities" + variableCount, '%' + ability + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and ");
         }
         stringBuilder.setLength(stringBuilder.length() - 4);
@@ -122,16 +127,20 @@ public class JobJpaDao implements  JobDao{
             paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and ");
         }
+        String variableCount = "a";
         for (String av : availability) {
-            stringBuilder.append("e.availability like '%").append(av).append("%'");
+            stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
+            paramMap.put("availability" + variableCount, '%' + av + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and ");
         }
         for (String ability : abilities) {
-            stringBuilder.append("e.abilities like '%").append(ability).append("%'");
+            stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
+            paramMap.put("abilities" + variableCount, '%' + ability + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and ");
         }
         stringBuilder.setLength(stringBuilder.length() - 4);
-        System.out.println("en page number: "+ stringBuilder.toString());
         TypedQuery<Long> filteredQuery = em.createQuery(stringBuilder.toString(), Long.class);
         for (String key : paramMap.keySet()) {
             filteredQuery.setParameter(key, paramMap.get(key));
