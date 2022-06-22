@@ -87,4 +87,8 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <error-code>500</error-code>
     <location>/500</location>
   </error-page>
+  <error-page>
+    <error-code>405</error-code>
+    <location>/404</location>
+  </error-page>
 </web-app>

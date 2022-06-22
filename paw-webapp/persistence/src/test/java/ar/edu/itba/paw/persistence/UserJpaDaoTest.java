@@ -23,7 +23,7 @@ import java.util.Optional;
 @Transactional
 @Sql("classpath:schema.sql")
 @Rollback
-public class UserJdbcDaoTest {
+public class UserJpaDaoTest {
     private static final String PASSWORD = "Password";
     private static final String USERNAME = "Username";
     private static final int ROLE = 1;
