@@ -91,6 +91,28 @@ public class ApplicantJdbcDaoTest {
         Assert.assertNotNull(list);
         Assert.assertEquals(0, list.size());
     }
+
+//    @Test
+//    public void testExistsApplicant() {
+//        byte [] image = {};
+//        User user1 = userJpaDao.create(USERNAME, PASSWORD, 1);
+//        User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
+//        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+//        final Employer employer = employerJpaDao.create(NAME,user1, image);
+//        Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
+//        Applicant applicant = applicantJpaDao.create(job, employee);
+//
+//        Assert.assertNotNull(employee);
+//        Assert.assertNotNull(job);
+//        Boolean exists = applicantJpaDao.existsApplicant(employee,job);
+//
+//        Assert.assertNotNull(applicant);
+//        Assert.assertNotNull(employer);
+//
+//
+//        Assert.assertTrue(exists);
+//
+//    }
 }
 
 

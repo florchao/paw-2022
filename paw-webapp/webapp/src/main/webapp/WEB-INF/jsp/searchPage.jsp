@@ -156,7 +156,7 @@
                             <div class="flex justify-end">
                                 <h1 class="font-semibold mr-2"><spring:message code="searchPage.orderBy"/></h1>
                                 <h5 class="hover:text-yellow-300 hover:underline hover:cursor-pointer mr-4" onclick="changeOrderCriteria('rating', 'criteriaInputId', 'submitButtonId')"><spring:message code="searchPage.popularity"/></h5>
-                                <h5 class="hover:text-yellow-300 hover:underline hover:cursor-pointer" onclick="changeOrderCriteria('experienceYears', 'criteriaInputId', 'submitButtonId')"><spring:message code="searchPage.experience"/></h5>
+                                <h5 class="hover:text-yellow-300 hover:underline hover:cursor-pointer" onclick="changeOrderCriteria('experienceYears', 'criteriaInputId', 'submitButtonId')"><spring:message code="searchPage.experienceYears"/></h5>
                             </div>
                             <c:forEach var="entry" items="${EmployeeList}">
                                 <c:set var="employee" value="${entry.key}"/>
