@@ -19,17 +19,13 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public Employee create(long id, String name, String location, String availability, long experienceYears, String abilites, byte[] image) {
-        Optional<User> user=  Optional.ofNullable(em.find(User.class, id));
-        if(user.isPresent()) {
-            final Employee employee = new Employee(name.toLowerCase(), location, user.get(), availability, experienceYears, abilites);
-            employee.setRating(0);
-            employee.setVoteCount(0);
-            employee.getId().setImage(image);
-            em.persist(employee);
-            return employee;
-        }
-        return null;
+    public Employee create(User user, String name, String location, String availability, long experienceYears, String abilites, byte[] image) {
+        final Employee employee = new Employee(name.toLowerCase(), location.toLowerCase(), user, availability, experienceYears, abilites);
+        employee.setRating(0);
+        employee.setVoteCount(0);
+        employee.getId().setImage(image);
+        em.persist(employee);
+        return employee;
     }
 
     @Override
@@ -43,8 +39,8 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public List<Employee> getEmployees(long pageSize, String orderCriteria) {
-        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e order by e.rating desc", Employee.class)
+    public List<Employee> getEmployees(long pageSize) {
+        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e", Employee.class)
                 .setFirstResult(0)
                 .setMaxResults((int) pageSize);
         return employeeList.getResultList();

@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;

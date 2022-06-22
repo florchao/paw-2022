@@ -21,7 +21,7 @@ public class JobJpaDao implements  JobDao{
     private EntityManager em;
     @Override
     public Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
-        final Job job = new Job(title, location, employerId, availability, experienceYears, abilities, description);
+        final Job job = new Job(title.toLowerCase(), location.toLowerCase(), employerId, availability, experienceYears, abilities, description);
         em.persist(job);
         return job;
     }

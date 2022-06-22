@@ -1,8 +1,11 @@
 package ar.edu.itba.paw.model.exception;
 
-public class JobNotFoundException extends RuntimeException {
+import java.util.function.Supplier;
+
+public class JobNotFoundException extends Exception {
 
     public JobNotFoundException(String message) {
         super(message);
     }
+
 }

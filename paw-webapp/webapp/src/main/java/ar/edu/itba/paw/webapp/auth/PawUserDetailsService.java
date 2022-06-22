@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.auth;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.UserService;
@@ -44,7 +45,12 @@ public class PawUserDetailsService implements UserDetailsService {
         String name = "";
         if(user.get().getRole() == 1) {
             authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
-            final Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
+            final Optional<Employee> employee;
+            try {
+                employee = Optional.ofNullable(employeeService.getEmployeeById(user.get().getId()).orElseThrow(() -> new UsernameNotFoundException("Employee not found")));
+            } catch (UserNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             if(employee.isPresent())
                 name = employee.get().getName();
         }

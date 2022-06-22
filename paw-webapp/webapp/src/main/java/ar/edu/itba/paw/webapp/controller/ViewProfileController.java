@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Review;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
@@ -51,9 +52,11 @@ public class ViewProfileController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
 
     @RequestMapping(value = "/verPerfil", method = {RequestMethod.GET})
-    public ModelAndView viewProfile() {
+    public ModelAndView viewProfile(@RequestParam(value = "page", required = false) Long page) throws UserNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) auth.getPrincipal();
+        if (page == null)
+            page = 0L;
         Optional<User> user = userService.findByUsername(principal.getUsername());
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             final ModelAndView mav = new ModelAndView("viewProfileEmployer");
@@ -63,6 +66,14 @@ public class ViewProfileController {
                     employer.get().firstWordsToUpper();
                     mav.addObject("employer", employer.get());
                 }
+                System.out.println("soy el employer " + user.get().getId());
+                List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId(), page, PAGE_SIZE);
+                for (Review rev : myReviews) {
+                    rev.getEmployerId().firstWordsToUpper();
+                }
+                mav.addObject("page", page);
+                mav.addObject("maxPage",reviewService.getMyProfileReviewsEmployerPageNumber(user.get().getId(), PAGE_SIZE));
+                mav.addObject("ReviewList", myReviews);
             }
             return mav;
         }
@@ -79,10 +90,13 @@ public class ViewProfileController {
                 mav.addObject("employee", employee.get());
             }
             mav.addObject("userId", user.get().getId());
-            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId());
+            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId(), page, PAGE_SIZE);
             for (Review rev : myReviews) {
                 rev.getEmployerId().firstWordsToUpper();
             }
+            mav.addObject("myProfileFlag", true);
+            mav.addObject("page", page);
+            mav.addObject("maxPage",reviewService.getMyProfileReviewsPageNumber(user.get().getId(), PAGE_SIZE));
             mav.addObject("ReviewList", myReviews);
         }
         return mav;
@@ -90,7 +104,7 @@ public class ViewProfileController {
 
     @RequestMapping(value = "/verPerfil/{userId}", method = RequestMethod.GET)
     public ModelAndView userProfile(@PathVariable("userId") final long userId, @RequestParam(value = "status", required = false) String status, @ModelAttribute("reviewForm") final ReviewForm reviewForm,
-                                    @RequestParam(value = "page", required = false) Long page) {
+                                    @RequestParam(value = "page", required = false) Long page) throws UserNotFoundException {
         final ModelAndView mav = new ModelAndView("viewProfile");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
@@ -137,11 +151,11 @@ public class ViewProfileController {
     }
 
     @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})
-    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id){
+    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id) throws UserNotFoundException {
         if(errors.hasErrors())
             return userProfile(id,status, reviewForm, null);
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        reviewService.create(id, principal.getUserID(), reviewForm.getContent(), new Date(System.currentTimeMillis()));
+        reviewService.create(id, principal.getUserID(), reviewForm.getContent(), new Date(System.currentTimeMillis()), true);
         return new ModelAndView("redirect:/verPerfil/" + id);
     }
 

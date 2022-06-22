@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,11 +9,11 @@ import java.util.Optional;
 public interface EmployeeDao {
     Optional<Employee> getEmployeeById(long id);
 
-    Employee create(long id, String name, String location, String availability, long experienceYears, String abilites, byte[] image);
+    Employee create(User id, String name, String location, String availability, long experienceYears, String abilites, byte[] image);
 
     void update(Employee id, String name, String location, String availability, long experienceYears, String abilites, byte [] image);
 
-   List<Employee> getEmployees(long pageSize, String orderCriteria);
+   List<Employee> getEmployees(long pageSize);
 
    Boolean isEmployee(Employee id);
 

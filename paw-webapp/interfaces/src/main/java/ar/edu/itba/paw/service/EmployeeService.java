@@ -10,7 +10,7 @@ public interface EmployeeService {
     Optional<Employee> getEmployeeById(long id) throws UserNotFoundException;
     Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities, byte[] image);
     void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities, byte [] image);
-    void isEmployee(long id);
+    void isEmployee(long id) throws UserNotFoundException;
     int getPageNumber(
             String name,
             Long experienceYears,

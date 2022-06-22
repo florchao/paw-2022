@@ -2,6 +2,7 @@ package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(name = "User")
 @Table(name = "users")
@@ -23,7 +24,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private int role;
 
-    @Column(table = "profile_images", nullable = false)
+    @Column(table = "profile_images")
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
 
@@ -83,5 +84,19 @@ public class User implements Serializable {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && role == user.role && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, email, password, role);
+        return result;
     }
 }

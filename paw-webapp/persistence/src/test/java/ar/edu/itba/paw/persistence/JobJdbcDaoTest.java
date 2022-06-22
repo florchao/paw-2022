@@ -1,21 +1,32 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.model.User;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-        /*
+import java.util.List;
+import java.util.Optional;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Sql("classpath:schema.sql")
 @Transactional
+@Rollback
 public class JobJdbcDaoTest {
 
     @Autowired
@@ -24,9 +35,20 @@ public class JobJdbcDaoTest {
     @Autowired
     private JobJpaDao jobJdbcDao;
 
-    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private EmployerJpaDao employerJdbcDao;
 
-    private static final long ID = 1;
+    @Autowired
+    private UserJpaDao userJpaDao;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    private static final String PASSWORD = "Password";
+    private static final String USERNAME = "Username";
+    private static final int ROLE = 2;
+
+    private static final long ID = 0;
     private static final String TITLE = "Name";
     private static final String LOCATION = "Location";
     private static final String AVAILABILITY = "Availability";
@@ -34,82 +56,103 @@ public class JobJdbcDaoTest {
     private static final long EXPERIENCE_YEARS = 10;
     private static final String DESCRIPTION = "Description";
 
-
-    @Before
-    public void setUp(){
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "jobs");
-    }
-
-
+    private static final String NAME = "Name";
     @Test
     public void testCreate(){
-        Job job = jobJdbcDao.create(TITLE, LOCATION, ID, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        byte [] image = {};
+        Optional<User> user = userJpaDao.getUserById(0);
+        final Employer employer = employerJdbcDao.create(NAME,user.get(), image);
+        Job job = jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
         Assert.assertNotNull(job);
-        Assert.assertEquals(ID, job.getEmployerId());
+        Assert.assertEquals(ID, job.getEmployerId().getId().getId());
         Assert.assertEquals(TITLE, job.getTitle());
         Assert.assertEquals(LOCATION, job.getLocation());
         Assert.assertEquals(AVAILABILITY, job.getAvailability());
         Assert.assertEquals(ABILITIES, job.getAbilities());
         Assert.assertEquals(EXPERIENCE_YEARS, job.getExperienceYears());
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "jobs"));
 
     }
 
-    @Test
-    public void testGetFilteredJobsByExperienceYearsAndAbilities() {
-        String query = "INSERT INTO jobs values(1,1, 'First job', 'Location','Con cama', 5, 'Planchar,Cocinar', 'Description')";
-        jdbcTemplate.execute(query);
-        query = "INSERT INTO jobs values(2,2, 'Second job', 'Location','Con cama,Jornada entera', 10, 'Cocinar', 'Description')";
-        jdbcTemplate.execute(query);
-        query = "INSERT INTO jobs values(3,3, 'Third job', 'Location','Con cama,Jornada entera', 20, 'Cocinar', 'Description')";
-        jdbcTemplate.execute(query);
-
-        Optional<List<Job>> job =  jobJdbcDao.getFilteredJobs(null,10L,null, new ArrayList<>(), Arrays.asList("Cocinar"), 0L, 8);
-
-        Assert.assertNotNull(job);
-        Assert.assertTrue(job.isPresent());
-        Assert.assertEquals(2,job.get().get(0).getJobId());
-        Assert.assertEquals(3,job.get().get(1).getJobId());
-    }
+//    @Test
+//    public void testGetFilteredJobsByExperienceYearsAndAbilities() {
+//        String query = "INSERT INTO jobs values(1,1, 'First job', 'Location','Con cama', 5, 'Planchar,Cocinar', 'Description')";
+//        jdbcTemplate.execute(query);
+//        query = "INSERT INTO jobs values(2,2, 'Second job', 'Location','Con cama,Jornada entera', 10, 'Cocinar', 'Description')";
+//        jdbcTemplate.execute(query);
+//        query = "INSERT INTO jobs values(3,3, 'Third job', 'Location','Con cama,Jornada entera', 20, 'Cocinar', 'Description')";
+//        jdbcTemplate.execute(query);
+//
+//        Optional<List<Job>> job =  jobJdbcDao.getFilteredJobs(null,10L,null, new ArrayList<>(), Arrays.asList("Cocinar"), 0L, 8);
+//
+//        Assert.assertNotNull(job);
+//        Assert.assertTrue(job.isPresent());
+//        Assert.assertEquals(2,job.get().get(0).getJobId());
+//        Assert.assertEquals(3,job.get().get(1).getJobId());
+//    }
 
     @Test
     public void testGetUserJobs(){
-        String query = "INSERT INTO jobs values(0,1, 'Name', 'Location', 'Availability', 10, 'Abilities', 'Description')";
-        jdbcTemplate.execute(query);
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        Optional<User> user = userJpaDao.getUserById(0);
+        byte [] image = {};
+        Employer employer = employerJdbcDao.create(NAME, user.get(), image );
+        jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
-        Optional<List<Job>> job =  jobJdbcDao.getUserJobs(ID);
+        List<Job> job =  jobJdbcDao.getUserJobs(employer, Long.valueOf(0), 2);
 
-        Assert.assertNotNull(job);
-        Assert.assertTrue(job.isPresent());
-        Assert.assertEquals(1, job.get().size());
+        Assert.assertFalse(job.isEmpty());
+        Assert.assertEquals(1, job.size());
     }
 
     @Test
     public void testGetAllJobs(){
-        String query = "INSERT INTO jobs values(0,1, 'Name', 'Location', 'Availability', 10, 'Abilities', 'Description')";
-        jdbcTemplate.execute(query);
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        Optional<User> user = userJpaDao.getUserById(0);
+        byte [] image = {};
+        Employer employer = employerJdbcDao.create(NAME, user.get(), image );
+        jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
-        Optional<List<Job>> job =  jobJdbcDao.getAllJobs(10);
+        List<Job> job =  jobJdbcDao.getAllActiveJobs(10);
 
-        Assert.assertNotNull(job);
-        Assert.assertTrue(job.isPresent());
-        Assert.assertEquals(1, job.get().size());
+        Assert.assertFalse(job.isEmpty());
+        Assert.assertEquals(1, job.size());
     }
 
     @Test
-    public void testGetJobNameById(){
-        String query = "INSERT INTO jobs values(1,1, 'Name', 'Location', 'Availability', 10, 'Abilities', 'Description')";
-        jdbcTemplate.execute(query);
+    public void testDelete(){
+        em.createNativeQuery("INSERT INTO users VALUES (?,?,?,?)")
+                .setParameter(1,0)
+                .setParameter(2, USERNAME)
+                .setParameter(3, PASSWORD)
+                .setParameter(4, ROLE)
+                .executeUpdate();
+        Optional<User> user = userJpaDao.getUserById(0);
+        byte [] image = {};
+        Employer employer = employerJdbcDao.create(NAME, user.get(), image );
+        Job job = jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
-        String name = jobJdbcDao.getJobNameById(ID);
+        jobJdbcDao.deleteJob(job.getJobId());
+        Optional<Job> jobaux = jobJdbcDao.getJobById(job.getJobId());
 
-        Assert.assertNotNull(name);
-        Assert.assertEquals(TITLE, name);
-
-
+        Assert.assertFalse(jobaux.isPresent());
     }
+
 }
-     */
 

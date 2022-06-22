@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Abilities;
 import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.PassMatchException;
+import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.UserService;
@@ -50,7 +52,7 @@ public class CreateProfileController {
     }
 
     @RequestMapping(value = "/createEmployee", method = {RequestMethod.POST})
-    public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors){
+    public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors) throws UserFoundException, PassMatchException {
         if(errors.hasErrors()) {
             LOGGER.debug("couldn't create employee profile");
             return createProfile(form);
@@ -72,7 +74,7 @@ public class CreateProfileController {
     }
 
     @RequestMapping(value = "/createEmployer", method = {RequestMethod.POST})
-    public ModelAndView createEmployer(@Valid @ModelAttribute("employerForm") final EmployerForm form, final BindingResult errors){
+    public ModelAndView createEmployer(@Valid @ModelAttribute("employerForm") final EmployerForm form, final BindingResult errors) throws UserFoundException, PassMatchException {
         if(errors.hasErrors()) {
             LOGGER.debug("couldn't create employer profile");
             return createProfileEmployer(form);

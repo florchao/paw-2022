@@ -1,18 +1,20 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Abilities;
-import ar.edu.itba.paw.model.Availability;
-import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
+import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
+import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.sql.Date;
 import java.util.*;
 
 @Controller
@@ -29,9 +32,14 @@ public class JobController {
     private JobService jobService;
     @Autowired
     private ApplicantService applicantService;
+    @Autowired
+    private ReviewService reviewService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE_JOBS = 9;
     private static final long PAGE_SIZE = 8;
+
+    private final static int PAGE_SIZE_REVIEWS = 2;
 
     @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
     public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
@@ -73,28 +81,61 @@ public class JobController {
 }
 
     @RequestMapping(value = "/trabajo/{id}", method = {RequestMethod.GET})
-    public ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status){
+    public ModelAndView verTrabajo(@PathVariable final long id, @RequestParam(value = "status", required = false) String status, @ModelAttribute("reviewForm") final ReviewForm reviewForm,
+                                   @RequestParam(value = "page", required = false) Long page) throws JobNotFoundException{
         ModelAndView mav = new ModelAndView("viewJob");
-        Optional<Job> job = jobService.getJobByID(id);
+        Job job = jobService.getJobByID(id).orElseThrow( ()->new  JobNotFoundException("job" + id + "does not exists"));
         int jobStatus = -1;
-        if (job.isPresent()) {
-            job.get().employerNameToUpper(job.get().getEmployerId());
-            job.get().firstWordsToUpper();
-            job.get().locationNameToUpper();
-            String language = LocaleContextHolder.getLocale().getLanguage();
-            job.get().nameAbilities(language);
-            job.get().nameAvailability(language);
-            mav.addObject("job", job.get());
-        }
+        job.employerNameToUpper(job.getEmployerId());
+        job.firstWordsToUpper();
+        job.locationNameToUpper();
+        String language = LocaleContextHolder.getLocale().getLanguage();
+        job.nameAbilities(language);
+        job.nameAvailability(language);
+        mav.addObject("job", job);
+        Employer employer = job.getEmployerId();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser principal = (HogarUser) auth.getPrincipal();
-        Boolean existsApplied = jobService.alreadyApplied(id, principal.getUserID());
-        if(existsApplied && job.isPresent()){
-            jobStatus = applicantService.getStatus(principal.getUserID(), job.get().getJobId());
+        if (page == null)
+            page = 0L;
+        List<Review> reviews;
+        int maxPage;
+        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))){
+            Optional<Review> myReview = reviewService.getMyReviewEmployer(principal.getUserID(), employer.getId().getId());
+            if (myReview.isPresent()) {
+                myReview.get().getEmployeeId().firstWordsToUpper();
+                mav.addObject("myReview", myReview.get());
+            }
+            reviews = reviewService.getAllReviewsEmployer(principal.getUserID(), employer.getId().getId(), page, PAGE_SIZE_REVIEWS);
+            maxPage = reviewService.getPageNumberEmployer(principal.getUserID(), employer.getId().getId(), PAGE_SIZE_REVIEWS);
+        } else {
+            maxPage = reviewService.getPageNumberEmployer(null, employer.getId().getId(), PAGE_SIZE_REVIEWS);
+            reviews = reviewService.getAllReviewsEmployer(null, employer.getId().getId(), page, PAGE_SIZE_REVIEWS);
         }
+        for (Review rev : reviews) {
+            rev.getEmployeeId().firstWordsToUpper();
+        }
+        mav.addObject("ReviewList", reviews);
+        mav.addObject("page", page);
+        mav.addObject("maxPage", maxPage);
+        Boolean existsApplied = jobService.alreadyApplied(id, principal.getUserID());
+        if(existsApplied){
+            jobStatus = applicantService.getStatus(principal.getUserID(), job.getJobId());
+        }
+        mav.addObject("abilities", Abilities.getIds());
+        mav.addObject("availability", Availability.getIds());
         mav.addObject("alreadyApplied", jobStatus);
         mav.addObject("status", status);
         return mav;
+    }
+
+    @RequestMapping(value = "addReviewEmployer/{jobId}/{employerId}", method = {RequestMethod.POST})
+    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long jobId, @PathVariable final long employerId) throws JobNotFoundException {
+        if(errors.hasErrors())
+            return verTrabajo(jobId,status, reviewForm, null);
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        reviewService.create(principal.getUserID(), employerId, reviewForm.getContent(), new Date(System.currentTimeMillis()), false);
+        return new ModelAndView("redirect:/trabajo/" + jobId);
     }
 
     @RequestMapping(value = "/trabajos", method = {RequestMethod.GET})

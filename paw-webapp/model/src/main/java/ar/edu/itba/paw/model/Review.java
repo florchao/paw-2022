@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity(name = "Review")
 @Table(name = "review")
@@ -36,19 +37,24 @@ public class Review implements Serializable {
     @Column(name = "review", nullable = false)
     private String review;
 
-    public Review(long reviewId, Employee employeeId, Employer employerId, String review, Date created) {
+    @Column(name = "forEmployee", nullable = false)
+    private boolean forEmployee;
+
+    public Review(long reviewId, Employee employeeId, Employer employerId, String review, Date created, boolean forEmployee) {
         this.reviewId = reviewId;
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
         this.created = created;
+        this.forEmployee = forEmployee;
     }
 
-    public Review(Employee employeeId, Employer employerId, String review, Date created) {
+    public Review(Employee employeeId, Employer employerId, String review, Date created, boolean forEmployee) {
         this.employeeId = employeeId;
         this.employerId = employerId;
         this.review = review;
         this.created = created;
+        this.forEmployee = forEmployee;
     }
 
     public Review() {
@@ -92,5 +98,26 @@ public class Review implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public boolean isForEmployee() {
+        return forEmployee;
+    }
+
+    public void setForEmployee(boolean forEmployee) {
+        this.forEmployee = forEmployee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review1 = (Review) o;
+        return reviewId == review1.reviewId && Objects.equals(employeeId, review1.employeeId) && Objects.equals(employerId, review1.employerId) && Objects.equals(created, review1.created) && Objects.equals(review, review1.review);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reviewId, employeeId, employerId, created, review);
     }
 }

@@ -8,7 +8,7 @@ import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<User> getUserById(long id) throws UserNotFoundException;
+    User getUserById(long id) throws UserNotFoundException;
 
     User create(String username, String password, String confirmPassword, int role) throws UserFoundException, PassMatchException;
 
