@@ -141,21 +141,5 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employee.map(value -> employeeDao.getPrevRating(value)).orElse(0F);
     }
 
-    private ArrayList<String> getAbilitiesEs(String[] abilities){
-        ArrayList<String> toReturn = new ArrayList<>();
-        for (String ability: abilities) {
-            toReturn.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
-        }
-        return toReturn;
-    }
-
-    private ArrayList<String> getAvailability(String[] availabilities){
-        ArrayList<String> toReturn = new ArrayList<>();
-        for (String availability: availabilities) {
-            toReturn.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
-        }
-        return toReturn;
-    }
-
 
 }
