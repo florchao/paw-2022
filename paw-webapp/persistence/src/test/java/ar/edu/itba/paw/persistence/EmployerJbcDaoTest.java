@@ -43,7 +43,7 @@ public class EmployerJbcDaoTest {
     @Autowired
     private UserJpaDao userJpaDao;
 
-    private static final String NAME = "Name";
+    private static final String NAME = "name";
     private static final long ID = 0;
     private static final byte[] IMAGE = null;
 

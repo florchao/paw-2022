@@ -49,8 +49,8 @@ public class JobJdbcDaoTest {
     private static final int ROLE = 2;
 
     private static final long ID = 0;
-    private static final String TITLE = "Name";
-    private static final String LOCATION = "Location";
+    private static final String TITLE = "name";
+    private static final String LOCATION = "location";
     private static final String AVAILABILITY = "Availability";
     private static final String ABILITIES = "Abilities";
     private static final long EXPERIENCE_YEARS = 10;

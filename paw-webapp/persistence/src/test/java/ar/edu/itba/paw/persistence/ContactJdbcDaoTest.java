@@ -29,7 +29,7 @@ public class ContactJdbcDaoTest {
     private DataSource dataSource;
 
     @Autowired
-    private ContactJpaDao contactJdbcDao;
+    private ContactJpaDao contactJpaDao;
 
     @PersistenceContext
     private EntityManager em;
@@ -66,11 +66,9 @@ public class ContactJdbcDaoTest {
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
         final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
 
-        Contact contact = contactJdbcDao.create(employee, employer, DATE,MESSAGE, PHONE );
+        final Contact contact = contactJpaDao.create(employee, employer, DATE,MESSAGE, PHONE );
 
         Assert.assertNotNull(contact);
-        Assert.assertEquals(1, contact.getEmployeeID().getId().getId());
-        Assert.assertEquals(0, contact.getEmployerID().getId().getId());
         Assert.assertEquals(DATE, contact.getCreated());
         Assert.assertEquals(MESSAGE, contact.getMessage());
         Assert.assertEquals(PHONE, contact.getPhoneNumber());
@@ -96,9 +94,9 @@ public class ContactJdbcDaoTest {
                 .executeUpdate();
 
         final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-        contactJdbcDao.create(employee, employer, DATE,MESSAGE, PHONE );
+        contactJpaDao.create(employee, employer, DATE,MESSAGE, PHONE );
 
-        List<Contact> list = contactJdbcDao.getAllContacts(employee, 0L, 2);
+        List<Contact> list = contactJpaDao.getAllContacts(employee, 0L, 2);
         Assert.assertFalse(list.isEmpty());
         Assert.assertEquals(1, list.size());
     }

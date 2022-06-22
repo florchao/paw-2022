@@ -28,8 +28,8 @@ public class EmployeeJdbcDaoTest {
     private static final String PASSWORD = "Password";
     private static final String USERNAME = "Username";
     private static final int ROLE = 1;
-    private static final String NAME = "Name";
-    private static final String LOCATION = "Location";
+    private static final String NAME = "name";
+    private static final String LOCATION = "location";
     private static final String AVAILABILITY = "Availability";
     private static final long ID = 0;
     private static final long EXPERIENCE_YEARS = 10;
@@ -59,6 +59,7 @@ public class EmployeeJdbcDaoTest {
                 .executeUpdate();
         Optional<User> user = userJpaDao.getUserById(0);
         final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, IMAGE);
+        em.flush();
 
         Assert.assertEquals(ID, employee.getId().getId());
         Assert.assertEquals(NAME, employee.getName());
