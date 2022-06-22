@@ -49,6 +49,11 @@
                     <form:input type="number" id="expYears" onchange="validateEmptyNumberForm('expYears')" path="experienceYears" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
                     <form:errors path="experienceYears" element="p" class="col-start-2 col-span-full" cssStyle="color:red"/>
                 </div>
+                <h1 class="font-semibold mt-2"><spring:message code="searchPage.label.employeeName"/></h1>
+                <div class="grid grid-cols-12">
+                    <form:input type="text" path="name" class="col-start-2 col-span-10" cssStyle="border-radius: 5px; padding-left: 5px"/>
+                    <form:errors path="experienceYears" element="p" class="col-start-2 col-span-full" cssStyle="color:red"/>
+                </div>
                 <h1 class="font-semibold mt-4"><spring:message code="searchPage.label.location"/></h1>
                 <div class="grid grid-cols-12">
                     <form:input type="text" path="location" class="col-span-10 col-start-2" cssStyle="border-radius: 5px; padding-left: 5px"/>
@@ -138,7 +143,6 @@
             </div>
         </div>
         <div class="col-span-3 col-start-2">
-            <form:input type="text" path="name" cssClass="hidden" cssStyle="border-radius: 5px;"/>
             <c:choose>
             <c:when test="${jobList.size() == 0}">
                 <div class = "grid content-center justify-center h-5/6 mt-16">
