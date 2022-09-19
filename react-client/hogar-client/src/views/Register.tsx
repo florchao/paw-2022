@@ -1,6 +1,8 @@
+import RegisterCard from "../components/RegisterCard";
+
 const Register = () => {
     return (
-            <h1>Register!</h1>
+        <RegisterCard />
             // Aca podria ir un <RegisterCard> component
     )
 }

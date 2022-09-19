@@ -1,7 +1,8 @@
 import React from 'react'
+import LoginCard from '../components/LoginCard';
 const Login = () => {
     return (
-        <h1>Login!</h1>
+        <LoginCard />
         // Aca podria ir un <LoginCard> component
     )
 }
