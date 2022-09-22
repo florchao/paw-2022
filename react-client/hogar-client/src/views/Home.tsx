@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom"
+import './style.css'
+import Button from "../components/Button";
 
 export const Home = () => {
     return (
@@ -17,31 +18,13 @@ export const Home = () => {
                     <div className="flex flex-col">
                         <div className="grid">
                             <div className="pb-4 grid col-start-2 col-span-2">
-                                <Link to="/searchEmployee">
-                                    {/*TODO component de Button y pagina searchEmployee*/}
-                                    <button
-                                        className="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent	border-2 hover:border-purple-300">
-                                        Buscar Empleadas
-                                    </button>
-                                </Link>
+                                <Button name="Buscar Empleadas" link="/searchEmployee"/>
                             </div>
                             <div className="pb-4 grid col-start-2 col-span-2">
-                                <Link to="/register">
-                                    {/*TODO component de Button*/}
-                                    <button
-                                        className="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent	border-2 hover:border-purple-300">
-                                        Registarse
-                                    </button>
-                                </Link>
+                                <Button name="Registarse" link="/register"/>
                             </div>
                             <div className="grid col-start-2 col-span-2">
-                                <Link to="/login">
-                                    {/*TODO component de Button*/}
-                                    <button
-                                        className="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent border-2 hover:border-purple-300">
-                                        Iniciar Sesión
-                                    </button>
-                                </Link>
+                                <Button name="Iniciar Sesión" link="/login"/>
                             </div>
                         </div>
                     </div>

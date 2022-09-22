@@ -1,3 +1,5 @@
+import './Background.css'
+
 export const Background = () => {
     return (
         <div className="area absolute">

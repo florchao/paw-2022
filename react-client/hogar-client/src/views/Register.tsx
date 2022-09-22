@@ -1,6 +1,7 @@
+import './style.css'
 import RegisterCard from "../components/RegisterCard";
-import Background from "../components/Background";
-import { Link } from "react-router-dom"
+import Background from "../components/Background/Background";
+import Button from "../components/Button";
 
 const Register = () => {
     return (
@@ -20,13 +21,8 @@ const Register = () => {
                             Si sos un empleador vas a poder encontrar a la persona perfecta para que limpie tu casa, cuide tus mascotas ¡y mucho más! Tenemos dos maneras de ayudarte a encontrar tu mejor opción: <br/><br/> - Creando una publicación según tus preferencias y necesidades. <br/> - Eligiendo en nuestra comunidad el perfil que encaje con lo que estes buscando y a la vez vas a poder ver opiniones de otros empleadores.
                         </p>
                         <div className="pb-4 grid col-start-2 col-span-2 mt-7">
-                            <Link to='/registerEmployer'>
-                                {/*TODO component de Button y pagina registerEmployer*/}
-                                <button
-                                    className="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
-                                    Crear cuenta de empleador
-                                </button>
-                            </Link>
+                            {/*TODO pagina registerEmployer*/}
+                            <Button link="/registerEmployer" name="Crear cuenta de empleador"/>
                         </div>
                     </div>
                     <div className="row-start-2 h-96 w-96">
@@ -41,13 +37,8 @@ const Register = () => {
                             Si estás buscando trabajo, este es el lugar perfecto para vos. Te ayudaremos para que puedas: <br/><br/> - Cargar tu perfil con tus habilidades, disponibilidad e información para que nuestra comunidad de empleadores te pueda ver. <br/> - Explorar las distintas ofertas de trabajo ofrecidas en nuestra comunidad.
                         </p>
                         <div className="pb-4 grid col-start-2 col-span-2 mt-7">
-                            <Link to='/registerEmployee'>
-                                {/*TODO component de Button y pagina registerEmployee*/}
-                                <button
-                                    className="bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-hidden hover:border-solid border-2 border-purple-300">
-                                    Crear cuenta de empleada
-                                </button>
-                            </Link>
+                            {/*TODO pagina registerEmployee*/}
+                            <Button link="/registerEmployee" name="Crear cuenta de empleada"/>
                         </div>
                     </div>
                 </div>
