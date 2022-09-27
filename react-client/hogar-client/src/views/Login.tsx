@@ -4,7 +4,7 @@ import Background from "../components/Background/Background";
 const Login = () => {
     return (
         <div>
-            <Background/>
+            {/* <Background/> */}
             <LoginCard />
             {/*Aca podria ir un <LoginCard> component*/}
         </div>

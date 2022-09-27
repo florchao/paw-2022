@@ -15,6 +15,11 @@ export const Navbar = () => {
                 <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                     <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li>
+                            <Link to="/explore">
+                                <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Explore</h1>
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/register">
                                 <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Register</h1>
                             </Link>
@@ -22,6 +27,11 @@ export const Navbar = () => {
                         <li>
                             <Link to="/login">
                                 <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Login</h1>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/contact">
+                                <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Contact Us</h1>
                             </Link>
                         </li>
                     </ul>

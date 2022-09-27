@@ -1,6 +1,6 @@
 import EmployeeCard from "../components/EmployeeCard";
 
-export const SearchEmployee = () => {
+export const Explore = () => {
 
     return (
         <EmployeeCard/>
@@ -8,4 +8,4 @@ export const SearchEmployee = () => {
 
 }
 
-export default SearchEmployee;
+export default Explore;
