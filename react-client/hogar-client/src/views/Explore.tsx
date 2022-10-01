@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 import EmployeeCard from "../components/EmployeeCard";
 import FilterForm from "../components/FilterForm";
@@ -10,16 +9,5 @@ export const Explore = () => {
             <EmployeeCard/>
         </div>
     )
-=======
-import EmployeeCard from "../components/EmployeeCard";
-
-export const Explore = () => {
-
-    return (
-        <EmployeeCard/>
-    )
-
->>>>>>> master
 }
-
 export default Explore;
