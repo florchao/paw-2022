@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import {Component} from "react";
 
-export class Button extends Component<{ link: any, name: any }> {
+export class Button extends Component<{ link: any, name: String }> {
     render() {
         let {link, name} = this.props;
         return (
