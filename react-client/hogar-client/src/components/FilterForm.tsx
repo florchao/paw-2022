@@ -7,6 +7,8 @@ export const FilterForm = () => {
             <h2 onClick={async () =>  {
                 await EmployeeService.getFilteredEmployees()
             }}>Buenas</h2>
+
+
         </div>
     )
 }
