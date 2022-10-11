@@ -18,7 +18,7 @@ export const Home = () => {
                     <div className="flex flex-col">
                         <div className="grid">
                             <div className="pb-4 grid col-start-2 col-span-2">
-                                <Button name="Buscar Empleadas" link="/searchEmployee"/>
+                                <Button name="Buscar Empleadas" link="/explore"/>
                             </div>
                             <div className="pb-4 grid col-start-2 col-span-2">
                                 <Button name="Registarse" link="/register"/>
