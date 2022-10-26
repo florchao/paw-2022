@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Explore from "./views/Explore";
 import ContactUs from './views/ContactUs';
 import Background from './components/Background/Background';
+import EmployerLanding from "./views/EmployerLanding";
 
 export default function App() {
     return (
@@ -21,6 +22,7 @@ export default function App() {
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/explore" element={<Explore/>}/>
                 <Route path="/contact" element={<ContactUs/>}/>
+                <Route path="/home" element={<EmployerLanding/>}/>
                 <Route path="/" element={<Home/>}/>
             </Routes>
         </Router>
