@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Explore from "./views/Explore";
 import ContactUs from './views/ContactUs';
 import Background from './components/Background/Background';
+import NotFound from './views/NotFound';
 
 export default function App() {
     return (
@@ -22,6 +23,7 @@ export default function App() {
                 <Route path="/explore" element={<Explore/>}/>
                 <Route path="/contact" element={<ContactUs/>}/>
                 <Route path="/" element={<Home/>}/>
+                <Route path="*" element={<NotFound/>}/>
             </Routes>
         </Router>
     )
