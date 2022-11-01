@@ -31,16 +31,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
-@Path("/api")
+@Path("/api/explore")
 @Component
 public class ExploreController {
-
-    @GET
-    @Path("/hello")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response helloWorld() {
-        return Response.ok("Hello world!").build();
-    }
 
     @Autowired
     private EmployeeService employeeService;
@@ -76,8 +69,6 @@ public class ExploreController {
 //            }
         }
         GenericEntity<List<Employee>> genericEntity = new GenericEntity<List<Employee>>(employees){};
-        System.out.println("ACA BITCH");
-        System.out.println(employees);
         return Response.ok(genericEntity).build();
     }
 

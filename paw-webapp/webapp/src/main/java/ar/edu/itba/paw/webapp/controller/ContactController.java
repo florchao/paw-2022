@@ -23,16 +23,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.json.Json;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
-@Path("/api")
+@Path("/api/contact")
 @Component
 public class ContactController {
 
@@ -111,15 +109,38 @@ public class ContactController {
 //    }
 
     @POST
-    @Path("/contact")
+    @Path("/us")
     @Consumes (value = {MediaType.APPLICATION_JSON, })
     public Response contactUs(@Valid ContactUsForm form) {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
 //        }
-//        final ModelAndView mav = new ModelAndView("redirect:/contactanos");
         contactService.contactUS(form.getContent(), form.getMail(), form.getName());
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/{id}")
+    @Consumes (value = {MediaType.APPLICATION_JSON, })
+    public Response contactEmployee(@Valid ContactForm form,  @PathParam("id") long id) throws UserNotFoundException, AlreadyExistsException {
+//        if(error.hasErrors()) {
+//            LOGGER.debug("Couldn't contact Hogar");
+//            //return contactPage(form, "error");
+//        }
+        System.out.println("AaAAAAAAAAAAAAAAAA");
+        try {
+            userService.getUserById(id);
+            System.out.println("BBBBBBBBBBBBBBB");
+        } catch (ar.edu.itba.paw.model.exception.UserNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        employeeService.isEmployee(id);
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        if(employee.isPresent()){
+            employee.get().firstWordsToUpper();
+            contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
+        }
         return Response.ok().build();
     }
 }

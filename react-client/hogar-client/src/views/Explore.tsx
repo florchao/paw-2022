@@ -12,13 +12,12 @@ export const Explore = () => {
 
     useEffect(() => {
         const algo = async () => {
-            console.log("algoo")
             const val = await EmployeeService.getFilteredEmployees()
             console.log(val)
             setEmployees(val)
         }
         algo()
-    })
+    }, [])
     // @ts-ignore
     return (
         <div className="grid grid-cols-7 content-start h-screen overflow-auto pl-5 pr-5">
