@@ -3,20 +3,11 @@ import {useLocation} from "react-router-dom";
 import {EmployerService} from "../service/EmployerService";
 
 export const ProfileEmployer = () => {
-
     const [employer, setEmployer]: any = useState()
 
-    const {id} = useLocation().state
-
-    console.log(id)
-
     useEffect(() => {
-        const algo = async () => {
-            const val = await EmployerService.getEmployer(id);
-            console.log(val)
-            setEmployer(val)
-        }
-        algo()
+        //todo harcodeado el numero de int
+        EmployerService.getEmployer(BigInt(3)).then((val) => setEmployer(val));
     }, [])
 
     return (
@@ -25,12 +16,12 @@ export const ProfileEmployer = () => {
                 <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                     <div className="grid grid-cols-5 justify-center">
                         <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                            <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src="${image}"/>
+                            <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src="${image}" alt="profile pic"/>
                                  {/*onerror="this.src = '<c:url value="/public/user.png"/>'" alt="profile pic"*/}
                         </div>
                         <div className="ml-3 col-span-2">
                             <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
-                                {employer.name}
+                                Employer.name
                             </p>
                         </div>
                         <div className="ml-3 col-start-5 row-start-2">
@@ -52,7 +43,7 @@ export const ProfileEmployer = () => {
                         <h1 className="pb-3 pt-3 font-semibold">
                             Opiniones
                         </h1>
-                        {employer.reviewList.length == 0 && (
+                        {0 === 0 && (
                                 <div className="grid content-center justify-center h-5/6 mt-16">
                                     <div className="grid justify-items-center">
                                         <img src="<c:url value='/public/sinEmpleadas.png'/>" alt="sinEmpleadas"
@@ -63,7 +54,7 @@ export const ProfileEmployer = () => {
                                     </div>
                                 </div>
                         )}
-                        {employer.reviewList.length != 0 && (
+                        {1 !== 0 && (
                             <p className="text-3xl font-semibold text-purple-700">
                                 No hay opiniones
                             </p>

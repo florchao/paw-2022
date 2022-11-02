@@ -16,14 +16,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -33,20 +27,19 @@ import javax.mail.Session;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Properties;
 
 //@EnableWebMvc
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
 @Configuration
 @EnableAsync
-@PropertySource(value= {"classpath:application.properties"})
+@PropertySource(value = {"classpath:application.properties"})
 @EnableTransactionManagement
 
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final boolean DEV_BUILD = true; // Change this to a config/profile in the future
+
     private static boolean isOnDevBuild() {
         return DEV_BUILD;
     }
@@ -61,6 +54,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         return viewResolver;
     }
+
     @Autowired
     private Environment environment;
 
@@ -108,6 +102,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         messageSource.setFallbackToSystemLocale(false);
         return messageSource;
     }
+
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
@@ -123,14 +118,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public LocalContainerEntityManagerFactoryBean factoryBean() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        factoryBean.setPackagesToScan("ar.edu.itba.paw.persistence","ar.edu.itba.paw");
+        factoryBean.setPackagesToScan("ar.edu.itba.paw.persistence", "ar.edu.itba.paw");
         factoryBean.setDataSource(dataSource());
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         final Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
-        if(isOnDevBuild()) properties.setProperty("hibernate.show_sql", "true");
+        if (isOnDevBuild()) properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("format_sql", "true");
         factoryBean.setJpaProperties(properties);
         return factoryBean;

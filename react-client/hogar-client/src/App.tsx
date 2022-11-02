@@ -14,7 +14,7 @@ import NotFound from './views/NotFound';
 import EmployerLanding from "./views/EmployerLanding";
 import ContactEmployee from "./views/ContactEmployee";
 import ProfileEmployee from "./views/ProfileEmployee";
-import {ProfileEmployer} from "./views/ProfileEmployer";
+import ProfileEmployer from "./views/ProfileEmployer";
 
 export default function App() {
     return (

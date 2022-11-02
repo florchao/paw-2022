@@ -1,7 +1,8 @@
 export class EmployerService {
 
     public static async getEmployer(id: bigint) {
-        return await fetch('http://localhost:8080/api/employer/' + id, {
+        console.log("ACAAAA")
+        return await fetch('http://localhost:8080/api/profile/employer/' + id, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',
