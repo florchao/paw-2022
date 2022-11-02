@@ -135,13 +135,16 @@ public class ViewProfileController {
             employee.get().nameAbilities(language);
             employee.get().nameAvailability(language);
 //            mav.addObject("employee", employee.get());
+            GenericEntity<Employee> genericEntity = new GenericEntity<Employee>(employee.get()){};
+            return Response.ok(genericEntity).build();
         }
+        return Response.serverError().build();
 //        mav.addObject("status", status);
 //        if (page == null)
 //            page = 0L;
-        List<Review> reviews;
-        int maxPage;
-        boolean hasAlreadyRated = false;
+//        List<Review> reviews;
+//        int maxPage;
+//        boolean hasAlreadyRated = false;
 //        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
 //            HogarUser user = (HogarUser) auth.getPrincipal();
 //            Boolean exists = contactService.existsContact(userId, user.getUserID());
@@ -167,8 +170,7 @@ public class ViewProfileController {
 //        mav.addObject("ReviewList", reviews);
 //        mav.addObject("page", page);
 //        mav.addObject("maxPage", maxPage);
-        GenericEntity<Employee> genericEntity = new GenericEntity<Employee>(employee.get()){};
-        return Response.ok(genericEntity).build();
+
     }
 
 

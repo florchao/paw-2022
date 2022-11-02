@@ -26,7 +26,7 @@ export const ProfileEmployee = () => {
               <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                   <div className="grid grid-cols-5 justify-center">
                       <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                          <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src="${image}"/>
+                          <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={'./images/user.png'}/>
                                {/*onError="this.src = '<c:url value="/public/user.png"/>'" alt="profile pic"*/}
                       </div>
                       <div className="ml-3 col-span-2">
