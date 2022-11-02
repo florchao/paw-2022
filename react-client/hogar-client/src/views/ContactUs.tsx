@@ -47,6 +47,7 @@ export const ContactUs = () => {
                         type="text"
                         required
                         onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Please enter a valid name")}
+                        onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
@@ -64,6 +65,7 @@ export const ContactUs = () => {
                         required
                         value={mail}
                         onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Please enter a valid e-mail")}
+                        onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                         onChange={(e) => setMail(e.target.value)}
                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                     />
@@ -79,6 +81,7 @@ export const ContactUs = () => {
                         required
                         value={content}
                         onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Please enter a message")}
+                        onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                         onChange={(e) => setContent(e.target.value)}
                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"
                     ></textarea>
