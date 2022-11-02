@@ -1,13 +1,20 @@
 import {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
 import {EmployerService} from "../service/EmployerService";
+import {EmployeeService} from "../service/EmployeeService";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
+    const [image, setImage]: any = useState()
 
     useEffect(() => {
         //todo harcodeado el numero de int
-        EmployerService.getEmployer(BigInt(3)).then((val) => setEmployer(val));
+        EmployerService.getEmployer(3).then((val) => setEmployer(val));
+    }, [])
+
+    //todo harcoded el id de la imagen
+    useEffect(() => {
+        EmployeeService.loadImage(3).then((img) => setImage(URL.createObjectURL(img)))
     }, [])
 
     return (
@@ -16,12 +23,16 @@ export const ProfileEmployer = () => {
                 <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                     <div className="grid grid-cols-5 justify-center">
                         <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                            <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src="${image}" alt="profile pic"/>
-                                 {/*onerror="this.src = '<c:url value="/public/user.png"/>'" alt="profile pic"*/}
+                            {image !== null && (
+                            <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={image} alt="profile pic"/>
+                            )}
+                            {image === null && (
+                                <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={'./images/user.png'} alt="profile pic"/>
+                            )}
                         </div>
                         <div className="ml-3 col-span-2">
                             <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
-                                Employer.name
+                                employer.name
                             </p>
                         </div>
                         <div className="ml-3 col-start-5 row-start-2">
