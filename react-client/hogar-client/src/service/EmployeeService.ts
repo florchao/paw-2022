@@ -15,8 +15,8 @@ export class EmployeeService {
                 })
     }
 
-    public static async getEmployee(id: bigint) {
-        return await fetch('http://localhost:8080/api/profile/' + id, {
+    public static async getEmployee(id: number) {
+        return await fetch('http://localhost:8080/api/profile/3', {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',

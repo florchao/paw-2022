@@ -12,6 +12,8 @@ export const ProfileEmployee = () => {
 
     useEffect(() => {
         const algo = async () => {
+            console.log(id)
+            console.log("=========")
             const val = await EmployeeService.getEmployee(id);
             console.log(val)
             setEmployee(val)
