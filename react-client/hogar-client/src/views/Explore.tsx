@@ -15,12 +15,6 @@ export const Explore = () => {
             const val = await EmployeeService.getFilteredEmployees()
             console.log(val)
             setEmployees(val)
-            val.forEach((e: any) =>
-                EmployeeService.loadImage(e.id.id).then((img) => {
-                        e.id.image = URL.createObjectURL(img)
-                    }
-                )
-            )
         }
         algo()
     }, [])
@@ -36,7 +30,9 @@ export const Explore = () => {
         <div className="grid grid-cols-7 content-start h-screen overflow-auto pl-5 pr-5">
             <FilterForm/>
             <div className="col-span-6 mr-5">
-                {employees && employees.map((employee: Object) => (<EmployeeCard employee={employee}/>))}
+                {employees && employees.map(
+                    (employee: Object) => (<EmployeeCard employee={employee}/>)
+                )}
             </div>
         </div>
     )
