@@ -69,9 +69,11 @@ public class ViewProfileController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
 
-//    @RequestMapping(value = "/verPerfil", method = {RequestMethod.GET})
-//    public ModelAndView viewProfile(@RequestParam(value = "page", required = false) Long page) throws UserNotFoundException {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    @GET
+    @Path(value = "/employer/{userId}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response employerProfile(@Valid final ReviewForm reviewForm, @PathParam("userId") long userId) throws UserNotFoundException {
+        //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        UserDetails principal = (UserDetails) auth.getPrincipal();
 //        if (page == null)
 //            page = 0L;
@@ -79,11 +81,10 @@ public class ViewProfileController {
 //        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
 //            final ModelAndView mav = new ModelAndView("viewProfileEmployer");
 //            if (user.isPresent()) {
-//                Optional<Employer> employer = employerService.getEmployerById(user.get().getId());
-//                if(employer.isPresent()){
-//                    employer.get().firstWordsToUpper();
-//                    mav.addObject("employer", employer.get());
-//                }
+               Optional<Employer> employer = employerService.getEmployerById(userId);
+               if(employer.isPresent()){
+                    employer.get().firstWordsToUpper();
+                }
 //                List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId(), page, PAGE_SIZE);
 //                for (Review rev : myReviews) {
 //                    rev.getEmployerId().firstWordsToUpper();
@@ -117,7 +118,9 @@ public class ViewProfileController {
 //            mav.addObject("ReviewList", myReviews);
 //        }
 //        return mav;
-//    }
+        GenericEntity<Employer> genericEntity = new GenericEntity<Employer>(employer.get()){};
+        return Response.ok(genericEntity).build();
+    }
 
     @GET
     @Path("/{userId}")
