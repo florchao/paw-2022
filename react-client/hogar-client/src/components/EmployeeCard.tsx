@@ -1,11 +1,14 @@
 import {Link} from "react-router-dom";
-import {Component, useState} from "react";
+import {Component, useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
 
 const EmployeeCard = (employee: any)=> {
     const e = employee.employee
     const [image, setImage]: any = useState()
-    EmployeeService.loadImage(e.id.id).then((img) => setImage(URL.createObjectURL(img)))
+    useEffect(() => {
+        EmployeeService.loadImage(e.id.id).then((img) => setImage(URL.createObjectURL(img)))
+    }, [])
+
     return (
         <div className="w-full col-span-5">
             {/*<c:url value="/user/profile-image/${param.id}" var="image"/>*/}
