@@ -1,0 +1,10 @@
+{
+    "ContactUs.title":"Contactanos",
+    "ContactUs.name":"Nombre Completo",
+    "ContactUs.mail":"E-mail",
+    "ContactUs.message":"Mensaje",
+    "ContactUs.send":"Enviar",
+
+    "NotFound.title":"404 : No se encontro el recurso",
+    "NotFound.goBack":"Volver a la página inicial"
+}
