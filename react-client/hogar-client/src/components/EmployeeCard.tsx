@@ -11,7 +11,7 @@ export class EmployeeCard extends Component<{employee: any}> {
             className="grid grid-cols-8 items-center w-full bg-white rounded-lg border shadow-md mb-5 md:flex-row md:max-w-full hover:bg-gray-100 ">
           <img style={{maxHeight: 150}}
                className="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg col-start-1 col-span-1"
-               src={'./images/user.png'} alt="user photo"/>
+               src={employee.id.image} alt="user photo"/>
           <div className="flex flex-col justify-between p-4 leading-normal col-start-2 col-span-4">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-black text-ellipsis overflow-hidden">
                   {employee.name}

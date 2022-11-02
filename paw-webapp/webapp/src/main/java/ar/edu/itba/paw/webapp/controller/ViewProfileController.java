@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,18 +125,21 @@ public class ViewProfileController {
     @Produces(value = { MediaType.APPLICATION_JSON, })
 //    public Response userProfile(@RequestParam(value = "status", required = false) String status, @Valid final ReviewForm reviewForm,
 //                                    @RequestParam(value = "page", required = false) Long page, @PathParam("userId") long userId) throws UserNotFoundException {
-    public Response userProfile(@Valid final ReviewForm reviewForm, @PathParam("userId") long userId) throws UserNotFoundException {
+    public Response userProfile(@PathParam("userId") long userId) throws UserNotFoundException {
 //        final ModelAndView mav = new ModelAndView("viewProfile");
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("ESTE ES EL ID: " + userId);
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
+        System.out.println("ESTA PRESENT: " + employee.isPresent());
         if (employee.isPresent()) {
+            System.out.println("ESTE ES EL EMPLOYEE: " + employee.get());
             employee.get().firstWordsToUpper();
             employee.get().locationFirstWordsToUpper();
             String language = LocaleContextHolder.getLocale().getLanguage();
             employee.get().nameAbilities(language);
             employee.get().nameAvailability(language);
 //            mav.addObject("employee", employee.get());
-            GenericEntity<Employee> genericEntity = new GenericEntity<Employee>(employee.get()){};
+            GenericEntity<List<Employee>> genericEntity = new GenericEntity<List<Employee>>(Collections.singletonList(employee.get())){};
             return Response.ok(genericEntity).build();
         }
         return Response.serverError().build();
@@ -184,8 +188,10 @@ public class ViewProfileController {
 //    }
 //
 //
-//    @RequestMapping(value = "/user/profile-image/{userId}", method = {RequestMethod.GET})
-//    public void profileImage(HttpServletResponse response, @PathVariable final long userId) throws IOException {
+    @GET
+    @Path("image/{userId}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response profileImage(@PathParam("userId") long userId) throws IOException {
 //        Optional<byte[]> image = imagesService.getProfileImage(userId);
 //        if(!image.isPresent()){
 //            LOGGER.debug("User {} does not have an image", userId);
@@ -193,7 +199,14 @@ public class ViewProfileController {
 //        }
 //        InputStream is = new ByteArrayInputStream(image.get());
 //        IOUtils.copy(is,response.getOutputStream());
-//    }
+
+        Optional<byte[]> image = imagesService.getProfileImage(userId);
+        if(image.isPresent()) {
+            Response.ResponseBuilder response = Response.ok(new ByteArrayInputStream(image.get()));
+            return response.build();
+        }
+        return Response.noContent().build();
+    }
 //
 //    @RequestMapping(value = "/addRating/{idRating}", method = {RequestMethod.POST})
 //    public ModelAndView addRating(@RequestParam(value = "rating", required = false) Long rating,
