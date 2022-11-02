@@ -5,19 +5,53 @@ import {useLocation} from "react-router-dom";
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
+    const [image, setImage]: any = useState()
 
     const {id} = useLocation().state
 
     console.log(id)
 
+    // useEffect(() => {
+    //     const loadEmployee = async () => {
+    //         const val = await EmployeeService.getEmployee(id);
+    //         console.log(val)
+    //         setEmployee(val[0])
+    //     }
+    //     loadEmployee()
+    // }, [])
+
     useEffect(() => {
-        const algo = async () => {
-            const val = await EmployeeService.getEmployee(id);
-            console.log(val)
-            setEmployee(val)
-        }
-        algo()
+        EmployeeService.getEmployee(id).then((val) => setEmployee(val[0]));
     }, [])
+
+    useEffect(() => {
+        EmployeeService.loadImage(id).then((img) => setImage(URL.createObjectURL(img)))
+    }, [])
+
+
+
+    const loadImage = () => {
+        return fetch('http://localhost:8080/api/profile/image/' + id , {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json"
+            },
+        }).then((resp) => {
+            resp.blob().then((img) => {
+                    const urlImg = URL.createObjectURL(img)
+                    console.log(urlImg)
+                    setImage(urlImg)
+                }
+            )
+            }
+        )
+            .catch(
+                (error) => {
+                    console.log(error)
+                    throw error
+                })
+    }
 
     return (
       <div className="grid overflow-auto h-screen grid-cols-6">
@@ -26,7 +60,7 @@ export const ProfileEmployee = () => {
               <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                   <div className="grid grid-cols-5 justify-center">
                       <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                          <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src="${image}"/>
+                          <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={image}/>
                                {/*onError="this.src = '<c:url value="/public/user.png"/>'" alt="profile pic"*/}
                       </div>
                       <div className="ml-3 col-span-2">
