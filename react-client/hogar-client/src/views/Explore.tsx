@@ -16,6 +16,13 @@ export const Explore = () => {
         algo()
     }, [])
 
+    /*useEffect(() => {
+        employees.forEach((e: any) =>
+            EmployeeService.loadImage(e.id.id).then((img) => console.log(URL.createObjectURL(img)))
+        )
+        // EmployeeService.loadImage(employees).then((img) => setImage(URL.createObjectURL(img)))
+    }, [])*/
+    // @ts-ignore
     return (
         <div className="grid grid-cols-8 content-start h-screen overflow-auto pl-5 pr-5">
             <div className="col-span-2 mr-4 flex flex-col items-center">
