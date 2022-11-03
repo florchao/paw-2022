@@ -73,7 +73,7 @@ public class ViewProfileController {
     @GET
     @Path(value = "/employer/{userId}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response employerProfile(@Valid final ReviewForm reviewForm, @PathParam("userId") long userId) throws UserNotFoundException {
+    public Response employerProfile(@PathParam("userId") long userId) throws UserNotFoundException {
         //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        UserDetails principal = (UserDetails) auth.getPrincipal();
 //        if (page == null)
@@ -84,7 +84,8 @@ public class ViewProfileController {
 //            if (user.isPresent()) {
                Optional<Employer> employer = employerService.getEmployerById(userId);
                if(employer.isPresent()){
-                    employer.get().firstWordsToUpper();
+                    employer.get().getId();
+                    employer.get().getName();
                 }
 //                List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(user.get().getId(), page, PAGE_SIZE);
 //                for (Review rev : myReviews) {
