@@ -1,15 +1,18 @@
+import { useTranslation } from "react-i18next";
+
 export const LoginCard = () => {
+    const { t } = useTranslation();
     return (
         <div className="grid grid-cols-7 space-between content-start justify-center h-screen pt-5">
         <div className="my-16 w-full col-span-7"></div>
             <form className="col-span-3 col-start-3" action="${loginUrl}" method="post">
                 <div className="block p-6 rounded-lg shadow-lg bg-white">
                     <div className="form-group mb-6 grid grid-cols-6">
-                        <label className="text-sm font-medium text-gray-900">E-Mail</label>
+                        <label className="text-sm font-medium text-gray-900">{t('LogIn.mail')}</label>
                         <input id="username" name="j_username" type="text" className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                     </div>
                     <div className="form-group mb-6 grid grid-cols-6">
-                        <label className="text-sm font-medium text-gray-900">Contraseña</label>
+                        <label className="text-sm font-medium text-gray-900">{t('LogIn.password')}</label>
                         <input id="password" name="j_password" type="password" className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                     </div>
                     <div className="form-group mb-6">
@@ -17,7 +20,7 @@ export const LoginCard = () => {
                      <div className="form-group mb-6">
                         <label className="text-sm font-medium text-gray-900">
                         <input name="j_rememberme" type="checkbox"/>
-                        Recordarme
+                        {t('LogIn.remember')}
                         </label>
                      </div>
                     <div className="form-group mb-6">
@@ -25,14 +28,14 @@ export const LoginCard = () => {
                      </div>
                     <div className="form-group mb-6">
                         <p className="text-sm font-semibold text-gray-900">
-                            Ya tenes una cuenta? 
-                            <a className="text-violet-900">Registrate</a>
+                        {t('LogIn.account')}
+                            <a className="text-violet-900">{t('LogIn.register')}</a>
                         </p>
                     </div>
                     <div className="form-group mb-6 grid grid-cols-6">
                         <p className="text-sm font-semibold text-gray-900 col-span-3">
-                            Te olvidaste tu contraseña?
-                            <a className="text-violet-800">Setear contraseña</a>
+                        {t('LogIn.forgot')}
+                            <a className="text-violet-800">{t('LogIn.setP')}</a>
                         </p>
                     </div>
                 </div>

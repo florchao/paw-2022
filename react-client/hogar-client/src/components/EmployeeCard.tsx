@@ -1,6 +1,9 @@
+import { useTranslation } from "react-i18next";
 import {Link} from "react-router-dom";
 
 export const EmployeeCard = () => {
+const { t } = useTranslation();
+
   return (
       <body>
       {/*<c:url value="/user/profile-image/${param.id}" var="image"/>*/}
@@ -10,11 +13,11 @@ export const EmployeeCard = () => {
                src={ './images/user.png' } alt="user photo"/>
           <div className="flex flex-col justify-between p-4 leading-normal col-start-2 col-span-4">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-black text-ellipsis overflow-hidden">
-                  Name
+                  {t('EmployeeCard.name')}
                   {/*<c:out value="${param.name}"/>*/}
               </h5>
               <p className="mb-3 font-normal text-gray-400 text-ellipsis overflow-hidden">
-                  Location
+              {t('EmployeeCard.location')}
                   {/*<c:out value="${param.location}"/>*/}
               </p>
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">

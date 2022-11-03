@@ -2,8 +2,10 @@ import './style.css'
 import RegisterCard from "../components/RegisterCard";
 import Background from "../components/Background/Background";
 import Button from "../components/Button";
+import { useTranslation } from 'react-i18next';
 
 const Register = () => {
+    const { t } = useTranslation();
     return (
         <body>
             <Background />
@@ -15,14 +17,14 @@ const Register = () => {
                     </div>
                     <div className="col-span-2 ">
                         <h3 className="text-2xl text-purple-700 justify-self-center">
-                            Empleador
+                            {t('Register.employer')}
                         </h3>
                         <p className="font-thin text-lg mt-7">
-                            Si sos un empleador vas a poder encontrar a la persona perfecta para que limpie tu casa, cuide tus mascotas ¡y mucho más! Tenemos dos maneras de ayudarte a encontrar tu mejor opción: <br/><br/> - Creando una publicación según tus preferencias y necesidades. <br/> - Eligiendo en nuestra comunidad el perfil que encaje con lo que estes buscando y a la vez vas a poder ver opiniones de otros empleadores.
+                        {t('Register.employerDesc')} <br/><br/> {t('Register.employerDesc2')} <br/>{t('Register.employerDesc3')}
                         </p>
                         <div className="pb-4 grid col-start-2 col-span-2 mt-7">
                             {/*TODO pagina registerEmployer*/}
-                            <Button link="/registerEmployer" name="Crear cuenta de empleador"/>
+                            <Button link="/registerEmployer" name={t('Register.creteEmployer')}/>
                         </div>
                     </div>
                     <div className="row-start-2 h-96 w-96">
@@ -31,14 +33,14 @@ const Register = () => {
                     </div>
                     <div className="row-start-2 col-span-2">
                         <h3 className="text-2xl text-purple-700 justify-self-center">
-                            Empleada
+                        {t('Register.employee')}
                         </h3>
                         <p className="font-thin text-lg mt-7">
-                            Si estás buscando trabajo, este es el lugar perfecto para vos. Te ayudaremos para que puedas: <br/><br/> - Cargar tu perfil con tus habilidades, disponibilidad e información para que nuestra comunidad de empleadores te pueda ver. <br/> - Explorar las distintas ofertas de trabajo ofrecidas en nuestra comunidad.
+                        {t('Register.employeeDesc')} <br/><br/> {t('Register.employeeDesc2')} <br/> {t('Register.employerDesc3')}
                         </p>
                         <div className="pb-4 grid col-start-2 col-span-2 mt-7">
                             {/*TODO pagina registerEmployee*/}
-                            <Button link="/registerEmployee" name="Crear cuenta de empleada"/>
+                            <Button link="/registerEmployee" name={t('Register.createEmployee')}/>
                         </div>
                     </div>
                 </div>

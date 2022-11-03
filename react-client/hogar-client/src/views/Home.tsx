@@ -1,7 +1,9 @@
 import './style.css'
 import Button from "../components/Button";
+import { useTranslation } from 'react-i18next';
 
 export const Home = () => {
+    const { t } = useTranslation();
     return (
         <html>
             <body>
@@ -9,22 +11,22 @@ export const Home = () => {
                 <div className="grid grid-rows-2 gap-4 pl-8">
                     <div className="grid content-center">
                         <h3 className="text-3xl font-semibold text-purple-700">
-                            ¡Bienvenido a Hogar!
+                        {t('Home.title1')}
                         </h3>
                         <h3 className="text-2xl text-purple-700">
-                            Un lugar para conectarse y encontrar lo que estas buscando.
+                        {t('Home.title2')}
                         </h3>
                     </div>
                     <div className="flex flex-col">
                         <div className="grid">
                             <div className="pb-4 grid col-start-2 col-span-2">
-                                <Button name="Buscar Empleadas" link="/searchEmployee"/>
+                                <Button name={t('Home.searchEmployees')} link="/searchEmployee"/>
                             </div>
                             <div className="pb-4 grid col-start-2 col-span-2">
-                                <Button name="Registarse" link="/register"/>
+                                <Button name={t('Home.register')} link="/register"/>
                             </div>
                             <div className="grid col-start-2 col-span-2">
-                                <Button name="Iniciar Sesión" link="/login"/>
+                                <Button name={t('Home.login')} link="/login"/>
                             </div>
                         </div>
                     </div>
