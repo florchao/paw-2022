@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 export const ProfileEmployee = () => {
 
@@ -25,33 +25,14 @@ export const ProfileEmployee = () => {
     }, [])
 
     useEffect(() => {
-        EmployeeService.loadImage(id).then((img) => setImage(URL.createObjectURL(img)))
+        EmployeeService.loadImage(id).then(
+            (img) => {
+                if (img.size == 0)
+                    setImage("./images/user.png")
+                else
+                    setImage(URL.createObjectURL(img))
+            })
     }, [])
-
-
-
-    const loadImage = () => {
-        return fetch('http://localhost:8080/api/profile/image/' + id , {
-            method: 'GET',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-        }).then((resp) => {
-            resp.blob().then((img) => {
-                    const urlImg = URL.createObjectURL(img)
-                    console.log(urlImg)
-                    setImage(urlImg)
-                }
-            )
-            }
-        )
-            .catch(
-                (error) => {
-                    console.log(error)
-                    throw error
-                })
-    }
 
     return (
       <div className="grid overflow-auto h-screen grid-cols-6">
@@ -60,7 +41,7 @@ export const ProfileEmployee = () => {
               <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                   <div className="grid grid-cols-5 justify-center">
                       <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                          <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={image}/>
+                          <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={image} alt="profile pic"/>
                                {/*onError="this.src = '<c:url value="/public/user.png"/>'" alt="profile pic"*/}
                       </div>
                       <div className="ml-3 col-span-2">
@@ -85,6 +66,14 @@ export const ProfileEmployee = () => {
                           <h1 className="block mb-2 text-sm font-medium text-gray-600 ">
                               {employee.experienceYears}
                           </h1>
+                      </div>
+                      <div className="ml-3 col-start-5 row-start-2 w-fit">
+                          <Link to="/contact/employee" state={{id: employee.id.id, name: employee.name}}>
+                              <button
+                                  className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
+                                  CONNECT
+                              </button>
+                          </Link>
                       </div>
                   </div>
                   <div className="grid grid-cols-2">

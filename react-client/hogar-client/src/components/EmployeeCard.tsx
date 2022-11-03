@@ -6,7 +6,14 @@ const EmployeeCard = (employee: any)=> {
     const e = employee.employee
     const [image, setImage]: any = useState()
     useEffect(() => {
-        EmployeeService.loadImage(e.id.id).then((img) => setImage(URL.createObjectURL(img)))
+        EmployeeService.loadImage(e.id.id).then(
+            (img) => {
+                if (img.size == 0)
+                    setImage("./images/user.png")
+                else
+                    setImage(URL.createObjectURL(img))
+            }
+        )
     }, [])
 
     return (
