@@ -5,18 +5,22 @@ import {EmployeeService} from "../service/EmployeeService";
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
     const [image, setImage]: any = useState()
-
+    const [reviews, setReviews]: any = useState(new Array(0))
 
     useEffect(() => {
-        //todo harcodeado el numero de int
-        EmployerService.getEmployer(3).then((val) => setEmployer(val) );
+        //todo harcodeado el numero de id
+        EmployerService.getEmployer(3).then((val) => setEmployer(val));
     }, [])
     console.log(employer)
     //todo harcoded el id de la imagen
     useEffect(() => {
-        EmployeeService.loadImage(3).then((img) => setImage(URL.createObjectURL(img)))
+        EmployeeService.loadImage(3).then((img) => setImage(URL.createObjectURL(img)));
     }, [])
-    console.log(image)
+    //todo harcoded el id de las reviews
+    useEffect(() => {
+        EmployerService.getEmployerReviews(3).then((value) => setReviews(value));
+    }, [])
+    console.log(reviews)
 
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
@@ -44,7 +48,7 @@ export const ProfileEmployer = () => {
                                     <button type="submit"
                                             className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src="<c:url value='/public/bin.png'/>" alt="bin"
+                                            <img src={'./images/bin.png'} alt="bin"
                                                  className="mr-3 h-6 sm:h-5 col-start-1"/>
                                             <p className="col-span-2">
                                                 Borrar perfil
@@ -54,14 +58,15 @@ export const ProfileEmployer = () => {
                                 </form>
                             </div>
                         </div>
+                        {reviews &&
                         <div className="flow-root">
                             <h1 className="pb-3 pt-3 font-semibold">
                                 Opiniones
                             </h1>
-                            {0 === 0 && (
+                            {reviews.length === 0 && (
                                 <div className="grid content-center justify-center h-5/6 mt-16">
                                     <div className="grid justify-items-center">
-                                        <img src="<c:url value='/public/sinEmpleadas.png'/>" alt="sinEmpleadas"
+                                        <img src={'./images/sinEmpleadas.png'} alt="sinEmpleadas"
                                              className="mr-3 h-6 sm:h-52"/>
                                         <p className="text-3xl font-semibold text-purple-700">
                                             No hay opiniones
@@ -69,10 +74,11 @@ export const ProfileEmployer = () => {
                                     </div>
                                 </div>
                             )}
-                            {0 !== 0 && (
+                            {reviews.length !== 0 && (
                                 <p className="text-3xl font-semibold text-purple-700">
-                                    No hay opiniones
+                                    hay opiniones
                                 </p>
+
                                 /*
                                     <ul role="list" className="divide-y divide-gray-300">
                                         <c:forEach var="review" items="${ReviewList}">
@@ -145,6 +151,7 @@ export const ProfileEmployer = () => {
                                  */
                             )}
                         </div>
+                        }
                     </div>
                 </div>
             }
