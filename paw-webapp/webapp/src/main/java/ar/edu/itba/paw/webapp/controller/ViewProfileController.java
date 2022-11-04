@@ -181,17 +181,13 @@ public class ViewProfileController {
     public Response userProfile(@PathParam("userId") long userId) throws UserNotFoundException {
 //        final ModelAndView mav = new ModelAndView("viewProfile");
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("ESTE ES EL ID: " + userId);
         Optional<Employee> employee = employeeService.getEmployeeById(userId);
-        System.out.println("ESTA PRESENT: " + employee.isPresent());
         if (employee.isPresent()) {
-            System.out.println("ESTE ES EL EMPLOYEE: " + employee.get());
             employee.get().firstWordsToUpper();
             employee.get().locationFirstWordsToUpper();
             String language = LocaleContextHolder.getLocale().getLanguage();
             employee.get().nameAbilities(language);
             employee.get().nameAvailability(language);
-//            mav.addObject("employee", employee.get());
             GenericEntity<List<Employee>> genericEntity = new GenericEntity<List<Employee>>(Collections.singletonList(employee.get())){};
             return Response.ok(genericEntity).build();
         }

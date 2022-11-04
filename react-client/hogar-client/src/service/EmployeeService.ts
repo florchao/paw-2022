@@ -3,7 +3,6 @@ import {Result} from "postcss";
 export class EmployeeService {
 
     public static async getFilteredEmployees() {
-        console.log("hola")
         return await fetch('http://localhost:8080/api/explore/employees', {
             method: 'GET',
             headers: {

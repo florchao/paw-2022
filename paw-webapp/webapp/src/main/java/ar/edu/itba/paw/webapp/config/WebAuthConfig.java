@@ -45,6 +45,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .invalidSessionUrl("/login")
                 .and().authorizeRequests()
                 .antMatchers("/", "/api/explore/employees", "/api/profile/hello", "/api/profile/{userId}", "/api/profile/employer/{userId}", "/api/profile/employer/reviews/{userId}", "/filterEmployees", "/api/contact/us", "/api/contact/{id}","/user/profile-image/{userId}", "/contactUs", "/api/profile/image/{userId}").permitAll()
+                .antMatchers("/", "/api/explore/employees", "/api/profile/hello", "/api/profile/{userId}", "/api/profile/image/{userId}", "/api/review/employee/{userId}", "/api/rating/{userId}", "/filterEmployees", "/api/contact/us", "/api/contact/{id}","/user/profile-image/{userId}", "/contactUs").permitAll()
                 .antMatchers("/login", "/registrarse", "/register", "/nuevaContrasena", "/newPassword", "/crearPerfilEmpleador", "/createEmployer", "/crearPerfil", "/createEmployee").anonymous()
                 .antMatchers("/verPerfil/{userId}", "/buscarEmpleadas").not().hasAuthority("EMPLOYEE")
                 .antMatchers("/contactos", "/editarPerfil", "/editEmployee", "/trabajos", "/filterJobs", "/apply/{jobID}", "/trabajosAplicados").hasAuthority("EMPLOYEE")
