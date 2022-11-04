@@ -1,11 +1,18 @@
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
 import {Link, useLocation} from "react-router-dom";
+import {ReviewService} from "../service/ReviewService";
+import ReviewCard from "../components/ReviewCard";
+import {verify} from "crypto";
+import {RatingService} from "../service/RatingService";
 
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
     const [image, setImage]: any = useState()
+    const [rating, setRating]: any = useState()
+
+    const [review, setReview]: any = useState()
 
     const {id} = useLocation().state
 
@@ -33,6 +40,25 @@ export const ProfileEmployee = () => {
                     setImage(URL.createObjectURL(img))
             })
     }, [])
+
+    useEffect(() => {
+            ReviewService.getEmployeeReviews(id).then(
+                (rsp) => {
+                    setReview(rsp)
+                }
+            )
+        }, []
+    )
+
+    // useEffect(() => {
+    //         RatingService.getEmployeeRating(id).then(
+    //             (rsp) => {
+    //                 setRating(rsp)
+    //                 console.log(rating)
+    //             }
+    //         )
+    //     }, []
+    // )
 
     return (
       <div className="grid overflow-auto h-screen grid-cols-6">
@@ -74,6 +100,71 @@ export const ProfileEmployee = () => {
                                   CONNECT
                               </button>
                           </Link>
+                          {rating &&
+                              <ul className="flex items-center gap-x-1">
+                                  {rating && rating >= 0.75 &&
+                                      <li>
+                                          <i className=" text-yellow-300 fa-lg fa fa-star"></i>
+                                      </li>
+                                  }
+                                  {rating && rating < 0.75 &&
+                                      <li>
+                                          <i className="text-yellow-300 fa-lg fa fa-star-o"></i>
+                                      </li>
+                                  }
+                                  {/*    </c:otherwise>*/}
+                                  {/*</c:choose>*/}
+                                  {/*<c:choose>*/}
+                                  {/*    <c:when test="${rating >= 1.75}">*/}
+                                  {/*        <li>*/}
+                                  {/*            <i className="text-yellow-300 fa fa-lg fa-star"></i>*/}
+                                  {/*        </li>*/}
+                                  {/*    </c:when>*/}
+                                  {/*    <c:otherwise>*/}
+                                  {/*        <li>*/}
+                                  {/*            <i className="text-yellow-300 fa fa-lg fa-star-o"></i>*/}
+                                  {/*        </li>*/}
+                                  {/*    </c:otherwise>*/}
+                                  {/*</c:choose>*/}
+                                  {/*<c:choose>*/}
+                                  {/*    <c:when test="${rating >= 2.75}">*/}
+                                  {/*        <li>*/}
+                                  {/*            <i className="text-yellow-300 fa fa-lg fa-star"></i>*/}
+                                  {/*        </li>*/}
+                                  {/*    </c:when>*/}
+                                  {/*    <c:otherwise>*/}
+                                  {/*        <li>*/}
+                                  {/*            <i className="text-yellow-300 fa-lg fa fa-star-o"></i>*/}
+                                  {/*        </li>*/}
+                                  {/*    </c:otherwise>*/}
+                                  {/*</c:choose>*/}
+                                  {/*<c:choose>*/}
+                                  {/*    <c:when test="${rating >= 3.75}">*/}
+                                  {/*        <li>*/}
+                                  {/*            <i className="text-yellow-300 fa-lg fa fa-star"></i>*/}
+                                  {/*        </li>*/}
+                                  {/*    </c:when>*/}
+                                  {/*    <c:otherwise>*/}
+                                  {/*        <li>*/}
+                                  {/*            <i className="text-yellow-300 fa-lg fa fa-star-o"></i>*/}
+                                  {/*        </li>*/}
+                                  {/*    </c:otherwise>*/}
+                                  {/*</c:choose>*/}
+                                  {/*<c:choose>*/}
+                                  {/*    <c:when test="${rating >= 4.75}">*/}
+                                  {/*        <li>*/}
+                                  {/*            <i className="text-yellow-300 fa-lg fa fa-star"></i>*/}
+                                  {/*        </li>*/}
+                                  {/*    </c:when>*/}
+                                  {/*    <c:otherwise>*/}
+                                  {/*        <li>*/}
+                                  {/*            <i className="text-yellow-300 fa-lg fa fa-star-o"></i>*/}
+                                  {/*        </li>*/}
+                                  {/*    </c:otherwise>*/}
+                                  {/*</c:choose>*/}
+                                  {/*<c:out value="(${voteCount})"/>*/}
+                              </ul>
+                          }
                       </div>
                   </div>
                   <div className="grid grid-cols-2">
@@ -105,6 +196,24 @@ export const ProfileEmployee = () => {
                               ))}
                           </ul>
                       </div>
+                  </div>
+                  <div className="flow-root">
+                      <h1 className="pb-3 pt-3 font-semibold">
+                          Reviews
+                      </h1>
+                      <ul role="list" className="divide-y divide-gray-300">
+                          {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
+                          {review && review.length == 0 && <div
+                              className="grid content-center justify-center h-5/6 mt-16">
+                              <div className="grid justify-items-center">
+                                  <img src='/images/sinEmpleadas.png' alt="sinEmpleadas"
+                                       className="mr-3 h-6 sm:h-52"/>
+                                      <p className="text-3xl font-semibold text-purple-700">
+                                          No Reviews
+                                      </p>
+                              </div>
+                          </div>}
+                      </ul>
                   </div>
               </div>
           </div> }

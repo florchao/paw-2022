@@ -11,9 +11,6 @@ export const Explore = () => {
     useEffect(() => {
         const algo = async () => {
             const val = await EmployeeService.getFilteredEmployees()
-            console.log('--------------------')
-            console.log(typeof val)
-            console.log('--------------------')
             setEmployees(val)
         }
         algo()
