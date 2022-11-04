@@ -123,57 +123,6 @@ public class ViewProfileController {
     }
 
     @GET
-    @Path(value = "/employer/reviews/{userId}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response employerProfileReviews(@PathParam("userId") long userId) throws UserNotFoundException {
-        //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        UserDetails principal = (UserDetails) auth.getPrincipal();
-//        if (page == null)
-//            page = 0L;
-//        Optional<User> user = userService.findByUsername(principal.getUsername());
-//        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-//            if (user.isPresent()) {
-            List<Review> myReviews = reviewService.getMyProfileReviewsEmployer(userId, 1, PAGE_SIZE);
-            for (Review rev : myReviews) {
-                rev.getReview();
-                rev.getEmployerId().firstWordsToUpper();
-            }
-        System.out.println("MY REVIEWS" + myReviews);
-            GenericEntity<List<Review>> genericEntity = new GenericEntity<List<Review>>(myReviews){};
-            return Response.ok(genericEntity).build();
-//                mav.addObject("page", page);
-//                mav.addObject("maxPage",reviewService.getMyProfileReviewsEmployerPageNumber(user.get().getId(), PAGE_SIZE));
-//                mav.addObject("ReviewList", myReviews);
-//            }
-//            return mav;
-//        }
-//        final ModelAndView mav = new ModelAndView("viewProfile");
-//        if (user.isPresent()) {
-//            mav.addObject("user", user.get());
-//            Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
-//            if (employee.isPresent()) {
-//                employee.get().firstWordsToUpper();
-//                employee.get().locationFirstWordsToUpper();
-//                String language = LocaleContextHolder.getLocale().getLanguage();
-//                employee.get().nameAvailability(language);
-//                employee.get().nameAbilities(language);
-//                mav.addObject("employee", employee.get());
-//            }
-//            mav.addObject("userId", user.get().getId());
-//            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId(), page, PAGE_SIZE);
-//            for (Review rev : myReviews) {
-//                rev.getEmployerId().firstWordsToUpper();
-//            }
-//            mav.addObject("myProfileFlag", true);
-//            mav.addObject("page", page);
-//            mav.addObject("maxPage",reviewService.getMyProfileReviewsPageNumber(user.get().getId(), PAGE_SIZE));
-//            mav.addObject("ReviewList", myReviews);
-//        }
-//        return mav;
-    }
-
-
-    @GET
     @Path("/{userId}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
 //    public Response userProfile(@RequestParam(value = "status", required = false) String status, @Valid final ReviewForm reviewForm,

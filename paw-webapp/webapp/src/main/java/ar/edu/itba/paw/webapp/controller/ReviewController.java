@@ -35,4 +35,16 @@ public class ReviewController {
         GenericEntity<List<Review>> genericEntity = new GenericEntity<List<Review>>(reviews){};
         return Response.ok(genericEntity).build();
     }
+
+    @GET
+    @Path("/employer/{userId}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getEmployerReviews(@PathParam("userId") long userId) {
+        List<Review> reviews = reviewService.getMyProfileReviewsEmployer(userId, 0L, PAGE_SIZE);
+        for (Review rev : reviews) {
+            rev.getEmployerId().firstWordsToUpper();
+        }
+        GenericEntity<List<Review>> genericEntity = new GenericEntity<List<Review>>(reviews){};
+        return Response.ok(genericEntity).build();
+    }
 }

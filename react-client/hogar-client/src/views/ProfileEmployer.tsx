@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
 import {EmployerService} from "../service/EmployerService";
 import {EmployeeService} from "../service/EmployeeService";
+import {ReviewService} from "../service/ReviewService";
+import ReviewCard from "../components/ReviewCard";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
@@ -18,9 +20,13 @@ export const ProfileEmployer = () => {
     }, [])
     //todo harcoded el id de las reviews
     useEffect(() => {
-        EmployerService.getEmployerReviews(3).then((value) => setReviews(value));
-    }, [])
-    console.log(reviews)
+            ReviewService.getEmployerReviews(3).then(
+                (rsp) => {
+                    setReviews(rsp)
+                }
+            )
+        }, []
+    )
 
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
@@ -63,7 +69,7 @@ export const ProfileEmployer = () => {
                             <h1 className="pb-3 pt-3 font-semibold">
                                 Opiniones
                             </h1>
-                            {reviews.length === 0 && (
+                            {reviews.length === 0 &&
                                 <div className="grid content-center justify-center h-5/6 mt-16">
                                     <div className="grid justify-items-center">
                                         <img src={'./images/sinEmpleadas.png'} alt="sinEmpleadas"
@@ -73,83 +79,8 @@ export const ProfileEmployer = () => {
                                         </p>
                                     </div>
                                 </div>
-                            )}
-                            {reviews.length !== 0 && (
-                                <p className="text-3xl font-semibold text-purple-700">
-                                    hay opiniones
-                                </p>
-
-                                /*
-                                    <ul role="list" className="divide-y divide-gray-300">
-                                        <c:forEach var="review" items="${ReviewList}">
-                                            <c:url value="/user/profile-image/${review.employeeId.id.id}" var="image"/>
-                                            <li className="py-3 sm:py-4">
-                                                <div className="flex items-center space-x-4">
-                                                    <div className="flex-shrink-0 self-start">
-                                                        <img className="w-8 h-8 rounded-full object-cover" src="${image}"
-                                                             alt="Employee Photo"
-                                                             onerror="this.src = '<c:url value="/public/user.png"/>'"/>
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <p className="text-xl font-medium text-gray-900 text-ellipsis">
-                                                            <c:out value="${review.review}"/>
-                                                        </p>
-                                                        <div className="grid grid-cols-2">
-                                                            <p className="text-sm text-gray-500 col-start-1">
-                                                                <c:out value="${review.employeeId.name}"/>
-                                                            </p>
-                                                            <p className="text-sm text-gray-500 col-start-2 text-end">
-                                                                <c:out value="${review.created}"/>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </c:forEach>
-                                        <c:url value="/verPerfil" var="getPath"/>
-                                        <form method="get" action="${getPath}">
-                                            <c:if test="${maxPage > 0 && page + 1 <= maxPage}">
-                                                <div className="flex flex-row justify-center mt-4">
-                                                    <c:choose>
-                                                        <c:when test="${page < 1}">
-                                                            <button type="submit"
-                                                                    className="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2"
-                                                                    disabled="true" onclick="previousPage(${page})">
-                                                                <
-                                                            </button>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <button type="submit"
-                                                                    className="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2"
-                                                                    onclick="previousPage(${page})">
-                                                                <
-                                                            </button>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    <div className="bg--300 w-16 flex justify-center">
-                                                        <h1 className="text-purple-900">${page + 1} of ${maxPage}</h1>
-                                                    </div>
-                                                    <c:choose>
-                                                        <c:when test="${page + 1 == maxPage}">
-                                                            <button type="submit"
-                                                                    className="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2"
-                                                                    disabled="true" onclick="nextPage(${page})">>
-                                                            </button>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <button type="submit" id="prevPageButton"
-                                                                    className=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2"
-                                                                    onclick="nextPage(${page})">>
-                                                            </button>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                            </c:if>
-                        </div>
-                        <input style="visibility: hidden" type="number" name="page" id="pageNumber"/>
-                    </form>
-                </ul>
-                                 */
-                            )}
+                            }
+                            {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard review={rev}/>)}
                         </div>
                         }
                     </div>
