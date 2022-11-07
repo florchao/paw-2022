@@ -45,7 +45,6 @@ export const ContactUs = () => {
             <div className="block p-6 rounded-3xl shadow-lg bg-gray-200">
                 <div className="form-group mb-6">
                     <h3>{t('ContactUs.name')}</h3>
-                    <input type="text" className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                     <input
                         type="text"
                         required
@@ -63,7 +62,6 @@ export const ContactUs = () => {
                 </div>
                 <div className="form-group mb-6">
                     <h3>{t('ContactUs.mail')}</h3>
-                    <input type="tel" className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                     <input
                         type="email"
                         required
@@ -81,7 +79,6 @@ export const ContactUs = () => {
                 </div>
                 <div className="form-group mb-6">
                     <h3>{t('ContactUs.message')}</h3>
-                    <input type="tel" className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                     <textarea
                         required
                         value={content}

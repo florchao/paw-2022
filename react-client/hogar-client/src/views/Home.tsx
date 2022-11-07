@@ -20,7 +20,7 @@ export const Home = () => {
                     <div className="flex flex-col">
                         <div className="grid">
                             <div className="pb-4 grid col-start-2 col-span-2">
-                                <Button name={t('Home.searchEmployees')} link="/explore"/>
+                                <Button name={t('Home.searchEmployee')} link="/explore"/>
                             </div>
                             <div className="pb-4 grid col-start-2 col-span-2">
                                 <Button name={t('Home.register')} link="/register"/>
