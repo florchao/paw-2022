@@ -92,7 +92,7 @@ public class Employee implements Serializable {
         return rating;
     }
 
-    public void setRating(long rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

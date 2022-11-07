@@ -12,7 +12,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -34,10 +40,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.sessionManagement()
+        http.cors().configurationSource(corsConfigurationSource())
+                .and().sessionManagement()
                 .invalidSessionUrl("/login")
                 .and().authorizeRequests()
-                .antMatchers("/", "/buscarEmpleadas", "/filterEmployees", "/contactanos","/user/profile-image/{userId}", "/contactUs").permitAll()
+                .antMatchers("/", "/api/explore/employees", "/api/profile/hello", "/api/profile/{userId}", "/api/profile/image/{userId}", "/api/review/employee/{userId}", "/api/rating/{userId}", "/filterEmployees", "/api/contact/us", "/api/contact/{id}","/user/profile-image/{userId}", "/contactUs").permitAll()
                 .antMatchers("/login", "/registrarse", "/register", "/nuevaContrasena", "/newPassword", "/crearPerfilEmpleador", "/createEmployer", "/crearPerfil", "/createEmployee").anonymous()
                 .antMatchers("/verPerfil/{userId}", "/buscarEmpleadas").not().hasAuthority("EMPLOYEE")
                 .antMatchers("/contactos", "/editarPerfil", "/editEmployee", "/trabajos", "/filterJobs", "/apply/{jobID}", "/trabajosAplicados").hasAuthority("EMPLOYEE")
@@ -65,6 +72,17 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     public void configure(final WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers("/css/**", "/js/**", "/img/**", " /favicon.ico", "/403", "/public/**");
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }

@@ -11,6 +11,9 @@ import Explore from "./views/Explore";
 import ContactUs from './views/ContactUs';
 import Background from './components/Background/Background';
 import NotFound from './views/NotFound';
+import EmployerLanding from "./views/EmployerLanding";
+import ContactEmployee from "./views/ContactEmployee";
+import ProfileEmployee from "./views/ProfileEmployee";
 
 export default function App() {
     return (
@@ -18,10 +21,13 @@ export default function App() {
             <Navbar />
             <Background />
             <Routes>
+                <Route path="/contact/employee" element={<ContactEmployee/>}/>
+                <Route path="/profile" element={<ProfileEmployee/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/explore" element={<Explore/>}/>
                 <Route path="/contact" element={<ContactUs/>}/>
+                <Route path="/home" element={<EmployerLanding/>}/>
                 <Route path="/" element={<Home/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
