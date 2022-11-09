@@ -3,6 +3,8 @@ import Button from "../components/Button";
 import { useTranslation } from 'react-i18next';
 import {useState} from "react";
 import exp from "constants";
+import {ContactService} from "../service/ContactService";
+import {useNavigate} from "react-router-dom";
 
 export const invalidEmail = (email : String) => {
     if( email.length == 0)
@@ -20,21 +22,18 @@ export const invalidInput = (input : String) => {
 
 export const ContactUs = () => {
     const { t } = useTranslation();
+    const nav = useNavigate();
 
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
     const [mail, setMail] = useState('');
 
     const handleSubmit = (e: any) => {
-        e.preventDefault();
-        const blog = {name, mail, content};
-        fetch('http://localhost:8080/api/contact/us', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(blog)
-        }).then(() => {
-            // history.go(-1);
-        })
+        ContactService.contactUs(e, name, mail, content).
+        then((r) => {
+                nav('/contact', {replace: true})
+            }
+        );
     }
     return (
     <div className="grid grid-cols-7 content-start justify-center h-full pt-5 overflow-auto">

@@ -47,6 +47,13 @@ export const TRANSLATIONS_EN = {
     employeeDesc3:"- Search through different job offers inside our community.",
     createEmployee:"Create an employee account",
     createEmployer:"Creae an employer account"
-}
+  },
+
+  Contacts: {
+    title: "My contacts",
+    noContacts: "You do not have contacts",
+    phone: "Phone number:",
+    email: "Email:"
+  }
 
 }

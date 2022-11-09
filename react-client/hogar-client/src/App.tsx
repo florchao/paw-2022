@@ -14,6 +14,7 @@ import NotFound from './views/NotFound';
 import EmployerLanding from "./views/EmployerLanding";
 import ContactEmployee from "./views/ContactEmployee";
 import ProfileEmployee from "./views/ProfileEmployee";
+import {Contacts} from "./views/Contacts";
 
 export default function App() {
     return (
@@ -22,6 +23,7 @@ export default function App() {
             <Background />
             <Routes>
                 <Route path="/contact/employee" element={<ContactEmployee/>}/>
+                <Route path="/contacts" element={<Contacts/>}/>
                 <Route path="/profile" element={<ProfileEmployee/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>

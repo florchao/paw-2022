@@ -27,11 +27,9 @@ const EmployeeCard = (employee: any)=> {
                 <div className="flex flex-col justify-between p-4 leading-normal col-start-2 col-span-4">
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-black text-ellipsis overflow-hidden">
                         {e.name}
-                        {/*<c:out value="${param.name}"/>*/}
                     </h5>
                     <p className="mb-3 font-normal text-gray-400 text-ellipsis overflow-hidden">
                         {e.location}
-                        {/*<c:out value="${param.location}"/>*/}
                     </p>
                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
                         {e.experienceYears}

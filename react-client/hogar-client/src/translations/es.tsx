@@ -47,5 +47,12 @@ export const TRANSLATIONS_ES = {
         employeeDesc3:"- Explorar las distintas ofertas de trabajo ofrecidas en nuestra comunidad.",
         createEmployee:"Crear cuenta de empleador",
         createEmployer:"Crear cuenta de empleado"
+    },
+
+    Contacts: {
+        title: "Mis contactos",
+        noContacts: "No tienes contactos",
+        phone: "Teléfono:",
+        email: "Email:"
     }
   }
