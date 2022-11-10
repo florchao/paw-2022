@@ -5,6 +5,7 @@ import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
 import {verify} from "crypto";
 import {RatingService} from "../service/RatingService";
+import {useTranslation} from "react-i18next";
 
 export const ProfileEmployee = () => {
 
@@ -16,17 +17,7 @@ export const ProfileEmployee = () => {
 
     const {id, status} = useLocation().state
 
-
-    console.log(status)
-
-    // useEffect(() => {
-    //     const loadEmployee = async () => {
-    //         const val = await EmployeeService.getEmployee(id);
-    //         console.log(val)
-    //         setEmployee(val[0])
-    //     }
-    //     loadEmployee()
-    // }, [])
+    const { t } = useTranslation();
 
     useEffect(() => {
         EmployeeService.getEmployee(id).then((val) => setEmployee(val[0]));
@@ -76,8 +67,7 @@ export const ProfileEmployee = () => {
                       </div>
                       <div className="ml-3 col-span-2">
                           <h1 className="block mb-2 font-medium text-gray-900 font-semibold">
-                              {/*<spring:message code="viewProfile.location"/>*/}
-                              Location
+                              {t('Profile.location')}
                           </h1>
                           <h1 className="block mb-2 text-sm font-medium text-gray-600 text-ellipsis overflow-hidden">
                               {employee.location}
@@ -85,8 +75,7 @@ export const ProfileEmployee = () => {
                       </div>
                       <div className="ml-3 col-span-2">
                           <h1 className="block mb-2 font-medium text-gray-900 font-semibold">
-                              {/*<spring:message code="viewProfile.experience"/>*/}
-                              Experience Years
+                              {t('Profile.experience')}
                           </h1>
                           <h1 className="block mb-2 text-sm font-medium text-gray-600 ">
                               {employee.experienceYears}
@@ -96,7 +85,7 @@ export const ProfileEmployee = () => {
                           <Link to="/contacts" state={{id: employee.id.id}}>
                               <button
                                   className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
-                                  CONNECT
+                                  {t('Profile.connect')}
                               </button>
                           </Link>
                           {rating && rating.count != 0 &&
@@ -203,7 +192,7 @@ export const ProfileEmployee = () => {
                       <div className="col-span-1">
                           <h1 className="pb-3 pt-3 font-semibold">
                               {/*<spring:message code="viewProfile.abilities"/>*/}
-                              Abilities
+                              {t('Profile.abilities')}
                           </h1>
                           <ul role="list"
                               className="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
@@ -217,7 +206,7 @@ export const ProfileEmployee = () => {
                       <div className="col-span-1 col-start-2">
                           <h1 className="pb-3 pt-3 font-semibold">
                               {/*<spring:message code="viewProfile.availability"/>*/}
-                              Availability
+                              {t('Profile.availability')}
                           </h1>
                           <ul role="list"
                               className="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
@@ -231,7 +220,7 @@ export const ProfileEmployee = () => {
                   </div>
                   <div className="flow-root">
                       <h1 className="pb-3 pt-3 font-semibold">
-                          Reviews
+                          {t('Profile.reviews')}
                       </h1>
                       <ul role="list" className="divide-y divide-gray-300">
                           {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
@@ -241,7 +230,7 @@ export const ProfileEmployee = () => {
                                   <img src='/images/sinEmpleadas.png' alt="sinEmpleadas"
                                        className="mr-3 h-6 sm:h-52"/>
                                       <p className="text-3xl font-semibold text-purple-700">
-                                          No Reviews
+                                          {t('Profile.noReviews')}
                                       </p>
                               </div>
                           </div>}

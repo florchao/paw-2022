@@ -21,6 +21,20 @@ export const TRANSLATIONS_ES = {
         register: "Registrarse",
         login:"Iniciar Sesión"
     },
+    Profile:{
+        location: "Zona",
+        experience: "Años de experiencia",
+        abilities: "Habilidades",
+        availability: "Posible Jornada",
+        connect: "CONTACTAR",
+        alreadyConnected: "YA SE CONECTO",
+        reviews: "OPINIONES",
+        noReviews: "No hay opiniones"
+        // viewProfile.editProfile = EDITAR PERFIL
+        // viewProfile.rateUser = Califica a
+        // viewProfile.thankEmployer = \u00a1Gracias por su colaboracion!
+        //     viewProfile.delete = Eliminar perfil
+    },
     LogIn:{
         mail:"E-Mail",
         password:"Contraseña",

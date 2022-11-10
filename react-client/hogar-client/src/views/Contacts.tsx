@@ -1,11 +1,10 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
-import {EmployeeService} from "../service/EmployeeService";
 import {ContactService} from "../service/ContactService";
 import {useLocation} from "react-router-dom";
-import ReviewCard from "../components/ReviewCard";
 import ContactCard from "../components/ContactCard";
 import ContactCardPopUp from "../components/ContactCardPopUp";
+import Modal from "react-modal";
 
 export const Contacts = () => {
 
@@ -13,6 +12,16 @@ export const Contacts = () => {
     const [contacts, setContacts]: any = useState()
 
     const {id} = useLocation().state
+
+    const [modalIsOpen, setIsOpen] = useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
 
     useEffect(() => {
         ContactService.contacts(id).then((val) => setContacts(val));
@@ -36,12 +45,31 @@ export const Contacts = () => {
             }
             {contacts && contacts.length > 0 && contacts.map((contact: any) =>
                 <div className="flex flex-wrap content-start pl-5 pr-5">
-
-                        <a href={"#" + contact.employerID.id.id} rel="modal:open"
+                        <button onClick={openModal}
                            className=" transition hover:scale-105">
                             <ContactCard contact={contact}/>
-                        </a>
-                        <ContactCardPopUp contact={contact}/>
+                        </button>
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={closeModal}
+                            style={{
+                                overlay: {
+                                    backgroundColor: 'rgb(0,0,0,0.50)'
+                                },
+                                content: {
+                                    top: '50%',
+                                    left: '50%',
+                                    right: 'auto',
+                                    bottom: 'auto',
+                                    borderRadius: '10px',
+                                    marginRight: '-50%',
+                                    overflow:'visible',
+                                    transform: 'translate(-50%, -50%)',
+                                },
+                            }}
+                        >
+                            <ContactCardPopUp contact={contact}/>
+                        </Modal>
                 </div>)
             }
 
