@@ -11,16 +11,16 @@ export const ProfileEmployer = () => {
 
     useEffect(() => {
         //todo harcodeado el numero de id
-        EmployerService.getEmployer(3).then((val) => setEmployer(val));
+        EmployerService.getEmployer(2).then((val) => setEmployer(val));
     }, [])
     console.log(employer)
     //todo harcoded el id de la imagen
     useEffect(() => {
-        EmployeeService.loadImage(3).then((img) => setImage(URL.createObjectURL(img)));
+        EmployeeService.loadImage(2).then((img) => setImage(URL.createObjectURL(img)));
     }, [])
     //todo harcoded el id de las reviews
     useEffect(() => {
-            ReviewService.getEmployerReviews(3).then(
+            ReviewService.getEmployerReviews(2).then(
                 (rsp) => {
                     setReviews(rsp)
                 }
@@ -64,6 +64,7 @@ export const ProfileEmployer = () => {
                                 </form>
                             </div>
                         </div>
+                        <ul role="list" className="divide-y divide-gray-300">
                         {reviews &&
                         <div className="flow-root">
                             <h1 className="pb-3 pt-3 font-semibold">
@@ -83,6 +84,7 @@ export const ProfileEmployer = () => {
                             {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard review={rev}/>)}
                         </div>
                         }
+                        </ul>
                     </div>
                 </div>
             }
