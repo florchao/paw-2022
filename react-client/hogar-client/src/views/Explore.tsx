@@ -2,6 +2,8 @@ import EmployeeCard from "../components/EmployeeCard";
 import FilterForm from "../components/FilterForm";
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
+import LoginCard from "../components/LoginCard";
+import Loader from "../components/Loader";
 
 
 export const Explore = () => {
@@ -26,7 +28,7 @@ export const Explore = () => {
     return (
         <div className="grid grid-cols-8 content-start h-screen overflow-auto pl-5 pr-5">
             <div className="col-span-2 mr-4 flex flex-col items-center">
-                <FilterForm setEmployees={setEmployees} />
+                {employees && <FilterForm setEmployees={setEmployees} />}
             </div>
             <div className="col-span-5 mr-5">
                 <h1 className={'text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8'}>Employees Registered_</h1>
@@ -37,7 +39,7 @@ export const Explore = () => {
                         <h1 className={'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>Experience_</h1>
                     </div>
                 </div>
-                {employees && employees.map((employee: Object) => (<EmployeeCard employee={employee}/>))}
+                {employees? employees.map((employee: Object) => (<EmployeeCard employee={employee}/>)) : <Loader />}
             </div>
         </div>
     )
