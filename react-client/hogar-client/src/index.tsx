@@ -1,13 +1,17 @@
 import * as React from 'react';
+import { Suspense } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
+import './i18n';
 
 const container = document.getElementById("root")
 if (!container) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(container)
 
 root.render(
-    <App />
+    <Suspense fallback={<div>Loading...</div>}>
+        <App />
+    </Suspense>
 );
 
 // If you want to start measuring performance in your app, pass a function
