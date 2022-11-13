@@ -36,13 +36,11 @@ const ContactCard = (contact: any) => {
                     {contact.employerID.name}
                 </h5>
                 {contact.message.length <= 180 &&
-                    <span className="flex flex-wrap text-sm text-gray-500 text-ellipsis px-5">
-                          {/*style="width:90%; display:inline-block; word-wrap: break-word;">*/}
+                    <span className="flex flex-wrap text-sm text-gray-500 text-ellipsis px-5" style={{width:"90%", display:"inline-block", wordWrap: "break-word"}}>
                         {contact.message}
                     </span>}
                 {contact.message.length > 180 &&
-                    <span className="flex flex-wrap text-sm text-gray-500 text-ellipsis px-5">
-                          {/*style="width:90%; display:inline-block; word-wrap: break-word;">*/}
+                    <span className="flex flex-wrap text-sm text-gray-500 text-ellipsis px-5" style={{width:"90%", display:"inline-block", wordWrap: "break-word"}}>
                         {contact.message.substring(0, 180)}
                     </span>}
 

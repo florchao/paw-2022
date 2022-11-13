@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
 import {useTranslation} from "react-i18next";
 
-const ContactCardPopUp = (contact: any) => {
+const ContactCardModal = (contact: any) => {
 
     const [image, setImage]: any = useState()
 
@@ -40,8 +40,8 @@ const ContactCardPopUp = (contact: any) => {
                     </p>
                 </div>
                 <div className="col-span-3 h-80 overflow-y-auto py-5">
-                    <span className="flex flex-wrap text-gray-500 text-justify text-ellipsis px-5">
-                                          {/*style="width:100%; display:inline-block; word-wrap: break-word;">*/}
+                    <span className="flex flex-wrap text-gray-500 text-justify text-ellipsis px-5"
+                        style={{width:"100%",  display:"inline-block"}}>
                         {contact.message}
                     </span>
                 </div>
@@ -50,4 +50,4 @@ const ContactCardPopUp = (contact: any) => {
     )
 }
 
-export default ContactCardPopUp
+export default ContactCardModal
