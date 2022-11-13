@@ -188,6 +188,7 @@ public class ViewProfileController {
     @Path("image/{userId}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response profileImage(@PathParam("userId") long userId) throws IOException {
+
 //        Optional<byte[]> image = imagesService.getProfileImage(userId);
 //        if(!image.isPresent()){
 //            LOGGER.debug("User {} does not have an image", userId);
