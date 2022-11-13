@@ -26,6 +26,7 @@ import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -43,30 +44,26 @@ public class ExploreController {
 
     @GET
     @Path("/employees")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response filterEmployees() throws UserNotFoundException {
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response filterEmployees(
+            @QueryParam("name") String name,
+            @QueryParam("experience") Long experienceYears,
+            @QueryParam("location") String location,
+            @QueryParam("availability") String availability,
+            @QueryParam("abilities") String abilities,
+            @QueryParam("page") Long page,
+            @QueryParam("order") String orderCriteria
+    ) {
 
-//        Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-//        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
-
-//        boolean anonymousSession = auth.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
-
-//        if (page == null)
-//            page = 0L;
+        if (page == null)
+            page = 0L;
         Map<Employee, Boolean> list = new LinkedHashMap<>();
-//      List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities,page, PAGE_SIZE, orderCriteria);
-        List<Employee> employees = employeeService.getFilteredEmployees(null, null, null, null, null, 0L, PAGE_SIZE, null);
+      List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria);
+//        List<Employee> employees = employeeService.getFilteredEmployees(null, null, null, null, null, 0L, PAGE_SIZE, null);
         for (Employee employee : employees) {
             employee.firstWordsToUpper();
             employee.locationFirstWordsToUpper();
             list.put(employee, false);
-//            if (!anonymousSession) {
-//                HogarUser user = (HogarUser) authority.getPrincipal();
-//                Boolean connection = contactService.existsContact(employee.getId().getId(), user.getUserID());
-//                if(connection){
-//                    list.put(employee, true);
-//                }
-//            }
         }
         GenericEntity<List<Employee>> genericEntity = new GenericEntity<List<Employee>>(employees){};
         return Response.ok(genericEntity).build();

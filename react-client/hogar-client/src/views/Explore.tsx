@@ -10,10 +10,7 @@ export const Explore = () => {
 
     useEffect(() => {
         const algo = async () => {
-            const val = await EmployeeService.getFilteredEmployees()
-            console.log('--------------------')
-            console.log(typeof val)
-            console.log('--------------------')
+            const val = await EmployeeService.getEmployees()
             setEmployees(val)
         }
         algo()
@@ -29,7 +26,7 @@ export const Explore = () => {
     return (
         <div className="grid grid-cols-8 content-start h-screen overflow-auto pl-5 pr-5">
             <div className="col-span-2 mr-4 flex flex-col items-center">
-                {employees && <FilterForm setEmployees={setEmployees} />}
+                <FilterForm setEmployees={setEmployees} />
             </div>
             <div className="col-span-5 mr-5">
                 <h1 className={'text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8'}>Employees Registered_</h1>
