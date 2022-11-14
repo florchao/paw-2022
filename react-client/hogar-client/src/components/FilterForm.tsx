@@ -1,8 +1,8 @@
 import {EmployeeService} from "../service/EmployeeService"
 import React, {useState} from "react";
-import {findAllByAltText} from "@testing-library/react";
+import {JobService} from "../service/JobService";
 
-export const FilterForm = ({setEmployees}: { setEmployees: React.Dispatch<React.SetStateAction<object>> }) => {
+export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetStateAction<object>>, type: string }) => {
 
     const [minimumYears, setMinimumYears] = useState(0);
     const [name, setName] = useState()
@@ -12,14 +12,23 @@ export const FilterForm = ({setEmployees}: { setEmployees: React.Dispatch<React.
     const [availability, setAvailability] = useState([])
 
     const resetHandler = async (): Promise<any> => {
-        const allEmployees = await EmployeeService.getEmployees()
-        // setName();
-        // setLocation('')
-        setMinimumYears(0)
-        setAbilities([])
-        setAvailability([])
-
-        setEmployees(allEmployees)
+        if(type == "employee") {
+            const allEmployees = await EmployeeService.getEmployees()
+            // setName();
+            // setLocation('')
+            setMinimumYears(0)
+            setAbilities([])
+            setAvailability([])
+            setList(allEmployees)
+        } else if (type == "jobs") {
+            const allJobs = await JobService.getJobs()
+            // setName();
+            // setLocation('')
+            setMinimumYears(0)
+            setAbilities([])
+            setAvailability([])
+            setList(allJobs)
+        }
     }
 
     function abilitiesHandler(num: number): void {
@@ -35,14 +44,25 @@ export const FilterForm = ({setEmployees}: { setEmployees: React.Dispatch<React.
     }
 
     const handleFilter = async (): Promise<any> => {
-        const employees = await EmployeeService.getFilteredEmployees(
-            minimumYears,
-            name,
-            location,
-            (abilities.toString() === "") ? undefined : abilities.toString().toString(),
-            (availability.toString() === "") ? undefined : availability.toString().toString()
-        )
-        setEmployees(employees)
+        if(type == "employee") {
+            const employees = await EmployeeService.getFilteredEmployees(
+                minimumYears,
+                name,
+                location,
+                (abilities.toString() === "") ? undefined : abilities.toString().toString(),
+                (availability.toString() === "") ? undefined : availability.toString().toString()
+            )
+            setList(employees)
+        } else if (type == "jobs") {
+            const jobs = await JobService.getFilteredJobs(
+                minimumYears,
+                name,
+                location,
+                (abilities.toString() === "") ? undefined : abilities.toString().toString(),
+                (availability.toString() === "") ? undefined : availability.toString().toString()
+            )
+            setList(jobs)
+        }
     }
 
     return (
@@ -66,31 +86,31 @@ export const FilterForm = ({setEmployees}: { setEmployees: React.Dispatch<React.
                             <h1>Cook_</h1>
                         </div>
                         <div className={'col-start-11'}>
-                            <input type={'checkbox'} checked={abilities[0]} onChange={() => abilitiesHandler(1)}></input>
+                            <input type={'checkbox'}  onChange={() => abilitiesHandler(1)}></input>
                         </div>
                         <div className={'col-span-3 col-start-1]'}>
                             <h1>Iron_</h1>
                         </div>
                         <div className={'col-start-11'}>
-                            <input type={'checkbox'} checked={abilities[1]} onChange={() => abilitiesHandler(2)}></input>
+                            <input type={'checkbox'}  onChange={() => abilitiesHandler(2)}></input>
                         </div>
                         <div className={'col-span-3 col-start-1]'}>
                             <h1>Child_care_</h1>
                         </div>
                         <div className={'col-start-11'}>
-                            <input type={'checkbox'} checked={abilities[2]} onChange={() => abilitiesHandler(3)}></input>
+                            <input type={'checkbox'}  onChange={() => abilitiesHandler(3)}></input>
                         </div>
                         <div className={'col-span-3 col-start-1'}>
                             <h1>Elder_care_</h1>
                         </div>
                         <div className={'col-start-11'}>
-                            <input type={'checkbox'} checked={abilities[3]} onChange={() => abilitiesHandler(4)}></input>
+                            <input type={'checkbox'}  onChange={() => abilitiesHandler(4)}></input>
                         </div>
                         <div className={'col-span-3 col-start-1]'}>
                             <h1>Special_needs_</h1>
                         </div>
                         <div className={'col-start-11'}>
-                            <input type={'checkbox'} checked={abilities[4]} onChange={() => abilitiesHandler(5)}></input>
+                            <input type={'checkbox'}  onChange={() => abilitiesHandler(5)}></input>
                         </div>
                         <div className={'col-span-3 col-start-1]'}>
                             <h1>Pet_care_</h1>

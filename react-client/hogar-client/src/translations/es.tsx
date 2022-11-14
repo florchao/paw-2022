@@ -7,12 +7,19 @@ export const TRANSLATIONS_ES = {
         send:"Enviar",
     },
     NotFound:{
-        title:"404 : No se encontro el recurso",
+        title:"404 : No se encontró el recurso",
         goBack :"Volver a la página inicial"
     },
     EmployeeCard:{
         name:"Nombre",
-        location:"Ubicacion"
+        location:"Ubicación"
+    },
+    JobCard:{
+        publication: "Ver publicaci\u00f3n",
+        applicants: "Ver aplicantes",
+        pending: "Pendiente",
+        accepted: "Aceptado",
+        denied: "Rechazado"
     },
     Home:{
         title1:"¡Bienvenido a Hogar!",
