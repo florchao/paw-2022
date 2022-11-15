@@ -24,8 +24,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.json.Json;
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -128,10 +130,8 @@ public class ContactController {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
 //        }
-        System.out.println("AaAAAAAAAAAAAAAAAA");
         try {
             userService.getUserById(id);
-            System.out.println("BBBBBBBBBBBBBBB");
         } catch (ar.edu.itba.paw.model.exception.UserNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -142,5 +142,14 @@ public class ContactController {
             contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
         }
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces (value = {MediaType.APPLICATION_JSON})
+    public Response employeeContacts(@PathParam("id") long id) throws UserNotFoundException {
+        List<Contact> contacts = new ArrayList<>(contactService.getAllContacts(id, 0L, PAGE_SIZE));
+        GenericEntity<List<Contact>> genericEntity = new GenericEntity<List<Contact>>(contacts){};
+        return Response.ok(genericEntity).build();
     }
 }

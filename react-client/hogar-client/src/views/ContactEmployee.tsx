@@ -2,32 +2,33 @@ import './style.css'
 import Button from "../components/Button";
 import {useState} from "react";
 import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {Contacts} from "./Contacts";
+import {ContactService} from "../service/ContactService";
 
 export const ContactEmployee = () => {
 
     const [phone, setPhone] = useState('');
     const [content, setContent] = useState('');
+    const [status, setStatus] = useState<string>();
 
     const { id, name } = useLocation().state
 
-    const [state, setState] = useState(false);
+
 
     const nav = useNavigate();
 
-    console.log(id);
-
     const handleSubmit = (e: any) => {
-        e.preventDefault();
-        const contactForm = {phone, content};
-
-        fetch('http://localhost:8080/api/contact/' + id, {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(contactForm)
-        }).then((r) => {
+        ContactService.contactEmployee(e, phone, content, id).then((r) => {
             // history.go(-1);
-            setState(r.ok);
-            nav('/explore', {replace: true})
+            if(r.type == "error") {
+                setStatus("error");
+            }
+            else {
+                setStatus("ok");
+
+            }
+        }).then(() => {
+            nav('/profile', {replace: true, state: {id: id, status: status}})
         })
     }
     return (
