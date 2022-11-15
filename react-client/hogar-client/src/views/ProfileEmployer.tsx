@@ -14,7 +14,7 @@ export const ProfileEmployer = () => {
 
     //todo cambiar el numero de id
     function delEmployer() {
-        EmployerService.deleteEmployer(3).then((r) => {
+        EmployerService.deleteEmployer(3).then(() => {
                 nav('/', {replace: true})
             }
         );
