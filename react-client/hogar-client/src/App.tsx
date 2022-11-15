@@ -16,6 +16,7 @@ import ContactEmployee from "./views/ContactEmployee";
 import ProfileEmployee from "./views/ProfileEmployee";
 import ProfileEmployer from "./views/ProfileEmployer";
 import {Contacts} from "./views/Contacts";
+import RegisterEmployer from "./views/RegisterEmployer";
 
 export default function App() {
     return (
@@ -32,6 +33,7 @@ export default function App() {
                 <Route path="/contact" element={<ContactUs/>}/>
                 <Route path="/home" element={<EmployerLanding/>}/>
                 <Route path="/employer" element={<ProfileEmployer/>}/>
+                <Route path="/registerEmployer" element={<RegisterEmployer/>}/>
                 <Route path="/" element={<Home/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
