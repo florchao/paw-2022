@@ -51,7 +51,7 @@ export const TRANSLATIONS_EN = {
     remember:"Remember me",
     account:"Don't have an account yet?",
     register:"Register",
-    forgot:"Don't have a password yet??",
+    forgot:"Don't have a password yet?",
     setP:"Set it"
   },
   Navbar:{
