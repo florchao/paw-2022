@@ -3,24 +3,35 @@ import {EmployerService} from "../service/EmployerService";
 import {EmployeeService} from "../service/EmployeeService";
 import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
+import {useNavigate} from "react-router-dom";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
     const [image, setImage]: any = useState()
     const [reviews, setReviews]: any = useState(new Array(0))
+    const nav = useNavigate();
+
+
+    //todo cambiar el numero de id
+    function delEmployer() {
+        EmployerService.deleteEmployer(3).then((r) => {
+                nav('/', {replace: true})
+            }
+        );
+    }
 
     useEffect(() => {
         //todo harcodeado el numero de id
-        EmployerService.getEmployer(2).then((val) => setEmployer(val));
+        EmployerService.getEmployer(3).then((val) => setEmployer(val));
     }, [])
     console.log(employer)
     //todo harcoded el id de la imagen
     useEffect(() => {
-        EmployeeService.loadImage(2).then((img) => setImage(URL.createObjectURL(img)));
+        EmployeeService.loadImage(3).then((img) => setImage(URL.createObjectURL(img)));
     }, [])
     //todo harcoded el id de las reviews
     useEffect(() => {
-            ReviewService.getEmployerReviews(2).then(
+            ReviewService.getEmployerReviews(3).then(
                 (rsp) => {
                     setReviews(rsp)
                 }
@@ -50,8 +61,7 @@ export const ProfileEmployer = () => {
                                 </p>
                             </div>
                             <div className="ml-3 col-start-5 row-start-2">
-                                <form action="${deletePath}" method="delete">
-                                    <button type="submit"
+                                    <button type="submit" onClick={delEmployer}
                                             className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
                                             <img src={'./images/bin.png'} alt="bin"
@@ -61,7 +71,6 @@ export const ProfileEmployer = () => {
                                             </p>
                                         </div>
                                     </button>
-                                </form>
                             </div>
                         </div>
                         <ul role="list" className="divide-y divide-gray-300">

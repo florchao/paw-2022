@@ -25,10 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -222,12 +219,12 @@ public class ViewProfileController {
 //        return mav;
 //    }
 
-//    @RequestMapping(value = "/deleteProfile", method = {RequestMethod.POST, RequestMethod.DELETE})
-//    public ModelAndView deleteJob(){
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        userService.deleteUser(principal.getUserID());
-//        return new ModelAndView("redirect:/logout");
-//    }
+    @DELETE
+    @Path("delete/{userId}")
+    public Response deleteJob(@PathParam("userId") long userId){
+        userService.deleteUser(userId);
+        return Response.ok().build();
+    }
 }
 
 
