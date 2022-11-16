@@ -52,12 +52,8 @@ public class ExploreController {
             @QueryParam("pageSize") @DefaultValue("5") Long pageSize ,
             @QueryParam("order") @DefaultValue("rating") String orderCriteria
     ) {
-
-        if (page == null)
-            page = 0L;
         Map<Employee, Boolean> list = new LinkedHashMap<>();
-      List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, pageSize, orderCriteria);
-//        List<Employee> employees = employeeService.getFilteredEmployees(null, null, null, null, null, 0L, PAGE_SIZE, null);
+        List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, pageSize, orderCriteria);
         for (Employee employee : employees) {
             employee.firstWordsToUpper();
             employee.locationFirstWordsToUpper();
@@ -65,6 +61,23 @@ public class ExploreController {
         }
         GenericEntity<List<Employee>> genericEntity = new GenericEntity<List<Employee>>(employees){};
         return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/pages")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response pageNumber(
+            @QueryParam("name") String name,
+            @QueryParam("experience") @DefaultValue("0") Long experienceYears,
+            @QueryParam("location") String location,
+            @QueryParam("availability") String availability,
+            @QueryParam("abilities") String abilities,
+            @QueryParam("page") @DefaultValue("0") Long page,
+            @QueryParam("pageSize") @DefaultValue("5") Long pageSize ,
+            @QueryParam("order") @DefaultValue("rating") String orderCriteria
+    ) {
+        int employeeCount = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, pageSize, orderCriteria);
+        return Response.ok(employeeCount).build();
     }
 
 //    @RequestMapping(value = "/filterEmployees", method = {RequestMethod.GET})

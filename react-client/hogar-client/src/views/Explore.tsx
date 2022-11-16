@@ -17,12 +17,17 @@ export const Explore = () => {
     const [abilities, setAbilites]: any = useState()
     const [availability, setAvailabilty]: any = useState()
     const [page, setPage]: any = useState(0)
+    const [pageNumber, setPageNumber]: any = useState(1)
     const [order, setOrder]: any = useState()
 
     useEffect(() => {
         const algo = async () => {
             const val = await EmployeeService.getEmployees()
+            const count = await EmployeeService.getExplorePageNumber()
+            setPageNumber(count)
             setEmployees(val)
+            console.log(count)
+            console.log('------')
         }
         algo()
     }, [])

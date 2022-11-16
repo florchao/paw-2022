@@ -17,7 +17,8 @@ public interface EmployeeService {
             String location,
             String availability,
             String abilities,
-            long pageSize);
+            Long pageSize,
+            String orderCriteria);
 
     List<Employee> getFilteredEmployees(
             String name,

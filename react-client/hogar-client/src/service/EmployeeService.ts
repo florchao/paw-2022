@@ -13,6 +13,22 @@ export class EmployeeService {
                 })
     }
 
+    public static async getExplorePageNumber() {
+        return await fetch('http://localhost:8080/api/explore/pages', {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            console.log(resp)
+            resp.json()})
+            .catch(
+                (error) => {
+                    throw error
+                })
+    }
+
     public static async getFilteredEmployees(
         minimumYears: number,
         name?: string,

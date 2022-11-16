@@ -115,8 +115,13 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize) {
+    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize, String orderCriteria) {
         StringBuilder stringBuilder = new StringBuilder();
+
+        List<String> orderCriteriaWhiteList = new ArrayList<>();
+        orderCriteriaWhiteList.add("rating");
+        orderCriteriaWhiteList.add("experienceYears");
+
         Map<String, Object> paramMap = new HashMap<>();
         stringBuilder.append("SELECT count(e) FROM Employee e where ");
 
@@ -156,7 +161,13 @@ public class EmployeeJpaDao implements EmployeeDao{
             stringBuilder.append(" and   ");
         }
         stringBuilder.setLength(stringBuilder.length() - 7);
-
+        if (orderCriteria != null && orderCriteriaWhiteList.contains(orderCriteria)){
+            stringBuilder.append(" order by ")
+                    .append(orderCriteria)
+                    .append(" desc");
+        } else {
+            stringBuilder.append(" order by e.rating desc");
+        }
         TypedQuery<Long> filteredQuery = em.createQuery(stringBuilder.toString(), Long.class);
         for (String key : paramMap.keySet()) {
             filteredQuery.setParameter(key, paramMap.get(key));

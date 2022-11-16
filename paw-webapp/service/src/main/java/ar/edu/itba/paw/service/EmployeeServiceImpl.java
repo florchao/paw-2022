@@ -91,7 +91,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional
     @Override
-    public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize) {
+    public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, Long pageSize, String orderCriteria) {
         List<String> availabilityList = new ArrayList<>();
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
@@ -100,7 +100,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize);
+        return employeeDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize, orderCriteria);
     }
 
     @Transactional
