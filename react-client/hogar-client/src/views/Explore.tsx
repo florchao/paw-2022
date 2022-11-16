@@ -16,6 +16,7 @@ export const Explore = () => {
     const [location, setLocation]: any = useState()
     const [abilities, setAbilites]: any = useState()
     const [availability, setAvailabilty]: any = useState()
+    const [page, setPage]: any = useState(0)
     const [order, setOrder]: any = useState()
 
     useEffect(() => {
@@ -63,6 +64,11 @@ export const Explore = () => {
                     </div>
                 </div>
                 {employees? employees.map((employee: Object) => (<EmployeeCard employee={employee}/>)) : <Loader />}
+                <div className={'flex flex-row justify-center space-x-3'}>
+                    <button type="submit" className={'font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2'}>{'<'}</button>
+                    <p className={'text-yellow-300'}>{page+1}</p>
+                    <button type="submit" className={'font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2'}>{'>'}</button>
+                </div>
             </div>
         </div>
     )
