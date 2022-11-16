@@ -26,7 +26,7 @@ public interface EmployeeService {
             String availability,
             String abilities,
             Long page,
-            long pageSize,
+            Long pageSize,
             String orderCriteria);
 
     long getRatingVoteCount(long idRating);

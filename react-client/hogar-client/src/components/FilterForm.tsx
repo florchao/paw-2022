@@ -2,7 +2,7 @@ import {EmployeeService} from "../service/EmployeeService"
 import React, {useState} from "react";
 import {findAllByAltText} from "@testing-library/react";
 
-export const FilterForm = ({setEmployees}: { setEmployees: React.Dispatch<React.SetStateAction<object>> }) => {
+export const FilterForm = ({applyFilters}: {applyFilters: any} ) => {
 
     const [minimumYears, setMinimumYears] = useState(0);
     const [name, setName] = useState()
@@ -19,7 +19,8 @@ export const FilterForm = ({setEmployees}: { setEmployees: React.Dispatch<React.
         setAbilities([])
         setAvailability([])
 
-        setEmployees(allEmployees)
+
+        // filters.set("buenas", "nuevo")
     }
 
     function abilitiesHandler(num: number): void {
@@ -34,15 +35,14 @@ export const FilterForm = ({setEmployees}: { setEmployees: React.Dispatch<React.
         setAvailability(availabilityArr)
     }
 
-    const handleFilter = async (): Promise<any> => {
-        const employees = await EmployeeService.getFilteredEmployees(
+    const handleFilter = () => {
+        applyFilters(
             minimumYears,
             name,
             location,
             (abilities.toString() === "") ? undefined : abilities.toString().toString(),
             (availability.toString() === "") ? undefined : availability.toString().toString()
         )
-        setEmployees(employees)
     }
 
     return (

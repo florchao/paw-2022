@@ -18,7 +18,10 @@ export class EmployeeService {
         name?: string,
         location?: string,
         abilitites?: string,
-        availability?: string
+        availability?: string,
+        page?: number,
+        pageSize?: number,
+        orderCriteria?: string
     ) {
 
         let url = 'http://localhost:8080/api/explore/employees?'
@@ -29,6 +32,9 @@ export class EmployeeService {
         url = this.concatStringQueries(url, 'location', location)
         url = this.concatStringQueries(url, 'abilities', abilitites)
         url = this.concatStringQueries(url, 'availability', availability)
+        url = this.concatStringQueries(url, 'page', page?.toString())
+        url = this.concatStringQueries(url, 'pageSize', pageSize?.toString())
+        url = this.concatStringQueries(url, 'order', orderCriteria)
 
         return await fetch(url, {
             method: 'GET',

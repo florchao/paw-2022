@@ -112,7 +112,7 @@ public class EmployeeServiceImpl implements EmployeeService{
             String availability,
             String abilities,
             Long page,
-            long pageSize,
+            Long pageSize,
             String orderCriteria
     ) {
         if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0 && orderCriteria == null) {

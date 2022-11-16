@@ -23,10 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -51,14 +48,15 @@ public class ExploreController {
             @QueryParam("location") String location,
             @QueryParam("availability") String availability,
             @QueryParam("abilities") String abilities,
-            @QueryParam("page") Long page,
-            @QueryParam("order") String orderCriteria
+            @QueryParam("page") @DefaultValue("0") Long page,
+            @QueryParam("pageSize") @DefaultValue("5") Long pageSize ,
+            @QueryParam("order") @DefaultValue("rating") String orderCriteria
     ) {
 
         if (page == null)
             page = 0L;
         Map<Employee, Boolean> list = new LinkedHashMap<>();
-      List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria);
+      List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, pageSize, orderCriteria);
 //        List<Employee> employees = employeeService.getFilteredEmployees(null, null, null, null, null, 0L, PAGE_SIZE, null);
         for (Employee employee : employees) {
             employee.firstWordsToUpper();
