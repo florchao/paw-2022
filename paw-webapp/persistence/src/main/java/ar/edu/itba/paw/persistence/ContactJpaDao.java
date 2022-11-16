@@ -43,6 +43,7 @@ public class ContactJpaDao implements ContactDao{
         TypedQuery<Contact> contactTypedQuery = em.createQuery("SELECT c FROM Contact c WHERE c.employerID =:employer AND c.employeeID =:employee", Contact.class);
         contactTypedQuery.setParameter("employer", employerId);
         contactTypedQuery.setParameter("employee", employeeId);
+        System.out.println("IS EMPTY: " + contactTypedQuery.getResultList().isEmpty());
         return !contactTypedQuery.getResultList().isEmpty();
     }
 }

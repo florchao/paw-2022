@@ -36,7 +36,6 @@ public class EmployeeDto {
     public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
 
-
         String language = LocaleContextHolder.getLocale().getLanguage();
 
         employee.nameAvailability(language);

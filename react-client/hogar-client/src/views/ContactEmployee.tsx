@@ -1,6 +1,6 @@
 import './style.css'
 import Button from "../components/Button";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {Contacts} from "./Contacts";
 import {ContactService} from "../service/ContactService";
@@ -9,7 +9,7 @@ export const ContactEmployee = () => {
 
     const [phone, setPhone] = useState('');
     const [content, setContent] = useState('');
-    const [status, setStatus] = useState<string>();
+    const [status, setStatus] = useState<number>();
 
     const { id, name } = useLocation().state
 
@@ -20,17 +20,23 @@ export const ContactEmployee = () => {
     const handleSubmit = (e: any) => {
         ContactService.contactEmployee(e, phone, content, id).then((r) => {
             // history.go(-1);
-            if(r.type == "error") {
-                setStatus("error");
-            }
-            else {
-                setStatus("ok");
-
+            console.log("Response: " + r)
+            if (r.type == "error") {
+                setStatus(1);
+            } else {
+                setStatus(0);
             }
         }).then(() => {
-            nav('/profile', {replace: true, state: {id: id, status: status}})
+            console.log(status)
+            // nav("/employee", {replace: true, state: {id: id, status: status}})
         })
     }
+
+    useEffect(() => {
+            console.log("Status: " + status)
+        }, [status]
+    )
+
     return (
         <div className="grid grid-cols-7 content-start justify-center h-screen pt-5">
             <div className="my-16 w-full col-span-7"></div>

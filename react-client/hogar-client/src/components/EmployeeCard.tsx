@@ -19,7 +19,7 @@ const EmployeeCard = (employee: any)=> {
     return (
         <div className="w-full col-span-5">
             {/*<c:url value="/user/profile-image/${param.id}" var="image"/>*/}
-            <Link to={"/profile"} state={{id: e.id}}
+            <Link to={"/employee"} state={{id: e.id}}
                   className="grid grid-cols-8 items-center w-full bg-white rounded-lg border shadow-md mb-5 md:flex-row md:max-w-full hover:bg-gray-100 ">
                 <img style={{maxHeight: 150}}
                      className="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg col-start-1 col-span-1"

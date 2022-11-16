@@ -26,7 +26,7 @@ export default function App() {
             <Routes>
                 <Route path="/contact/employee" element={<ContactEmployee/>}/>
                 <Route path="/contacts" element={<Contacts/>}/>
-                <Route path="/profile" element={<ProfileEmployee/>}/>
+                <Route path="/employee" element={<ProfileEmployee/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/explore" element={<Explore/>}/>

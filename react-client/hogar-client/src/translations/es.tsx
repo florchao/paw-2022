@@ -75,5 +75,14 @@ export const TRANSLATIONS_ES = {
         noContacts: "No tienes contactos",
         phone: "Teléfono:",
         email: "Email:"
+    },
+
+    Explore: {
+        jobs: "Trabajos disponibles",
+        employees: "Empleadas registradas"
+    },
+
+    FilterForm: {
+
     }
   }

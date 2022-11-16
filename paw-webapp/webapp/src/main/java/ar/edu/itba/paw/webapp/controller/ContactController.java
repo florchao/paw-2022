@@ -12,6 +12,7 @@ import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ContactDto;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
+import ch.qos.logback.core.status.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +130,7 @@ public class ContactController {
     @POST
     @Path("/{id}")
     @Consumes (value = {MediaType.APPLICATION_JSON, })
+    @Produces (value = {MediaType.APPLICATION_JSON, })
     public Response contactEmployee(@Valid ContactForm form,  @PathParam("id") long id) throws UserNotFoundException, AlreadyExistsException {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
@@ -143,7 +145,11 @@ public class ContactController {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         if(employee.isPresent()){
             employee.get().firstWordsToUpper();
-            contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
+            boolean exists = contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
+            if (!exists) {
+                System.out.println("holaaa");
+                Response.status(Status.ERROR).build();
+            }
         }
         return Response.ok().build();
     }
