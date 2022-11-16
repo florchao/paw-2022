@@ -7,6 +7,7 @@ import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.EmployeeDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,10 +28,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Path("/api/explore")
 @Component
@@ -40,6 +40,9 @@ public class ExploreController {
     private EmployeeService employeeService;
     @Autowired
     private ContactService contactService;
+
+    @Context
+    private UriInfo uriInfo;
     private final static long PAGE_SIZE = 9;
 
     @GET
@@ -57,15 +60,13 @@ public class ExploreController {
 
         if (page == null)
             page = 0L;
-        Map<Employee, Boolean> list = new LinkedHashMap<>();
-      List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria);
+        Map<EmployeeDto, Boolean> list = new LinkedHashMap<>();
+        List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(e -> EmployeeDto.fromExplore(uriInfo, e)).collect(Collectors.toList());
 //        List<Employee> employees = employeeService.getFilteredEmployees(null, null, null, null, null, 0L, PAGE_SIZE, null);
-        for (Employee employee : employees) {
-            employee.firstWordsToUpper();
-            employee.locationFirstWordsToUpper();
+        for (EmployeeDto employee : employees) {
             list.put(employee, false);
         }
-        GenericEntity<List<Employee>> genericEntity = new GenericEntity<List<Employee>>(employees){};
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
         return Response.ok(genericEntity).build();
     }
 

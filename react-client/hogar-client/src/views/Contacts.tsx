@@ -73,6 +73,7 @@ export const Contacts = () => {
                             <button type="button"
                                     className=" text-violet-900 bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg rounded-full text-sm py-1 px-2.5 text-center inline-flex items-center mr-2 border-solid border-transparent border-2 hover:border-purple-300"
                                     style={{position: "absolute", right: 0}}
+                                    onClick={closeModal}
                             >
                                 x
                             </button>

@@ -1,41 +1,19 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Employer;
-import ar.edu.itba.paw.model.Review;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.*;
-import ar.edu.itba.paw.webapp.auth.HogarUser;
-import ar.edu.itba.paw.webapp.form.ReviewForm;
-import org.apache.commons.io.IOUtils;
+import ar.edu.itba.paw.webapp.dto.EmployeeDto;
+import ar.edu.itba.paw.webapp.dto.EmployerDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Date;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+
 import java.util.Optional;
 
 
@@ -66,6 +44,9 @@ public class ViewProfileController {
     @Autowired
     private ImagesService imagesService;
 
+    @Context
+    private UriInfo uriInfo;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewProfileController.class);
 
     @GET
@@ -79,11 +60,9 @@ public class ViewProfileController {
 //        Optional<User> user = userService.findByUsername(principal.getUsername());
 //        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
 //            if (user.isPresent()) {
-               Optional<Employer> employer = employerService.getEmployerById(userId);
+               Optional<EmployerDto> employer = employerService.getEmployerById(userId).map(e -> EmployerDto.fromEmployer(uriInfo, e));
                if(employer.isPresent()){
-                    employer.get().getId();
-                    employer.get().getName();
-                   GenericEntity<Employer> genericEntity = new GenericEntity<Employer>(employer.get()){};
+                   GenericEntity<EmployerDto> genericEntity = new GenericEntity<EmployerDto>(employer.get()){};
                    return Response.ok(genericEntity).build();
                 }
 
@@ -127,14 +106,9 @@ public class ViewProfileController {
     public Response userProfile(@PathParam("userId") long userId) throws UserNotFoundException {
 //        final ModelAndView mav = new ModelAndView("viewProfile");
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Employee> employee = employeeService.getEmployeeById(userId);
+        Optional<EmployeeDto> employee = employeeService.getEmployeeById(userId).map(e -> EmployeeDto.fromProfile(uriInfo, e));
         if (employee.isPresent()) {
-            employee.get().firstWordsToUpper();
-            employee.get().locationFirstWordsToUpper();
-            String language = LocaleContextHolder.getLocale().getLanguage();
-            employee.get().nameAbilities(language);
-            employee.get().nameAvailability(language);
-            GenericEntity<List<Employee>> genericEntity = new GenericEntity<List<Employee>>(Collections.singletonList(employee.get())){};
+            GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(employee.get()){};
             return Response.ok(genericEntity).build();
         }
         return Response.serverError().build();
