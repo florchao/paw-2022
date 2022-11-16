@@ -16,13 +16,12 @@ public class ContactDto {
     private String created;
 
     public static ContactDto fromContact(final UriInfo uriInfo, final Contact contact) {
-        ContactDto dto = new ContactDto();
+        final ContactDto dto = new ContactDto();
 
         dto.employer = EmployerDto.fromContact(uriInfo, contact.getEmployerID());
         dto.message = contact.getMessage();
         dto.phoneNumber = contact.getPhoneNumber();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        dto.created = formatter.format(contact.getCreated());
+        dto.created = DtoUtils.dateToString(contact.getCreated());
 
         return dto;
     }

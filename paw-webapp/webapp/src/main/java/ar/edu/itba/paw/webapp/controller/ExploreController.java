@@ -10,6 +10,7 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto;
+import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -88,20 +89,12 @@ public class ExploreController {
 
         if (page == null)
             page = 0L;
-        System.out.println("HOLA");
-        Map<Job, Boolean> list = new LinkedHashMap<>();
-        List<Job> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
-        System.out.println("AFTER JOB");
-        for (Job job : jobs) {
-            job.firstWordsToUpper();
-            job.locationNameToUpper();
+        Map<JobDto, Boolean> list = new LinkedHashMap<>();
+        List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> JobDto.fromExplore(uriInfo, j)).collect(Collectors.toList());
+        for (JobDto job : jobs) {
             list.put(job, false);
         }
-        System.out.println("AFTER FOR LOOP AAAAAA");
-        System.out.println("JOBS: " + jobs);
-        System.out.println("WHAT");
-        GenericEntity<List<Job>> genericEntity = new GenericEntity<List<Job>>(jobs){};
-        System.out.println("GENERIC: " + genericEntity);
+        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
     }
 

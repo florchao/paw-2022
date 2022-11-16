@@ -43,8 +43,7 @@ public class ReviewDto {
 
         dto.employee = EmployeeDto.fromReview(uriInfo, review.getEmployeeId());
 
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        dto.created = formatter.format(review.getCreated());
+        dto.created = DtoUtils.dateToString(review.getCreated());
 
         dto.review = review.getReview();
 

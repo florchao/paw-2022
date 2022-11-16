@@ -11,15 +11,9 @@ public class EmployerDto {
     private String email;
 
     public static EmployerDto fromEmployer(final UriInfo uriInfo, final Employer employer) {
-        EmployerDto dto = new EmployerDto();
+        final EmployerDto dto = new EmployerDto();
 
-        StringBuilder finalName = new StringBuilder();
-        for (String word : employer.getName().split(" ")) {
-            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalName.setLength(finalName.length() - 1);
-        dto.name = finalName.toString();
-
+        dto.name = DtoUtils.firstWordsToUpper(employer.getName());
         dto.id = employer.getId().getId();
 
         return dto;

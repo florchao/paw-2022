@@ -22,24 +22,10 @@ public class EmployeeDto {
     public static EmployeeDto fromExplore(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = new EmployeeDto();
 
-        StringBuilder finalName = new StringBuilder();
-        for (String word : employee.getName().split(" ")) {
-            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalName.setLength(finalName.length() - 1);
-        dto.name = finalName.toString();
-
-        StringBuilder finalLocation = new StringBuilder();
-        for (String word : employee.getLocation().split(" ")) {
-            finalLocation.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalLocation.setLength(finalLocation.length() - 1);
-        dto.location = finalLocation.toString();
-
+        dto.name = DtoUtils.firstWordsToUpper(employee.getName());
+        dto.location = DtoUtils.firstWordsToUpper(employee.getLocation());
         dto.experienceYears = employee.getExperienceYears();
-
         dto.id = employee.getId().getId();
-        
 
         final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("profile/employee").path(String.valueOf(employee.getId().getId()));
 
@@ -65,12 +51,7 @@ public class EmployeeDto {
     public static EmployeeDto fromReview(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = new EmployeeDto();
 
-        StringBuilder finalName = new StringBuilder();
-        for (String word : employee.getName().split(" ")) {
-            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalName.setLength(finalName.length() - 1);
-        dto.name = finalName.toString();
+        dto.name = DtoUtils.firstWordsToUpper(employee.getName());
 
         dto.id = employee.getId().getId();
 
