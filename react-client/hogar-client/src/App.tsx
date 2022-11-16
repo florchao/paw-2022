@@ -16,6 +16,7 @@ import ContactEmployee from "./views/ContactEmployee";
 import ProfileEmployee from "./views/ProfileEmployee";
 import ProfileEmployer from "./views/ProfileEmployer";
 import {Contacts} from "./views/Contacts";
+import ExploreJobs from "./views/ExploreJobs";
 
 export default function App() {
     return (
@@ -29,6 +30,7 @@ export default function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/explore" element={<Explore/>}/>
+                <Route path="/explore/jobs" element={<ExploreJobs/>}/>
                 <Route path="/contact" element={<ContactUs/>}/>
                 <Route path="/home" element={<EmployerLanding/>}/>
                 <Route path="/employer" element={<ProfileEmployer/>}/>

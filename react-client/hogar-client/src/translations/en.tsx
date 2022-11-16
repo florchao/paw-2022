@@ -14,6 +14,13 @@ export const TRANSLATIONS_EN = {
     name:"Name",
     location:"Location"
   },
+  JobCard:{
+    publication:"See job offer",
+    applicants:"See applicants",
+    pending: "Pending",
+    accepted: "Accepted",
+    denied: "Denied"
+  },
   Home:{
     title1:"Welcome to Hogar!",
     title2:"A place to connect and find what you are looking for.",

@@ -3,9 +3,11 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Abilities;
 import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
@@ -38,6 +40,9 @@ public class ExploreController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private JobService jobService;
     @Autowired
     private ContactService contactService;
 
@@ -62,11 +67,41 @@ public class ExploreController {
             page = 0L;
         Map<EmployeeDto, Boolean> list = new LinkedHashMap<>();
         List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(e -> EmployeeDto.fromExplore(uriInfo, e)).collect(Collectors.toList());
-//        List<Employee> employees = employeeService.getFilteredEmployees(null, null, null, null, null, 0L, PAGE_SIZE, null);
         for (EmployeeDto employee : employees) {
             list.put(employee, false);
         }
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/jobs")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response filterJobs(
+            @QueryParam("name") String name,
+            @QueryParam("experience") Long experienceYears,
+            @QueryParam("location") String location,
+            @QueryParam("availability") String availability,
+            @QueryParam("abilities") String abilities,
+            @QueryParam("page") Long page
+    ) {
+
+        if (page == null)
+            page = 0L;
+        System.out.println("HOLA");
+        Map<Job, Boolean> list = new LinkedHashMap<>();
+        List<Job> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE);
+        System.out.println("AFTER JOB");
+        for (Job job : jobs) {
+            job.firstWordsToUpper();
+            job.locationNameToUpper();
+            list.put(job, false);
+        }
+        System.out.println("AFTER FOR LOOP AAAAAA");
+        System.out.println("JOBS: " + jobs);
+        System.out.println("WHAT");
+        GenericEntity<List<Job>> genericEntity = new GenericEntity<List<Job>>(jobs){};
+        System.out.println("GENERIC: " + genericEntity);
         return Response.ok(genericEntity).build();
     }
 

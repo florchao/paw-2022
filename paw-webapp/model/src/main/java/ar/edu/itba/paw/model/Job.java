@@ -258,4 +258,19 @@ public class Job implements Serializable {
     public int hashCode() {
         return Objects.hash(title, location, jobId, employerId, availability, experienceYears, abilities, description, availabilityArr, abilitiesArr, opened);
     }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "title='" + title + '\'' +
+                ", location='" + location + '\'' +
+                ", jobId=" + jobId +
+                ", employerId=" + employerId +
+                ", availability='" + availability + '\'' +
+                ", experienceYears=" + experienceYears +
+                ", abilities='" + abilities + '\'' +
+                ", description='" + description + '\'' +
+                ", opened=" + opened +
+                '}';
+    }
 }
