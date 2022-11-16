@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
@@ -28,9 +29,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.sql.Date;
 import java.util.*;
 
@@ -44,6 +43,8 @@ public class JobController {
     @Autowired
     private ReviewService reviewService;
 
+    @Context
+    UriInfo uriInfo;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE_JOBS = 9;
     private static final long PAGE_SIZE = 8;
@@ -94,14 +95,9 @@ public class JobController {
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response verTrabajo(@PathParam("userId") long userId) throws JobNotFoundException{
         Job job = jobService.getJobByID(userId).orElseThrow( ()->new  JobNotFoundException("job" + userId + "does not exists"));
+        JobDto jobDto = JobDto.fromJob(uriInfo, job);
         int jobStatus = -1;
-        job.employerNameToUpper(job.getEmployerId());
-        job.firstWordsToUpper();
-        job.locationNameToUpper();
-        String language = LocaleContextHolder.getLocale().getLanguage();
-        job.nameAbilities(language);
-        job.nameAvailability(language);
-        GenericEntity<Job> genericEntity = new GenericEntity<Job>(job){};
+        GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto){};
         return Response.ok(genericEntity).build();
 //        Employer employer = job.getEmployerId();
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
