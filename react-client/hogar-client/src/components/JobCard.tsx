@@ -44,7 +44,7 @@ const JobCard  = (job: any)=> {
                     <Link to="/job" state={{id: job.jobId}} style={{marginRight: "15px"}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                         {t("JobCard.publication")}
                     </Link>
-                    <Link to="/job/applicants" className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                    <Link to="/job/applicants" state={{id: job.jobId, title : job.title}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                         {t("JobCard.applicants")}
                     </Link>
                     {/*<sec:authorize access="hasAuthority('EMPLOYEE')">*/}

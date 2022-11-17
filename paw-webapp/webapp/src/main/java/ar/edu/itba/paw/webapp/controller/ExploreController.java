@@ -66,11 +66,7 @@ public class ExploreController {
 
         if (page == null)
             page = 0L;
-        Map<EmployeeDto, Boolean> list = new LinkedHashMap<>();
         List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(e -> EmployeeDto.fromExplore(uriInfo, e)).collect(Collectors.toList());
-        for (EmployeeDto employee : employees) {
-            list.put(employee, false);
-        }
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
         return Response.ok(genericEntity).build();
     }
@@ -89,11 +85,7 @@ public class ExploreController {
 
         if (page == null)
             page = 0L;
-        Map<JobDto, Boolean> list = new LinkedHashMap<>();
         List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> JobDto.fromExplore(uriInfo, j)).collect(Collectors.toList());
-        for (JobDto job : jobs) {
-            list.put(job, false);
-        }
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
     }

@@ -13,7 +13,6 @@ export const Job = () => {
     const { t } = useTranslation();
 
     useEffect(()=> {
-        console.log("hola")
         JobService.getJob(id).then((e) => {setJob(e)});
     }, [])
 

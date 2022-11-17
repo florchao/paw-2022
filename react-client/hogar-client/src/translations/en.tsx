@@ -93,5 +93,10 @@ export const TRANSLATIONS_EN = {
     availability : "Availability",
     abilities : "Abilities required",
     description : "Description"
+  },
+  Applicants:{
+    title: "Applicants to ",
+    accept: "Accept",
+    reject: "Reject"
   }
 }
