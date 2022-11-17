@@ -2,21 +2,25 @@ import {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {JobService} from "../service/JobService";
+import {ContactService} from "../service/ContactService";
 
 export const Job = () => {
+
     const [job, setJob]: any = useState()
 
-    const {id} = useLocation().state
-    console.log(useLocation().state)
+    const { id } = useLocation().state
+
     const { t } = useTranslation();
-    useEffect(()=>{
-        console.log(id)
-        JobService.getJob(id).then((e) => {setJob(e)
-        console.log('termino job service')});
+
+    useEffect(()=> {
+        console.log("hola")
+        JobService.getJob(id).then((e) => {setJob(e)});
     }, [])
+
 
     return(
         <div className="grid h-screen grid-cols-6 overflow-auto">
+            {job &&
             <div className=" grid grid-row-4 col-span-4 col-start-2 h-fit">
                 <div className=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
                     <div className="grid grid-cols-5 justify-center">
@@ -231,7 +235,7 @@ export const Job = () => {
 {/*</div>*/}
 {/*</sec:authorize>*/}
 </div>
-</div>
+</div> }
 </div>
     )
 
