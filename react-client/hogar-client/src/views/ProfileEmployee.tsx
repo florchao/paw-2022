@@ -6,6 +6,7 @@ import ReviewCard from "../components/ReviewCard";
 import {verify} from "crypto";
 import {RatingService} from "../service/RatingService";
 import {useTranslation} from "react-i18next";
+import {UserService} from "../service/UserService";
 
 export const ProfileEmployee = () => {
 
@@ -27,7 +28,7 @@ export const ProfileEmployee = () => {
     }, [])
 
     useEffect(() => {
-        EmployeeService.loadImage(id).then(
+        UserService.loadImage(id).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")

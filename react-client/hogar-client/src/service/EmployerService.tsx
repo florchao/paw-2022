@@ -15,15 +15,4 @@ export class EmployerService {
                     throw error
                 })
     }
-
-    public static async deleteEmployer(id: number) {
-        //todo harcodeado la url para el usuario
-        return await fetch('http://localhost:8080/api/profile/delete/' + id, {
-            method: 'DELETE',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            }
-        })
-    }
 }

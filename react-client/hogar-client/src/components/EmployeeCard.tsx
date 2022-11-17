@@ -1,12 +1,13 @@
 import {Link} from "react-router-dom";
 import {Component, useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
+import {UserService} from "../service/UserService";
 
 const EmployeeCard = (employee: any)=> {
     const e = employee.employee
     const [image, setImage]: any = useState()
     useEffect(() => {
-        EmployeeService.loadImage(e.id).then(
+        UserService.loadImage(e.id).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")

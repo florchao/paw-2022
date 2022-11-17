@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
 import {useTranslation} from "react-i18next";
+import {UserService} from "../service/UserService";
 
 const ContactCardModal = (contact: any) => {
 
@@ -12,7 +13,7 @@ const ContactCardModal = (contact: any) => {
 
     useEffect(() => {
         //TODO:usar el de Employer
-        EmployeeService.loadImage(contact.employer.id).then(
+        UserService.loadImage(contact.employer.id).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")

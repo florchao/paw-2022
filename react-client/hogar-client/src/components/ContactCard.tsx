@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
+import {UserService} from "../service/UserService";
 
 const ContactCard = (contact: any) => {
 
@@ -11,7 +12,7 @@ const ContactCard = (contact: any) => {
 
     useEffect(() => {
         //TODO:usar el de Employer
-        EmployeeService.loadImage(contact.employer.id).then(
+        UserService.loadImage(contact.employer.id).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")

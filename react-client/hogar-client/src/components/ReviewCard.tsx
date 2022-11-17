@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
+import {UserService} from "../service/UserService";
 
 const ReviewCard = (review: any)=> {
     const [image, setImage]: any = useState()
@@ -13,7 +14,7 @@ const ReviewCard = (review: any)=> {
             id = review.employer.id;
         else
             id = review.employee.id
-        EmployeeService.loadImage(id).then(
+        UserService.loadImage(id).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")

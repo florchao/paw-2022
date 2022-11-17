@@ -4,6 +4,7 @@ import {EmployeeService} from "../service/EmployeeService";
 import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
 import {useNavigate} from "react-router-dom";
+import {UserService} from "../service/UserService";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
@@ -14,7 +15,7 @@ export const ProfileEmployer = () => {
 
     //todo cambiar el numero de id
     function delEmployer() {
-        EmployerService.deleteEmployer(2).then(() => {
+        UserService.deleteUser(2).then(() => {
                 nav('/', {replace: true})
             }
         );
@@ -27,7 +28,7 @@ export const ProfileEmployer = () => {
 
     //todo harcoded el id de la imagen
     useEffect(() => {
-        EmployeeService.loadImage(2).then(
+        UserService.loadImage(2).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")
