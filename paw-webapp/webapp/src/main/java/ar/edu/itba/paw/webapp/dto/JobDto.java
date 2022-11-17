@@ -1,8 +1,12 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
+import org.springframework.context.i18n.LocaleContextHolder;
 
+import javax.persistence.ElementCollection;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 public class JobDto {
 
@@ -14,6 +18,13 @@ public class JobDto {
 
     private String description;
 
+    private long experienceYears;
+
+    private List<String> availability;
+    private List<String> abilities;
+
+    private EmployerDto employerId;
+
     public static JobDto fromExplore(final UriInfo uriInfo, final Job job) {
         final JobDto dto = new JobDto();
 
@@ -23,6 +34,28 @@ public class JobDto {
         dto.description = job.getDescription();
 
         return dto;
+    }
+
+    public static JobDto fromJob(final UriInfo uriInfo, final Job job) {
+        final JobDto dto = new JobDto();
+        dto.jobId = job.getJobId();
+        dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
+        dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
+
+        dto.description = job.getDescription();
+        dto.experienceYears = job.getExperienceYears();
+
+        String language = LocaleContextHolder.getLocale().getLanguage();
+        job.nameAbilities(language);
+        dto.abilities = job.getAbilitiesArr();
+
+        job.nameAvailability(language);
+        dto.availability = job.getAvailabilityArr();
+
+        dto.employerId = EmployerDto.fromEmployer(uriInfo, job.getEmployerId());
+
+        return dto;
+
     }
 
     public long getJobId() {
@@ -55,5 +88,37 @@ public class JobDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getExperienceYears() {
+        return experienceYears;
+    }
+
+    public void setExperienceYears(long experienceYears) {
+        this.experienceYears = experienceYears;
+    }
+
+    public List<String> getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(List<String> availability) {
+        this.availability = availability;
+    }
+
+    public List<String> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(List<String> abilities) {
+        this.abilities = abilities;
+    }
+
+    public EmployerDto getEmployerId() {
+        return employerId;
+    }
+
+    public void setEmployerId(EmployerDto employerId) {
+        this.employerId = employerId;
     }
 }

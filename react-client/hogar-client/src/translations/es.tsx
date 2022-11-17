@@ -84,5 +84,14 @@ export const TRANSLATIONS_ES = {
 
     FilterForm: {
 
+    },
+    Job:{
+        title : "Ver trabajo",
+        jobLocation : "Ubicación del trabajo",
+        by : "Publicado por",
+        experience : "Mínimo de años de experiencia",
+        availability : "Disponibilidad",
+        abilities : "Habilidades requeridas",
+        description : "Descripción"
     }
   }
