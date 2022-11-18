@@ -97,6 +97,7 @@ export const TRANSLATIONS_EN = {
   Applicants:{
     title: "Applicants to ",
     accept: "Accept",
-    reject: "Reject"
+    reject: "Reject",
+    noApplicants: "There are no applicants for this job"
   }
 }

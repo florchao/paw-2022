@@ -97,6 +97,7 @@ export const TRANSLATIONS_ES = {
     Applicants:{
         title: "Aplicantes para ",
         accept: "Aceptar",
-        reject: "Rechazar"
+        reject: "Rechazar",
+        noApplicants: "No hay aplicantes para este trabajo"
     }
   }
