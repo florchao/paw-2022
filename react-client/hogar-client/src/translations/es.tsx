@@ -98,6 +98,8 @@ export const TRANSLATIONS_ES = {
         title: "Aplicantes para ",
         accept: "Aceptar",
         reject: "Rechazar",
+        accepted: "Aceptado",
+        rejected: "Rechazado",
         noApplicants: "No hay aplicantes para este trabajo"
     }
   }

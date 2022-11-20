@@ -11,7 +11,7 @@ import java.util.List;
 public class EmployeeDto {
     private String name;
     private String location;
-    private long experienceYears;
+    private Long experienceYears;
 
     private List<String> availabilityArr;
     private List<String> abilitiesArr;
@@ -81,11 +81,11 @@ public class EmployeeDto {
         this.location = location;
     }
 
-    public long getExperienceYears() {
+    public Long getExperienceYears() {
         return experienceYears;
     }
 
-    public void setExperienceYears(long experienceYears) {
+    public void setExperienceYears(Long experienceYears) {
         this.experienceYears = experienceYears;
     }
 
