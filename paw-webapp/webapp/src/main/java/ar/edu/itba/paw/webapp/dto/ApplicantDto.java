@@ -13,6 +13,7 @@ public class ApplicantDto {
 
     private int status;
 
+    //TODO: ver si el status se lo derivo a JobDto
     public static ApplicantDto fromJob(final UriInfo uriInfo, final Applicant applicant){
         final ApplicantDto dto = new ApplicantDto();
         dto.employee = EmployeeDto.fromReview(uriInfo, applicant.getEmployeeID());
