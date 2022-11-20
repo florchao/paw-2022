@@ -85,8 +85,9 @@ export const TRANSLATIONS_ES = {
     FilterForm: {
 
     },
+
     Job:{
-        title : "Ver trabajo",
+        title : "Ver publicación",
         jobLocation : "Ubicación del trabajo",
         by : "Publicado por",
         experience : "Mínimo de años de experiencia",
@@ -94,6 +95,7 @@ export const TRANSLATIONS_ES = {
         abilities : "Habilidades requeridas",
         description : "Descripción"
     },
+
     Applicants:{
         title: "Aplicantes para ",
         accept: "Aceptar",
@@ -101,5 +103,10 @@ export const TRANSLATIONS_ES = {
         accepted: "Aceptado",
         rejected: "Rechazado",
         noApplicants: "No hay aplicantes para este trabajo"
+    },
+
+    AppliedJobs:{
+        title: "Trabajos Aplicados",
+        noJobs: "Todavía no has aplicado a ningún trabajo"
     }
   }

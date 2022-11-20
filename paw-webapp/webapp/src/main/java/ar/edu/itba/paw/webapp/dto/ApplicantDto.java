@@ -24,6 +24,7 @@ public class ApplicantDto {
 
     public static ApplicantDto fromEmployee(final UriInfo uriInfo, final Applicant applicant){
         final ApplicantDto dto = new ApplicantDto();
+
         dto.job = JobDto.fromExplore(uriInfo, applicant.getJobID());
         dto.status = applicant.getStatus();
 

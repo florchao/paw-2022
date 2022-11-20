@@ -85,6 +85,7 @@ export const TRANSLATIONS_EN = {
   FilterForm: {
 
   },
+
   Job:{
     title : "View job",
     jobLocation : "Location of job",
@@ -94,6 +95,7 @@ export const TRANSLATIONS_EN = {
     abilities : "Abilities required",
     description : "Description"
   },
+
   Applicants:{
     title: "Applicants to ",
     accept: "Accept",
@@ -101,5 +103,10 @@ export const TRANSLATIONS_EN = {
     accepted: "Accepted",
     rejected: "Rejected",
     noApplicants: "There are no applicants for this job"
+  },
+
+  AppliedJobs:{
+    title: "Applied Jobs",
+    noJobs: "You haven't applied to a job yet"
   }
 }

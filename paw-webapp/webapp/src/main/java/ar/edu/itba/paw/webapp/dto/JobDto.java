@@ -1,10 +1,8 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import javax.persistence.ElementCollection;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class JobDto {
 
     private String description;
 
-    private long experienceYears;
+    private Long experienceYears;
 
     private List<String> availability;
     private List<String> abilities;
@@ -32,6 +30,16 @@ public class JobDto {
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
         dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
         dto.description = job.getDescription();
+
+        return dto;
+    }
+
+    public static JobDto fromAppliedJobs(final UriInfo uriInfo, final Job job) {
+        final JobDto dto = new JobDto();
+
+        dto.jobId = job.getJobId();
+        dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
+        dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
 
         return dto;
     }
@@ -90,11 +98,11 @@ public class JobDto {
         this.description = description;
     }
 
-    public long getExperienceYears() {
+    public Long getExperienceYears() {
         return experienceYears;
     }
 
-    public void setExperienceYears(long experienceYears) {
+    public void setExperienceYears(Long experienceYears) {
         this.experienceYears = experienceYears;
     }
 

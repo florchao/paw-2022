@@ -84,6 +84,32 @@ public class ApplicantController {
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
         return Response.ok(genericEntity).build();
     }
+
+    //TODO: que sea solo jobs cuando tengamos el token
+    @GET
+    @Path("{id}/jobs")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response appliedTo(@QueryParam("page") Long page, @PathParam("id") long id){
+//        ModelAndView mav = new ModelAndView("appliedJobs");
+//        if (page == null)
+//            page = 0L;
+//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, 0L, PAGE_SIZE).stream().map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant)).collect(Collectors.toList());
+//        Map<Job, Integer> jobList = new LinkedHashMap<>();
+//        mav.addObject("page", page);
+//        mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
+//        for (Job job : list) {
+//            job.firstWordsToUpper();
+//            job.locationNameToUpper();
+//            job.getEmployerId().firstWordsToUpper();
+//            int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
+//            jobList.put(job, status);
+//        }
+//        mav.addObject("jobList", jobList);
+//        return mav;
+        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
+        return Response.ok(genericEntity).build();
+    }
 //
 //    @RequestMapping(value = "/changeStatus/{jobId}/{employeeId}/{status}", method = {RequestMethod.POST})
 //    public ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status) throws JobNotFoundException, UserNotFoundException {

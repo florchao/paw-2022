@@ -1,12 +1,17 @@
 import {useTransition} from "react";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
+import {stat} from "fs";
 
 const JobCard  = (job: any)=> {
 
     const { t } = useTranslation();
-
+    let status;
     job = job.job;
+    if(job.status != null) {
+        status = job.status
+        job = job.job
+    }
     return (
         <div className="max-w-sm mb-5 mr-5 w-80 h-52 bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
             <div className="flex justify-end px-4 pt-4">
@@ -44,26 +49,27 @@ const JobCard  = (job: any)=> {
                     <Link to="/job" state={{id: job.jobId}} style={{marginRight: "15px"}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                         {t("JobCard.publication")}
                     </Link>
-                    <Link to="/job/applicants" state={{id: job.jobId, title : job.title}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                        {t("JobCard.applicants")}
-                    </Link>
-                    {/*<sec:authorize access="hasAuthority('EMPLOYEE')">*/}
-                    {/*    <c:if test="${param.apply == 0}">*/}
-                    {/*        <a className="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5">*/}
-                    {/*            {t("JobCard.pending")}*/}
-                    {/*        </a>*/}
-                    {/*    </c:if>*/}
-                    {/*    <c:if test="${param.apply == 1}">*/}
-                    {/*        <a className="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5">*/}
-                    {/*            {t("JobCard.accepted")}*/}
-                    {/*        </a>*/}
-                    {/*    </c:if>*/}
-                    {/*    <c:if test="${param.apply == 2}">*/}
-                    {/*        <a className="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5">*/}
-                    {/*            {t("JobCard.denied")}*/}
-                    {/*        </a>*/}
-                    {/*    </c:if>*/}
-                    {/*</sec:authorize>*/}
+                    {status == undefined &&
+                        <Link to="/job/applicants" state={{id: job.jobId, title : job.title}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                            {t("JobCard.applicants")}
+                        </Link>
+                    }
+                    {status == 0 &&
+                        <a className="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5">
+                            {t("JobCard.pending")}
+                        </a>
+                    }
+                    { status == 1 &&
+                        <a className="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5">
+                            {t("JobCard.accepted")}
+                        </a>
+                    }
+                    { status == 2 &&
+                        <a className="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5">
+                            {t("JobCard.denied")}
+                        </a>
+                    }
+
                 </div>
             </div>
         </div>

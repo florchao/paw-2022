@@ -40,10 +40,10 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Job> getJobsByApplicant(long employeeID, Long page, int pageSize) {
+    public List<Applicant> getAppliedJobsByApplicant(long employeeID, Long page, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
        if(employee.isPresent()){
-           return applicantDao.getJobsByApplicant(employee.get(), page, pageSize);
+           return applicantDao.getAppliedJobsByApplicant(employee.get(), page, pageSize);
        }
        return Collections.emptyList();
     }
