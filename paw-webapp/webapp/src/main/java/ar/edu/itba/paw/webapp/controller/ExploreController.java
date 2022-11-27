@@ -49,7 +49,7 @@ public class ExploreController {
             @QueryParam("availability") String availability,
             @QueryParam("abilities") String abilities,
             @QueryParam("page") @DefaultValue("0") Long page,
-            @QueryParam("pageSize") @DefaultValue("5") Long pageSize ,
+            @QueryParam("pageSize") @DefaultValue("1") Long pageSize ,
             @QueryParam("order") @DefaultValue("rating") String orderCriteria
     ) {
         Map<Employee, Boolean> list = new LinkedHashMap<>();
@@ -77,6 +77,7 @@ public class ExploreController {
             @QueryParam("order") @DefaultValue("rating") String orderCriteria
     ) {
         int employeeCount = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, pageSize, orderCriteria);
+        System.out.println(employeeCount);
         return Response.ok(employeeCount).build();
     }
 

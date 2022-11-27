@@ -52,6 +52,8 @@ export class EmployeeService {
         url = this.concatStringQueries(url, 'pageSize', pageSize?.toString())
         url = this.concatStringQueries(url, 'order', orderCriteria)
 
+        console.log(url)
+
         return await fetch(url, {
             method: 'GET',
             headers: {

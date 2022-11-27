@@ -51,6 +51,9 @@ export const Explore = () => {
         setAbilites(abilities)
         setAvailabilty(availability)
         const filteredEmployees = await EmployeeService.getFilteredEmployees(experience, name, location, abilities, availability, 0, 5, order)
+        const count = await EmployeeService.getExplorePageNumber()
+        setPageNumber(count)
+        alert("ACA")
         setEmployees(filteredEmployees)
     }
 
