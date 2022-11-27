@@ -108,5 +108,12 @@ export const TRANSLATIONS_ES = {
     AppliedJobs:{
         title: "Trabajos Aplicados",
         noJobs: "Todavía no has aplicado a ningún trabajo"
+    },
+
+    CreatedJobs: {
+        publications: "Mis trabajos publicados",
+        noJobs: "No tienes publicaciones",
+        addFirst: "Crear una oferta de trabajo",
+        addAnother: "Agregar una nueva publicación"
     }
   }

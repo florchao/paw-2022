@@ -32,6 +32,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.*;
 import java.sql.Date;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Path("/api/job")
 @Component
@@ -71,24 +72,20 @@ public class JobController {
 //        return crearTrabajo(form);
 //    }
 //
-//    @RequestMapping(value = "/misTrabajos", method = {RequestMethod.GET})
-//    public ModelAndView verTrabajos(@RequestParam(value = "publishedPage", required = false) Long page){
-//        ModelAndView mav = new ModelAndView("publishedJobs");
+    @GET
+    @Path("/employer/{id}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response createdJobs(@PathParam("id") long id) {
+//            @RequestParam(value = "publishedPage", required = false) Long page){
 //        if (page == null)
 //            page = 0L;
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        List<Job> jobs = jobService.getUserJobs(principal.getUserID(), page, PAGE_SIZE);
-//        List<Job> jobList = new ArrayList<>();
-//            for (Job job : jobs) {
-//                job.firstWordsToUpper();
-//                job.locationNameToUpper();
-//                jobList.add(job);
-//            }
+        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromExplore(uriInfo, job)).collect(Collectors.toList());
 //        mav.addObject("JobList", jobList);
 //        mav.addObject("publishedPage", page);
 //        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));
-//        return mav;
-//}
+        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
+        return Response.ok(genericEntity).build();
+}
 
     @GET
     @Path("/{userId}")

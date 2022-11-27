@@ -108,5 +108,12 @@ export const TRANSLATIONS_EN = {
   AppliedJobs:{
     title: "Applied Jobs",
     noJobs: "You haven't applied to a job yet"
+  },
+
+  CreatedJobs: {
+    publications: "My published jobs",
+    noJobs: "You do not have publications",
+    addFirst: "Create a job publication",
+    addAnother: "Add another job offer"
   }
 }
