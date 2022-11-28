@@ -65,20 +65,4 @@ export class EmployeeService {
                     throw error
                 })
     }
-
-    public static async loadImage(id: number) {
-        return fetch('http://localhost:8080/api/profile/image/' + id, {
-            method: 'GET',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-        }).then((resp) => resp.blob()
-        )
-            .catch(
-                (error) => {
-                    console.log(error)
-                    throw error
-                })
-    }
 }

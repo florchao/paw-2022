@@ -6,6 +6,7 @@ import ReviewCard from "../components/ReviewCard";
 import {verify} from "crypto";
 import {RatingService} from "../service/RatingService";
 import {useTranslation} from "react-i18next";
+import {UserService} from "../service/UserService";
 
 export const ProfileEmployee = () => {
 
@@ -17,14 +18,17 @@ export const ProfileEmployee = () => {
 
     const {id, status} = useLocation().state
 
+    console.log(useLocation().state)
+
     const { t } = useTranslation();
 
     useEffect(() => {
-        EmployeeService.getEmployee(id).then((val) => setEmployee(val[0]));
+        console.log(id)
+        EmployeeService.getEmployee(id).then((e) => setEmployee(e));
     }, [])
 
     useEffect(() => {
-        EmployeeService.loadImage(id).then(
+        UserService.loadImage(id).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")
@@ -63,6 +67,7 @@ export const ProfileEmployee = () => {
                       <div className="ml-3 col-span-2">
                           <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
                               {employee.name}
+                              {status && status}
                           </p>
                       </div>
                       <div className="ml-3 col-span-2">
@@ -82,7 +87,7 @@ export const ProfileEmployee = () => {
                           </h1>
                       </div>
                       <div className="ml-3 col-start-5 row-start-2 w-fit">
-                          <Link to="/contact/employee" state={{id: employee.id.id, name: employee.name}}>
+                          <Link to="/contact/employee" state={{id: employee.id, name: employee.name}}>
                               <button
                                   className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
                                   {t('Profile.connect')}

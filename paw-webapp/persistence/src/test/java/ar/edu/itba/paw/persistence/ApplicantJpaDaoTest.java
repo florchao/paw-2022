@@ -90,7 +90,7 @@ public class ApplicantJpaDaoTest {
         byte [] image = {};
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
         final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
-        final List<Job> list = applicantJpaDao.getJobsByApplicant(employee, 0L, 1);
+        final List<Applicant> list = applicantJpaDao.getAppliedJobsByApplicant(employee, 0L, 1);
         Assert.assertNotNull(list);
         Assert.assertEquals(0, list.size());
     }

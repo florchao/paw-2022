@@ -24,6 +24,13 @@ export const TRANSLATIONS_EN = {
     name:"Name",
     location:"Location"
   },
+  JobCard:{
+    publication:"See job offer",
+    applicants:"See applicants",
+    pending: "Pending",
+    accepted: "Accepted",
+    denied: "Denied"
+  },
   Home:{
     title1:"Welcome to Hogar!",
     title2:"A place to connect and find what you are looking for.",
@@ -78,6 +85,45 @@ export const TRANSLATIONS_EN = {
     noContacts: "You do not have contacts",
     phone: "Phone number:",
     email: "Email:"
-  }
+  },
 
+  Explore: {
+    jobs: "Available jobs",
+    employees: "Registered employees"
+  },
+
+  FilterForm: {
+
+  },
+
+  Job:{
+    title : "View job",
+    jobLocation : "Location of job",
+    by : "Published by",
+    experience : "Minimum years of experience",
+    availability : "Availability",
+    abilities : "Abilities required",
+    description : "Description"
+  },
+
+  Applicants:{
+    title: "Applicants to ",
+    accept: "Accept",
+    reject: "Reject",
+    accepted: "Accepted",
+    rejected: "Rejected",
+    noApplicants: "There are no applicants for this job"
+  },
+
+  AppliedJobs:{
+    title: "Applied Jobs",
+    noJobs: "You haven't applied to a job yet"
+  },
+
+  CreatedJobs: {
+    publications: "My published jobs",
+    noJobs: "You do not have publications",
+    addFirst: "Create a job publication",
+    addAnother: "Add another job offer"
+  }
 }

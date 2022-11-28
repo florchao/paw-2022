@@ -17,6 +17,11 @@ import ProfileEmployee from "./views/ProfileEmployee";
 import ProfileEmployer from "./views/ProfileEmployer";
 import {Contacts} from "./views/Contacts";
 import RegisterEmployer from "./views/RegisterEmployer";
+import ExploreJobs from "./views/ExploreJobs";
+import Job from "./views/Job";
+import Applicants from "./views/Applicants";
+import AppliedJobs from "./views/AppliedJobs";
+import CreatedJobs from "./views/CreatedJobs";
 
 export default function App() {
     return (
@@ -26,14 +31,19 @@ export default function App() {
             <Routes>
                 <Route path="/contact/employee" element={<ContactEmployee/>}/>
                 <Route path="/contacts" element={<Contacts/>}/>
-                <Route path="/profile" element={<ProfileEmployee/>}/>
+                <Route path="/employee" element={<ProfileEmployee/>}/>
+                <Route path="/employee/jobs" element={<AppliedJobs/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/explore" element={<Explore/>}/>
+                <Route path="/explore/jobs" element={<ExploreJobs/>}/>
                 <Route path="/contact" element={<ContactUs/>}/>
                 <Route path="/home" element={<EmployerLanding/>}/>
                 <Route path="/employer" element={<ProfileEmployer/>}/>
                 <Route path="/registerEmployer" element={<RegisterEmployer/>}/>
+                <Route path="/job" element={<Job/>}/>
+                <Route path="/jobs" element={<CreatedJobs/>}/>
+                <Route path="/job/applicants" element={<Applicants/>}/>
                 <Route path="/" element={<Home/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>

@@ -4,6 +4,7 @@ import {EmployeeService} from "../service/EmployeeService";
 import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
 import {useNavigate} from "react-router-dom";
+import {UserService} from "../service/UserService";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
@@ -14,7 +15,7 @@ export const ProfileEmployer = () => {
 
     //todo cambiar el numero de id
     function delEmployer() {
-        EmployerService.deleteEmployer(3).then(() => {
+        UserService.deleteUser(2).then(() => {
                 nav('/', {replace: true})
             }
         );
@@ -22,16 +23,23 @@ export const ProfileEmployer = () => {
 
     useEffect(() => {
         //todo harcodeado el numero de id
-        EmployerService.getEmployer(3).then((val) => setEmployer(val));
+        EmployerService.getEmployer(2).then((val) => setEmployer(val));
     }, [])
-    console.log(employer)
+
     //todo harcoded el id de la imagen
     useEffect(() => {
-        EmployeeService.loadImage(3).then((img) => setImage(URL.createObjectURL(img)));
+        UserService.loadImage(2).then(
+            (img) => {
+                if (img.size == 0)
+                    setImage("./images/user.png")
+                else
+                    setImage(URL.createObjectURL(img))
+            });
     }, [])
+
     //todo harcoded el id de las reviews
     useEffect(() => {
-            ReviewService.getEmployerReviews(3).then(
+            ReviewService.getEmployerReviews(2).then(
                 (rsp) => {
                     setReviews(rsp)
                 }
@@ -46,14 +54,10 @@ export const ProfileEmployer = () => {
                     <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                                {image !== null && (
+                                {image &&
                                     <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={image}
                                          alt="profile pic"/>
-                                )}
-                                {image === null && (
-                                    <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg"
-                                         src={'./images/user.png'} alt="profile pic"/>
-                                )}
+                                }
                             </div>
                             <div className="ml-3 col-span-2">
                                 <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">

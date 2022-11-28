@@ -2,11 +2,14 @@ import EmployeeCard from "../components/EmployeeCard";
 import FilterForm from "../components/FilterForm";
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
+import {useTranslation} from "react-i18next";
 
 
 export const Explore = () => {
 
     const [employees, setEmployees]: any = useState()
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         const algo = async () => {
@@ -16,20 +19,14 @@ export const Explore = () => {
         algo()
     }, [])
 
-    /*useEffect(() => {
-        employees.forEach((e: any) =>
-            EmployeeService.loadImage(e.id.id).then((img) => console.log(URL.createObjectURL(img)))
-        )
-        // EmployeeService.loadImage(employees).then((img) => setImage(URL.createObjectURL(img)))
-    }, [])*/
     // @ts-ignore
     return (
         <div className="grid grid-cols-8 content-start h-screen overflow-auto pl-5 pr-5">
             <div className="col-span-2 mr-4 flex flex-col items-center">
-                <FilterForm setEmployees={setEmployees} />
+                <FilterForm setList={setEmployees} type="employee"/>
             </div>
             <div className="col-span-5 mr-5">
-                <h1 className={'text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8'}>Employees Registered_</h1>
+                <h1 className={'text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8'}>{t('Explore.employees')}</h1>
                 <div className={'flex flex-row-reverse'}>
                     <div className={'flex flex-row'}>
                         <h1 className={'font-semibold mr-3'}>Order by:_</h1>

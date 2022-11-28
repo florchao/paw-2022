@@ -25,9 +25,10 @@ public class ApplicantJpaDao implements ApplicantDao{
     }
 
     @Override
-    public List<Job> getJobsByApplicant(Employee employeeID, Long page, int pageSize) {
-        final TypedQuery<Job> query = em.createQuery("select a.jobID from Applicant a where a.employeeID =:employeeID", Job.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+    public List<Applicant> getAppliedJobsByApplicant(Employee employeeID, Long page, int pageSize) {
+        final TypedQuery<Applicant> query = em.createQuery("select a from Applicant a where a.employeeID =:employeeID", Applicant.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
         query.setParameter("employeeID", employeeID);
+        System.out.println("WHAT: " + query.getResultList());
         return query.getResultList();
     }
 

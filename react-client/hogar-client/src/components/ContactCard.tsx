@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
+import {UserService} from "../service/UserService";
 
 const ContactCard = (contact: any) => {
 
@@ -11,7 +12,7 @@ const ContactCard = (contact: any) => {
 
     useEffect(() => {
         //TODO:usar el de Employer
-        EmployeeService.loadImage(contact.employerID.id.id).then(
+        UserService.loadImage(contact.employer.id).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")
@@ -33,7 +34,7 @@ const ContactCard = (contact: any) => {
                 <img className="object-cover mb-3 w-24 h-24 rounded-full shadow-lg"
                      src={image} alt="Employer Image"/>
                 <h5 className="mb-1 text-xl font-medium text-gray-900">
-                    {contact.employerID.name}
+                    {contact.employer.name}
                 </h5>
                 {contact.message.length <= 180 &&
                     <span className="flex flex-wrap text-sm text-gray-500 text-ellipsis px-5" style={{width:"90%", display:"inline-block", wordWrap: "break-word"}}>

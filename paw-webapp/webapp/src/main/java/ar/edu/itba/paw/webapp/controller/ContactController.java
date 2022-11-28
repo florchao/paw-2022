@@ -9,8 +9,10 @@ import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.ContactDto;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
+import ch.qos.logback.core.status.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.json.Json;
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Path("/api/contact")
@@ -43,6 +44,10 @@ public class ContactController {
     private EmployeeService employeeService;
     @Autowired
     private ContactService contactService;
+
+    @Context
+    private UriInfo uriInfo;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
 //    @RequestMapping(value = "/contactos", method = {RequestMethod.GET})
@@ -125,6 +130,7 @@ public class ContactController {
     @POST
     @Path("/{id}")
     @Consumes (value = {MediaType.APPLICATION_JSON, })
+    @Produces (value = {MediaType.APPLICATION_JSON, })
     public Response contactEmployee(@Valid ContactForm form,  @PathParam("id") long id) throws UserNotFoundException, AlreadyExistsException {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
@@ -139,7 +145,11 @@ public class ContactController {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         if(employee.isPresent()){
             employee.get().firstWordsToUpper();
-            contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
+            boolean exists = contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
+            if (!exists) {
+                System.out.println("holaaa");
+                Response.status(Status.ERROR).build();
+            }
         }
         return Response.ok().build();
     }
@@ -148,8 +158,8 @@ public class ContactController {
     @Path("/{id}")
     @Produces (value = {MediaType.APPLICATION_JSON})
     public Response employeeContacts(@PathParam("id") long id) throws UserNotFoundException {
-        List<Contact> contacts = new ArrayList<>(contactService.getAllContacts(id, 0L, PAGE_SIZE));
-        GenericEntity<List<Contact>> genericEntity = new GenericEntity<List<Contact>>(contacts){};
+        List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, 0L, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts){};
         return Response.ok(genericEntity).build();
     }
 }

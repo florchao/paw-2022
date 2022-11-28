@@ -20,7 +20,7 @@ export class ContactService {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(contactForm)
-        })
+        }).then((r) => r.json())
     }
 
     public static async contacts(id: number) {

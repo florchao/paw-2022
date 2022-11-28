@@ -3,10 +3,14 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Abilities;
 import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.EmployeeDto;
+import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,10 +31,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Path("/api/explore")
 @Component
@@ -38,8 +41,14 @@ public class ExploreController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private JobService jobService;
     @Autowired
     private ContactService contactService;
+
+    @Context
+    private UriInfo uriInfo;
     private final static long PAGE_SIZE = 9;
 
     @GET
@@ -57,15 +66,27 @@ public class ExploreController {
 
         if (page == null)
             page = 0L;
-        Map<Employee, Boolean> list = new LinkedHashMap<>();
-      List<Employee> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria);
-//        List<Employee> employees = employeeService.getFilteredEmployees(null, null, null, null, null, 0L, PAGE_SIZE, null);
-        for (Employee employee : employees) {
-            employee.firstWordsToUpper();
-            employee.locationFirstWordsToUpper();
-            list.put(employee, false);
-        }
-        GenericEntity<List<Employee>> genericEntity = new GenericEntity<List<Employee>>(employees){};
+        List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(e -> EmployeeDto.fromExplore(uriInfo, e)).collect(Collectors.toList());
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/jobs")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response filterJobs(
+            @QueryParam("name") String name,
+            @QueryParam("experience") Long experienceYears,
+            @QueryParam("location") String location,
+            @QueryParam("availability") String availability,
+            @QueryParam("abilities") String abilities,
+            @QueryParam("page") Long page
+    ) {
+
+        if (page == null)
+            page = 0L;
+        List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> JobDto.fromExplore(uriInfo, j)).collect(Collectors.toList());
+        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
     }
 

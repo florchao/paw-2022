@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
 import {useTranslation} from "react-i18next";
+import {UserService} from "../service/UserService";
 
 const ContactCardModal = (contact: any) => {
 
@@ -12,7 +13,7 @@ const ContactCardModal = (contact: any) => {
 
     useEffect(() => {
         //TODO:usar el de Employer
-        EmployeeService.loadImage(contact.employerID.id.id).then(
+        UserService.loadImage(contact.employer.id).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")
@@ -29,10 +30,10 @@ const ContactCardModal = (contact: any) => {
                      src={image} alt="profile pic"/>
                 <div className="col-span-2 row-span-2">
                     <h5 className="mb-1 text-xl font-medium text-gray-900">
-                        {contact.employerID.name}
+                        {contact.employer.name}
                     </h5>
                     <p className="text-gray-500 text-sm">
-                        {contact.employerID.id.email}
+                        {contact.employer.email}
                     </p>
                     <p className="text-gray-500 text-sm">
                         {t('Contacts.phone') + " "}

@@ -49,14 +49,16 @@ public class ContactServiceImpl implements ContactService{
     public boolean create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         Optional<Employer> employer = employerService.getEmployerById(employerId);
-        Boolean exists = false;
-        if(employee.isPresent() && employer.isPresent())
+        Boolean exists;
+        if(employee.isPresent() && employer.isPresent()) {
             exists = contactDao.existsContact(employee.get(), employer.get());
-        if(exists){
-            return false;
+            System.out.println("EXISTS: " + exists);
+            if (exists) {
+                return true;
+            }
+            contactDao.create(employee.get(), employer.get(), created, contactMessage, phoneNumber);
         }
-        contactDao.create(employee.get(), employer.get(), created, contactMessage, phoneNumber);
-        return true;
+        return false;
     }
 
     @Transactional
@@ -67,7 +69,7 @@ public class ContactServiceImpl implements ContactService{
         Optional<User> optional = userService.findByUsername("kitty@mail.com");
         if(optional.isPresent()) {
             User from = optional.get();
-            if(!create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
+            if(create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
                 return false;
             mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
             return true;

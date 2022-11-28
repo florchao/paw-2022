@@ -17,12 +17,19 @@ export const TRANSLATIONS_ES = {
         title: "Crear cuenta de empleador",
     },
     NotFound:{
-        title:"404 : No se encontro el recurso",
+        title:"404 : No se encontró el recurso",
         goBack :"Volver a la página inicial"
     },
     EmployeeCard:{
         name:"Nombre",
-        location:"Ubicacion"
+        location:"Ubicación"
+    },
+    JobCard:{
+        publication: "Ver publicaci\u00f3n",
+        applicants: "Ver aplicantes",
+        pending: "Pendiente",
+        accepted: "Aceptado",
+        denied: "Rechazado"
     },
     Home:{
         title1:"¡Bienvenido a Hogar!",
@@ -78,5 +85,45 @@ export const TRANSLATIONS_ES = {
         noContacts: "No tienes contactos",
         phone: "Teléfono:",
         email: "Email:"
+    },
+
+    Explore: {
+        jobs: "Trabajos disponibles",
+        employees: "Empleadas registradas"
+    },
+
+    FilterForm: {
+
+    },
+
+    Job:{
+        title : "Ver publicación",
+        jobLocation : "Ubicación del trabajo",
+        by : "Publicado por",
+        experience : "Mínimo de años de experiencia",
+        availability : "Disponibilidad",
+        abilities : "Habilidades requeridas",
+        description : "Descripción"
+    },
+
+    Applicants:{
+        title: "Aplicantes para ",
+        accept: "Aceptar",
+        reject: "Rechazar",
+        accepted: "Aceptado",
+        rejected: "Rechazado",
+        noApplicants: "No hay aplicantes para este trabajo"
+    },
+
+    AppliedJobs:{
+        title: "Trabajos Aplicados",
+        noJobs: "Todavía no has aplicado a ningún trabajo"
+    },
+
+    CreatedJobs: {
+        publications: "Mis trabajos publicados",
+        noJobs: "No tienes publicaciones",
+        addFirst: "Crear una oferta de trabajo",
+        addAnother: "Agregar una nueva publicación"
     }
   }
