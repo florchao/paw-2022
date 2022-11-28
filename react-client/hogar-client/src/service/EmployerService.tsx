@@ -15,4 +15,16 @@ export class EmployerService {
                     throw error
                 })
     }
+
+    public static async registerEmployer (e: any, name: string,lastname: string, mail: string, password: string, confirmPassword: string, image: string) {
+        e.preventDefault();
+        const blog = {name, lastname, mail, password, confirmPassword, image};
+        return await fetch('http://localhost:8080/api/register/employer', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(blog)
+        }).then(() => {
+            // history.go(-1);
+        })
+    }
 }

@@ -15,6 +15,12 @@ export const TRANSLATIONS_EN = {
     confirmPassword: "Confirm password",
     button: "CREATE PROFILE",
     title: "Create account of employer",
+    imageError: "Please enter an image",
+    nameError: "Please enter your name",
+    lastNameError: "Please enter your last name",
+    emailError: "Please enter your email",
+    passwordError: "Please enter a password",
+
   },
   NotFound:{
     title:"404 : Resource not found",
