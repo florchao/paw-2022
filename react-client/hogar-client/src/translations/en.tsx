@@ -115,5 +115,25 @@ export const TRANSLATIONS_EN = {
     noJobs: "You do not have publications",
     addFirst: "Create a job publication",
     addAnother: "Add another job offer"
+  }, 
+  
+  CreateJob: {
+    title: "Create job offer",
+    label_title: "Title",
+    location: "Location",
+    experienceYears: "Minimum years of experience expected",
+    description: "Description",
+    abilities: "Abilities",
+    abilities_cook: "Cooking",
+    abilities_iron: "Iron",
+    abilities_older: "Elder care",
+    abilities_child: "Child care",
+    abilities_specialNeeds: "Special care",
+    abilities_pets: "Pet care",
+    availability: "Availability",
+    availability_half: "Part time",
+    availability_complete: "Full time",
+    availability_bed: "Overnight",
+    button: "CREATE OFFER"
   }
 }

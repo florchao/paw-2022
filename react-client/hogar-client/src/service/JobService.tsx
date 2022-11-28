@@ -52,7 +52,6 @@ export class JobService {
 
 
     public static async getJob(id: number) {
-        console.log("En el service")
         return await fetch('http://localhost:8080/api/job/' + id, {
             method: 'GET',
             headers: {
@@ -67,9 +66,35 @@ export class JobService {
                 })
     }
 
+    public static async postJob(e: any, title: string, location: string, experienceYears: number, availability: string, abilities: string[], description: string) {
+        e.preventDefault();
+        const jobForm = {title, location, experienceYears, availability, abilities, description};
+        return await fetch('http://localhost:8080/api/job', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(jobForm)
+        })
+    }
+
     public static async getCreatedJob(id: number) {
         console.log("En el service")
         return await fetch('http://localhost:8080/api/job/employer/' + id, {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json"
+            },
+        }).then((resp) => resp.json())
+            .catch(
+                (error) => {
+                    console.log(error)
+                    throw error
+                })
+    }
+
+    public static async getIds() {
+        console.log("En el service")
+        return await fetch('http://localhost:8080/api/job/ids', {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

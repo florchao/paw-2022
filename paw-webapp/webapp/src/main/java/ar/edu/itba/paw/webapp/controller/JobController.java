@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.IdsDto;
 import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
@@ -25,10 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.sql.Date;
 import java.util.*;
@@ -51,6 +49,27 @@ public class JobController {
     private static final long PAGE_SIZE = 8;
 
     private final static int PAGE_SIZE_REVIEWS = 2;
+
+    @GET
+    @Path("/ids")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response getIds() {
+        GenericEntity<IdsDto> genericEntity = new GenericEntity<IdsDto>(IdsDto.fromForm(Availability.getIds(), Abilities.getIds())){};
+        return Response.ok(genericEntity).build();
+    }
+
+    @POST
+    @Path("")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response postJob(@Valid final JobForm form) {
+        System.out.println(form.getTitle());
+        System.out.println(form.getLocation());
+        System.out.println(form.getExperienceYears());
+        System.out.println(Arrays.toString(form.getAbilities()));
+        System.out.println(form.getAvailability());
+        System.out.println(form.getDescription());
+        return Response.ok().build();
+    }
 
 //    @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
 //    public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){

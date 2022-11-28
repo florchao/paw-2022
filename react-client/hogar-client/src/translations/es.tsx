@@ -115,5 +115,25 @@ export const TRANSLATIONS_ES = {
         noJobs: "No tienes publicaciones",
         addFirst: "Crear una oferta de trabajo",
         addAnother: "Agregar una nueva publicación"
+    },
+
+    CreateJob: {
+        title: "Crear oferta de trabajo",
+        label_title: "Título",
+        location: "Zona",
+        experienceYears: "Cantidad mínima de años de experiencia esperados",
+        description: "Descripción",
+        abilities: "Habilidades",
+        abilities_cook: "Cocinar",
+        abilities_iron: "Planchar",
+        abilities_older: "Cuidado de mayores",
+        abilities_child: "Cuidado de menores",
+        abilities_specialNeeds: "Cuidados especiales",
+        abilities_pets: "Cuidado de mascotas",
+        availability: "Disponibilidad",
+        availability_half: "Media jornada",
+        availability_complete: "Jornada completa",
+        availability_bed: "Con cama",
+        button: "CREAR OFERTA"
     }
   }
