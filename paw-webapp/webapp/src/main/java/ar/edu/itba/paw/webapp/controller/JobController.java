@@ -62,13 +62,10 @@ public class JobController {
     @Path("")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response postJob(@Valid final JobForm form) {
-        System.out.println(form.getTitle());
-        System.out.println(form.getLocation());
-        System.out.println(form.getExperienceYears());
-        System.out.println(Arrays.toString(form.getAbilities()));
-        System.out.println(form.getAvailability());
-        System.out.println(form.getDescription());
-        return Response.ok().build();
+        //TODO: poner el id del empleador que esta iniciado sesión
+        Job job = jobService.create(form.getTitle(), form.getLocation(), 2, form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
+        LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
+        return Response.ok(job.getJobId()).build();
     }
 
 //    @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})

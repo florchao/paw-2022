@@ -73,7 +73,7 @@ export class JobService {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(jobForm)
-        })
+        }).then((r) => r.text())
     }
 
     public static async getCreatedJob(id: number) {

@@ -1,6 +1,7 @@
 import {RefObject, useEffect, useRef, useState} from "react";
 import {JobService} from "../service/JobService";
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
 
 export const CreateJob = () => {
     const [title, setTitle] = useState('');
@@ -14,6 +15,7 @@ export const CreateJob = () => {
 
     const { t } = useTranslation();
 
+    const nav = useNavigate();
 
     useEffect(() => {
         JobService.getIds().then((i) => {
@@ -50,15 +52,10 @@ export const CreateJob = () => {
         }
     }
 
-    const handleSubmit = (e: any) => {
-        console.log("handle submit")
-        JobService.postJob(e, title, location, experienceYears, availability, abilities, description).then((r) => {
-            // history.go(-1);
-            console.log("Response: " + r)
-        }).then((r) => {
-            console.log(r)
-            // nav("/employee", {replace: true, state: {id: id, status: status}})
-        })
+    const handleSubmit = async (e: any) => {
+        const post = await JobService.postJob(e, title, location, experienceYears, availability, abilities, description)
+        nav('/job', {replace: true, state: {id: post}})
+
     }
 
     return (
