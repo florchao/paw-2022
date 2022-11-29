@@ -1,10 +1,14 @@
 import {EmployerService} from "../service/EmployerService";
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
+import {UserService} from "../service/UserService";
+import {useNavigate} from "react-router-dom";
 
 const NewPassword = () => {
 
     const {t} = useTranslation();
+    const nav = useNavigate();
+
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -20,6 +24,7 @@ const NewPassword = () => {
     };
 
     const handleSubmit = (e: any) => {
+        UserService.newPassword(e, mail, password, confirmPassword)
     }
 
     return (
@@ -37,6 +42,7 @@ const NewPassword = () => {
                         <input
                             id="mail"
                             required
+                            minLength={1}
                             value={mail}
                             type="mail"
                             onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('NewPassword.emailError'))}
@@ -52,6 +58,8 @@ const NewPassword = () => {
                         <input
                             id="password"
                             value={password}
+                            required
+                            minLength={1}
                             type="password"
                             onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('NewPassword.passwordError'))}
                             onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
@@ -67,8 +75,11 @@ const NewPassword = () => {
                     <div className="form-group mb-6 grid grid-cols-6">
                         <h3>{t('NewPassword.confirmPassword')}</h3>
                         <input id="confirmPassword"
+                               required
                                value={confirmPassword}
                                type="password"
+                               minLength={1}
+                               onChange={(e) => setConfirmPassword(e.target.value)}
                                onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('NewPassword.passwordError'))}
                                onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
