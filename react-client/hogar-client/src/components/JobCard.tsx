@@ -8,7 +8,7 @@ const JobCard  = (job: any)=> {
     const { t } = useTranslation();
     let status;
     job = job.job;
-    if(job.status != null) {
+    if(job.status !== null) {
         status = job.status
         job = job.job
     }

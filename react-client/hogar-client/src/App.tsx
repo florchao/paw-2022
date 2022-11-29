@@ -41,7 +41,7 @@ export default function App() {
                 <Route path="/contact" element={<ContactUs/>}/>
                 <Route path="/home" element={<EmployerLanding/>}/>
                 <Route path="/employer" element={<ProfileEmployer/>}/>
-                <Route path="/registerEmployer" element={<RegisterEmployer/>}/>
+                <Route path="/register/employer" element={<RegisterEmployer/>}/>
                 <Route path="/job" element={<Job/>}/>
                 <Route path="/jobs" element={<CreatedJobs/>}/>
                 <Route path="/job/applicants" element={<Applicants/>}/>

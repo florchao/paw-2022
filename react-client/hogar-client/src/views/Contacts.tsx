@@ -35,7 +35,7 @@ export const Contacts = () => {
             <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
                 {t('Contacts.title')}
             </p>
-            {contacts && contacts.length == 0 &&
+            {contacts && contacts.length === 0 &&
                 <div className="grid content-center justify-center h-5/6 mt-16">
                     <div className="grid justify-items-center">
                         <img src="/images/sinEmpleadas.png" alt="sinEmpleadas" className="mr-3 h-6 sm:h-52"/>

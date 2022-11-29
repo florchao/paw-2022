@@ -21,7 +21,7 @@ export const ContactEmployee = () => {
         ContactService.contactEmployee(e, phone, content, id).then((r) => {
             // history.go(-1);
             console.log("Response: " + r)
-            if (r.type == "error") {
+            if (r.type === "error") {
                 setStatus(1);
             } else {
                 setStatus(0);

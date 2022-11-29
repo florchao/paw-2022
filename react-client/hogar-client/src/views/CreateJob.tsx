@@ -35,11 +35,11 @@ export const CreateJob = () => {
     const setColor = (name: string, ref: RefObject<HTMLInputElement>) => {
         let label = document.getElementById(name + "-label")
         if (!ref.current?.checked) {
-            if (label != null)
+            if (label !== null)
                 label.style.backgroundColor = "#c4b5fd";
             window.sessionStorage.setItem(name, "#c4b5fd");
         } else {
-            if (label != null)
+            if (label !== null)
                 label.style.backgroundColor = "#ffffff";
         }
     }

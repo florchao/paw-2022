@@ -93,7 +93,7 @@ export const ProfileEmployee = () => {
                                   {t('Profile.connect')}
                               </button>
                           </Link>
-                          {rating && rating.count != 0 &&
+                          {rating && rating.count !== 0 &&
                               <ul className="flex items-center gap-x-1">
                                   {rating && rating.rating >= 0.75 &&
                                       <li>
@@ -229,7 +229,7 @@ export const ProfileEmployee = () => {
                       </h1>
                       <ul role="list" className="divide-y divide-gray-300">
                           {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
-                          {review && review.length == 0 && <div
+                          {review && review.length === 0 && <div
                               className="grid content-center justify-center h-5/6 mt-16">
                               <div className="grid justify-items-center">
                                   <img src='/images/sinEmpleadas.png' alt="sinEmpleadas"

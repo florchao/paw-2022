@@ -25,7 +25,7 @@ export const CreatedJobs = () => {
             <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
                 {t('CreatedJobs.publications')}
             </p>
-            {createdJobs && createdJobs.length == 0 &&
+            {createdJobs && createdJobs.length === 0 &&
                 <div className="grid content-center justify-center h-5/6 mt-16">
                     <div className="grid justify-items-center">
                         <img src="/images/sinTrabajos.png" alt="sinTrabajos"

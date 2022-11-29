@@ -17,12 +17,12 @@ const RegisterEmployer = () => {
     const {t} = useTranslation();
 
     const invalidEmail = (email : String) => {
-        if( email.length == 0)
+        if( email.length === 0)
             return true
         return !String(email)
             .toLowerCase()
             .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             );
     };
 
@@ -123,7 +123,7 @@ const RegisterEmployer = () => {
                                 {(password.length < 1 ) &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordError')}</p>
                                 }
-                                {(password != confirmPassword ) &&
+                                {(password !== confirmPassword ) &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordsError')}</p>
                                 }
                             </div>
@@ -141,7 +141,7 @@ const RegisterEmployer = () => {
                                 {(confirmPassword.length < 1 ) &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordError')}</p>
                                 }
-                                {(password != confirmPassword ) &&
+                                {(password !== confirmPassword ) &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordsError')}</p>
                                 }
                             </div>
