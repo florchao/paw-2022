@@ -19,7 +19,8 @@ export const TRANSLATIONS_ES = {
         nameError: "Por favor ingrese su nombre",
         lastNameError: "Por favor ingrese su apellido",
         emailError: "Por favor ingrese su mail",
-        passwordError: "Por favor ingrese una contraseña"
+        passwordError: "Por favor ingrese una contraseña",
+        passwordsError: "Las contraseñas no coinciden,"
     },
     NotFound:{
         title:"404 : No se encontró el recurso",

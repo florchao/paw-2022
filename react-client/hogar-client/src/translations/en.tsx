@@ -20,6 +20,7 @@ export const TRANSLATIONS_EN = {
     lastNameError: "Please enter your last name",
     emailError: "Please enter your email",
     passwordError: "Please enter a password",
+    passwordsError: "Passwords do not match",
 
   },
   NotFound:{

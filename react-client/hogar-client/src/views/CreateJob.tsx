@@ -84,6 +84,7 @@ export const CreateJob = () => {
                                                setTitle(e.target.value)
                                            }}
                                            required
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                            onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.titleError'))}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                                     {title.length < 1 &&
@@ -100,6 +101,7 @@ export const CreateJob = () => {
                                                setLocation(e.target.value)
                                            }}
                                            required
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                            onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.locationError'))}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                     {location.length < 1 &&
@@ -118,6 +120,7 @@ export const CreateJob = () => {
                                            required
                                            min={0}
                                            max={100}
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                            onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.expYearsError'))}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                     {(experienceYears < 0 || experienceYears > 100) &&
@@ -239,6 +242,7 @@ export const CreateJob = () => {
                                     setDescription(e.target.value)
                                 }}
                                           required
+                                          onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.descriptionError'))}
                                           className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                 {/*<form:errors path="description" element="p" cssStyle="color: red"/>*/}
