@@ -6,6 +6,22 @@ export const TRANSLATIONS_EN = {
     message:"Message",
     send:"Send",
   },
+  RegisterEmployer: {
+    image: "Insert image",
+    name: "Name",
+    lastName: "Last name",
+    email: "Email",
+    password: "Password",
+    confirmPassword: "Confirm password",
+    button: "CREATE PROFILE",
+    title: "Create account of employer",
+    imageError: "Please enter an image",
+    nameError: "Please enter your name",
+    lastNameError: "Please enter your last name",
+    emailError: "Please enter your email",
+    passwordError: "Please enter a password",
+
+  },
   NotFound:{
     title:"404 : Resource not found",
     goBack :"Go back to home page"
@@ -48,7 +64,7 @@ export const TRANSLATIONS_EN = {
     remember:"Remember me",
     account:"Don't have an account yet?",
     register:"Register",
-    forgot:"Don't have a password yet??",
+    forgot:"Don't have a password yet?",
     setP:"Set it"
   },
   Navbar:{
@@ -67,7 +83,7 @@ export const TRANSLATIONS_EN = {
     employeeDesc2:" - Load your profile with your abilities, availability and information so that our community of employers can see you.",
     employeeDesc3:"- Search through different job offers inside our community.",
     createEmployee:"Create an employee account",
-    createEmployer:"Creae an employer account"
+    createEmployer:"Create an employer account"
   },
 
   Contacts: {

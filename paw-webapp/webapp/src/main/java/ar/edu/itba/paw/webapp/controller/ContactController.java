@@ -1,14 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
-import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ContactDto;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
@@ -16,14 +13,8 @@ import ch.qos.logback.core.status.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.json.Json;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -31,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Path("/api/contact")
 @Component

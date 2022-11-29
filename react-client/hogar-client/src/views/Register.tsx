@@ -24,7 +24,7 @@ const Register = () => {
                         </p>
                         <div className="pb-4 grid col-start-2 col-span-2 mt-7">
                             {/*TODO pagina registerEmployer*/}
-                            <Button link="/registerEmployer" name={t('Register.creteEmployer')}/>
+                            <Button link="/registerEmployer" name={t('Register.createEmployer')}/>
                         </div>
                     </div>
                     <div className="row-start-2 h-96 w-96">

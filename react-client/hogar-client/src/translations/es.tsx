@@ -6,6 +6,21 @@ export const TRANSLATIONS_ES = {
         message:"Mensaje",
         send:"Enviar",
     },
+    RegisterEmployer:{
+        image: "Insertar imagen",
+        name: "Nombre",
+        lastName:"Apellido",
+        email: "Correo electrónico",
+        password: "Contraseña",
+        confirmPassword: "Confirmar contraseña",
+        button: "CREAR PERFIL",
+        title: "Crear cuenta de empleador",
+        imageError: "Por favor ingrese una imagen",
+        nameError: "Por favor ingrese su nombre",
+        lastNameError: "Por favor ingrese su apellido",
+        emailError: "Por favor ingrese su mail",
+        passwordError: "Por favor ingrese una contraseña"
+    },
     NotFound:{
         title:"404 : No se encontró el recurso",
         goBack :"Volver a la página inicial"
