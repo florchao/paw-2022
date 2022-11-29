@@ -187,6 +187,17 @@ export const TRANSLATIONS_ES = {
         overnight: 'Con cama',
         filter: 'Filtrar',
         reset: 'Limpiar filtros',
+    },
+
+    NewPassword:{
+        title: 'Cambia tu contraseña',
+        email: 'Email',
+        emailError: 'Por favor ingrese un email válido',
+        password: 'Contraseña',
+        confirmPassword: 'Confirma contraseña',
+        button: 'Actualizar',
+        passwordError: "Por favor ingrese una contraseña",
+        passwordsError: "Las contraseñas no coinciden",
     }
 
 }

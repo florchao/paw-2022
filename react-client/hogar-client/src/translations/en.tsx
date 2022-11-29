@@ -188,6 +188,17 @@ export const TRANSLATIONS_EN = {
     overnight: 'Overnight',
     filter: 'Filter',
     reset: 'Reset filters',
+  },
+
+  NewPassword:{
+    title: 'Change your password',
+    email: 'Email',
+    emailError: 'Please enter a valid email',
+    password: 'Password',
+    confirmPassword: 'Confirm password',
+    button: 'Set it',
+    passwordError: "Please enter a password",
+    passwordsError: "Passwords do not match",
   }
 
 }
