@@ -160,5 +160,14 @@ export const TRANSLATIONS_ES = {
         availabilityError: "Por favor selecciones al menos una disponibilidad",
         abilitiesError: "Por favor seleccione al menos una habilidad",
         descriptionError: "Por favor ingrese una descripción"
+    },
+
+    ContactEmployee: {
+        title: "Contactarse con ",
+        phone: "Teléfono",
+        message: "Mensaje",
+        submit: "Enviar",
+        phoneError: "Por favor ingrese un número de teléfono válido",
+        messageError: "Por favor ingrese un mensaje"
     }
   }

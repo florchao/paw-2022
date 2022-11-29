@@ -161,5 +161,15 @@ export const TRANSLATIONS_EN = {
     availabilityError: 'Please select at least one availability',
     abilitiesError: 'Please select at least one ability',
     descriptionError: 'Please enter a description'
+  },
+
+  ContactEmployee: {
+    title: "Contact with ",
+    phone: "Phone",
+    message: "Message",
+    submit: "Submit",
+    phoneError: "Please enter a valid phone number",
+    messageError: "Please enter a message"
   }
+
 }
