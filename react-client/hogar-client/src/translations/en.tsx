@@ -5,6 +5,9 @@ export const TRANSLATIONS_EN = {
     mail:"E-mail",
     message:"Message",
     send:"Send",
+    nameError: 'Please enter a valid name',
+    mailError: 'Please enter a valid email',
+    messageError: 'Please enter a message'
   },
   RegisterEmployer: {
     image: "Insert image",

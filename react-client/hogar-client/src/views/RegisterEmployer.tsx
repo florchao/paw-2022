@@ -16,6 +16,16 @@ const RegisterEmployer = () => {
     const nav = useNavigate();
     const {t} = useTranslation();
 
+    const invalidEmail = (email : String) => {
+        if( email.length == 0)
+            return true
+        return !String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
     const handleSubmit = (e: any) => {
         EmployerService.registerEmployer(e, name, lastName, mail, password, confirmPassword, image).
         then((r) => {
@@ -95,7 +105,7 @@ const RegisterEmployer = () => {
                                     onChange={(e) => setMail(e.target.value)}
                                     className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                 />
-                                {(mail.length < 1 ) &&
+                                {(invalidEmail(mail) ) &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.emailError')}</p>
                                 }
                             </div>
