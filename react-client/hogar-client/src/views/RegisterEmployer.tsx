@@ -70,12 +70,14 @@ const RegisterEmployer = () => {
                                         type="text"
                                         required
                                         value={name}
+                                        maxLength={100}
+                                        minLength={1}
                                         onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployer.nameError'))}
                                         onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                         onChange={(e) => setName(e.target.value)}
                                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                     />
-                                {(name.length < 1 ) &&
+                                {(name.length < 1 || name.length > 100 ) &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.nameError')}</p>
                                 }
                                 </div>
@@ -85,12 +87,14 @@ const RegisterEmployer = () => {
                                     type="text"
                                     required
                                     value={lastName}
+                                    maxLength={100}
+                                    minLength={1}
                                     onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployer.lastNameError'))}
                                     onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                     onChange={(e) => setLastName(e.target.value)}
                                     className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                 />
-                                {(lastName.length < 1 ) &&
+                                {(lastName.length < 1 || name.length > 100) &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.lastNameError')}</p>
                                 }
                             </div>

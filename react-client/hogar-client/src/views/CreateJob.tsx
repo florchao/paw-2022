@@ -84,10 +84,12 @@ export const CreateJob = () => {
                                                setTitle(e.target.value)
                                            }}
                                            required
+                                           maxLength={25}
+                                           minLength={1}
                                            onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                            onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.titleError'))}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                                    {title.length < 1 &&
+                                    {(title.length < 1 || title.length > 25) &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.titleError')}</p>
                                     }
                                 </div>
@@ -101,10 +103,12 @@ export const CreateJob = () => {
                                                setLocation(e.target.value)
                                            }}
                                            required
+                                           maxLength={100}
+                                           minLength={1}
                                            onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                            onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.locationError'))}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                    {location.length < 1 &&
+                                    {(location.length < 1 || location.length > 100) &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.locationError')}</p>
                                     }
                                 </div>
@@ -150,7 +154,6 @@ export const CreateJob = () => {
                                             <option value={ids.availabilities[2]}
                                                     label={t('CreateJob.availability_bed')}/>
                                         </select>
-                                        {/*<form:errors path="availability" element="p" cssStyle="color:red"/>*/}
                                     </div>
                                 }
                             </div>
@@ -242,11 +245,13 @@ export const CreateJob = () => {
                                     setDescription(e.target.value)
                                 }}
                                           required
+                                          maxLength={4000}
+                                          minLength={10}
                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.descriptionError'))}
                                           className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                 {/*<form:errors path="description" element="p" cssStyle="color: red"/>*/}
-                                {description.length < 1 &&
+                                {(description.length < 10 || description.length > 4000) &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.descriptionError')}</p>
                                 }
                             </div>
