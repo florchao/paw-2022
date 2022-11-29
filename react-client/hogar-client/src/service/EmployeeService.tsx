@@ -69,7 +69,7 @@ export class EmployeeService {
     public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, availabilities: string[], abilities: string[], image:any) {
         e.preventDefault();
         const employeeForm = {mail, password, confirmPassword, name, location, experienceYears, availabilities, abilities};
-        return await fetch('http://localhost:8080/api/create/employee', {
+        return await fetch('http://localhost:8080/api/employee', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(employeeForm)

@@ -187,7 +187,7 @@ public class ViewProfileController {
 
     @DELETE
     @Path("delete/{userId}")
-    public Response deleteJob(@PathParam("userId") long userId){
+    public Response deleteUser(@PathParam("userId") long userId){
         userService.deleteUser(userId);
         return Response.ok().build();
     }

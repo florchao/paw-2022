@@ -18,7 +18,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.Arrays;
 
-@Path("/api/create")
+@Path("/api")
 @Component
 public class CreateProfileController {
 
@@ -38,7 +38,7 @@ public class CreateProfileController {
 //        User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword(), 1);
 //        employeeService.create(form.getName().toLowerCase(), form.getLocation().toLowerCase(), u.getId(), form.fromArrtoString(form.getAvailability()), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getImage().getBytes());
 //        return Response.ok(u.getId()).build();
-
+        //Probando que llegue bien la información
         System.out.println(form.getMail());
         System.out.println(form.getPassword());
         System.out.println(form.getConfirmPassword());
@@ -57,30 +57,6 @@ public class CreateProfileController {
     public Response helloWorld() {
         return Response.ok("Hello world!").build();
     }
-
-
-
-//    @RequestMapping(value = "/createEmployee", method = {RequestMethod.POST})
-//    public ModelAndView create(@Valid @ModelAttribute("employeeForm") final EmployeeForm form, final BindingResult errors) throws UserFoundException, PassMatchException {
-//        if(errors.hasErrors()) {
-//            LOGGER.debug("couldn't create employee profile");
-//            return createProfile(form);
-//        }
-//        final User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword(), 1);
-//        HogarUser current = new HogarUser(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))), form.getName(), u.getId());
-//        Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYEE")));
-//        SecurityContextHolder.getContext().setAuthentication(auth);
-//        employeeService.create(form.getName().toLowerCase(), form.getLocation().toLowerCase(), u.getId(), form.fromArrtoString(form.getAvailability()), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getImage().getBytes());
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        principal.setName(form.getName());
-//        LOGGER.debug(String.format("employee created under userid %d", principal.getUserID()));
-//        return new ModelAndView("redirect:/verPerfil");
-//    }
-//
-//    @RequestMapping(value = "/crearPerfilEmpleador", method = {RequestMethod.GET})
-//    public ModelAndView createProfileEmployer(@ModelAttribute("employerForm") final EmployerForm form) {
-//        return new ModelAndView("createProfileEmployer");
-//    }
 
     @POST
     @Path("/employer")

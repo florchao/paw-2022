@@ -19,7 +19,7 @@ export class EmployerService {
     public static async registerEmployer (e: any, name: string,lastname: string, mail: string, password: string, confirmPassword: string, image: string) {
         e.preventDefault();
         const employer = {name, lastname, mail, password, confirmPassword, image};
-        return await fetch('http://localhost:8080/api/create/employer', {
+        return await fetch('http://localhost:8080/api/employer', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(employer)
