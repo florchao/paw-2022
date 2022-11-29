@@ -101,10 +101,6 @@ export const TRANSLATIONS_ES = {
         employees: "Empleadas registradas"
     },
 
-    FilterForm: {
-
-    },
-
     Job:{
         title : "Ver publicación",
         jobLocation : "Ubicación del trabajo",
@@ -169,5 +165,28 @@ export const TRANSLATIONS_ES = {
         submit: "Enviar",
         phoneError: "Por favor ingrese un número de teléfono válido",
         messageError: "Por favor ingrese un mensaje"
+    },
+
+    FilterForm:{
+        expYears: 'Años de experiencia mínimos',
+        expYearsError: 'Por favor ingrese un año de experiencia válido',
+        name: 'Nombre',
+        nameError: 'Por favor ingrese un nombre válido',
+        location: 'Ubicación',
+        locationError: 'Por favor ingrese una ubicación válida',
+        cook: 'Cocinar',
+        abilities: 'Habilidades',
+        iron: 'Planchar',
+        childCare: 'Cuidado de menores',
+        elderCare: 'Cuidado de mayores',
+        specialNeeds: 'Cuidados especiales',
+        petCare: 'Cuidado de mascotas',
+        availability: 'Disponibilidad',
+        partTime: 'Media jornada',
+        fullTime: 'Jornada completa',
+        overnight: 'Con cama',
+        filter: 'Filtrar',
+        reset: 'Limpiar filtros',
     }
-  }
+
+}

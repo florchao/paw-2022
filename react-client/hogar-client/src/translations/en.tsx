@@ -102,10 +102,6 @@ export const TRANSLATIONS_EN = {
     employees: "Registered employees"
   },
 
-  FilterForm: {
-
-  },
-
   Job:{
     title : "View job",
     jobLocation : "Location of job",
@@ -170,6 +166,28 @@ export const TRANSLATIONS_EN = {
     submit: "Submit",
     phoneError: "Please enter a valid phone number",
     messageError: "Please enter a message"
+  },
+
+  FilterForm:{
+    expYears: 'Minimum years of experience',
+    expYearsError: ' Please enter a valid year of experience',
+    name: 'Name',
+    nameError: 'Please enter a valid name',
+    location: 'Location',
+    locationError: 'Please enter a valid location',
+    cook: 'Cook',
+    abilities: 'Abilities',
+    iron: 'Iron',
+    childCare: 'Child care',
+    elderCare: 'Elder care',
+    specialNeeds: 'Special needs',
+    petCare: 'Pet care',
+    availability: 'Availability',
+    partTime: 'Part time',
+    fullTime: 'Full time',
+    overnight: 'Overnight',
+    filter: 'Filter',
+    reset: 'Reset filters',
   }
 
 }
