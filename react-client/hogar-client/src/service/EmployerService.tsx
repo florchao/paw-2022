@@ -18,13 +18,11 @@ export class EmployerService {
 
     public static async registerEmployer (e: any, name: string,lastname: string, mail: string, password: string, confirmPassword: string, image: string) {
         e.preventDefault();
-        const blog = {name, lastname, mail, password, confirmPassword, image};
-        return await fetch('http://localhost:8080/api/register/employer', {
+        const employer = {name, lastname, mail, password, confirmPassword, image};
+        return await fetch('http://localhost:8080/api/create/employer', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(blog)
-        }).then(() => {
-            // history.go(-1);
-        })
+            body: JSON.stringify(employer)
+        }).then((r) => r.text())
     }
 }

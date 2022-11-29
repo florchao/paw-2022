@@ -20,14 +20,6 @@ import java.util.Optional;
 @Path("/api/profile")
 @Component
 public class ViewProfileController {
-
-    @GET
-    @Path("/hello")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response helloWorld() {
-        return Response.ok("Hello world!").build();
-    }
-
     private final int PAGE_SIZE = 4;
     @Autowired
     private UserService userService;

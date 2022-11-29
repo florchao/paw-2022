@@ -17,25 +17,11 @@ export const ContactEmployee = () => {
 
     const nav = useNavigate();
 
-    const handleSubmit = (e: any) => {
-        ContactService.contactEmployee(e, phone, content, id).then((r) => {
-            // history.go(-1);
-            console.log("Response: " + r)
-            if (r.type == "error") {
-                setStatus(1);
-            } else {
-                setStatus(0);
-            }
-        }).then(() => {
-            console.log(status)
-            // nav("/employee", {replace: true, state: {id: id, status: status}})
-        })
+    const handleSubmit = async (e: any) => {
+        const contact = await ContactService.contactEmployee(e, phone, content, id)
+        console.log(contact)
+        nav("/employee", {replace: true, state: {id: id, status: contact}})
     }
-
-    useEffect(() => {
-            console.log("Status: " + status)
-        }, [status]
-    )
 
     return (
         <div className="grid grid-cols-7 content-start justify-center h-screen pt-5">
