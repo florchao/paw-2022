@@ -149,6 +149,12 @@ export const TRANSLATIONS_ES = {
         availability_half: "Media jornada",
         availability_complete: "Jornada completa",
         availability_bed: "Con cama",
-        button: "CREAR OFERTA"
+        button: "CREAR OFERTA",
+        expYearsError: "Por favor ingrese una cantidad de años de experiencia esperados",
+        locationError: "Por favor ingrese una ubicación",
+        titleError: "Por favor ingrese un título",
+        availabilityError: "Por favor selecciones al menos una disponibilidad",
+        abilitiesError: "Por favor seleccione al menos una habilidad",
+        descriptionError: "Por favor ingrese una descripción"
     }
   }

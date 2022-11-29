@@ -150,6 +150,12 @@ export const TRANSLATIONS_EN = {
     availability_half: "Part time",
     availability_complete: "Full time",
     availability_bed: "Overnight",
-    button: "CREATE OFFER"
+    button: "CREATE OFFER",
+    expYearsError: 'Please enter a valid experience year',
+    locationError: 'Please enter a location',
+    titleError: 'Please enter a title',
+    availabilityError: 'Please select at least one availability',
+    abilitiesError: 'Please select at least one ability',
+    descriptionError: 'Please enter a description'
   }
 }
