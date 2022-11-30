@@ -9,6 +9,7 @@ export const TRANSLATIONS_EN = {
     mailError: 'Please enter a valid email',
     messageError: 'Please enter a message'
   },
+
   RegisterEmployer: {
     image: "Insert image",
     name: "Name",
@@ -24,8 +25,22 @@ export const TRANSLATIONS_EN = {
     emailError: "Please enter your email",
     passwordError: "Please enter a password",
     passwordsError: "Passwords do not match",
-
   },
+
+  RegisterEmployee: {
+    title: "Create profile",
+    image: "Insert image",
+    name: "Name and Last name",
+    email: "Email",
+    password: "Password",
+    location: "Location",
+    experienceYears: "Years of experience",
+    confirmPassword: "Confirm password",
+    abilities: "Abilities",
+    availability: "Availabilities",
+    button: "CREATE PROFILE",
+  },
+
   NotFound:{
     title:"404 : Resource not found",
     goBack :"Go back to home page"
@@ -140,16 +155,7 @@ export const TRANSLATIONS_EN = {
     experienceYears: "Minimum years of experience expected",
     description: "Description",
     abilities: "Abilities",
-    abilities_cook: "Cooking",
-    abilities_iron: "Iron",
-    abilities_older: "Elder care",
-    abilities_child: "Child care",
-    abilities_specialNeeds: "Special care",
-    abilities_pets: "Pet care",
     availability: "Availability",
-    availability_half: "Part time",
-    availability_complete: "Full time",
-    availability_bed: "Overnight",
     button: "CREATE OFFER",
     expYearsError: 'Please enter a valid experience year',
     locationError: 'Please enter a location',
@@ -175,17 +181,8 @@ export const TRANSLATIONS_EN = {
     nameError: 'Please enter a valid name',
     location: 'Location',
     locationError: 'Please enter a valid location',
-    cook: 'Cook',
     abilities: 'Abilities',
-    iron: 'Iron',
-    childCare: 'Child care',
-    elderCare: 'Elder care',
-    specialNeeds: 'Special needs',
-    petCare: 'Pet care',
     availability: 'Availability',
-    partTime: 'Part time',
-    fullTime: 'Full time',
-    overnight: 'Overnight',
     filter: 'Filter',
     reset: 'Reset filters',
   },
@@ -199,6 +196,21 @@ export const TRANSLATIONS_EN = {
     button: 'Set it',
     passwordError: "Please enter a password",
     passwordsError: "Passwords do not match",
+  },
+
+  Availabilities: {
+    half: "Part time",
+    complete: "Full time",
+    bed: "Overnight",
+  },
+
+  Abilities: {
+    cook: "Cook",
+    iron: "Iron",
+    older: "Elder care",
+    child: "Child care",
+    specialNeeds: "Special care",
+    pets: "Pet care",
   }
 
 }

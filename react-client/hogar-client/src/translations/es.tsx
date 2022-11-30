@@ -9,6 +9,7 @@ export const TRANSLATIONS_ES = {
         mailError: 'Por favor ingrese un email válido',
         messageError: 'Por favor ingrese un mensaje'
     },
+
     RegisterEmployer:{
         image: "Insertar imagen",
         name: "Nombre",
@@ -25,6 +26,21 @@ export const TRANSLATIONS_ES = {
         passwordError: "Por favor ingrese una contraseña",
         passwordsError: "Las contraseñas no coinciden,"
     },
+
+    RegisterEmployee: {
+        title: "Crear perfil",
+        image: "Insertar imagen",
+        name: "Nombre y Apellido",
+        email: "Email",
+        password: "Contraseña",
+        location: "Zona",
+        experienceYears: "Años de experiencia",
+        confirmPassword: "Confirmar contraseña",
+        abilities: "Habilidades",
+        availability: "Disponibilidad",
+        button: "CREAR PERFIL",
+    },
+
     NotFound:{
         title:"404 : No se encontró el recurso",
         goBack :"Volver a la página inicial"
@@ -198,6 +214,21 @@ export const TRANSLATIONS_ES = {
         button: 'Actualizar',
         passwordError: "Por favor ingrese una contraseña",
         passwordsError: "Las contraseñas no coinciden",
+    },
+
+    Availabilities: {
+        half: "Media jornada",
+        complete: "Jornada completa",
+        bed: "Con cama",
+    },
+
+    Abilities: {
+        cook: "Cocinar",
+        iron: "Planchar",
+        older: "Cuidado de mayores",
+        child: "Cuidado de menores",
+        specialNeeds: "Cuidados especiales",
+        pets: "Cuidado de mascotas",
     }
 
 }

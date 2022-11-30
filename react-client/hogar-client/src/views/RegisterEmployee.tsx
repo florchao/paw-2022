@@ -86,7 +86,7 @@ const RegisterEmployee = () => {
                 <div className="grid grid-cols-6">
                     <div className="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                         <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
-                            Ttile_
+                            {t('RegisterEmployee.title')}
                             {/*<spring:message code="createProfile.formTitle"/>*/}
                         </p>
                         <div className="bg-gray-200 rounded-3xl p-5 shadow-2xl">
@@ -97,8 +97,7 @@ const RegisterEmployee = () => {
                                     </div>
                                     <label htmlFor="image-input" id="image-label"
                                            className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                        Choose Image_
-                                        {/*<spring:message code="employeeForm.insertImage"/>*/}
+                                        {t('RegisterEmployee.image')}
                                     </label>
                                     <input id="image-input" ref={imageRef} type="file" accept="image/png, image/jpeg" onChange={(e) => {
                                             if (e.target.files != null)
@@ -110,8 +109,7 @@ const RegisterEmployee = () => {
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="name"
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
-                                        Name_
-                                        {/*<spring:message code="employeeForm.label.name"/>*/}
+                                        {t('RegisterEmployee.name')}
                                     </label>
                                     <input type="text" onChange={(e) => setName(e.target.value)}
                                                 className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
@@ -120,8 +118,7 @@ const RegisterEmployee = () => {
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="mail"
                                                 className="text-sm font-medium text-gray-900">
-                                        Mail_
-                                        {/*<spring:message code="register.mail"/>*/}
+                                        {t('RegisterEmployee.email')}
                                     </label>
                                     <input id="mail" type="mail" onChange={(e) => setMail(e.target.value)}
                                                 className="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
@@ -130,8 +127,7 @@ const RegisterEmployee = () => {
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="password"
                                                 className="text-sm font-medium text-gray-900">
-                                        Password_
-                                        {/*<spring:message code="register.password"/>*/}
+                                        {t('RegisterEmployee.password')}
                                     </label>
                                     <input id="password" type="password" onChange={(e) => setPassword(e.target.value)}
                                                 className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
@@ -140,8 +136,7 @@ const RegisterEmployee = () => {
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="confirmPassword"
                                                 className="text-sm font-medium text-gray-900">
-                                        PassConf_
-                                        {/*<spring:message code="register.confirmPassword"/>*/}
+                                        {t('RegisterEmployee.confirmPassword')}
                                     </label>
                                     <input id="confirmPassword" type="password" onChange={(e) => setConfirmPassword(e.target.value)}
                                                 className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
@@ -151,8 +146,7 @@ const RegisterEmployee = () => {
                                 <div className="ml-3 col-span-3 w-4/5 justify-self-center">
                                     <label  htmlFor="location"
                                                 className="block mb-2 text-sm font-medium text-gray-900 ">
-                                        Location_
-                                        {/*<spring:message code="employeeForm.label.location"/>*/}
+                                        {t('RegisterEmployee.location')}
                                     </label>
                                     <input type="text" onChange={(e) => setLocation(e.target.value)}
                                                 className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
@@ -160,8 +154,7 @@ const RegisterEmployee = () => {
                                 </div>
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                                        Years_
-                                        {/*<spring:message code="employeeForm.label.experienceYears"/>*/}
+                                        {t('RegisterEmployee.experienceYears')}
                                     </label>
                                     <input type="number" id="expYears" onChange={(e) => setExperienceYears(e.target.valueAsNumber)}
                                                 className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
@@ -170,8 +163,7 @@ const RegisterEmployee = () => {
                             </div>
                             <div>
                                 <h1 className="pb-3 pt-3 font-bold">
-                                    Abilities
-                                    {/*<spring:message code="employeeForm.abilities"/>*/}
+                                    {t('RegisterEmployee.abilities')}
                                 </h1>
                             </div>
                             {ids &&
@@ -180,7 +172,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="cocinar-cb" id="cocinar-label"
                                                onClick={(e) => {setColor('cocinar', cookRef)}}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_cook')}
+                                            {t('Abilities.cook')}
                                         </label>
                                         <input type="checkbox" ref={cookRef} onChange={ (e) => handleAbilityCheck(cookRef, e.target.value)} id="cocinar-cb" value={ids.abilities[0]}
                                                style={{visibility: "hidden"}}/>
@@ -189,7 +181,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="planchar-cb" id="planchar-label"
                                                onClick={() => setColor('planchar', ironRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_iron')}
+                                            {t('Abilities.iron')}
                                         </label>
                                         <input type="checkbox" ref={ironRef} onChange={(e) => handleAbilityCheck(ironRef, e.target.value)} id="planchar-cb" value={ids.abilities[1]}
                                                style={{visibility: "hidden"}}/>
@@ -198,7 +190,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="menores-cb" id="menores-label"
                                                onClick={() => setColor('menores', childRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_child')}
+                                            {t('Abilities.child')}
                                         </label>
                                         <input type="checkbox" ref={childRef} onChange={(e) => handleAbilityCheck(childRef, e.target.value)} id="menores-cb" value={ids.abilities[2]}
                                                style={{visibility: "hidden"}}/>
@@ -207,7 +199,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="mayores-cb" id="mayores-label"
                                                onClick={() => setColor('mayores', elderRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_older')}
+                                            {t('Abilities.older')}
                                         </label>
                                         <input type="checkbox" ref={elderRef} onChange={(e) => handleAbilityCheck(elderRef, e.target.value)} id="mayores-cb" value={ids.abilities[3]}
                                                style={{visibility: "hidden"}}/>
@@ -216,7 +208,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="especiales-cb" id="especiales-label"
                                                onClick={() => setColor('especiales', specialRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_specialNeeds')}
+                                            {t('Abilities.specialNeeds')}
                                         </label>
                                         <input type="checkbox" ref={specialRef} onChange={(e) => handleAbilityCheck(specialRef, e.target.value)} id="especiales-cb" value={ids.abilities[4]}
                                                style={{visibility: "hidden"}}/>
@@ -225,7 +217,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="mascotas-cb" id="mascotas-label"
                                                onClick={() => setColor('mascotas', petRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_pets')}
+                                            {t('Abilities.pets')}
                                         </label>
                                         <input type="checkbox" ref={petRef} onChange={(e) => handleAbilityCheck(petRef, e.target.value)} id="mascotas-cb" value={ids.abilities[5]}
                                                style={{visibility: "hidden"}}/>
@@ -235,8 +227,7 @@ const RegisterEmployee = () => {
                             {/*<form:errors path="abilities" element="p" cssStyle="color: red; margin-top: 1.25rem"/>*/}
                             <div>
                                 <h1 className="pb-3 pt-3 font-bold">
-                                    Avail_
-                                    {/*<spring:message code="employeeForm.availability"/>*/}
+                                    {t('RegisterEmployee.availability')}
                                 </h1>
                             </div>
                             {ids &&
@@ -245,7 +236,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="media-cb" id="media-label"
                                                onClick={(e) => {setColor('media', halfRef)}}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            media_
+                                            {t('Availabilities.half')}
                                         </label>
                                         <input type="checkbox" ref={halfRef} onChange={ (e) => handleAvailabilityCheck(halfRef, e.target.value)} id="media-cb" value={ids.availabilities[0]}
                                                style={{visibility: "hidden"}}/>
@@ -254,7 +245,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="completa-cb" id="completa-label"
                                                onClick={() => setColor('completa', fullRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            completa_
+                                            {t('Availabilities.complete')}
                                         </label>
                                         <input type="checkbox" ref={fullRef} onChange={(e) => handleAvailabilityCheck(fullRef, e.target.value)} id="completa-cb" value={ids.availabilities[1]}
                                                style={{visibility: "hidden"}}/>
@@ -263,7 +254,7 @@ const RegisterEmployee = () => {
                                         <label htmlFor="cama-cb" id="cama-label"
                                                onClick={() => setColor('cama', overRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            cama_
+                                            {t('Availabilities.bed')}
                                         </label>
                                         <input type="checkbox" ref={overRef} onChange={(e) => handleAvailabilityCheck(overRef, e.target.value)} id="cama-cb" value={ids.availabilities[2]}
                                                style={{visibility: "hidden"}}/>

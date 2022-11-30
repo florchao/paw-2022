@@ -148,11 +148,11 @@ export const CreateJob = () => {
                                             onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.availabilityError'))}
                                             className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
                                             <option value={ids.availabilities[0]}
-                                                    label={t('CreateJob.availability_half')}/>
+                                                    label={t('Availabilities.half')}/>
                                             <option value={ids.availabilities[1]}
-                                                    label={t('CreateJob.availability_complete')}/>
+                                                    label={t('Availabilities.complete')}/>
                                             <option value={ids.availabilities[2]}
-                                                    label={t('CreateJob.availability_bed')}/>
+                                                    label={t('Availabilities.bed')}/>
                                         </select>
                                     </div>
                                 }
@@ -170,7 +170,7 @@ export const CreateJob = () => {
                                                    setColor('cocinar', cookRef)
                                                }}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_cook')}
+                                            {t('Abilities.cook')}
                                         </label>
                                         <input type="checkbox" ref={cookRef}
                                                onChange={(e) => handleCheck(cookRef, e.target.value)} id="cocinar-cb"
@@ -181,7 +181,7 @@ export const CreateJob = () => {
                                         <label htmlFor="planchar-cb" id="planchar-label"
                                                onClick={() => setColor('planchar', ironRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_iron')}
+                                            {t('Abilities.iron')}
                                         </label>
                                         <input type="checkbox" ref={ironRef}
                                                onChange={(e) => handleCheck(ironRef, e.target.value)} id="planchar-cb"
@@ -192,7 +192,7 @@ export const CreateJob = () => {
                                         <label htmlFor="menores-cb" id="menores-label"
                                                onClick={() => setColor('menores', childRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_child')}
+                                            {t('Abilities.child')}
                                         </label>
                                         <input type="checkbox" ref={childRef}
                                                onChange={(e) => handleCheck(childRef, e.target.value)} id="menores-cb"
@@ -203,7 +203,7 @@ export const CreateJob = () => {
                                         <label htmlFor="mayores-cb" id="mayores-label"
                                                onClick={() => setColor('mayores', elderRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_older')}
+                                            {t('Abilities.older')}
                                         </label>
                                         <input type="checkbox" ref={elderRef}
                                                onChange={(e) => handleCheck(elderRef, e.target.value)} id="mayores-cb"
@@ -214,7 +214,7 @@ export const CreateJob = () => {
                                         <label htmlFor="especiales-cb" id="especiales-label"
                                                onClick={() => setColor('especiales', specialRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_specialNeeds')}
+                                            {t('Abilities.specialNeeds')}
                                         </label>
                                         <input type="checkbox" ref={specialRef}
                                                onChange={(e) => handleCheck(specialRef, e.target.value)}
@@ -225,7 +225,7 @@ export const CreateJob = () => {
                                         <label htmlFor="mascotas-cb" id="mascotas-label"
                                                onClick={() => setColor('mascotas', petRef)}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                            {t('CreateJob.abilities_pets')}
+                                            {t('Abilities.pets')}
                                         </label>
                                         <input type="checkbox" ref={petRef}
                                                onChange={(e) => handleCheck(petRef, e.target.value)} id="mascotas-cb"
