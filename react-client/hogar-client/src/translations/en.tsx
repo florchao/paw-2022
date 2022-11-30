@@ -39,6 +39,15 @@ export const TRANSLATIONS_EN = {
     abilities: "Abilities",
     availability: "Availabilities",
     button: "CREATE PROFILE",
+    imageError: "Please enter an image",
+    nameError: "Please enter your name",
+    locationError: "Please enter a valid location",
+    emailError: "Please enter your email",
+    passwordError: "Please enter a password",
+    passwordsError: "Passwords do not match",
+    expYearsError: 'Please enter a valid experience year',
+    availabilityError: 'Please select at least one availability',
+    abilitiesError: 'Please select at least one ability',
   },
 
   NotFound:{
