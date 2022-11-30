@@ -67,7 +67,6 @@ export const ProfileEmployee = () => {
                       <div className="ml-3 col-span-2">
                           <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
                               {employee.name}
-                              {status && status}
                           </p>
                       </div>
                       <div className="ml-3 col-span-2">

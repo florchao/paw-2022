@@ -8,6 +8,8 @@ import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.form.EmployeeForm;
 import ar.edu.itba.paw.webapp.form.EmployerForm;
+import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,10 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 @Path("/api")
 @Component
@@ -33,22 +38,29 @@ public class CreateProfileController {
 
     @POST
     @Path("/employee")
-    @Consumes(value = {MediaType.APPLICATION_JSON, })
-    public Response createEmployee(@Valid final EmployeeForm form) {
-//        User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword(), 1);
-//        employeeService.create(form.getName().toLowerCase(), form.getLocation().toLowerCase(), u.getId(), form.fromArrtoString(form.getAvailability()), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getImage().getBytes());
-//        return Response.ok(u.getId()).build();
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
+    public Response createEmployee(@FormDataParam("mail") String mail,
+                                   @FormDataParam("password") String password,
+                                   @FormDataParam("confirmPassword") String confirmPassword,
+                                   @FormDataParam("name") String name,
+                                   @FormDataParam("location") String location,
+                                   @FormDataParam("experienceYears") long experienceYears,
+                                   @FormDataParam("availabilities[]") List<String> availabilities,
+                                   @FormDataParam("abilities[]") List<String> abilities,
+                                   @FormDataParam("image") InputStream image) throws IOException, UserFoundException, PassMatchException {
+        User u = userService.create(mail, password, password, 1);
+        employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, fromListToString(abilities), IOUtils.toByteArray(image));
+        return Response.ok(u.getId()).build();
         //Probando que llegue bien la información
-        System.out.println(form.getMail());
-        System.out.println(form.getPassword());
-        System.out.println(form.getConfirmPassword());
-        System.out.println(form.getName());
-        System.out.println(form.getLocation());
-        System.out.println(Arrays.toString(form.getAbilities()));
-        System.out.println(Arrays.toString(form.getAvailability()));
-        System.out.println(form.getExperienceYears());
-        System.out.println(form.getImage());
-        return Response.ok(1).build();
+//        System.out.println(mail);
+//        System.out.println(password);
+//        System.out.println(confirmPassword);
+//        System.out.println(name);
+//        System.out.println(location);
+//        System.out.println(availabilities);
+//        System.out.println(abilities);
+//        System.out.println(experienceYears);
+//        return Response.ok(1).build();
     }
 
     @GET
@@ -72,6 +84,14 @@ public class CreateProfileController {
 //        principal.setName(name);
 //        LOGGER.debug(String.format("employer created under userid %d", principal.getUserID()));
         return Response.ok().build();
+    }
+
+    public String fromListToString(List<String> arr){
+        StringBuilder ret = new StringBuilder();
+        for (String str: arr) {
+            ret.append(str).append(",");
+        }
+        return ret.substring(0, ret.length() - 1);
     }
 
 }

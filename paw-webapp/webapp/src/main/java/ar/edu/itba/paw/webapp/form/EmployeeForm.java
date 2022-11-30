@@ -4,13 +4,14 @@ import ar.edu.itba.paw.webapp.constraint.annotation.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.File;
 import java.util.List;
+
 @PasswordMatchesAnnotationEmployee
 public class EmployeeForm {
 
@@ -43,16 +44,16 @@ public class EmployeeForm {
     private String[] abilities;
 
     @CheckboxesAvailabilitiesEdit
-    private String[] availability;
+    private String[] availabilities;
 
     @NotEmptyFile
-    private CommonsMultipartFile image;
+    private byte[] image;
 
-    public CommonsMultipartFile getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(CommonsMultipartFile image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -88,15 +89,15 @@ public class EmployeeForm {
         this.abilities = abilities;
     }
 
-    public String[] getAvailability() {
-        return availability;
+    public String[] getAvailabilities() {
+        return availabilities;
     }
 
-    public void setAvailability(String[] availability) {
-        this.availability = availability;
+    public void setAvailabilities(String[] availabilities) {
+        this.availabilities = availabilities;
     }
 
-    public String fromArrtoString(String[] arr){
+    public String fromListToString(List<String> arr){
         StringBuilder ret = new StringBuilder();
         for (String str: arr) {
             ret.append(str).append(",");

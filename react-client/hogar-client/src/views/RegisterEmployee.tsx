@@ -14,7 +14,7 @@ const RegisterEmployee = () => {
     const [experienceYears, setExperienceYears] = useState<number>(0);
     const [availabilities, setAvailability] = useState<string[]>([]);
     const [abilities, setAbilities] = useState<string[]>([]);
-    const [image, setImage] = useState('/images/user.png');
+    const [image, setImage] = useState<FileList>();
 
 
     const [ids, setIds] = useState<any>();
@@ -59,13 +59,13 @@ const RegisterEmployee = () => {
             setAvailability(newList)
         } else {
             const newList = availabilities.filter((a) => a !== availability);
-            setAbilities(newList)
+            setAvailability(newList)
         }
     }
 
     const handleSubmit = async (e: any) => {
-        const post = await EmployeeService.registerEmployee(e, mail, password, confirmPassword, name, location, experienceYears, availabilities, abilities, image)
-        // nav('/employee', {replace: true, state: {id: post, status: -1}})
+        const post = await EmployeeService.registerEmployee(e, mail, password, confirmPassword, name, location, experienceYears, availabilities, abilities, image![0])
+        nav('/employee', {replace: true, state: {id: post, status: -1}})
     }
 
     const setColor = (name: string, ref: RefObject<HTMLInputElement>) => {
@@ -93,7 +93,7 @@ const RegisterEmployee = () => {
                             <div className="grid grid-cols-6 gap-6">
                                 <div className="row-span-4 col-span-2 m-6">
                                     <div className="overflow-hidden bg-gray-100 rounded-full">
-                                        <img id="picture" src={image} alt="user pic"/>
+                                        <img id="picture" src={image? URL.createObjectURL(image[0]): '/images/user.png'} alt="user pic"/>
                                     </div>
                                     <label htmlFor="image-input" id="image-label"
                                            className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
@@ -102,7 +102,7 @@ const RegisterEmployee = () => {
                                     </label>
                                     <input id="image-input" ref={imageRef} type="file" accept="image/png, image/jpeg" onChange={(e) => {
                                             if (e.target.files != null)
-                                                setImage(URL.createObjectURL(e.target.files[0]))
+                                                setImage(e.target.files)
                                         }
                                     } style={{visibility: "hidden"}}/>
                                     {/*<form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>*/}

@@ -66,13 +66,25 @@ export class EmployeeService {
                 })
     }
 
-    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, availabilities: string[], abilities: string[], image:any) {
+    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, availabilities: string[], abilities: string[], image:File) {
         e.preventDefault();
-        const employeeForm = {mail, password, confirmPassword, name, location, experienceYears, availabilities, abilities};
+
+        const formData:any = new FormData();
+        formData.append("mail", mail)
+        formData.append("password", password)
+        formData.append("confirmPassword", confirmPassword)
+        formData.append("name", name)
+        formData.append("location", location)
+        formData.append("experienceYears", experienceYears)
+        console.log(availabilities)
+        availabilities.forEach(a => formData.append("availabilities[]", a))
+        abilities.forEach(a => formData.append("abilities[]", a))
+        formData.append("image", image, image.name)
+        console.log(formData)
         return await fetch('http://localhost:8080/api/employee', {
             method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(employeeForm)
+            headers: {},
+            body: formData
         }).then((r) => r.text())
     }
 }
