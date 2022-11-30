@@ -25,4 +25,14 @@ export class UserService{
                     throw error
                 })
     }
+
+    public static async newPassword(e: any, mail: string, password: string, confirmPassword: string){
+        const blog = {mail, password, confirmPassword};
+        return await fetch('http://localhost:8080/api/newPassword/',{
+            method: 'PUT',
+            headers: {"Content-Type": "application/json",
+            },
+            body: JSON.stringify(blog)
+        })
+    }
 }

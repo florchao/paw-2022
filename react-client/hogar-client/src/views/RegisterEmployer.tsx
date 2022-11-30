@@ -16,6 +16,16 @@ const RegisterEmployer = () => {
     const nav = useNavigate();
     const {t} = useTranslation();
 
+    const invalidEmail = (email : String) => {
+        if( email.length === 0)
+            return true
+        return !String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
     const handleSubmit = (e: any) => {
         EmployerService.registerEmployer(e, name, lastName, mail, password, confirmPassword, image).
         then((r) => {
@@ -50,6 +60,9 @@ const RegisterEmployer = () => {
                                     onChange={(e) => setImage(e.target.value)}
                                     className="overflow-hidden bg-gray-100 rounded-full"
                                 />
+                                {(image.length < 1 ) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.imageError')}</p>
+                                }
                             </div>
                             <div className="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                                     <h3>{t('RegisterEmployer.name')}</h3>
@@ -57,11 +70,16 @@ const RegisterEmployer = () => {
                                         type="text"
                                         required
                                         value={name}
+                                        maxLength={100}
+                                        minLength={1}
                                         onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployer.nameError'))}
                                         onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                         onChange={(e) => setName(e.target.value)}
                                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                     />
+                                {(name.length < 1 || name.length > 100 ) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.nameError')}</p>
+                                }
                                 </div>
                             <div className="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                                 <h3>{t('RegisterEmployer.lastName')}</h3>
@@ -69,11 +87,16 @@ const RegisterEmployer = () => {
                                     type="text"
                                     required
                                     value={lastName}
+                                    maxLength={100}
+                                    minLength={1}
                                     onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployer.lastNameError'))}
                                     onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                     onChange={(e) => setLastName(e.target.value)}
                                     className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                 />
+                                {(lastName.length < 1 || name.length > 100) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.lastNameError')}</p>
+                                }
                             </div>
                             <div className="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                                 <h3>{t('RegisterEmployer.email')}</h3>
@@ -86,6 +109,9 @@ const RegisterEmployer = () => {
                                     onChange={(e) => setMail(e.target.value)}
                                     className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                 />
+                                {(invalidEmail(mail) ) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.emailError')}</p>
+                                }
                             </div>
                             <div className="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                                 <h3>{t('RegisterEmployer.password')}</h3>
@@ -98,6 +124,12 @@ const RegisterEmployer = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                 />
+                                {(password.length < 1 ) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordError')}</p>
+                                }
+                                {(password !== confirmPassword ) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordsError')}</p>
+                                }
                             </div>
                             <div className="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                                 <h3>{t('RegisterEmployer.confirmPassword')}</h3>
@@ -110,6 +142,12 @@ const RegisterEmployer = () => {
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                 />
+                                {(confirmPassword.length < 1 ) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordError')}</p>
+                                }
+                                {(password !== confirmPassword ) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordsError')}</p>
+                                }
                             </div>
                             <div className="mt-5 col-span-5 row-span-3">
                                 <button type="submit"

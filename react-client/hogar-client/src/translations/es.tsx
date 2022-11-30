@@ -5,6 +5,9 @@ export const TRANSLATIONS_ES = {
         mail:"E-mail",
         message:"Mensaje",
         send:"Enviar",
+        nameError: 'Por favor ingrese un nombre válido',
+        mailError: 'Por favor ingrese un email válido',
+        messageError: 'Por favor ingrese un mensaje'
     },
     RegisterEmployer:{
         image: "Insertar imagen",
@@ -19,7 +22,8 @@ export const TRANSLATIONS_ES = {
         nameError: "Por favor ingrese su nombre",
         lastNameError: "Por favor ingrese su apellido",
         emailError: "Por favor ingrese su mail",
-        passwordError: "Por favor ingrese una contraseña"
+        passwordError: "Por favor ingrese una contraseña",
+        passwordsError: "Las contraseñas no coinciden,"
     },
     NotFound:{
         title:"404 : No se encontró el recurso",
@@ -97,10 +101,6 @@ export const TRANSLATIONS_ES = {
         employees: "Empleadas registradas"
     },
 
-    FilterForm: {
-
-    },
-
     Job:{
         title : "Ver publicación",
         jobLocation : "Ubicación del trabajo",
@@ -149,6 +149,55 @@ export const TRANSLATIONS_ES = {
         availability_half: "Media jornada",
         availability_complete: "Jornada completa",
         availability_bed: "Con cama",
-        button: "CREAR OFERTA"
+        button: "CREAR OFERTA",
+        expYearsError: "Por favor ingrese una cantidad de años de experiencia esperados",
+        locationError: "Por favor ingrese una ubicación",
+        titleError: "Por favor ingrese un título",
+        availabilityError: "Por favor selecciones al menos una disponibilidad",
+        abilitiesError: "Por favor seleccione al menos una habilidad",
+        descriptionError: "Por favor ingrese una descripción"
+    },
+
+    ContactEmployee: {
+        title: "Contactarse con ",
+        phone: "Teléfono",
+        message: "Mensaje",
+        submit: "Enviar",
+        phoneError: "Por favor ingrese un número de teléfono válido",
+        messageError: "Por favor ingrese un mensaje"
+    },
+
+    FilterForm:{
+        expYears: 'Años de experiencia mínimos',
+        expYearsError: 'Por favor ingrese un año de experiencia válido',
+        name: 'Nombre',
+        nameError: 'Por favor ingrese un nombre válido',
+        location: 'Ubicación',
+        locationError: 'Por favor ingrese una ubicación válida',
+        cook: 'Cocinar',
+        abilities: 'Habilidades',
+        iron: 'Planchar',
+        childCare: 'Cuidado de menores',
+        elderCare: 'Cuidado de mayores',
+        specialNeeds: 'Cuidados especiales',
+        petCare: 'Cuidado de mascotas',
+        availability: 'Disponibilidad',
+        partTime: 'Media jornada',
+        fullTime: 'Jornada completa',
+        overnight: 'Con cama',
+        filter: 'Filtrar',
+        reset: 'Limpiar filtros',
+    },
+
+    NewPassword:{
+        title: 'Cambia tu contraseña',
+        email: 'Email',
+        emailError: 'Por favor ingrese un email válido',
+        password: 'Contraseña',
+        confirmPassword: 'Confirma contraseña',
+        button: 'Actualizar',
+        passwordError: "Por favor ingrese una contraseña",
+        passwordsError: "Las contraseñas no coinciden",
     }
-  }
+
+}

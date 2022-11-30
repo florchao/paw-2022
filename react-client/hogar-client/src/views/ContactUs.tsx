@@ -1,8 +1,6 @@
 import './style.css'
-import Button from "../components/Button";
 import { useTranslation } from 'react-i18next';
 import {useState} from "react";
-import exp from "constants";
 import {ContactService} from "../service/ContactService";
 import {useNavigate} from "react-router-dom";
 
@@ -14,10 +12,6 @@ export const invalidEmail = (email : String) => {
         .match(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
-};
-
-export const invalidInput = (input : String) => {
-    return input.length == 0;
 };
 
 export const ContactUs = () => {
@@ -47,17 +41,17 @@ export const ContactUs = () => {
                     <input
                         type="text"
                         required
-                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Please enter a valid name")}
+                        maxLength={100}
+                        minLength={1}
+                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('ContactUs.nameError'))}
                         onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                     />
-                    {invalidInput(name) && (
-                        <text className="text-red-500">
-                            Please enter a valid name
-                        </text>
-                    )}
+                    {(name.length < 1 || name.length > 100 ) &&
+                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactUs.nameError')}</p>
+                    }
                 </div>
                 <div className="form-group mb-6">
                     <h3>{t('ContactUs.mail')}</h3>
@@ -65,32 +59,28 @@ export const ContactUs = () => {
                         type="email"
                         required
                         value={mail}
-                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Please enter a valid e-mail")}
+                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('ContactUs.mailError'))}
                         onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                         onChange={(e) => setMail(e.target.value)}
                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                     />
-                    {invalidEmail(mail) && (
-                        <text className="text-red-500">
-                            Please enter a valid e-mail
-                        </text>
-                    )}
+                    {invalidEmail(mail) &&
+                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactUs.mailError')}</p>
+                    }
                 </div>
                 <div className="form-group mb-6">
                     <h3>{t('ContactUs.message')}</h3>
                     <textarea
                         required
                         value={content}
-                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Please enter a message")}
+                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('ContactUs.messageError'))}
                         onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                         onChange={(e) => setContent(e.target.value)}
                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"
                     ></textarea>
-                    {content.length == 0 && (
-                        <text className="text-red-500">
-                            Please enter a message
-                        </text>
-                    )}
+                    {(content.length < 1 ) &&
+                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactUs.messageError')}</p>
+                    }
                 </div>
 
                 <button type="submit" className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">{t('ContactUs.send')}</button>

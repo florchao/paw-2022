@@ -5,6 +5,9 @@ export const TRANSLATIONS_EN = {
     mail:"E-mail",
     message:"Message",
     send:"Send",
+    nameError: 'Please enter a valid name',
+    mailError: 'Please enter a valid email',
+    messageError: 'Please enter a message'
   },
   RegisterEmployer: {
     image: "Insert image",
@@ -20,6 +23,7 @@ export const TRANSLATIONS_EN = {
     lastNameError: "Please enter your last name",
     emailError: "Please enter your email",
     passwordError: "Please enter a password",
+    passwordsError: "Passwords do not match",
 
   },
   NotFound:{
@@ -98,10 +102,6 @@ export const TRANSLATIONS_EN = {
     employees: "Registered employees"
   },
 
-  FilterForm: {
-
-  },
-
   Job:{
     title : "View job",
     jobLocation : "Location of job",
@@ -150,6 +150,55 @@ export const TRANSLATIONS_EN = {
     availability_half: "Part time",
     availability_complete: "Full time",
     availability_bed: "Overnight",
-    button: "CREATE OFFER"
+    button: "CREATE OFFER",
+    expYearsError: 'Please enter a valid experience year',
+    locationError: 'Please enter a location',
+    titleError: 'Please enter a title',
+    availabilityError: 'Please select at least one availability',
+    abilitiesError: 'Please select at least one ability',
+    descriptionError: 'Please enter a description'
+  },
+
+  ContactEmployee: {
+    title: "Contact with ",
+    phone: "Phone",
+    message: "Message",
+    submit: "Submit",
+    phoneError: "Please enter a valid phone number",
+    messageError: "Please enter a message"
+  },
+
+  FilterForm:{
+    expYears: 'Minimum years of experience',
+    expYearsError: ' Please enter a valid year of experience',
+    name: 'Name',
+    nameError: 'Please enter a valid name',
+    location: 'Location',
+    locationError: 'Please enter a valid location',
+    cook: 'Cook',
+    abilities: 'Abilities',
+    iron: 'Iron',
+    childCare: 'Child care',
+    elderCare: 'Elder care',
+    specialNeeds: 'Special needs',
+    petCare: 'Pet care',
+    availability: 'Availability',
+    partTime: 'Part time',
+    fullTime: 'Full time',
+    overnight: 'Overnight',
+    filter: 'Filter',
+    reset: 'Reset filters',
+  },
+
+  NewPassword:{
+    title: 'Change your password',
+    email: 'Email',
+    emailError: 'Please enter a valid email',
+    password: 'Password',
+    confirmPassword: 'Confirm password',
+    button: 'Set it',
+    passwordError: "Please enter a password",
+    passwordsError: "Passwords do not match",
   }
+
 }

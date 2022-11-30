@@ -1,9 +1,8 @@
 import './style.css'
-import Button from "../components/Button";
 import {useEffect, useState} from "react";
 import {Link, useLocation, useNavigate} from 'react-router-dom'
-import {Contacts} from "./Contacts";
 import {ContactService} from "../service/ContactService";
+import {useTranslation} from "react-i18next";
 
 export const ContactEmployee = () => {
 
@@ -13,9 +12,13 @@ export const ContactEmployee = () => {
 
     const { id, name } = useLocation().state
 
-
-
+    const {t} = useTranslation();
     const nav = useNavigate();
+
+    const invalidPhone = (number : String) => {
+        if( number.length <= 10)
+            return true
+    };
 
     const handleSubmit = async (e: any) => {
         const contact = await ContactService.contactEmployee(e, phone, content, id)
@@ -29,7 +32,7 @@ export const ContactEmployee = () => {
             <div className="col-start-3 col-span-3 grid h-full w-full">
                 <div className="grid justify-items-center mx-6">
                     <p className="text-xl font-semibold text-white mb-5">
-                        Contactarse con {name}
+                        {t('ContactEmployee.title') + name}
                     </p>
                 </div>
 
@@ -37,31 +40,37 @@ export const ContactEmployee = () => {
                     <div className="block p-6 rounded-3xl shadow-lg bg-gray-200">
                         <div className="form-group mb-6">
                             <h3 className="block mb-2 text-sm font-medium text-gray-900">
-                                Telefono
+                                {t('ContactEmployee.phone')}
                             </h3>
                             <input type="tel"
                                    required
                                    value={phone}
+                                   onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('ContactEmployee.phoneError'))}
+                                   onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                    onChange={(e) => setPhone(e.target.value)}
                                    className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"
                             />
-
-                            {/*<form:errors path="phone" element="p" cssStyle="color: red"/>*/}
+                            {(invalidPhone(phone) ) &&
+                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactEmployee.phoneError')}</p>
+                            }
                         </div>
                         <div className="form-group mb-6">
                             <h3 className="block mb-2 text-sm font-medium text-gray-900">
-                                Mensaje
+                                {t('ContactEmployee.message')}
                             </h3>
                             <textarea
                                 required
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
+                                onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('ContactEmployee.messageError'))}
+                                onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
                                 className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                            {/*<form:errors path="content" element="p" cssStyle="color: red"/>*/}
-                        </div>
+                            {(content.length < 1 ) &&
+                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactEmployee.messageError')}</p>
+                            }                        </div>
                         <button type="submit"
                                 className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                            Enviar
+                            {t('ContactEmployee.submit')}
                         </button>
                     </div>
                 </form>

@@ -10,7 +10,7 @@ const ReviewCard = (review: any)=> {
     useEffect(() => {
         //TODO:usar el de Employer
         let id;
-        if(review.employer != null)
+        if(review.employer !== null)
             id = review.employer.id;
         else
             id = review.employee.id
