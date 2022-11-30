@@ -1,6 +1,6 @@
 export class EmployeeService {
     public static async getEmployees() {
-        return await fetch('http://localhost:8080/api/explore/employees', {
+        return await fetch('http://localhost:8080/api/employees', {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -21,7 +21,7 @@ export class EmployeeService {
         availability?: string
     ) {
 
-        let url = 'http://localhost:8080/api/explore/employees?'
+        let url = 'http://localhost:8080/api/employees?'
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
@@ -52,7 +52,7 @@ export class EmployeeService {
 
 
     public static async getEmployee(id: number) {
-        return await fetch('http://localhost:8080/api/profile/' + id, {
+        return await fetch('http://localhost:8080/api/employee/' + id, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -81,7 +81,7 @@ export class EmployeeService {
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
         console.log(formData)
-        return await fetch('http://localhost:8080/api/employee', {
+        return await fetch('http://localhost:8080/api/employee/', {
             method: 'POST',
             headers: {},
             body: formData

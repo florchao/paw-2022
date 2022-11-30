@@ -106,7 +106,7 @@ public class ContactController {
 //    }
 
     @POST
-    @Path("/us")
+    @Path("/")
     @Consumes (value = {MediaType.APPLICATION_JSON, })
     public Response contactUs(@Valid ContactUsForm form) {
 //        if(error.hasErrors()) {
@@ -137,7 +137,6 @@ public class ContactController {
             employee.get().firstWordsToUpper();
             boolean exists = contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
             if (!exists) {
-                System.out.println("holaaa");
                 Response.status(Status.ERROR).build();
             }
         }

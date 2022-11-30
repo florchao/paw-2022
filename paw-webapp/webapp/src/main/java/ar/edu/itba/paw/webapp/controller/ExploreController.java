@@ -35,7 +35,7 @@ import javax.ws.rs.core.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Path("/api/explore")
+@Path("/api")
 @Component
 public class ExploreController {
 

@@ -59,7 +59,7 @@ public class JobController {
     }
 
     @POST
-    @Path("")
+    @Path("/")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response postJob(@Valid final JobForm form) {
         //TODO: poner el id del empleador que esta iniciado sesión
@@ -89,7 +89,7 @@ public class JobController {
 //    }
 //
     @GET
-    @Path("/employer/{id}")
+    @Path("/{id}/employer")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response createdJobs(@PathParam("id") long id) {
 //            @RequestParam(value = "publishedPage", required = false) Long page){

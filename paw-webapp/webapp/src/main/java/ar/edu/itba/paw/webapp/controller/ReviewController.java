@@ -45,4 +45,15 @@ public class ReviewController {
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews){};
         return Response.ok(genericEntity).build();
     }
+
+    //    @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})
+//    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id) throws UserNotFoundException {
+//        if(errors.hasErrors())
+//            return userProfile(id,status, reviewForm, null);
+//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        reviewService.create(id, principal.getUserID(), reviewForm.getContent(), new Date(System.currentTimeMillis()), true);
+//        return new ModelAndView("redirect:/verPerfil/" + id);
+//    }
+//
+//
 }

@@ -39,6 +39,22 @@ public class RatingController {
         return Response.noContent().build();
     }
 
+    //
+//    @RequestMapping(value = "/addRating/{idRating}", method = {RequestMethod.POST})
+//    public ModelAndView addRating(@RequestParam(value = "rating", required = false) Long rating,
+//                                  @PathVariable final long idRating) {
+//        if (rating == null)
+//            rating = 0L;
+//        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
+//        HogarUser user = (HogarUser) authority.getPrincipal();
+//        float finalRating = raitingService.updateRating(idRating, rating, user.getUserID());
+//        long voteCount = employeeService.getRatingVoteCount(idRating);
+//        final ModelAndView mav = new ModelAndView("redirect:/verPerfil/"+idRating);
+//        mav.addObject("rating",finalRating);
+//        mav.addObject("voteCount", voteCount);
+//        return mav;
+//    }
+
     static class Rating {
         float rating;
         long count;

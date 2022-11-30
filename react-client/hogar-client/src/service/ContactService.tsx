@@ -3,7 +3,7 @@ export class ContactService {
     public static async contactUs (e: any, name: string, mail: string, content: string) {
         e.preventDefault();
         const blog = {name, mail, content};
-        return await fetch('http://localhost:8080/api/contact/us', {
+        return await fetch('http://localhost:8080/api/contact/', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(blog)

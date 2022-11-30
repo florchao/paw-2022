@@ -8,19 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Objects;
 
-@Path("/api/newPassword")
+@Path("/api/user")
 @Component
-public class NewPasswordController {
+public class UserController {
+
     @Autowired
     private UserService userService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(NewPasswordController.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @PUT
     @Path("/")
@@ -34,5 +33,12 @@ public class NewPasswordController {
         else {
             return Response.notModified().build();
         }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteUser(@PathParam("id") long id){
+        userService.deleteUser(id);
+        return Response.ok().build();
     }
 }

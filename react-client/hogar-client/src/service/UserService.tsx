@@ -1,7 +1,7 @@
 export class UserService{
 
     public static async deleteUser(id: number) {
-        return await fetch('http://localhost:8080/api/profile/delete/' + id, {
+        return await fetch('http://localhost:8080/api/user/' + id, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -11,7 +11,7 @@ export class UserService{
     }
 
     public static async loadImage(id: number) {
-        return fetch('http://localhost:8080/api/profile/image/' + id, {
+        return fetch('http://localhost:8080/api/image/' + id, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -27,12 +27,13 @@ export class UserService{
     }
 
     public static async newPassword(e: any, mail: string, password: string, confirmPassword: string){
-        const blog = {mail, password, confirmPassword};
-        return await fetch('http://localhost:8080/api/newPassword/',{
+        e.preventDefault();
+        const form = {mail, password, confirmPassword};
+        return await fetch('http://localhost:8080/api/user/',{
             method: 'PUT',
             headers: {"Content-Type": "application/json",
             },
-            body: JSON.stringify(blog)
+            body: JSON.stringify(form)
         })
     }
 }

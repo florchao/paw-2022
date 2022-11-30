@@ -8,10 +8,10 @@ const ReviewCard = (review: any)=> {
     review = review.review
 
     useEffect(() => {
-        //TODO:usar el de Employer
         let id;
-        if(review.employer !== null)
+        if (review.employer !== undefined) {
             id = review.employer.id;
+        }
         else
             id = review.employee.id
         UserService.loadImage(id).then(

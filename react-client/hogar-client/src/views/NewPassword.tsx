@@ -23,8 +23,8 @@ const NewPassword = () => {
             );
     };
 
-    const handleSubmit = (e: any) => {
-        UserService.newPassword(e, mail, password, confirmPassword)
+    const handleSubmit = async (e: any) => {
+        const post = await UserService.newPassword(e, mail, password, confirmPassword)
     }
 
     return (
