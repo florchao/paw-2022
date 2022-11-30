@@ -52,8 +52,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .and().exceptionHandling()
                 .accessDeniedPage("/403")
-                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable();
+//                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .csrf().disable();
+                .and().csrf().disable();
     }
 
     @Override
