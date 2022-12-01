@@ -10,6 +10,8 @@ import ar.edu.itba.paw.webapp.dto.EmployerDto;
 import ar.edu.itba.paw.webapp.form.EmployerForm;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +34,9 @@ public class EmployerController {
 
     @Context
     private UriInfo uriInfo;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmployerController.class);
+
 
     @GET
     @Path(value = "/{id}")
@@ -100,8 +105,7 @@ public class EmployerController {
         employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
 //        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        principal.setName(name);
-//        LOGGER.debug(String.format("employer created under userid %d", principal.getUserID()));
-        System.out.println("Se creo? " + u);
+        LOGGER.debug(String.format("employer created under userid %d", u.getId()));
         return Response.ok(u.getId()).build();
     }
 }
