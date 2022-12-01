@@ -114,7 +114,10 @@ export const TRANSLATIONS_EN = {
 
   Explore: {
     jobs: "Available jobs",
-    employees: "Registered employees"
+    employees: "Registered employees",
+    orderBy: "Order by: ",
+    popularity: "Popularity",
+    experience: "Experience"
   },
 
   Job:{

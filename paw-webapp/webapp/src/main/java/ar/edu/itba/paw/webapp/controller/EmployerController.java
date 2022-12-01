@@ -8,12 +8,16 @@ import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.dto.EmployerDto;
 import ar.edu.itba.paw.webapp.form.EmployerForm;
+import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 @Path("/api/employer")
@@ -80,17 +84,24 @@ public class EmployerController {
 
     @POST
     @Path("/")
-    @Consumes(value = {MediaType.APPLICATION_JSON, })
-    public Response createEmployer(@Valid EmployerForm form) throws UserFoundException, PassMatchException {
-        final User u = userService.create(form.getMail(), form.getPassword(), form.getConfirmPassword(), 2);
-        String name = form.getName() + " " + form.getLastname();
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
+    public Response createEmployer(@FormDataParam("mail") String mail,
+                                   @FormDataParam("password") String password,
+                                   @FormDataParam("confirmPassword") String confirmPassword,
+                                   @FormDataParam("name") String name,
+                                   @FormDataParam("last") String lastName,
+                                   @FormDataParam("image") InputStream image
+                                   ) throws UserFoundException, PassMatchException, IOException {
+        final User u = userService.create(mail, password, confirmPassword, 2);
+        String fullName = name + " " + lastName;
 //        HogarUser current = new HogarUser(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))), name, u.getId());
 //        Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYER")));
 //        SecurityContextHolder.getContext().setAuthentication(auth);
-        employerService.create(name.toLowerCase(), u, form.getImage().getBytes());
+        employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
 //        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        principal.setName(name);
 //        LOGGER.debug(String.format("employer created under userid %d", principal.getUserID()));
-        return Response.ok().build();
+        System.out.println("Se creo? " + u);
+        return Response.ok(u.getId()).build();
     }
 }

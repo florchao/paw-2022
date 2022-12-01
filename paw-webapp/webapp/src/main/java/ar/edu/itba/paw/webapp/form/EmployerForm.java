@@ -34,16 +34,16 @@ public class EmployerForm {
     @NotBlank
     private String confirmPassword;
 
-    @NotEmptyFile
-    private CommonsMultipartFile image;
-
-    public CommonsMultipartFile getImage() {
-        return image;
-    }
-
-    public void setImage(CommonsMultipartFile image) {
-        this.image = image;
-    }
+//    @NotEmptyFile
+//    private CommonsMultipartFile image;
+//
+//    public CommonsMultipartFile getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(CommonsMultipartFile image) {
+//        this.image = image;
+//    }
 
 
     public String getName() {

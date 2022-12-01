@@ -265,8 +265,7 @@ const RegisterEmployee = () => {
                             <div className="mt-5 col-start-2 col-span-4 row-span-3">
                                 <button type="submit"
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                    {/*<spring:message code="employeeForm.button"/>*/}
-                                    utton_
+                                    {t('RegisterEmployee.button')}
                                 </button>
                             </div>
                         </div>

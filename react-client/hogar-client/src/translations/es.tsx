@@ -114,7 +114,10 @@ export const TRANSLATIONS_ES = {
 
     Explore: {
         jobs: "Trabajos disponibles",
-        employees: "Empleadas registradas"
+        employees: "Empleadas registradas",
+        orderBy: "Ordenar por: ",
+        popularity: "Popularidad",
+        experience: "Experiencia"
     },
 
     Job:{
@@ -190,17 +193,8 @@ export const TRANSLATIONS_ES = {
         nameError: 'Por favor ingrese un nombre válido',
         location: 'Ubicación',
         locationError: 'Por favor ingrese una ubicación válida',
-        cook: 'Cocinar',
         abilities: 'Habilidades',
-        iron: 'Planchar',
-        childCare: 'Cuidado de menores',
-        elderCare: 'Cuidado de mayores',
-        specialNeeds: 'Cuidados especiales',
-        petCare: 'Cuidado de mascotas',
         availability: 'Disponibilidad',
-        partTime: 'Media jornada',
-        fullTime: 'Jornada completa',
-        overnight: 'Con cama',
         filter: 'Filtrar',
         reset: 'Limpiar filtros',
     },
