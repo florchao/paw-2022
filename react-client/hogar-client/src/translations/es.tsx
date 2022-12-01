@@ -24,7 +24,7 @@ export const TRANSLATIONS_ES = {
         lastNameError: "Por favor ingrese su apellido",
         emailError: "Por favor ingrese su mail",
         passwordError: "Por favor ingrese una contraseña",
-        passwordsError: "Las contraseñas no coinciden,"
+        passwordsError: "Las contraseñas no coinciden"
     },
 
     RegisterEmployee: {
@@ -39,6 +39,16 @@ export const TRANSLATIONS_ES = {
         abilities: "Habilidades",
         availability: "Disponibilidad",
         button: "CREAR PERFIL",
+        imageError: "Por favor ingrese una imagen",
+        nameError: "Por favor ingrese su nombre",
+        locationError: "Por favor ingrese una ubicación",
+        emailError: "Por favor ingrese su mail",
+        passwordError: "Por favor ingrese una contraseña",
+        passwordsError: "Las contraseñas no coinciden",
+        availabilityError: "Por favor selecciones al menos una disponibilidad",
+        abilitiesError: "Por favor seleccione al menos una habilidad",
+        expYearsError: "Por favor ingrese la cantidad de años de experiencia",
+
     },
 
     NotFound:{

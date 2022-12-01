@@ -21,7 +21,17 @@ const RegisterEmployee = () => {
 
     const nav = useNavigate();
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
+
+    const invalidEmail = (email : String) => {
+        if( email.length === 0)
+            return true
+        return !String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
 
     useEffect(() => {
         JobService.getIds().then((i) => {
@@ -43,7 +53,7 @@ const RegisterEmployee = () => {
 
     const imageRef = useRef<HTMLInputElement>(null)
 
-    const handleAbilityCheck = (ref: RefObject<HTMLInputElement>, ability:string) => {
+    const handleAbilityCheck = (ref: RefObject<HTMLInputElement>, ability: string) => {
         if (ref.current?.checked) {
             const newList = abilities.concat(ability);
             setAbilities(newList)
@@ -53,7 +63,7 @@ const RegisterEmployee = () => {
         }
     }
 
-    const handleAvailabilityCheck = (ref: RefObject<HTMLInputElement>, availability:string) => {
+    const handleAvailabilityCheck = (ref: RefObject<HTMLInputElement>, availability: string) => {
         if (ref.current?.checked) {
             const newList = availabilities.concat(availability);
             setAvailability(newList)
@@ -71,11 +81,11 @@ const RegisterEmployee = () => {
     const setColor = (name: string, ref: RefObject<HTMLInputElement>) => {
         let label = document.getElementById(name + "-label")
         if (!ref.current?.checked) {
-            if(label != null)
+            if (label != null)
                 label.style.backgroundColor = "#c4b5fd";
             window.sessionStorage.setItem(name, "#c4b5fd");
         } else {
-            if(label != null)
+            if (label != null)
                 label.style.backgroundColor = "#ffffff";
         }
     }
@@ -93,72 +103,127 @@ const RegisterEmployee = () => {
                             <div className="grid grid-cols-6 gap-6">
                                 <div className="row-span-4 col-span-2 m-6">
                                     <div className="overflow-hidden bg-gray-100 rounded-full">
-                                        <img id="picture" src={image? URL.createObjectURL(image[0]): '/images/user.png'} alt="user pic"/>
+                                        <img id="picture"
+                                             src={image ? URL.createObjectURL(image[0]) : '/images/user.png'}
+                                             alt="user pic"/>
                                     </div>
                                     <label htmlFor="image-input" id="image-label"
                                            className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                         {t('RegisterEmployee.image')}
                                     </label>
-                                    <input id="image-input" ref={imageRef} type="file" accept="image/png, image/jpeg" onChange={(e) => {
-                                            if (e.target.files != null)
-                                                setImage(e.target.files)
-                                        }
-                                    } style={{visibility: "hidden"}}/>
-                                    {/*<form:errors path="image" element="p" cssStyle="color:red;margin-left: 10px"/>*/}
-                                </div>
+                                    <input id="image-input"
+                                           ref={imageRef}
+                                           type="file"
+                                           accept="image/png, image/jpeg"
+                                           required
+                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployee.imageError'))}
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
+                                           onChange={(e) => {
+                                               if (e.target.files != null)
+                                                   setImage(e.target.files)
+                                           }
+                                           } style={{visibility: "hidden"}}/>
+                                    {(!image) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.imageError')}</p>
+                                    }                                </div>
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="name"
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('RegisterEmployee.name')}
                                     </label>
-                                    <input type="text" onChange={(e) => setName(e.target.value)}
-                                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                                    {/*<form:errors path="name" element="p" cssStyle="color:red"/>*/}
+                                    <input type="text"
+                                           required
+                                           value={name}
+                                           maxLength={100}
+                                           minLength={1}
+                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployee.nameError'))}
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
+                                           onChange={(e) => setName(e.target.value)}
+                                           className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                                    {(name.length < 1 || name.length > 100) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.nameError')}</p>
+                                    }
                                 </div>
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="mail"
-                                                className="text-sm font-medium text-gray-900">
+                                           className="text-sm font-medium text-gray-900">
                                         {t('RegisterEmployee.email')}
                                     </label>
-                                    <input id="mail" type="mail" onChange={(e) => setMail(e.target.value)}
-                                                className="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                                    {/*<form:errors path="mail" element="p" cssStyle="color:red" className="col-start-2 col-span-5"/>*/}
-                                </div>
+                                    <input id="mail"
+                                           type="mail"
+                                           required
+                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployee.emailError'))}
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
+                                           onChange={(e) => setMail(e.target.value)}
+                                           className="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                                    {(invalidEmail(mail) ) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.emailError')}</p>
+                                    }                                </div>
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="password"
-                                                className="text-sm font-medium text-gray-900">
+                                           className="text-sm font-medium text-gray-900">
                                         {t('RegisterEmployee.password')}
                                     </label>
-                                    <input id="password" type="password" onChange={(e) => setPassword(e.target.value)}
-                                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                                    {/*<form:errors path="password" element="p" cssStyle="color:red" className="col-start-2 col-span-5"/>*/}
-                                </div>
+                                    <input id="password" type="password"
+                                           required
+                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployee.passwordError'))}
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
+                                           onChange={(e) => setPassword(e.target.value)}
+                                           className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                                    {(password.length < 1 ) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.passwordError')}</p>
+                                    }
+                                    {(password !== confirmPassword ) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.passwordsError')}</p>
+                                    }                                </div>
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="confirmPassword"
-                                                className="text-sm font-medium text-gray-900">
+                                           className="text-sm font-medium text-gray-900">
                                         {t('RegisterEmployee.confirmPassword')}
                                     </label>
-                                    <input id="confirmPassword" type="password" onChange={(e) => setConfirmPassword(e.target.value)}
-                                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                                    {/*<form:errors path="confirmPassword" element="p" cssStyle="color:red" className="col-start-2 col-span-5"/>*/}
-                                    {/*<form:errors element="p" cssStyle="color:red" className="col-start-2 col-span-5"/>*/}
-                                </div>
+                                    <input id="confirmPassword" type="password"
+                                           required
+                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployee.passwordError'))}
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
+                                           onChange={(e) => setConfirmPassword(e.target.value)}
+                                           className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
+                                    {(confirmPassword.length < 1 ) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.passwordError')}</p>
+                                    }
+                                    {(password !== confirmPassword ) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.passwordsError')}</p>
+                                    }</div>
                                 <div className="ml-3 col-span-3 w-4/5 justify-self-center">
-                                    <label  htmlFor="location"
-                                                className="block mb-2 text-sm font-medium text-gray-900 ">
+                                    <label htmlFor="location"
+                                           className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('RegisterEmployee.location')}
                                     </label>
-                                    <input type="text" onChange={(e) => setLocation(e.target.value)}
-                                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                    {/*<form:errors path="location" element="p" cssStyle="color:red"/>*/}
-                                </div>
+                                    <input type="text"
+                                           required
+                                           maxLength={100}
+                                           minLength={1}
+                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployee.locationError'))}
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
+                                           onChange={(e) => setLocation(e.target.value)}
+                                           className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                    {(location.length < 1 || location.length > 100) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.locationError')}</p>
+                                    }                                </div>
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('RegisterEmployee.experienceYears')}
                                     </label>
-                                    <input type="number" id="expYears" onChange={(e) => setExperienceYears(e.target.valueAsNumber)}
-                                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                    {/*<form:errors path="experienceYears" element="p" cssStyle="color:red"/>*/}
+                                    <input type="number" id="expYears"
+                                           required
+                                           maxLength={100}
+                                           minLength={1}
+                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('RegisterEmployee.expYearsError'))}
+                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
+                                           onChange={(e) => setExperienceYears(e.target.valueAsNumber)}
+                                           className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                    {(experienceYears < 1 || experienceYears > 100) &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.expYearsError')}</p>
+                                    }
                                 </div>
                             </div>
                             <div>
@@ -170,11 +235,15 @@ const RegisterEmployee = () => {
                                 <div className="flex flex-wrap ml-8">
                                     <div className="mb-8">
                                         <label htmlFor="cocinar-cb" id="cocinar-label"
-                                               onClick={(e) => {setColor('cocinar', cookRef)}}
+                                               onClick={(e) => {
+                                                   setColor('cocinar', cookRef)
+                                               }}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Abilities.cook')}
                                         </label>
-                                        <input type="checkbox" ref={cookRef} onChange={ (e) => handleAbilityCheck(cookRef, e.target.value)} id="cocinar-cb" value={ids.abilities[0]}
+                                        <input type="checkbox" ref={cookRef}
+                                               onChange={(e) => handleAbilityCheck(cookRef, e.target.value)}
+                                               id="cocinar-cb" value={ids.abilities[0]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                     <div>
@@ -183,7 +252,9 @@ const RegisterEmployee = () => {
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Abilities.iron')}
                                         </label>
-                                        <input type="checkbox" ref={ironRef} onChange={(e) => handleAbilityCheck(ironRef, e.target.value)} id="planchar-cb" value={ids.abilities[1]}
+                                        <input type="checkbox" ref={ironRef}
+                                               onChange={(e) => handleAbilityCheck(ironRef, e.target.value)}
+                                               id="planchar-cb" value={ids.abilities[1]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                     <div>
@@ -192,7 +263,9 @@ const RegisterEmployee = () => {
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Abilities.child')}
                                         </label>
-                                        <input type="checkbox" ref={childRef} onChange={(e) => handleAbilityCheck(childRef, e.target.value)} id="menores-cb" value={ids.abilities[2]}
+                                        <input type="checkbox" ref={childRef}
+                                               onChange={(e) => handleAbilityCheck(childRef, e.target.value)}
+                                               id="menores-cb" value={ids.abilities[2]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                     <div>
@@ -201,7 +274,9 @@ const RegisterEmployee = () => {
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Abilities.older')}
                                         </label>
-                                        <input type="checkbox" ref={elderRef} onChange={(e) => handleAbilityCheck(elderRef, e.target.value)} id="mayores-cb" value={ids.abilities[3]}
+                                        <input type="checkbox" ref={elderRef}
+                                               onChange={(e) => handleAbilityCheck(elderRef, e.target.value)}
+                                               id="mayores-cb" value={ids.abilities[3]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                     <div>
@@ -210,7 +285,9 @@ const RegisterEmployee = () => {
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Abilities.specialNeeds')}
                                         </label>
-                                        <input type="checkbox" ref={specialRef} onChange={(e) => handleAbilityCheck(specialRef, e.target.value)} id="especiales-cb" value={ids.abilities[4]}
+                                        <input type="checkbox" ref={specialRef}
+                                               onChange={(e) => handleAbilityCheck(specialRef, e.target.value)}
+                                               id="especiales-cb" value={ids.abilities[4]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                     <div>
@@ -219,12 +296,16 @@ const RegisterEmployee = () => {
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Abilities.pets')}
                                         </label>
-                                        <input type="checkbox" ref={petRef} onChange={(e) => handleAbilityCheck(petRef, e.target.value)} id="mascotas-cb" value={ids.abilities[5]}
+                                        <input type="checkbox" ref={petRef}
+                                               onChange={(e) => handleAbilityCheck(petRef, e.target.value)}
+                                               id="mascotas-cb" value={ids.abilities[5]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                 </div>
                             }
-                            {/*<form:errors path="abilities" element="p" cssStyle="color: red; margin-top: 1.25rem"/>*/}
+                            {abilities.length < 1 &&
+                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.abilitiesError')}</p>
+                            }
                             <div>
                                 <h1 className="pb-3 pt-3 font-bold">
                                     {t('RegisterEmployee.availability')}
@@ -234,11 +315,15 @@ const RegisterEmployee = () => {
                                 <div className="flex flex-wrap ml-8">
                                     <div className="mb-8">
                                         <label htmlFor="media-cb" id="media-label"
-                                               onClick={(e) => {setColor('media', halfRef)}}
+                                               onClick={(e) => {
+                                                   setColor('media', halfRef)
+                                               }}
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Availabilities.half')}
                                         </label>
-                                        <input type="checkbox" ref={halfRef} onChange={ (e) => handleAvailabilityCheck(halfRef, e.target.value)} id="media-cb" value={ids.availabilities[0]}
+                                        <input type="checkbox" ref={halfRef}
+                                               onChange={(e) => handleAvailabilityCheck(halfRef, e.target.value)}
+                                               id="media-cb" value={ids.availabilities[0]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                     <div>
@@ -247,7 +332,9 @@ const RegisterEmployee = () => {
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Availabilities.complete')}
                                         </label>
-                                        <input type="checkbox" ref={fullRef} onChange={(e) => handleAvailabilityCheck(fullRef, e.target.value)} id="completa-cb" value={ids.availabilities[1]}
+                                        <input type="checkbox" ref={fullRef}
+                                               onChange={(e) => handleAvailabilityCheck(fullRef, e.target.value)}
+                                               id="completa-cb" value={ids.availabilities[1]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                     <div>
@@ -256,13 +343,16 @@ const RegisterEmployee = () => {
                                                className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
                                             {t('Availabilities.bed')}
                                         </label>
-                                        <input type="checkbox" ref={overRef} onChange={(e) => handleAvailabilityCheck(overRef, e.target.value)} id="cama-cb" value={ids.availabilities[2]}
+                                        <input type="checkbox" ref={overRef}
+                                               onChange={(e) => handleAvailabilityCheck(overRef, e.target.value)}
+                                               id="cama-cb" value={ids.availabilities[2]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
                                 </div>
                             }
-                            {/*<form:errors path="availability" element="p" cssStyle="color: red; margin-top: 1.25rem"/>*/}
-                            <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                            {availabilities.length < 1 &&
+                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.availabilityError')}</p>
+                            }                            <div className="mt-5 col-start-2 col-span-4 row-span-3">
                                 <button type="submit"
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                                     {t('RegisterEmployee.button')}
