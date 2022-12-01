@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.Applicant;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
+import ar.edu.itba.paw.persistence.ApplicantDao;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import ar.edu.itba.paw.persistence.EmployerDao;
 import ar.edu.itba.paw.persistence.JobDao;
@@ -21,6 +23,9 @@ public class JobServiceImpl implements JobService{
     private EmployeeDao employeeDao;
     @Autowired
     private EmployerDao employerDao;
+
+    @Autowired
+    private ApplicantService applicantService;
 
     @Transactional
     @Override
@@ -102,6 +107,11 @@ public class JobServiceImpl implements JobService{
     @Override
     public void closeJob(long jobId) {
         jobDao.closeJob(jobId);
+        //TODO hay que pasarle la pagina
+        List<Applicant> applicants = applicantService.getApplicantsByJob(jobId, 0L, 0);
+        for(Applicant applicant : applicants){
+            applicantService.changeStatus(2, applicant.getEmployeeID().getId().getId(), jobId);
+        }
     }
 
     @Transactional
