@@ -86,7 +86,8 @@ export const ProfileEmployee = () => {
                           </h1>
                       </div>
                       <div className="ml-3 col-start-5 row-start-2 w-fit">
-                          <Link to="/contact/employee" state={{id: employee.id, name: employee.name}}>
+                          <Link to="/edit" state={{id: employee.id}}>
+                              {/*name: employee.name}}>*/}
                               <button
                                   className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
                                   {t('Profile.connect')}
