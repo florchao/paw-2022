@@ -128,7 +128,9 @@ export const TRANSLATIONS_ES = {
         employees: "Empleadas registradas",
         orderBy: "Ordenar por: ",
         popularity: "Popularidad",
-        experience: "Experiencia"
+        experience: "Experiencia",
+        noJobs: "No hay trabajos",
+        noEmployees: "No hay empleadas",
     },
 
     Job:{
