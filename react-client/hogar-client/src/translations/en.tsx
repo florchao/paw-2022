@@ -56,7 +56,8 @@ export const TRANSLATIONS_EN = {
   },
   EmployeeCard:{
     name:"Name",
-    location:"Location"
+    location:"Location",
+    yearsExp: "Years of experience: ",
   },
   JobCard:{
     publication:"See job offer",
