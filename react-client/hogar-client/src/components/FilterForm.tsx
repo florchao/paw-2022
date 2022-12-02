@@ -16,7 +16,7 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
 
 
     const resetHandler = async (): Promise<any> => {
-        if(type == "employee") {
+        if(type === "employee") {
             const allEmployees = await EmployeeService.getEmployees()
             // setName();
             // setLocation('')
@@ -24,7 +24,7 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
             setAbilities([])
             setAvailability([])
             setList(allEmployees)
-        } else if (type == "jobs") {
+        } else if (type === "jobs") {
             const allJobs = await JobService.getJobs()
             // setName();
             // setLocation('')
@@ -48,7 +48,7 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
     }
 
     const handleFilter = async (): Promise<any> => {
-        if(type == "employee") {
+        if(type === "employee") {
             const employees = await EmployeeService.getFilteredEmployees(
                 minimumYears,
                 name,
@@ -57,7 +57,7 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
                 (availability.toString() === "") ? undefined : availability.toString().toString()
             )
             setList(employees)
-        } else if (type == "jobs") {
+        } else if (type === "jobs") {
             const jobs = await JobService.getFilteredJobs(
                 minimumYears,
                 name,
