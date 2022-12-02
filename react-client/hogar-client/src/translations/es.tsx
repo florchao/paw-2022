@@ -239,6 +239,15 @@ export const TRANSLATIONS_ES = {
         delete: "Borrar perfil",
         reviews: "Opiniones",
         noReviews: "No hay opiniones"
+    },
+
+    EmployerLanding:{
+        searchEmployee: "¡Busca una empleada!",
+        chooseEmployee: "Elige de nuestra comunidad el perfil que encaje con lo que estes buscando",
+        publishJob: "¡Publica un trabajo!",
+        descriptionJob: "Publique una oferta de trabajo y espere a que nuestra comunidad aplique al mismo",
+        buttonEmployee: "Buscar empleadas",
+        buttonJob: "Mis trabajos publicados"
     }
 
 }

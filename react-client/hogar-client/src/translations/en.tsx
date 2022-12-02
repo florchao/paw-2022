@@ -229,6 +229,15 @@ export const TRANSLATIONS_EN = {
     delete: "Delete profile",
     reviews: "Reviews",
     noReviews: "There are no reviews"
+  },
+
+  EmployerLanding:{
+    searchEmployee: "Search for an employee!",
+    chooseEmployee: "Choose form our community the profile which fits the best what you are looking for",
+    publishJob: "Publish a job!",
+    descriptionJob: "Publish a job offer and wait until our community to apply",
+    buttonEmployee: "Search employees",
+    buttonJob: "My published jobs"
   }
 
 }
