@@ -105,4 +105,15 @@ public class ApplicantServiceImpl implements ApplicantService{
         }
         return -1;
     }
+
+    @Transactional
+    @Override
+    public void withdrawApplication(long employeeId, long jobId) {
+        Optional<Job> job = jobDao.getJobById(jobId);
+        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
+        if(job.isPresent() && employee.isPresent()) {
+            Optional<Applicant> applicant = applicantDao.getApplicant(employee.get(), job.get());
+            applicant.ifPresent(value -> applicantDao.deleteApplication(value));
+        }
+    }
 }
