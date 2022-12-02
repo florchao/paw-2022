@@ -21,7 +21,7 @@ export class JobService {
         availability?: string
     ) {
 
-        let url = 'http://localhost:8080/api/explore/jobs?'
+        let url = 'http://localhost:8080/api/jobs?'
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
