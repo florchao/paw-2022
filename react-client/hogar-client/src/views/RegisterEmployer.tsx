@@ -57,9 +57,9 @@ const RegisterEmployer = () => {
                                         setImage(e.target.files)
                                 }
                                 } style={{visibility: "hidden"}}/>
-                                {/*{image &&*/}
-                                {/*    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.imageError')}</p>*/}
-                                {/*}*/}
+                                {(!image) &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.imageError')}</p>
+                                }
                             </div>
                             <div className="ml-3 col-span-3 col-start-3 w-4/5 justify-self-center">
                                     <h3>{t('RegisterEmployer.name')}</h3>

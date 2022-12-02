@@ -18,7 +18,7 @@ export const TRANSLATIONS_EN = {
     password: "Password",
     confirmPassword: "Confirm password",
     button: "CREATE PROFILE",
-    title: "Create account of employer",
+    title: "Create profile",
     imageError: "Please enter an image",
     nameError: "Please enter your name",
     lastNameError: "Please enter your last name",
