@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 export const Home = () => {
     const { t } = useTranslation();
     return (
-        <html>
-            <body>
             <div className="grid grid-cols-2 gap-4 pt-16 h-screen">
                 <div className="grid grid-rows-2 gap-4 pl-8">
                     <div className="grid content-center">
@@ -36,8 +34,6 @@ export const Home = () => {
                     <img src={ './images/indexImage.jpg' } alt="primera foto"/>
                 </div>
             </div>
-            </body>
-        </html>
     )
 }
 
