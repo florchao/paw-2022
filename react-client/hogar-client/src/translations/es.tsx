@@ -233,6 +233,12 @@ export const TRANSLATIONS_ES = {
         child: "Cuidado de menores",
         specialNeeds: "Cuidados especiales",
         pets: "Cuidado de mascotas",
+    },
+
+    EmployerProfile:{
+        delete: "Borrar perfil",
+        reviews: "Opiniones",
+        noReviews: "No hay opiniones"
     }
 
 }

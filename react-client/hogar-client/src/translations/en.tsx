@@ -223,6 +223,12 @@ export const TRANSLATIONS_EN = {
     child: "Child care",
     specialNeeds: "Special care",
     pets: "Pet care",
+  },
+
+  EmployerProfile:{
+    delete: "Delete profile",
+    reviews: "Reviews",
+    noReviews: "There are no reviews"
   }
 
 }

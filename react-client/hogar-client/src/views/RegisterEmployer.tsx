@@ -1,5 +1,4 @@
 import {useTranslation} from "react-i18next";
-import Background from "../components/Background/Background";
 import {useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {EmployerService} from "../service/EmployerService";
