@@ -76,11 +76,10 @@ export class EmployeeService {
         formData.append("name", name)
         formData.append("location", location)
         formData.append("experienceYears", experienceYears)
-        console.log(availabilities)
         availabilities.forEach(a => formData.append("availabilities[]", a))
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
-        console.log(formData)
+
         return await fetch('http://localhost:8080/api/employee/', {
             method: 'POST',
             headers: {},

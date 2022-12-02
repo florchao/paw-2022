@@ -29,12 +29,23 @@ export const Explore = () => {
                 <h1 className={'text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8'}>{t('Explore.employees')}</h1>
                 <div className={'flex flex-row-reverse'}>
                     <div className={'flex flex-row'}>
-                        <h1 className={'font-semibold mr-3'}>Order by:_</h1>
-                        <h1 className={'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>Popularity_</h1>
-                        <h1 className={'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>Experience_</h1>
+                        <h1 className={'font-semibold mr-3'}>{t('Explore.orderBy')}</h1>
+                        <h1 className={'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.popularity')}</h1>
+                        <h1 className={'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.experience')}</h1>
                     </div>
                 </div>
                 {employees && employees.map((employee: Object) => (<EmployeeCard employee={employee}/>))}
+                {employees == 0 && (
+                    <div className="grid content-center justify-center h-5/6 mt-16">
+                        <div className="grid justify-items-center">
+                            <img src={ '../images/sinEmpleadas.png'} alt="noJobs"
+                                 className="mr-3 h-6 sm:h-52"/>
+                            <p className="text-3xl font-semibold text-purple-700">
+                                {t("Explore.noEmployees")}
+                            </p>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

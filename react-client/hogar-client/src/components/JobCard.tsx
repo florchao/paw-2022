@@ -8,7 +8,9 @@ const JobCard  = (job: any)=> {
     const { t } = useTranslation();
     let status;
     job = job.job;
-    if(job.status !== null) {
+    console.log(job.status)
+    if(job.status !== null && job.status !== undefined) {
+        console.log("hola")
         status = job.status
         job = job.job
     }
@@ -49,22 +51,22 @@ const JobCard  = (job: any)=> {
                     <Link to="/job" state={{id: job.jobId}} style={{marginRight: "15px"}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                         {t("JobCard.publication")}
                     </Link>
-                    {status == undefined &&
+                    {status === undefined &&
                         <Link to="/job/applicants" state={{id: job.jobId, title : job.title}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.applicants")}
                         </Link>
                     }
-                    {status == 0 &&
+                    {status === 0 &&
                         <a className="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.pending")}
                         </a>
                     }
-                    { status == 1 &&
+                    { status === 1 &&
                         <a className="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.accepted")}
                         </a>
                     }
-                    { status == 2 &&
+                    { status === 2 &&
                         <a className="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.denied")}
                         </a>

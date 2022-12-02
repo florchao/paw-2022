@@ -18,7 +18,7 @@ export const TRANSLATIONS_ES = {
         password: "Contraseña",
         confirmPassword: "Confirmar contraseña",
         button: "CREAR PERFIL",
-        title: "Crear cuenta de empleador",
+        title: "Crear perfil",
         imageError: "Por favor ingrese una imagen",
         nameError: "Por favor ingrese su nombre",
         lastNameError: "Por favor ingrese su apellido",
@@ -57,7 +57,8 @@ export const TRANSLATIONS_ES = {
     },
     EmployeeCard:{
         name:"Nombre",
-        location:"Ubicación"
+        location:"Ubicación",
+        yearsExp: "Años de experiencia: ",
     },
     JobCard:{
         publication: "Ver publicaci\u00f3n",
@@ -124,7 +125,12 @@ export const TRANSLATIONS_ES = {
 
     Explore: {
         jobs: "Trabajos disponibles",
-        employees: "Empleadas registradas"
+        employees: "Empleadas registradas",
+        orderBy: "Ordenar por: ",
+        popularity: "Popularidad",
+        experience: "Experiencia",
+        noJobs: "No hay trabajos",
+        noEmployees: "No hay empleadas",
     },
 
     Job:{
@@ -200,17 +206,8 @@ export const TRANSLATIONS_ES = {
         nameError: 'Por favor ingrese un nombre válido',
         location: 'Ubicación',
         locationError: 'Por favor ingrese una ubicación válida',
-        cook: 'Cocinar',
         abilities: 'Habilidades',
-        iron: 'Planchar',
-        childCare: 'Cuidado de menores',
-        elderCare: 'Cuidado de mayores',
-        specialNeeds: 'Cuidados especiales',
-        petCare: 'Cuidado de mascotas',
         availability: 'Disponibilidad',
-        partTime: 'Media jornada',
-        fullTime: 'Jornada completa',
-        overnight: 'Con cama',
         filter: 'Filtrar',
         reset: 'Limpiar filtros',
     },
@@ -239,6 +236,21 @@ export const TRANSLATIONS_ES = {
         child: "Cuidado de menores",
         specialNeeds: "Cuidados especiales",
         pets: "Cuidado de mascotas",
+    },
+
+    EmployerProfile:{
+        delete: "Borrar perfil",
+        reviews: "Opiniones",
+        noReviews: "No hay opiniones"
+    },
+
+    EmployerLanding:{
+        searchEmployee: "¡Busca una empleada!",
+        chooseEmployee: "Elige de nuestra comunidad el perfil que encaje con lo que estes buscando",
+        publishJob: "¡Publica un trabajo!",
+        descriptionJob: "Publique una oferta de trabajo y espere a que nuestra comunidad aplique al mismo",
+        buttonEmployee: "Buscar empleadas",
+        buttonJob: "Mis trabajos publicados"
     }
 
 }

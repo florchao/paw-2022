@@ -128,7 +128,6 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<Review> getMyProfileReviewsEmployer(long employerId, long page, int pageSize) {
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        System.out.println("MY EMPLOYER" + employer);
         if (employer.isPresent() )
             return reviewDao.getMyProfileReviewsEmployer(employer.get(), page, pageSize);
         return Collections.emptyList();

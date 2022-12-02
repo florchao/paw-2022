@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ApplicantJpaDao implements ApplicantDao{
@@ -68,6 +69,19 @@ public class ApplicantJpaDao implements ApplicantDao{
         query.setParameter("job", job);
         query.setParameter("employee", employee);
         return query.getSingleResult().getStatus();
+    }
+
+    @Override
+    public void deleteApplication(Applicant applicant) {
+        em.remove(applicant);
+    }
+
+    @Override
+    public Optional<Applicant> getApplicant(Employee employeeId, Job jobId){
+        TypedQuery<Applicant> contactTypedQuery = em.createQuery("SELECT c FROM Applicant c WHERE c.employeeID =:employee AND c.jobID = :jobID", Applicant.class);
+        contactTypedQuery.setParameter("jobID", jobId);
+        contactTypedQuery.setParameter("employee", employeeId);
+        return Optional.ofNullable(contactTypedQuery.getSingleResult());
     }
 
     @Override

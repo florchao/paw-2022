@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.Applicant;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
+import ar.edu.itba.paw.persistence.ApplicantDao;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import ar.edu.itba.paw.persistence.EmployerDao;
 import ar.edu.itba.paw.persistence.JobDao;
@@ -21,6 +23,9 @@ public class JobServiceImpl implements JobService{
     private EmployeeDao employeeDao;
     @Autowired
     private EmployerDao employerDao;
+
+    @Autowired
+    private ApplicantService applicantService;
 
     @Transactional
     @Override
@@ -44,12 +49,11 @@ public class JobServiceImpl implements JobService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Job> getJobByID(long jobID) throws JobNotFoundException {
+    public Job getJobByID(long jobID) throws JobNotFoundException {
         Job job = jobDao.getJobById(jobID).orElseThrow(()-> new JobNotFoundException("job" + jobID + "does not exists"));
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(job.getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(job.getAbilities().split(",")));
-        Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), job.getEmployerId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription(), job.isOpened());
-        return Optional.of(aux);
+        return new Job(job.getTitle(), job.getLocation(), job.getJobId(), job.getEmployerId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription(), job.isOpened());
     }
 
     @Transactional(readOnly = true)
@@ -102,12 +106,20 @@ public class JobServiceImpl implements JobService{
     @Override
     public void closeJob(long jobId) {
         jobDao.closeJob(jobId);
+        //TODO hay que pasarle la pagina
+        List<Applicant> applicants = applicantService.getApplicantsByJob(jobId, 0L, 0);
+        for(Applicant applicant : applicants){
+            applicantService.changeStatus(2, applicant.getEmployeeID().getId().getId(), jobId);
+        }
     }
 
     @Transactional
     @Override
     public void openJob(long jobId) {
         jobDao.openJob(jobId);
+        //TODO paginacion
+        List<Applicant> applicants = applicantService.getApplicantsByJob(jobId, 0L, 0);
+        applicantService.withdrawAppsFromJob(applicants);
     }
 
     @Override
