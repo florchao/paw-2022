@@ -7,7 +7,7 @@ export const Home = () => {
     return (
         <html>
             <body>
-            <div className="grid grid-cols-2 gap-4 pt-16 h-screen">
+            <div className="grid grid-cols-2 gap-4 pt-16 h-screen bg-white">
                 <div className="grid grid-rows-2 gap-4 pl-8">
                     <div className="grid content-center">
                         <h3 className="text-3xl font-semibold text-purple-700">
