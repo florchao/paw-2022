@@ -116,4 +116,12 @@ public class ApplicantServiceImpl implements ApplicantService{
             applicant.ifPresent(value -> applicantDao.deleteApplication(value));
         }
     }
+
+    @Transactional
+    @Override
+    public void withdrawAppsFromJob(List<Applicant> applicants) {
+        for(Applicant applicant : applicants){
+            applicantDao.deleteApplication(applicant);
+        }
+    }
 }

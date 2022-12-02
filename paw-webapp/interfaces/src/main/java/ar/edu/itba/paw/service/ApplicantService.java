@@ -22,4 +22,6 @@ public interface ApplicantService {
 
     void withdrawApplication(long employeeId, long jobId);
 
+    void withdrawAppsFromJob(List<Applicant> applicants);
+
 }
