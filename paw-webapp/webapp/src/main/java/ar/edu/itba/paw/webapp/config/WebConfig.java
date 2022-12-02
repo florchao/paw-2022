@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.config;
 
+import ar.edu.itba.paw.webapp.auth.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,8 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -30,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 //@EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
+@ComponentScan({"ar.edu.itba.paw.webapp.auth","ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
 @Configuration
 @EnableAsync
 @PropertySource(value = {"classpath:application.properties"})
@@ -57,6 +60,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private Environment environment;
+
 
     @Bean
     public DataSource dataSource() {
@@ -109,6 +113,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setDefaultEncoding("utf-8");
         return resolver;
     }
+
+    @Autowired AuthenticationFilter authenticationFilter;
+
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
+
 
     @Bean
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
