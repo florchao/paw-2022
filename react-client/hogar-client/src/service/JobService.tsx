@@ -1,6 +1,6 @@
 export class JobService {
     public static async getJobs() {
-        return await fetch('http://localhost:8080/api/explore/jobs', {
+        return await fetch('http://localhost:8080/api/jobs', {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',
