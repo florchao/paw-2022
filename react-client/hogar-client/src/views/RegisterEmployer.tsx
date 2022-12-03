@@ -72,7 +72,7 @@ const RegisterEmployer = () => {
                         <div className="grid grid-cols-5 gap-6">
                             <div className="row-span-4 col-span-2 m-6">
                                 <div className="overflow-hidden bg-gray-100 rounded-full">
-                                    <img id="picture" src={getValues("image")? URL.createObjectURL(getValues("image")[0]): '/images/user.png'} alt="user pic"/>
+                                    <img id="picture" src={getValues("image") && getValues("image")[0] != undefined && getValues("image")[0].size != 0? URL.createObjectURL(getValues("image")[0]): '/images/user.png'} alt="user pic"/>
                                 </div>
                                 <label htmlFor="image-input" id="image-label"
                                        className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">

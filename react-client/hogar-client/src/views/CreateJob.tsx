@@ -4,14 +4,35 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {number} from "zod";
 import exp from "constants";
+import {useForm} from "react-hook-form";
+import useFormPersist from "react-hook-form-persist";
 
 export const CreateJob = () => {
-    const [title, setTitle] = useState('');
-    const [location, setLocation] = useState('');
-    const [experienceYears, setExperienceYears] = useState<number>(0);
-    const [availability, setAvailability] = useState('');
-    const [abilities, setAbilities] = useState<string[]>([]);
-    const [description, setDescription] = useState('');
+
+    type FormData = {
+        title: string;
+        description: string;
+        location: string;
+        experienceYears: number;
+        availability: string;
+        abilities: string[];
+    };
+
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
+
+    watch("title")
+    watch("description")
+    watch("location")
+    watch("experienceYears")
+    watch("availability")
+    watch("abilities")
+
+
+    useFormPersist("form", {
+        watch,
+        setValue,
+        storage: window.localStorage,
+    })
 
     const [ids, setIds] = useState<any>();
 
@@ -25,42 +46,22 @@ export const CreateJob = () => {
         });
     }, [])
 
-    const cookRef = useRef<HTMLInputElement>(null)
-    const childRef = useRef<HTMLInputElement>(null)
-    const elderRef = useRef<HTMLInputElement>(null)
-    const specialRef = useRef<HTMLInputElement>(null)
-    const petRef = useRef<HTMLInputElement>(null)
-    const ironRef = useRef<HTMLInputElement>(null)
-
-    const setColor = (name: string, ref: RefObject<HTMLInputElement>) => {
+    const setColor = (name: string, id: number) => {
         let label = document.getElementById(name + "-label")
-        if (!ref.current?.checked) {
-            if (label !== null)
+        if (getValues("abilities").toString() === "false" || !getValues("abilities").includes(id.toString())) {
+            if (label != null)
                 label.style.backgroundColor = "#c4b5fd";
             window.sessionStorage.setItem(name, "#c4b5fd");
         } else {
-            if (label !== null)
+            if (label != null)
                 label.style.backgroundColor = "#ffffff";
         }
     }
 
-    const handleCheck = (ref: RefObject<HTMLInputElement>, ability: string) => {
-        if (ref.current?.checked) {
-            const newList = abilities.concat(ability);
-            setAbilities(newList)
-        } else {
-            const newList = abilities.filter((a) => a !== ability);
-            setAbilities(newList)
-        }
-    }
-
-    const handleSubmit = async (e: any) => {
-        if (abilities.length < 1) {
-            return
-        }
-        const post = await JobService.postJob(e, title, location, experienceYears, availability, abilities, description)
+    const onSubmit = async (data:any, e: any) => {
+        const post = await JobService.postJob(e, data.title, data.location, data.experienceYears, data.availability, data.abilities, data.description)
+        localStorage.clear()
         nav('/job', {replace: true, state: {id: post}})
-
     }
 
     return (
@@ -70,7 +71,7 @@ export const CreateJob = () => {
                     {t('CreateJob.title')}
                 </p>
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-6 mb-5">
                     <div className="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                         <div className="bg-gray-200 rounded-3xl p-5 shadow-2xl">
@@ -80,16 +81,9 @@ export const CreateJob = () => {
                                         {t('CreateJob.label_title')}
                                     </label>
                                     <input type="text"
-                                           onChange={(e) => {
-                                               setTitle(e.target.value)
-                                           }}
-                                           required
-                                           maxLength={25}
-                                           minLength={1}
-                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
-                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.titleError'))}
+                                           {...register("title", {required: true, maxLength: 25})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                                    {(title.length < 1 || title.length > 25) &&
+                                    {errors.title &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.titleError')}</p>
                                     }
                                 </div>
@@ -99,16 +93,9 @@ export const CreateJob = () => {
                                         {t('CreateJob.location')}
                                     </label>
                                     <input type="text"
-                                           onChange={(e) => {
-                                               setLocation(e.target.value)
-                                           }}
-                                           required
-                                           maxLength={100}
-                                           minLength={1}
-                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
-                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.locationError'))}
+                                           {...register("location", {required: true, maxLength: 100})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                    {(location.length < 1 || location.length > 100) &&
+                                    {errors.location &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.locationError')}</p>
                                     }
                                 </div>
@@ -118,34 +105,20 @@ export const CreateJob = () => {
                                         {t('CreateJob.experienceYears')}
                                     </label>
                                     <input type="number" id="expYears"
-                                           onChange={(e) => {
-                                               setExperienceYears(e.target.valueAsNumber)
-                                           }}
-                                           required
-                                           min={0}
-                                           max={100}
-                                           onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
-                                           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.expYearsError'))}
+                                           {...register("experienceYears", {required: true, max: 100, min: 0})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                    {(experienceYears < 0 || experienceYears > 100) &&
+                                    {errors.experienceYears &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.expYearsError')}</p>
                                     }
                                 </div>
                                 {ids &&
                                     <div className="ml-3 col-span-3 w-4/5 justify-self-center">
-                                        {/*<spring:message code="jobForm.availability.half" var="half"/>*/}
-                                        {/*<spring:message code="jobForm.availability.complete" var="complete"/>*/}
-                                        {/*<spring:message code="jobForm.availability.bed" var="bed"/>*/}
                                         <label
                                             className="block mb-2 text-sm font-medium text-gray-900 ">
                                             {t('CreateJob.availability')}
                                         </label>
                                         <select
-                                            onChange={(e) => {
-                                                setAvailability(e.target.value)
-                                            }}
-                                            required
-                                            onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.availabilityError'))}
+                                            {...register("availability", {required: true})}
                                             className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
                                             <option value={ids.availabilities[0]}
                                                     label={t('Availabilities.half')}/>
@@ -167,91 +140,122 @@ export const CreateJob = () => {
                                     <div className="mb-8">
                                         <label htmlFor="cocinar-cb" id="cocinar-label"
                                                onClick={(e) => {
-                                                   setColor('cocinar', cookRef)
+                                                   setColor('cocinar', ids.abilities[0])
                                                }}
-                                               className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[0].toString()) ?
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.cook')}
                                         </label>
-                                        <input type="checkbox" ref={cookRef}
-                                               onChange={(e) => handleCheck(cookRef, e.target.value)} id="cocinar-cb"
+                                        <input type="checkbox"
+                                               {...register("abilities", {required: true})}
+                                            // onChange={(e) => console.log(getValues("abilities"))}
+                                               id="cocinar-cb"
                                                value={ids.abilities[0]}
-                                               style={{visibility: "hidden"}}/>
+                                               style={{visibility: "hidden"}}
+                                        />
                                     </div>
                                     <div>
                                         <label htmlFor="planchar-cb" id="planchar-label"
-                                               onClick={() => setColor('planchar', ironRef)}
-                                               className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
+                                               onClick={() =>
+                                                   setColor('planchar', ids.abilities[1])
+                                               }
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[1].toString()) ?
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.iron')}
                                         </label>
-                                        <input type="checkbox" ref={ironRef}
-                                               onChange={(e) => handleCheck(ironRef, e.target.value)} id="planchar-cb"
+                                        <input type="checkbox"
+                                               id="planchar-cb"
+                                               {...register("abilities", {required: true})}
                                                value={ids.abilities[1]}
-                                               style={{visibility: "hidden"}}/>
+                                               style={{visibility: "hidden"}}
+                                        />
                                     </div>
                                     <div>
-                                        <label htmlFor="menores-cb" id="menores-label"
-                                               onClick={() => setColor('menores', childRef)}
-                                               className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
+                                        <label htmlFor="menores-cb"
+                                               id="menores-label"
+                                               onClick={() =>
+                                                   setColor('menores', ids.abilities[2])
+                                               }
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[2].toString()) ?
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.child')}
                                         </label>
-                                        <input type="checkbox" ref={childRef}
-                                               onChange={(e) => handleCheck(childRef, e.target.value)} id="menores-cb"
+                                        <input type="checkbox"
+                                               {...register("abilities", {required: true})}
+                                               id="menores-cb"
                                                value={ids.abilities[2]}
-                                               style={{visibility: "hidden"}}/>
+                                               style={{visibility: "hidden"}}
+                                        />
                                     </div>
                                     <div>
                                         <label htmlFor="mayores-cb" id="mayores-label"
-                                               onClick={() => setColor('mayores', elderRef)}
-                                               className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
+                                               onClick={() =>
+                                                   setColor('mayores', ids.abilities[3])
+
+                                               }
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[3].toString()) ?
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.older')}
                                         </label>
-                                        <input type="checkbox" ref={elderRef}
-                                               onChange={(e) => handleCheck(elderRef, e.target.value)} id="mayores-cb"
+                                        <input type="checkbox"
+                                               {...register("abilities", {required: true})}
+                                               id="mayores-cb"
                                                value={ids.abilities[3]}
-                                               style={{visibility: "hidden"}}/>
+                                               style={{visibility: "hidden"}}
+                                        />
                                     </div>
                                     <div>
                                         <label htmlFor="especiales-cb" id="especiales-label"
-                                               onClick={() => setColor('especiales', specialRef)}
-                                               className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
+                                               onClick={() =>
+                                                   setColor('especiales', ids.abilities[4])
+                                               }
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[4].toString()) ?
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.specialNeeds')}
                                         </label>
-                                        <input type="checkbox" ref={specialRef}
-                                               onChange={(e) => handleCheck(specialRef, e.target.value)}
-                                               id="especiales-cb" value={ids.abilities[4]}
-                                               style={{visibility: "hidden"}}/>
+                                        <input type="checkbox"
+                                               {...register("abilities", {required: true})}
+                                               id="especiales-cb"
+                                               value={ids.abilities[4]}
+                                               style={{visibility: "hidden"}}
+                                        />
                                     </div>
                                     <div>
                                         <label htmlFor="mascotas-cb" id="mascotas-label"
-                                               onClick={() => setColor('mascotas', petRef)}
-                                               className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
+                                               onClick={() =>
+                                                   setColor('mascotas', ids.abilities[5])
+                                               }
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[5].toString()) ?
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
+                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.pets')}
                                         </label>
-                                        <input type="checkbox" ref={petRef}
-                                               onChange={(e) => handleCheck(petRef, e.target.value)} id="mascotas-cb"
+                                        <input type="checkbox"
+                                               {...register("abilities", {required: true})}
+                                               id="mascotas-cb"
                                                value={ids.abilities[5]}
-                                               style={{visibility: "hidden"}}/>
+                                               style={{visibility: "hidden"}}
+                                        />
                                     </div>
                                 </div>
                             }
-                            {abilities.length < 1 &&
+                            {errors.abilities &&
                                 <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.abilitiesError')}</p>
                             }
                             <div className="col-span-6 my-6">
                                 <label className="block mb-2 text-sm font-medium text-gray-900">
                                     {t('CreateJob.description')}
                                 </label>
-                                <textarea rows={4} onChange={(e) => {
-                                    setDescription(e.target.value)
-                                }}
-                                          required
-                                          maxLength={4000}
-                                          minLength={10}
-                                          onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
-                                          onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('CreateJob.descriptionError'))}
-                                          className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                {/*<form:errors path="description" element="p" cssStyle="color: red"/>*/}
-                                {(description.length < 10 || description.length > 4000) &&
+                                <textarea
+                                    {...register("description", {required: true, maxLength: 4000, minLength: 10})}
+                                    rows={4}
+                                    className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                {errors.description &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.descriptionError')}</p>
                                 }
                             </div>
