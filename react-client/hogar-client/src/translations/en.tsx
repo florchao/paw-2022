@@ -139,7 +139,9 @@ export const TRANSLATIONS_EN = {
     experience : "Minimum years of experience",
     availability : "Availability",
     abilities : "Abilities required",
-    description : "Description"
+    description : "Description",
+    noReviews: "There are no reviews",
+    reviewsFor: "Reviews for ",
   },
 
   Applicants:{
