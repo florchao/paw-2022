@@ -3,12 +3,26 @@ import {useEffect, useState} from "react";
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {ContactService} from "../service/ContactService";
 import {useTranslation} from "react-i18next";
+import {useForm} from "react-hook-form";
+import useFormPersist from "react-hook-form-persist";
 
 export const ContactEmployee = () => {
 
-    const [phone, setPhone] = useState('');
-    const [content, setContent] = useState('');
-    const [status, setStatus] = useState<number>();
+    type FormData = {
+        phone: string;
+        content: string;
+    };
+
+    const { register, handleSubmit, watch, formState: { errors }, getValues, setValue } = useForm<FormData>();
+
+    watch("phone")
+    watch("content")
+
+    useFormPersist("form", {
+        watch,
+        setValue,
+        storage: window.localStorage,
+    })
 
     const { id, name } = useLocation().state
 
@@ -17,12 +31,13 @@ export const ContactEmployee = () => {
 
     const invalidPhone = (number : String) => {
         if( number.length <= 10)
-            return true
+            return false
     };
 
-    const handleSubmit = async (e: any) => {
-        const contact = await ContactService.contactEmployee(e, phone, content, id)
+    const onSubmit = async (data: any, e: any) => {
+        const contact = await ContactService.contactEmployee(e, data.phone, data.content, id)
         console.log(contact)
+        localStorage.clear()
         nav("/employee", {replace: true, state: {id: id, status: contact}})
     }
 
@@ -36,21 +51,18 @@ export const ContactEmployee = () => {
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="block p-6 rounded-3xl shadow-lg bg-gray-200">
                         <div className="form-group mb-6">
                             <h3 className="block mb-2 text-sm font-medium text-gray-900">
                                 {t('ContactEmployee.phone')}
                             </h3>
                             <input type="tel"
-                                   required
-                                   value={phone}
-                                   onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('ContactEmployee.phoneError'))}
-                                   onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
-                                   onChange={(e) => setPhone(e.target.value)}
+                                   value={getValues("phone")}
+                                   {...register("phone", {required:true, validate:{invalidPhone}} )}
                                    className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"
                             />
-                            {(invalidPhone(phone) ) &&
+                            {errors.phone &&
                                 <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactEmployee.phoneError')}</p>
                             }
                         </div>
@@ -59,15 +71,13 @@ export const ContactEmployee = () => {
                                 {t('ContactEmployee.message')}
                             </h3>
                             <textarea
-                                required
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
-                                onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('ContactEmployee.messageError'))}
-                                onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}
+                                value={getValues("content")}
+                                {...register("content", {required:true})}
                                 className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                            {(content.length < 1 ) &&
+                            {errors.content &&
                                 <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactEmployee.messageError')}</p>
-                            }                        </div>
+                            }
+                        </div>
                         <button type="submit"
                                 className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                             {t('ContactEmployee.submit')}

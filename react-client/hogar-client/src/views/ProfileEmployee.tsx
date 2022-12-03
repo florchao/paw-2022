@@ -21,6 +21,14 @@ export const ProfileEmployee = () => {
     console.log(useLocation().state)
 
     const { t } = useTranslation();
+    const nav = useNavigate();
+
+    function delEmployee() {
+        UserService.deleteUser(id).then(() => {
+                nav('/', {replace: true})
+            }
+        );
+    }
 
     useEffect(() => {
         console.log(id)
@@ -192,11 +200,22 @@ export const ProfileEmployee = () => {
                               </ul>
                           }
                       </div>
+                      <div className="ml-3 col-start-5 row-start-3">
+                          <button type="submit" onClick={delEmployee}
+                                  className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
+                              <div className="grid grid-rows-1 grid-cols-3">
+                                  <img src={'./images/bin.png'} alt="bin"
+                                       className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                  <p className="col-span-2">
+                                      {t('EmployerProfile.delete')}
+                                  </p>
+                              </div>
+                          </button>
+                      </div>
                   </div>
                   <div className="grid grid-cols-2">
                       <div className="col-span-1">
                           <h1 className="pb-3 pt-3 font-semibold">
-                              {/*<spring:message code="viewProfile.abilities"/>*/}
                               {t('Profile.abilities')}
                           </h1>
                           <ul role="list"
@@ -210,7 +229,6 @@ export const ProfileEmployee = () => {
                       </div>
                       <div className="col-span-1 col-start-2">
                           <h1 className="pb-3 pt-3 font-semibold">
-                              {/*<spring:message code="viewProfile.availability"/>*/}
                               {t('Profile.availability')}
                           </h1>
                           <ul role="list"

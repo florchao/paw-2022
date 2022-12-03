@@ -20,4 +20,8 @@ public interface ApplicantService {
 
     int getStatus(long employeeId, long jobId);
 
+    void withdrawApplication(long employeeId, long jobId);
+
+    void withdrawAppsFromJob(List<Applicant> applicants);
+
 }
