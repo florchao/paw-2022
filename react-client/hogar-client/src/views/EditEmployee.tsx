@@ -8,12 +8,17 @@ import EmployeeForm from "../components/EmployeeForm";
 const EditEmployee = () => {
 
     const { id }  = useLocation().state
-    const handleSubmit = async (e: any) => {
 
+    const nav = useNavigate();
+
+    const handleSubmit = async (data: any, e: any, image:File) => {
+        const edit = await EmployeeService.editEmployee(e, id, data.name, data.location, data.experienceYears, data.availabilities, data.abilities, image!)
+        localStorage.clear()
+        nav('/employee', {replace: true, state: {id: edit, status: -1}})
     }
 
     return(
-        <EmployeeForm handleSubmit={handleSubmit} from="edit" id={id}/>
+        <EmployeeForm onSubmit={handleSubmit} from="edit" id={id}/>
         // <div className="h-screen overflow-auto pb-5">
         //     <form onSubmit={handleSubmit}>
         //         <div className="grid grid-cols-6">

@@ -110,19 +110,26 @@ public class EmployeeController {
         User u = userService.create(mail, password, password, 1);
         employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, fromListToString(abilities), IOUtils.toByteArray(image));
         return Response.ok(u.getId()).build();
-        //Probando que llegue bien la información
-//        System.out.println(mail);
-//        System.out.println(password);
-//        System.out.println(confirmPassword);
-//        System.out.println(name);
-//        System.out.println(location);
-//        System.out.println(availabilities);
-//        System.out.println(abilities);
-//        System.out.println(experienceYears);
-//        return Response.ok(1).build();
     }
 
     //TODO: PUT y DELETE? de employee
+    @PUT
+    @Path("/{id}")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
+    public Response editEmployee(@FormDataParam("name") String name,
+                                  @FormDataParam("location") String location,
+                                  @FormDataParam("experienceYears") long experienceYears,
+                                  @FormDataParam("availabilities[]") List<String> availabilities,
+                                  @FormDataParam("abilities[]") List<String> abilities,
+                                  @FormDataParam("image") InputStream image,
+                                  @PathParam("id") long id) throws IOException, UserFoundException, PassMatchException {
+
+        employeeService.editProfile(name.toLowerCase(), location.toLowerCase(), id, fromListToArray(availabilities), experienceYears, fromListToArray(abilities), IOUtils.toByteArray(image));
+        LOGGER.debug(String.format("updated profile for userid %d", id));
+
+        return Response.ok(id).build();
+    }
+
 
 //    @RequestMapping(value = "/editarPerfil", method = {RequestMethod.GET})
 //    public ModelAndView editProfile(@ModelAttribute("employeeEditForm") final EmployeeEditForm form) throws UserNotFoundException {
@@ -162,5 +169,13 @@ public class EmployeeController {
             ret.append(str).append(",");
         }
         return ret.substring(0, ret.length() - 1);
+    }
+
+    private String[] fromListToArray(List<String> arr) {
+        String[] str = new String[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            str[i] = arr.get(i);
+        }
+        return str;
     }
 }

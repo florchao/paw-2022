@@ -86,4 +86,22 @@ export class EmployeeService {
             body: formData
         }).then((r) => r.text())
     }
+
+    public static async editEmployee(e: any, id:number, name: string, location: string, experienceYears: number, availabilities: string[], abilities: string[], image:File) {
+        e.preventDefault();
+
+        const formData:any = new FormData();
+        formData.append("name", name)
+        formData.append("location", location)
+        formData.append("experienceYears", experienceYears)
+        availabilities.forEach(a => formData.append("availabilities[]", a))
+        abilities.forEach(a => formData.append("abilities[]", a))
+        formData.append("image", image, image.name)
+
+        return await fetch('http://localhost:8080/api/employee/' + id, {
+            method: 'PUT',
+            headers: {},
+            body: formData
+        }).then((r) => r.text())
+    }
 }
