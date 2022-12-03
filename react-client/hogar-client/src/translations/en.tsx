@@ -27,8 +27,9 @@ export const TRANSLATIONS_EN = {
     passwordsError: "Passwords do not match",
   },
 
-  RegisterEmployee: {
-    title: "Create profile",
+  EmployeeForm: {
+    title_register: "Create profile",
+    title_edit: "Edit profile",
     image: "Insert image",
     name: "Name and Last name",
     email: "Email",
@@ -38,7 +39,8 @@ export const TRANSLATIONS_EN = {
     confirmPassword: "Confirm password",
     abilities: "Abilities",
     availability: "Availabilities",
-    button: "CREATE PROFILE",
+    button_register: "CREATE PROFILE",
+    button_edit: "EDIT PROFILE",
     imageError: "Please enter an image",
     nameError: "Please enter your name",
     locationError: "Please enter a valid location",

@@ -47,6 +47,16 @@ public class EmployeeDto {
         return dto;
     }
 
+    public static EmployeeDto fromEdit(final UriInfo uriInfo, final Employee employee) {
+        final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+
+        dto.availabilityArr = employee.getAvailabilityArr();
+
+        dto.abilitiesArr = employee.getAbilitiesArr();
+
+        return dto;
+    }
+
     public static EmployeeDto fromReview(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = new EmployeeDto();
 

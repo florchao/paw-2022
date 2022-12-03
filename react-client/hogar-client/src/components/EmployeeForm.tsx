@@ -127,7 +127,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
 
     useEffect(() => {
         if(id >= 0) {
-            EmployeeService.getEmployee(id).then((e: any) => {
+            EmployeeService.getEmployee(id, true).then((e: any) => {
                     setValue("name", e.name)
                     setValue("location", e.location)
                     setValue("experienceYears", e.experienceYears)
@@ -161,7 +161,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                 <div className="grid grid-cols-6">
                     <div className="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                         <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
-                            {t('RegisterEmployee.title')}
+                            {from == "create"? t('EmployeeForm.title_register') : t('EmployeeForm.title_edit')}
                         </p>
                         <div className="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                             <div className="grid grid-cols-6 gap-6">
@@ -173,7 +173,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                     </div>
                                     <label htmlFor="image-input" id="image-label"
                                            className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                        {t('RegisterEmployee.image')}
+                                        {t('EmployeeForm.image')}
                                     </label>
                                     <input id="image-input"
                                            type="file"
@@ -186,34 +186,34 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                            }}
                                            style={{visibility: "hidden"}}/>
                                     {image?.size == 0 &&
-                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.imageError')}</p>
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.imageError')}</p>
                                     }
                                 </div>
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label htmlFor="name"
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
-                                        {t('RegisterEmployee.name')}
+                                        {t('EmployeeForm.name')}
                                     </label>
                                     <input type="text"
                                            {...register("name", {required: true, maxLength: 100})}
 
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                                     {errors.name &&
-                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.nameError')}</p>
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.nameError')}</p>
                                     }
                                 </div>
                                 {from == "create" &&
                                     <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                         <label htmlFor="mail"
                                                className="text-sm font-medium text-gray-900">
-                                            {t('RegisterEmployee.email')}
+                                            {t('EmployeeForm.email')}
                                         </label>
                                         <input id="mail"
                                                type="mail"
                                                {...register("mail", {required: true, validate: {invalidEmail}})}
                                                className="col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                                         {errors.mail &&
-                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.emailError')}</p>
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.emailError')}</p>
                                         }
                                     </div>
                                 }
@@ -221,17 +221,17 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                     <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                         <label htmlFor="password"
                                                className="text-sm font-medium text-gray-900">
-                                            {t('RegisterEmployee.password')}
+                                            {t('EmployeeForm.password')}
                                         </label>
                                         <input id="password"
                                                type="password"
                                                {...register("password", {required: true, validate: {validatePassword}})}
                                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                                         {errors.password && errors.password.type == "required" &&
-                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.passwordError')}</p>
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.passwordError')}</p>
                                         }
                                         {errors.password && errors.password.type == "validate" &&
-                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.passwordsError')}</p>
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.passwordsError')}</p>
                                         }
                                     </div>
                                 }
@@ -239,7 +239,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                     <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                         <label htmlFor="confirmPassword"
                                                className="text-sm font-medium text-gray-900">
-                                            {t('RegisterEmployee.confirmPassword')}
+                                            {t('EmployeeForm.confirmPassword')}
                                         </label>
                                         <input id="confirmPassword"
                                                type="password"
@@ -249,10 +249,10 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                                })}
                                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                                         {errors.confirmPassword && errors.confirmPassword.type == "required" &&
-                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.passwordError')}</p>
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.passwordError')}</p>
                                         }
                                         {errors.confirmPassword && errors.confirmPassword.type == "validate" &&
-                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.passwordsError')}</p>
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.passwordsError')}</p>
                                         }
                                     </div>
                                 }
@@ -262,31 +262,31 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                 }>
                                     <label htmlFor="location"
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
-                                        {t('RegisterEmployee.location')}
+                                        {t('EmployeeForm.location')}
                                     </label>
                                     <input type="text"
                                            {...register("location", {required: true, maxLength: 100})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                     { errors.location &&
-                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.locationError')}</p>
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.locationError')}</p>
                                     }
                                 </div>
                                 <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                                        {t('RegisterEmployee.experienceYears')}
+                                        {t('EmployeeForm.experienceYears')}
                                     </label>
                                     <input type="number"
                                            id="expYears"
                                            {...register("experienceYears", {required: true, max: 100})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                     {errors.experienceYears &&
-                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.expYearsError')}</p>
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.expYearsError')}</p>
                                     }
                                 </div>
                             </div>
                             <div>
                                 <h1 className="pb-3 pt-3 font-bold">
-                                    {t('RegisterEmployee.abilities')}
+                                    {t('EmployeeForm.abilities')}
                                 </h1>
                             </div>
                             {ids &&
@@ -405,11 +405,11 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                 </div>
                             }
                             {errors.abilities &&
-                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.abilitiesError')}</p>
+                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.abilitiesError')}</p>
                             }
                             <div>
                                 <h1 className="pb-3 pt-3 font-bold">
-                                    {t('RegisterEmployee.availability')}
+                                    {t('EmployeeForm.availability')}
                                 </h1>
                             </div>
                             {ids &&
@@ -462,12 +462,12 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                 </div>
                             }
                             {errors.availabilities &&
-                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployee.availabilityError')}</p>
+                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.availabilityError')}</p>
                             }
                             <div className="mt-5 col-start-2 col-span-4 row-span-3">
                                 <button type="submit"
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                    {t('RegisterEmployee.button')}
+                                    {from == "create"? t('EmployeeForm.button_register') : t('EmployeeForm.button_edit')}
                                 </button>
                             </div>
                         </div>

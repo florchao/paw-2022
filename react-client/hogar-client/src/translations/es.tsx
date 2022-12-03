@@ -28,7 +28,8 @@ export const TRANSLATIONS_ES = {
     },
 
     RegisterEmployee: {
-        title: "Crear perfil",
+        title_register: "Crear perfil",
+        title_edit: "Editar perfil",
         image: "Insertar imagen",
         name: "Nombre y Apellido",
         email: "Email",
@@ -38,7 +39,8 @@ export const TRANSLATIONS_ES = {
         confirmPassword: "Confirmar contraseña",
         abilities: "Habilidades",
         availability: "Disponibilidad",
-        button: "CREAR PERFIL",
+        button_register: "CREAR PERFIL",
+        button_edit: "EDITAR PERFIL",
         imageError: "Por favor ingrese una imagen",
         nameError: "Por favor ingrese su nombre",
         locationError: "Por favor ingrese una ubicación",
