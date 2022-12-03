@@ -107,7 +107,16 @@ public class JobController {
     @Path("/{userId}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response verTrabajo(@PathParam("userId") long userId) throws JobNotFoundException{
-        Job job = jobService.getJobByID(userId).orElseThrow( ()->new  JobNotFoundException("job" + userId + "does not exists"));
+        Job job = null;
+        try {
+            job = jobService.getJobByID(userId);
+        } catch (JobNotFoundException exception){
+            exception.getMessage();
+            exception.getCause();
+        }
+        if (job == null ){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         JobDto jobDto = JobDto.fromJob(uriInfo, job);
         int jobStatus = -1;
         GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto){};

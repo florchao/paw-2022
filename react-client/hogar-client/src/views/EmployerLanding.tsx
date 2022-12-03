@@ -9,20 +9,6 @@ export const EmployerLanding = () => {
     return (
         <html>
         <body>
-        <div className="area absolute">
-            <ul className="circles">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-        </div>
         <div className="flex h-screen overflow-auto pl-5 pr-5 justify-center">
             <div id="roles" className="grid grid-cols-2 items-start p-10 gap-y-7 mt-9 content-center">
                 <div className="grid grid-cols-3">

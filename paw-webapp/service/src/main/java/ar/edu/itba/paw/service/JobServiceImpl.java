@@ -49,12 +49,11 @@ public class JobServiceImpl implements JobService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Job> getJobByID(long jobID) throws JobNotFoundException {
+    public Job getJobByID(long jobID) throws JobNotFoundException {
         Job job = jobDao.getJobById(jobID).orElseThrow(()-> new JobNotFoundException("job" + jobID + "does not exists"));
         List<String> availabilityArr = new ArrayList<>(Arrays.asList(job.getAvailability().split(",")));
         List<String> abilitiesArr = new ArrayList<>(Arrays.asList(job.getAbilities().split(",")));
-        Job aux = new Job(job.getTitle(), job.getLocation(), job.getJobId(), job.getEmployerId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription(), job.isOpened());
-        return Optional.of(aux);
+        return new Job(job.getTitle(), job.getLocation(), job.getJobId(), job.getEmployerId(), availabilityArr, job.getExperienceYears(), abilitiesArr, job.getDescription(), job.isOpened());
     }
 
     @Transactional(readOnly = true)

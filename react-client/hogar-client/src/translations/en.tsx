@@ -127,7 +127,9 @@ export const TRANSLATIONS_EN = {
     employees: "Registered employees",
     orderBy: "Order by: ",
     popularity: "Popularity",
-    experience: "Experience"
+    experience: "Experience",
+    noJobs: "There are no jobs available",
+    noEmployees: "There are no employees",
   },
 
   Job:{
@@ -137,7 +139,9 @@ export const TRANSLATIONS_EN = {
     experience : "Minimum years of experience",
     availability : "Availability",
     abilities : "Abilities required",
-    description : "Description"
+    description : "Description",
+    noReviews: "There are no reviews",
+    reviewsFor: "Reviews for ",
   },
 
   Applicants:{

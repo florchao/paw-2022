@@ -35,6 +35,17 @@ export const Explore = () => {
                     </div>
                 </div>
                 {employees && employees.map((employee: Object) => (<EmployeeCard employee={employee}/>))}
+                {employees == 0 && (
+                    <div className="grid content-center justify-center h-5/6 mt-16">
+                        <div className="grid justify-items-center">
+                            <img src={ '../images/sinEmpleadas.png'} alt="noJobs"
+                                 className="mr-3 h-6 sm:h-52"/>
+                            <p className="text-3xl font-semibold text-purple-700">
+                                {t("Explore.noEmployees")}
+                            </p>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )
