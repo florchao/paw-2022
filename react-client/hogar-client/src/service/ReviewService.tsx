@@ -46,4 +46,14 @@ export class ReviewService {
                 })
     }
 
+    public static async putEmployerReview(e:any, employerId: number, message: string){
+        e.preventDefault();
+        const reviewForm = {message};
+        console.log(reviewForm)
+        //todo harcoded id del employee en 4
+        return await fetch('http://localhost:8080/api/review/employer/' + employerId + '/4', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(reviewForm)
+        }).then((r) => r.text())    }
 }

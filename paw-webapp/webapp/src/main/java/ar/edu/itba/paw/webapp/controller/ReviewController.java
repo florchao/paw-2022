@@ -1,16 +1,20 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.Review;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.dto.ReviewDto;
+import ar.edu.itba.paw.webapp.form.ContactUsForm;
+import ar.edu.itba.paw.webapp.form.JobForm;
+import ar.edu.itba.paw.webapp.form.ReviewForm;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.validation.Valid;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,11 +59,21 @@ public class ReviewController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getMyReviewToEmployer(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
         Optional<ReviewDto> myReview = reviewService.getMyReviewEmployer(employeeId, employerId).map(r -> ReviewDto.fromEmployerReview(uriInfo, r));
-        if (!myReview.isPresent())
-            return Response.status(Response.Status.NOT_FOUND).build();
+        if(!myReview.isPresent())
+            return Response.ok().build();
         GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()){};
         return Response.ok(genericEntity).build();
 
+    }
+    @POST
+    @Path("/employer/{employerId}/{employeeId}")
+    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    public Response postJobReview(@Valid ReviewForm form, @PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
+        //TODO: poner el id del empleador que esta iniciado sesión
+        System.out.println(form.getContent() + "FORMMM");
+        Review review = reviewService.create(employeeId, employerId, form.getContent() ,new Date(), false );
+        System.out.println(review.toString());
+        return Response.ok(review.getReviewId()).build();
     }
 
     //    @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})

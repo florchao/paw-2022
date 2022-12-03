@@ -30,6 +30,7 @@ public class ReviewServiceImpl implements ReviewService{
     public Review create(long employeeId, long employerId, String review, Date created, boolean forEmployee) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
+        System.out.println("ENTRE EN EL SERVICE IMPL");
         if (employee.isPresent() && employer.isPresent())
             return reviewDao.create(employee.get(), employer.get(), review, created, forEmployee);
         return null;
