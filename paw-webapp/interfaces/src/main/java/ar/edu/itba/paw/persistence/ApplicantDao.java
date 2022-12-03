@@ -24,4 +24,8 @@ public interface ApplicantDao {
 
     int getStatus(Employee employee, Job job);
 
+    void deleteApplication(Applicant applicant);
+
+    Optional<Applicant> getApplicant(Employee employeeId, Job jobId);
+
 }

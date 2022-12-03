@@ -18,7 +18,7 @@ export const TRANSLATIONS_EN = {
     password: "Password",
     confirmPassword: "Confirm password",
     button: "CREATE PROFILE",
-    title: "Create account of employer",
+    title: "Create profile",
     imageError: "Please enter an image",
     nameError: "Please enter your name",
     lastNameError: "Please enter your last name",
@@ -56,7 +56,8 @@ export const TRANSLATIONS_EN = {
   },
   EmployeeCard:{
     name:"Name",
-    location:"Location"
+    location:"Location",
+    yearsExp: "Years of experience: ",
   },
   JobCard:{
     publication:"See job offer",
@@ -223,6 +224,21 @@ export const TRANSLATIONS_EN = {
     child: "Child care",
     specialNeeds: "Special care",
     pets: "Pet care",
+  },
+
+  EmployerProfile:{
+    delete: "Delete profile",
+    reviews: "Reviews",
+    noReviews: "There are no reviews"
+  },
+
+  EmployerLanding:{
+    searchEmployee: "Search for an employee!",
+    chooseEmployee: "Choose form our community the profile which fits the best what you are looking for",
+    publishJob: "Publish a job!",
+    descriptionJob: "Publish a job offer and wait until our community to apply",
+    buttonEmployee: "Search employees",
+    buttonJob: "My published jobs"
   }
 
 }

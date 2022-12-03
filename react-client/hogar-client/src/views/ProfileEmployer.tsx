@@ -1,21 +1,24 @@
 import {useEffect, useState} from "react";
 import {EmployerService} from "../service/EmployerService";
-import {EmployeeService} from "../service/EmployeeService";
 import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
 import {useLocation, useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
+import {useTranslation} from "react-i18next";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
     const [image, setImage]: any = useState()
     const [reviews, setReviews]: any = useState(new Array(0))
+
     const nav = useNavigate();
+    //let {id} = useLocation().state
+    const {t} = useTranslation();
 
-    let {id} = useLocation().state
 
-    if(id == null)
-        id = 2
+    const id = 1
+    //if(id === null)
+      //  id = 1
 
     //todo cambiar el numero de id
     function delEmployer() {
@@ -35,7 +38,7 @@ export const ProfileEmployer = () => {
     useEffect(() => {
         UserService.loadImage(id).then(
             (img) => {
-                if (img.size == 0)
+                if (img.size === 0)
                     setImage("./images/user.png")
                 else
                     setImage(URL.createObjectURL(img))
@@ -70,45 +73,45 @@ export const ProfileEmployer = () => {
                                 </p>
                             </div>
                             <div className="ml-3 col-start-5 row-start-2">
-                                    <button type="submit" onClick={delEmployer}
-                                            className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
-                                        <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src={'./images/bin.png'} alt="bin"
-                                                 className="mr-3 h-6 sm:h-5 col-start-1"/>
-                                            <p className="col-span-2">
-                                                Borrar perfil
-                                            </p>
-                                        </div>
-                                    </button>
+                                <button type="submit" onClick={delEmployer}
+                                        className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
+                                    <div className="grid grid-rows-1 grid-cols-3">
+                                        <img src={'./images/bin.png'} alt="bin"
+                                             className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                        <p className="col-span-2">
+                                            {t('EmployerProfile.delete')}
+                                        </p>
+                                    </div>
+                                </button>
                             </div>
                         </div>
                         <ul role="list" className="divide-y divide-gray-300">
-                        {reviews &&
-                        <div className="flow-root">
-                            <h1 className="pb-3 pt-3 font-semibold">
-                                Opiniones
-                            </h1>
-                            {reviews.length === 0 &&
-                                <div className="grid content-center justify-center h-5/6 mt-16">
-                                    <div className="grid justify-items-center">
-                                        <img src={'./images/sinEmpleadas.png'} alt="sinEmpleadas"
-                                             className="mr-3 h-6 sm:h-52"/>
-                                        <p className="text-3xl font-semibold text-purple-700">
-                                            No hay opiniones
-                                        </p>
-                                    </div>
+                            {reviews &&
+                                <div className="flow-root">
+                                    <h1 className="pb-3 pt-3 font-semibold">
+                                        {t('EmployerProfile.reviews')}
+                                    </h1>
+                                    {reviews.length === 0 &&
+                                        <div className="grid content-center justify-center h-5/6 mt-16">
+                                            <div className="grid justify-items-center">
+                                                <img src={'./images/sinEmpleadas.png'} alt="sinEmpleadas"
+                                                     className="mr-3 h-6 sm:h-52"/>
+                                                <p className="text-3xl font-semibold text-purple-700">
+                                                    {t('EmployerProfile.noReviews')}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
+                                    {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard review={rev}/>)}
                                 </div>
                             }
-                            {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard review={rev}/>)}
-                        </div>
-                        }
                         </ul>
                     </div>
                 </div>
             }
         </div>
 
-)
+    )
 }
 
 export default ProfileEmployer;

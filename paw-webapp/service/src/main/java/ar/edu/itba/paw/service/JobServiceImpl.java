@@ -118,6 +118,9 @@ public class JobServiceImpl implements JobService{
     @Override
     public void openJob(long jobId) {
         jobDao.openJob(jobId);
+        //TODO paginacion
+        List<Applicant> applicants = applicantService.getApplicantsByJob(jobId, 0L, 0);
+        applicantService.withdrawAppsFromJob(applicants);
     }
 
     @Override
