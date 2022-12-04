@@ -60,20 +60,21 @@ public class ReviewController {
     public Response getMyReviewToEmployer(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
         Optional<ReviewDto> myReview = reviewService.getMyReviewEmployer(employeeId, employerId).map(r -> ReviewDto.fromEmployerReview(uriInfo, r));
         if(!myReview.isPresent())
-            return Response.ok().build();
+            return Response.noContent().build();
         GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()){};
         return Response.ok(genericEntity).build();
 
     }
     @POST
     @Path("/employer/{employerId}/{employeeId}")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
-    public Response postJobReview(@Valid ReviewForm form, @PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
+    @Consumes(value = { MediaType.MULTIPART_FORM_DATA, })
+    public Response postJobReview(@FormDataParam("content") String message, @PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
         //TODO: poner el id del empleador que esta iniciado sesión
-        System.out.println(form.getContent() + "FORMMM");
-        Review review = reviewService.create(employeeId, employerId, form.getContent() ,new Date(), false );
-        System.out.println(review.toString());
-        return Response.ok(review.getReviewId()).build();
+        System.out.println(message + "FORMMM");
+        ReviewDto review = ReviewDto.fromEmployeeReview(uriInfo ,reviewService.create(employeeId, employerId, message ,new Date(), false ));
+        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(review){};
+
+        return Response.ok(genericEntity).build();
     }
 
     //    @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})

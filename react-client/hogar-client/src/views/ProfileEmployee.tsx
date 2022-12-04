@@ -18,8 +18,6 @@ export const ProfileEmployee = () => {
 
     const {id, status} = useLocation().state
 
-    console.log(useLocation().state)
-
     const { t } = useTranslation();
     const nav = useNavigate();
 
@@ -31,7 +29,6 @@ export const ProfileEmployee = () => {
     }
 
     useEffect(() => {
-        console.log(id)
         EmployeeService.getEmployee(id).then((e) => setEmployee(e));
     }, [])
 

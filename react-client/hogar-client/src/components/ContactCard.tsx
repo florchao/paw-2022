@@ -7,8 +7,6 @@ const ContactCard = (contact: any) => {
     const [image, setImage]: any = useState()
 
     contact = contact.contact
-    console.log(contact)
-
 
     useEffect(() => {
         //TODO:usar el de Employer

@@ -37,9 +37,9 @@ export const Job = () => {
     })
 
     const onSubmit = async (data: any, e: any) => {
-        const post = await ReviewService.putEmployerReview(e, job.employerId.id, data.description)
+        const post = await ReviewService.putEmployerReview(e, job.employerId.id, data.content)
         localStorage.clear()
-
+        setMyReview(post)
     }
 
     useEffect(() => {
@@ -63,6 +63,7 @@ export const Job = () => {
             }
         }, [job]
     )
+
 
     return (
         <div className="grid h-screen grid-cols-6 overflow-auto">
