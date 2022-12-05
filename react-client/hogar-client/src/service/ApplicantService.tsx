@@ -48,8 +48,6 @@ export class ApplicantService{
         e.preventDefault();
 
         const formData:any = new FormData();
-        formData.append("employeeId", employeeId)
-        formData.append("jobId", jobId)
         formData.append("status", status)
 
         return await fetch('http://localhost:8080/api/applicant/' + employeeId +'/'+ jobId , {
