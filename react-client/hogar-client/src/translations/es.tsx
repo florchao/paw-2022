@@ -61,6 +61,7 @@ export const TRANSLATIONS_ES = {
         name:"Nombre",
         location:"Ubicación",
         yearsExp: "Años de experiencia: ",
+        connected: "YA SE CONTACTO"
     },
     JobCard:{
         publication: "Ver publicaci\u00f3n",

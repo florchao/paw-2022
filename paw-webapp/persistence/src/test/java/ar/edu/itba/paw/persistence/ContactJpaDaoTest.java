@@ -109,9 +109,9 @@ public class ContactJpaDaoTest {
 
         final Contact contact = contactJpaDao.create(employee, employer, DATE,MESSAGE, PHONE );
 
-        Boolean hasToExist = contactJpaDao.existsContact(employee, employer);
+        Boolean hasToExist = !contactJpaDao.existsContact(employee, employer).isEmpty();
         Assert.assertTrue(hasToExist);
-        Boolean hasToNotExist = contactJpaDao.existsContact(employee, employer2);
+        Boolean hasToNotExist = !contactJpaDao.existsContact(employee, employer2).isEmpty();
         Assert.assertFalse(hasToNotExist);
 
 

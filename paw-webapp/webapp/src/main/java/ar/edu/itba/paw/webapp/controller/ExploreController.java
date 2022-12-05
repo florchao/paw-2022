@@ -64,6 +64,7 @@ public class ExploreController {
             @QueryParam("order") String orderCriteria
     ) {
 
+        int employerId = 1;
         if (page == null)
             page = 0L;
         List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(e -> EmployeeDto.fromExplore(uriInfo, e)).collect(Collectors.toList());

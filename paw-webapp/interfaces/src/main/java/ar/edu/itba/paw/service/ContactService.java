@@ -9,7 +9,6 @@ import ar.edu.itba.paw.model.exception.UserNotFoundException;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface ContactService {
 
@@ -25,6 +24,6 @@ public interface ContactService {
 
     void changedStatus(int status, Job job, Employee employee);
 
-    Boolean existsContact(long employeeId, long employerId) throws UserNotFoundException;
+    List<Contact> existsContact(long employeeId, long employerId) throws UserNotFoundException;
 }
 

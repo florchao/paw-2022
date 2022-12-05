@@ -107,7 +107,7 @@ public class ContactController {
 
     @POST
     @Path("/")
-    @Consumes (value = {MediaType.APPLICATION_JSON, })
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response contactUs(@Valid ContactUsForm form) {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
@@ -119,9 +119,9 @@ public class ContactController {
 
     @POST
     @Path("/{id}")
-    @Consumes (value = {MediaType.APPLICATION_JSON, })
-    @Produces (value = {MediaType.APPLICATION_JSON, })
-    public Response contactEmployee(@Valid ContactForm form,  @PathParam("id") long id) throws UserNotFoundException, AlreadyExistsException {
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response contactEmployee(@Valid ContactForm form, @PathParam("id") long id) throws UserNotFoundException, AlreadyExistsException {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
@@ -133,7 +133,7 @@ public class ContactController {
         }
         employeeService.isEmployee(id);
         Optional<Employee> employee = employeeService.getEmployeeById(id);
-        if(employee.isPresent()){
+        if (employee.isPresent()) {
             employee.get().firstWordsToUpper();
             boolean exists = contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
             if (!exists) {
@@ -145,10 +145,23 @@ public class ContactController {
 
     @GET
     @Path("/{id}")
-    @Produces (value = {MediaType.APPLICATION_JSON})
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response employeeContacts(@PathParam("id") long id) throws UserNotFoundException {
         List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, 0L, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
-        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts){};
+        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
+        };
         return Response.ok(genericEntity).build();
     }
+
+
+    @GET
+    @Path("/{employeeid}/{employerid}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response existsContact(@PathParam("employeeid") long employeeId, @PathParam("employerid") long employerId) throws UserNotFoundException {
+        List<ContactDto> exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(exists) {
+        };
+        return Response.ok(genericEntity).build();
+    }
+
 }

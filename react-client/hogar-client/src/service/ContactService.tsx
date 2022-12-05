@@ -37,4 +37,22 @@ export class ContactService {
                     throw error
                 })
     }
+
+    public static async getContact(id: number, employerId: number) {
+        return await fetch('http://localhost:8080/api/contact/' + id +'/'+ employerId , {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json"
+            },
+        }).then((resp) => {
+            console.log(resp)
+            return resp.json()
+        })
+            .catch(
+                (error) => {
+                    console.log(error)
+                    throw error
+                })
+    }
 }

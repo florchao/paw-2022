@@ -7,6 +7,7 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
+import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -40,6 +41,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private ContactService contactService;
 
     @Autowired
     private UserService userService;
@@ -117,7 +121,7 @@ public class EmployeeController {
         return Response.ok(u.getId()).build();
     }
 
-    //TODO: PUT y DELETE? de employee
+    //TODO: PUT y DELETE? de employee. El delete esta en el user controller porque es el mismo para employer
     @PUT
     @Path("/{id}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
