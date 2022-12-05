@@ -12,11 +12,11 @@ export class ContactService {
         })
     }
 
-    public static async contactEmployee(e: any, phone: string, content: string, id: number) {
+    public static async contactEmployee(e: any, phone: string, content: string, employee_id: number, employer_id: number) {
         e.preventDefault();
         const contactForm = {phone, content};
 
-        return await fetch('http://localhost:8080/api/contact/' + id, {
+        return await fetch('http://localhost:8080/api/contact/' + employee_id + '/' + employer_id, {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(contactForm)
@@ -46,7 +46,6 @@ export class ContactService {
                 "Content-Type": "application/json"
             },
         }).then((resp) => {
-            console.log(resp)
             return resp.json()
         })
             .catch(

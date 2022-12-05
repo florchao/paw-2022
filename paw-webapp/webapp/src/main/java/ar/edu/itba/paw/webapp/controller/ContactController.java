@@ -1,10 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.dto.ContactDto;
 import ar.edu.itba.paw.webapp.form.ContactForm;
@@ -32,6 +34,8 @@ public class ContactController {
     private UserService userService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private EmployerService employerService;
     @Autowired
     private ContactService contactService;
 
@@ -118,29 +122,32 @@ public class ContactController {
     }
 
     @POST
-    @Path("/{id}")
+    @Path("/{employee_id}/{employer_id}")
     @Consumes(value = {MediaType.APPLICATION_JSON,})
-    @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response contactEmployee(@Valid ContactForm form, @PathParam("id") long id) throws UserNotFoundException, AlreadyExistsException {
+    public Response contactEmployee(@Valid ContactForm form,
+                                    @PathParam("employee_id") long employeeId,
+                                    @PathParam("employer_id") long employerId) throws UserNotFoundException, AlreadyExistsException {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
 //        }
         try {
-            userService.getUserById(id);
+            userService.getUserById(employeeId);
         } catch (ar.edu.itba.paw.model.exception.UserNotFoundException e) {
             throw new RuntimeException(e);
         }
-        employeeService.isEmployee(id);
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
-        if (employee.isPresent()) {
+        employeeService.isEmployee(employeeId);
+        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
+        Optional<Employer> employer = employerService.getEmployerById(employerId);
+        if (employee.isPresent() && employer.isPresent()) {
             employee.get().firstWordsToUpper();
-            boolean exists = contactService.contact(employee.get().getId(), form.getContent(), "current user", form.getPhone());
-            if (!exists) {
-                Response.status(Status.ERROR).build();
+            boolean exists = contactService.contact(employee.get().getId(), employer.get().getId(), form.getContent(), employer.get().getName(), form.getPhone());
+            if (exists) {
+                return Response.ok(1).build();
             }
+            return Response.ok(0).build();
         }
-        return Response.ok().build();
+        return Response.serverError().build();
     }
 
     @GET
@@ -155,9 +162,9 @@ public class ContactController {
 
 
     @GET
-    @Path("/{employeeid}/{employerid}")
+    @Path("/{employee_id}/{employer_id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response existsContact(@PathParam("employeeid") long employeeId, @PathParam("employerid") long employerId) throws UserNotFoundException {
+    public Response existsContact(@PathParam("employee_id") long employeeId, @PathParam("employer_id") long employerId) throws UserNotFoundException {
         List<ContactDto> exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(exists) {
         };

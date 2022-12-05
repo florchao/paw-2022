@@ -293,7 +293,6 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                                onClick={() => {
                                                    setColorAb('cocinar', ids.abilities[0])
                                                }}
-                                               onLoadCapture={e => console.log("LOAD: ", e.target)}
                                                className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[0].toString())?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
@@ -375,8 +374,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                         </label>
                                         <input type="checkbox"
                                                {...register("abilities", {required:true})}
-                                            // onChange={(e) => console.log(getValues("abilities"))}
-                                               id="especiales-cb"
+                                                id="especiales-cb"
                                                value={ids.abilities[4]}
                                                style={{visibility: "hidden"}}
                                         />

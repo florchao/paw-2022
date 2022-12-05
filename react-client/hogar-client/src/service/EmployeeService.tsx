@@ -53,10 +53,8 @@ export class EmployeeService {
 
     public static async getEmployee(id: number, edit:boolean) {
         let url = 'http://localhost:8080/api/employee/' + id
-        console.log("edit", edit)
         if(edit)
             url = url.concat('?edit=true')
-        console.log("URL:", url)
         return await fetch(url, {
             method: 'GET',
             headers: {

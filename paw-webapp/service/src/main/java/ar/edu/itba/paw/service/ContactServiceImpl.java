@@ -61,17 +61,11 @@ public class ContactServiceImpl implements ContactService{
 
     @Transactional
     @Override
-    public boolean contact(User to, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
+    public boolean contact(User to, User from, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
 //        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //TODO: traer el mail del user actual
-        Optional<User> optional = userService.findByUsername("kitty@mail.com");
-        if(optional.isPresent()) {
-            User from = optional.get();
-            if(create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
-                return false;
-            mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
+        if (create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
             return true;
-        }
+        mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
         return false;
     }
 
