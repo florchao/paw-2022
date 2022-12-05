@@ -30,7 +30,6 @@ export const ProfileEmployer = () => {
 
     useEffect(() => {
         //todo harcodeado el numero de id
-        console.log(id)
         EmployerService.getEmployer(id).then((val) => setEmployer(val));
     }, [])
 

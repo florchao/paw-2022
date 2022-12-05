@@ -77,7 +77,6 @@ export class JobService {
     }
 
     public static async getCreatedJob(id: number) {
-        console.log("En el service")
         return await fetch('http://localhost:8080/api/job/employer/' + id, {
             method: 'GET',
             headers: {
@@ -93,7 +92,6 @@ export class JobService {
     }
 
     public static async getIds() {
-        console.log("En el service")
         return await fetch('http://localhost:8080/api/job/ids', {
             method: 'GET',
             headers: {

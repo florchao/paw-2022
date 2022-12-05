@@ -56,7 +56,6 @@ const RegisterEmployer = () => {
 
     const onSubmit = async (data:any, e: any) => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, data.image![0])
-        console.log(post)
         nav('/employer', {replace: true, state: {id: post}})
     }
 

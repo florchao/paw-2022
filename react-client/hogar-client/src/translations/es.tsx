@@ -166,6 +166,12 @@ export const TRANSLATIONS_ES = {
         addAnother: "Agregar una nueva publicación"
     },
 
+    ReviewForm: {
+        label_title: "Mi opinión",
+        error: "Por favor ingrese su opinión",
+        button: "Publicar"
+    },
+
     CreateJob: {
         title: "Crear oferta de trabajo",
         label_title: "Título",

@@ -1,16 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Review;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.dto.ReviewDto;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,20 +54,48 @@ public class ReviewController {
     public Response getMyReviewToEmployer(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
         Optional<ReviewDto> myReview = reviewService.getMyReviewEmployer(employeeId, employerId).map(r -> ReviewDto.fromEmployerReview(uriInfo, r));
         if (!myReview.isPresent())
-            return Response.status(Response.Status.NOT_FOUND).build();
-        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()){};
+            return Response.noContent().build();
+        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()) {
+        };
         return Response.ok(genericEntity).build();
 
     }
 
-    //    @RequestMapping(value = "addReview/{id}", method = {RequestMethod.POST})
-//    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long id) throws UserNotFoundException {
-//        if(errors.hasErrors())
-//            return userProfile(id,status, reviewForm, null);
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        reviewService.create(id, principal.getUserID(), reviewForm.getContent(), new Date(System.currentTimeMillis()), true);
-//        return new ModelAndView("redirect:/verPerfil/" + id);
-//    }
-//
-//
+    @GET
+    @Path("/employee/{employerId}/{employeeId}")
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response getMyReviewToEmployee(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
+        Optional<ReviewDto> myReview = reviewService.getMyReview(employeeId, employerId).map(r -> ReviewDto.fromEmployeeReview(uriInfo, r));
+        if (!myReview.isPresent())
+            return Response.noContent().build();
+        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()) {
+        };
+        return Response.ok(genericEntity).build();
+
+    }
+
+    @POST
+    @Path("/employer/{employerId}/{employeeId}")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
+    public Response postJobReview(@FormDataParam("content") String message, @PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
+        //TODO: poner el id del empleado que esta iniciado sesión
+        ReviewDto review = ReviewDto.fromEmployeeReview(uriInfo, reviewService.create(employeeId, employerId, message, new Date(), false));
+        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(review) {
+        };
+
+        return Response.ok(genericEntity).build();
+    }
+
+    @POST
+    @Path("/employee/{employeeId}/{employerId}")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
+    public Response postEmployeeReview(@FormDataParam("content") String message, @PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
+        //TODO: poner el id del empleador que esta iniciado sesión
+        ReviewDto review = ReviewDto.fromEmployerReview(uriInfo, reviewService.create(employeeId, employerId, message, new Date(), true));
+        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(review) {
+        };
+
+        return Response.ok(genericEntity).build();
+    }
+
 }

@@ -1,5 +1,4 @@
 function validateExpYears() {
-    console.log("algo")
     var el = document.getElementById('expYears');
     if (el.value ==="") {
         el.value=0;
@@ -23,7 +22,6 @@ function nextPage(current) {
     el.value = (current + 1);
 }
 function prevPageValidation(current) {
-    console.log(current);
     if (current === 0) {
         document.getElementById('prevPageButton').disabled = true;
     }
@@ -41,7 +39,6 @@ function setColor(btn) {
 }
 
 function changeOrderCriteria(orderCriteria, inputId, submitButtonId) {
-    console.log("consoleando");
     let property = document.getElementById(inputId);
     property.value = orderCriteria;
     let submitButton = document.getElementById(submitButtonId);

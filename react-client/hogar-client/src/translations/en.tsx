@@ -165,8 +165,14 @@ export const TRANSLATIONS_EN = {
     noJobs: "You do not have publications",
     addFirst: "Create a job publication",
     addAnother: "Add another job offer"
-  }, 
-  
+  },
+
+  ReviewForm: {
+    label_title: "My review",
+    error: "Please enter your review",
+    button: "Publish"
+  },
+
   CreateJob: {
     title: "Create job offer",
     label_title: "Title",

@@ -7,6 +7,9 @@ import {verify} from "crypto";
 import {RatingService} from "../service/RatingService";
 import {useTranslation} from "react-i18next";
 import {UserService} from "../service/UserService";
+import MyReviewCard from "../components/MyReviewCard";
+import useFormPersist from "react-hook-form-persist";
+import {useForm} from "react-hook-form";
 
 export const ProfileEmployee = () => {
 
@@ -15,11 +18,35 @@ export const ProfileEmployee = () => {
     const [rating, setRating]: any = useState()
 
     const [review, setReview]: any = useState()
+    const [myReview, setMyReview]: any = useState()
 
     const {id, status} = useLocation().state
 
+    console.log(useLocation().state)
+
     const { t } = useTranslation();
     const nav = useNavigate();
+
+
+    type FormData = {
+        content: string;
+    };
+
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
+
+    watch("content")
+
+    useFormPersist("form", {
+        watch,
+        setValue,
+        storage: window.localStorage,
+    })
+
+    const onSubmit = async (data: any, e: any) => {
+        const post = await ReviewService.putEmployeeReview(e, employee.id, data.content)
+        localStorage.clear()
+        setMyReview(post)
+    }
 
     function delEmployee() {
         UserService.deleteUser(id).then(() => {
@@ -29,7 +56,7 @@ export const ProfileEmployee = () => {
     }
 
     useEffect(() => {
-        EmployeeService.getEmployee(id, false).then((e) => setEmployee(e));
+        EmployeeService.getEmployee(id).then((e) => setEmployee(e));
     }, [])
 
     useEffect(() => {
@@ -48,6 +75,11 @@ export const ProfileEmployee = () => {
                     setReview(rsp)
                 }
             )
+        ReviewService.getMyEmployeeReview(id).then(
+            (rsp) => {
+                setMyReview(rsp)
+            }
+        )
         }, []
     )
 
@@ -91,8 +123,7 @@ export const ProfileEmployee = () => {
                           </h1>
                       </div>
                       <div className="ml-3 col-start-5 row-start-2 w-fit">
-                          <Link to="/edit" state={{id: employee.id}}>
-                              {/*name: employee.name}}>*/}
+                          <Link to="/contact/employee" state={{id: employee.id, name: employee.name}}>
                               <button
                                   className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
                                   {t('Profile.connect')}
@@ -243,9 +274,34 @@ export const ProfileEmployee = () => {
                           {t('Profile.reviews')}
                       </h1>
                       <ul role="list" className="divide-y divide-gray-300">
+                          {myReview == null && (
+                              <form onSubmit={handleSubmit(onSubmit)}>
+                                  <div className="">
+                                      <label htmlFor="title" className="block pb-3 pt-3 font-semibold text-gray-900">
+                                          {t('ReviewForm.label_title')}
+                                      </label>
+                                      <textarea
+                                          value={getValues("content")}
+                                          {...register("content", {required: true, maxLength: 1000, minLength: 10})}
+                                          className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                      {errors.content && (
+                                          <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
+                                              {t('ReviewForm.error')}
+                                          </p>
+
+                                      )}
+                                      <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                                          <button type="submit"
+                                                  className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                                              {t('ReviewForm.button')}
+                                          </button>
+                                      </div>
+                                  </div>
+                              </form>)}
+                          {myReview && <MyReviewCard review={myReview}/>}
                           {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
-                          {review && review.length === 0 && <div
-                              className="grid content-center justify-center h-5/6 mt-16">
+                          {review && review.length === 0 && !myReview &&
+                              <div className="grid content-center justify-center h-5/6 mt-16">
                               <div className="grid justify-items-center">
                                   <img src='/images/sinEmpleadas.png' alt="sinEmpleadas"
                                        className="mr-3 h-6 sm:h-52"/>
