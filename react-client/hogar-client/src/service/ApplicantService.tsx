@@ -44,7 +44,6 @@ export class ApplicantService{
         //TODO: habria que refreshear la pagina del trabajo
     }
 
-    //TODO:ajustar params a correcion
     public static async updateStatus(e:any, employeeId: number, jobId: number, status: number){
         e.preventDefault();
 
@@ -53,8 +52,7 @@ export class ApplicantService{
         formData.append("jobId", jobId)
         formData.append("status", status)
 
-        // return await fetch('http://localhost:8080/api/employee/' + employeeId +'/'+ jobId , {
-        return await fetch('http://localhost:8080/api/applicant/', {
+        return await fetch('http://localhost:8080/api/applicant/' + employeeId +'/'+ jobId , {
             method: 'PUT',
             headers: {},
             body: formData
@@ -63,20 +61,12 @@ export class ApplicantService{
     }
 
     public static async deleteApplication(e:any, employeeId: number, jobId: number){
-        //TODO: ver como se pasan los ids
-        e.preventDefault();
-
-        const formData:any = new FormData();
-        formData.append("employeeId", employeeId)
-        formData.append("jobId", jobId)
-
-        return await fetch('http://localhost:8080/api/applicant/', {
+        return await fetch('http://localhost:8080/api/applicant/' + employeeId +'/'+ jobId , {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                // 'Content-Type': 'application/json'
-            },
-            body: formData
+                'Content-Type': 'application/json'
+            }
         })
         //TODO: redirigir a trabajos aplicados
     }

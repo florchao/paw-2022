@@ -8,6 +8,7 @@ import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.jboss.logging.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,11 +73,10 @@ public class ApplicantController {
     }
 
     @PUT
-    @Path("/")
+    @Path("/{employeeId}/{jobId}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
-    //TODO: ver que params se pasan por path y cuales por form
-    public Response changeStatus(@FormDataParam("employeeId") long employeeId,
-                                 @FormDataParam("jobId") long jobId,
+    public Response changeStatus(@PathParam("employeeId") long employeeId,
+                                 @PathParam("jobId") long jobId,
                                  @FormDataParam("status") int status) throws JobNotFoundException, UserNotFoundException{
         applicantService.changeStatus(status, employeeId, jobId);
         Job job = jobService.getJobByID(jobId);
@@ -120,7 +120,13 @@ public class ApplicantController {
         return Response.ok(genericEntity).build();
     }
 
-    //TODO: HACER WITHDRAW APPLICATION
+    @DELETE
+    @Path("/{employeeId}/{jobId}")
+    public Response deleteApplication(@PathParam("employeeId") long employeeId,
+                                      @PathParam("jobId") long jobId){
+        applicantService.withdrawApplication(employeeId,jobId);
+        return Response.ok().build();
+    }
 //    @RequestMapping(value="/trabajosAplicados", method = {RequestMethod.GET})
 //    public ModelAndView appliedTo(@RequestParam(value = "page", required = false) Long page){
 //        ModelAndView mav = new ModelAndView("appliedJobs");
