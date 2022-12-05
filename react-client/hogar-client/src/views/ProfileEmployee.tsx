@@ -56,7 +56,7 @@ export const ProfileEmployee = () => {
     }
 
     useEffect(() => {
-        EmployeeService.getEmployee(id).then((e) => setEmployee(e));
+        EmployeeService.getEmployee(id, false).then((e) => setEmployee(e));
     }, [])
 
     useEffect(() => {
