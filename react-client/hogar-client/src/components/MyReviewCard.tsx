@@ -5,10 +5,6 @@ import {UserService} from "../service/UserService";
 const MyReviewCard = (review: any)=> {
     const [image, setImage]: any = useState()
 
-    console.log(review.employer)
-    console.log(review.employee)
-
-
     review = review.review
 
     useEffect(() => {
