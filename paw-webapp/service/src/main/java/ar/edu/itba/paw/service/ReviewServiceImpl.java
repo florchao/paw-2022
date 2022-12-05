@@ -28,11 +28,17 @@ public class ReviewServiceImpl implements ReviewService{
     @Transactional
     @Override
     public Review create(long employeeId, long employerId, String review, Date created, boolean forEmployee) {
+        System.out.println("EMPLOYEE ID" + employeeId);
+        System.out.println("EMPLOYEE ID" + employerId);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
         System.out.println("ENTRE EN EL SERVICE IMPL");
-        if (employee.isPresent() && employer.isPresent())
+        System.out.println("EMPLOYEE " + employee.get().getId());
+        System.out.println("EMPLOYER " + employer.get().getId());
+
+        if (employee.isPresent() && employer.isPresent()) {
             return reviewDao.create(employee.get(), employer.get(), review, created, forEmployee);
+        }
         return null;
     }
 
