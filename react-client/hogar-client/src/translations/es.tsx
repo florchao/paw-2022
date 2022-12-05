@@ -114,8 +114,8 @@ export const TRANSLATIONS_ES = {
         employeeDesc:"Si estás buscando trabajo, este es el lugar perfecto para vos. Te ayudaremos para que puedas:",
         employeeDesc2:"- Cargar tu perfil con tus habilidades, disponibilidad e información para que nuestra comunidad de empleadores te pueda ver.",
         employeeDesc3:"- Explorar las distintas ofertas de trabajo ofrecidas en nuestra comunidad.",
-        createEmployee:"Crear cuenta de empleador",
-        createEmployer:"Crear cuenta de empleado"
+        createEmployee:"Crear cuenta de empleado",
+        createEmployer:"Crear cuenta de empleador"
     },
 
     Contacts: {

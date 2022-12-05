@@ -1,10 +1,9 @@
-import {FormEventHandler, RefObject, useEffect, useRef, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {JobService} from "../service/JobService";
 import {EmployeeService} from "../service/EmployeeService";
 import {UserService} from "../service/UserService";
-import {SubmitHandler, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 
 export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string, id:number}) => {
@@ -40,8 +39,6 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
     })
 
     const [ids, setIds] = useState<any>();
-
-    const nav = useNavigate();
 
     const {t} = useTranslation();
 
@@ -293,7 +290,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                 <div className="flex flex-wrap ml-8">
                                     <div className="mb-8">
                                         <label htmlFor="cocinar-cb" id="cocinar-label"
-                                               onClick={(e) => {
+                                               onClick={() => {
                                                    setColorAb('cocinar', ids.abilities[0])
                                                }}
                                                onLoadCapture={e => console.log("LOAD: ", e.target)}
@@ -416,7 +413,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                 <div className="flex flex-wrap ml-8">
                                     <div className="mb-8">
                                         <label htmlFor="media-cb" id="media-label"
-                                               onClick={(e) => {
+                                               onClick={() => {
                                                    setColorAv('media', ids.availabilities[0])
                                                }}
                                                className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[0].toString())?
@@ -431,7 +428,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                     </div>
                                     <div>
                                         <label htmlFor="completa-cb" id="completa-label"
-                                               onClick={(e) => {
+                                               onClick={() => {
                                                    setColorAv('completa', ids.availabilities[1])
                                                }}
                                                className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[1].toString())?
@@ -446,7 +443,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
                                     </div>
                                     <div>
                                         <label htmlFor="cama-cb" id="cama-label"
-                                               onClick={(e) => {
+                                               onClick={() => {
                                                    setColorAv('cama', ids.availabilities[2])
                                                }}
                                                className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[2].toString())?

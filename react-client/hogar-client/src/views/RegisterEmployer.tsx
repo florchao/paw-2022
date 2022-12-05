@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import {useRef, useState} from "react";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {EmployerService} from "../service/EmployerService";
 import {useForm} from "react-hook-form";
@@ -13,10 +13,11 @@ const RegisterEmployer = () => {
         lastName: string;
         password: string;
         confirmPassword: string;
-        image: FileList
     };
 
     const { register, handleSubmit, watch, formState: { errors }, getValues, setValue } = useForm<FormData>();
+
+    const [image, setImage] = useState<File>()
 
     watch("mail")
     watch("name")
@@ -33,7 +34,6 @@ const RegisterEmployer = () => {
     const nav = useNavigate();
     const {t} = useTranslation();
 
-    const imageRef = useRef<HTMLInputElement>(null)
 
     const invalidEmail = (email : String) => {
         if( email.length === 0)
@@ -53,9 +53,44 @@ const RegisterEmployer = () => {
         return confPassword == getValues("password")
     };
 
+    function urltoFile(url: string, filename:string){
+        return (fetch(url)
+                .then(function(res){return res.arrayBuffer();})
+                .then(function(buf){return new File([buf], filename);})
+        );
+    }
+
+    const imageUpload = (e: any) => {
+        const file = e.target.files[0];
+        getBase64(file).then(base64 => {
+            localStorage["img"] = base64;
+            console.debug("file stored",base64);
+        });
+    };
+
+    const imageDownload = async () => {
+        if (localStorage.getItem("img") !== null) {
+            const img = await urltoFile(localStorage.getItem("img")!, "img")
+            setImage(img)
+        }
+    }
+
+    const getBase64 = (file: File) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+    window.onload =  imageDownload
+
 
     const onSubmit = async (data:any, e: any) => {
-        const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, data.image![0])
+        const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
+        localStorage.clear()
         nav('/employer', {replace: true, state: {id: post}})
     }
 
@@ -71,7 +106,9 @@ const RegisterEmployer = () => {
                         <div className="grid grid-cols-5 gap-6">
                             <div className="row-span-4 col-span-2 m-6">
                                 <div className="overflow-hidden bg-gray-100 rounded-full">
-                                    <img id="picture" src={getValues("image") && getValues("image")[0] != undefined && getValues("image")[0].size != 0? URL.createObjectURL(getValues("image")[0]): '/images/user.png'} alt="user pic"/>
+                                    <img id="picture"
+                                         src={image? URL.createObjectURL(image) : '/images/user.png'}
+                                         alt="user pic"/>
                                 </div>
                                 <label htmlFor="image-input" id="image-label"
                                        className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
@@ -80,9 +117,14 @@ const RegisterEmployer = () => {
                                 <input id="image-input"
                                        type="file"
                                        accept="image/png, image/jpeg"
-                                       {...register("image", {required:true})}
+                                       onChange={(e) => {
+                                           if (e.target.files != null) {
+                                               setImage(e.target.files[0])
+                                               imageUpload(e)
+                                           }
+                                       }}
                                        style={{visibility: "hidden"}}/>
-                                {errors.image &&
+                                {image?.size == 0 &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.imageError')}</p>
                                 }
                             </div>
