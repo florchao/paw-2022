@@ -52,6 +52,15 @@ export const TRANSLATIONS_EN = {
     abilitiesError: 'Please select at least one ability',
   },
 
+  Feedback: {
+    congrats: "¡Felicitaciones!",
+    error:  "Hubo un error",
+    errorJob: "Usted ya aplic\u00f3 para este trabajo",
+    sentJob: "La aplicaci\u00f3n fue enviada con \u00e9xito",
+    errorContact: "Usted ya tiene una conexi\u00f3n con este empleado",
+    sentContact: "El mensaje fue enviado con \u00e9xito"
+  },
+
   NotFound:{
     title:"404 : Resource not found",
     goBack :"Go back to home page"

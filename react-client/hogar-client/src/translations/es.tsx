@@ -53,6 +53,15 @@ export const TRANSLATIONS_ES = {
 
     },
 
+    Feedback: {
+        congrats: "¡Congratulations!",
+        error:  "An error occurred",
+        errorJob: "You've already applied to this job",
+        sentJob: "The application was sent with success",
+        errorContact: "You already have a connection with this employee",
+        sentContact: "The message was sent with success"
+    },
+
     NotFound:{
         title:"404 : No se encontró el recurso",
         goBack :"Volver a la página inicial"

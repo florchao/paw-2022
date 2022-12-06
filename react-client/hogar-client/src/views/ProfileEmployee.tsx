@@ -10,6 +10,8 @@ import {UserService} from "../service/UserService";
 import MyReviewCard from "../components/MyReviewCard";
 import useFormPersist from "react-hook-form-persist";
 import {useForm} from "react-hook-form";
+import OkFeedback from "../components/OkFeedback";
+import ErrorFeedback from "../components/ErrorFeedback";
 
 export const ProfileEmployee = () => {
 
@@ -331,28 +333,10 @@ export const ProfileEmployee = () => {
               </div>
           </div> }
           {status == '0' && showMessage &&
-              <div id="sent" className="absolute bottom-6 inset-1/3 animated fadeOut">
-                  <div className="grid justify-items-center bg-purple-400 rounded h-1/3 p-5">
-                      <h1 className="text-2xl font-semibold text-white">
-                          Congrats
-                      </h1>
-                      <p className="font-light text-white">
-                          Sent
-                      </p>
-                  </div>
-              </div>
+              <OkFeedback type="profile"/>
           }
           {status == '1' && showMessage &&
-              <div id="error" className="absolute bottom-6 inset-1/3 animated fadeOut" >
-                  <div className="grid justify-items-center bg-white rounded-lg h-1/3 p-5">
-                      <h1 className="text-2xl font-semibold text-red-700">
-                          Error
-                      </h1>
-                      <p className="font-light text-red-700">
-                          Exists
-                      </p>
-                  </div>
-              </div>
+              <ErrorFeedback type="profile"/>
           }
       </div>
     )
