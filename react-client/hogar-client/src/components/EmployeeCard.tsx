@@ -12,6 +12,8 @@ const EmployeeCard = (employee: any) => {
     const [connected, setConnected]: any = useState()
 
     const {t} = useTranslation();
+    //todo const employerId
+    const employerId = 1
 
     useEffect(() => {
         UserService.loadImage(e.id).then(
@@ -25,15 +27,13 @@ const EmployeeCard = (employee: any) => {
     }, [])
 
     useEffect(() => {
-            RatingService.getEmployeeRating(e.id).then(
+            RatingService.getEmployeeRating(e.id, employerId).then(
                 (rsp) => {
                     setRating(rsp)
                 }
             )
         }, []
     )
-
-    const employerId = 1;
 
     useEffect(() => {
             if (employerId !== null)
