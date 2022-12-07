@@ -7,6 +7,7 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
+import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -42,6 +43,9 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @Autowired
+    private ContactService contactService;
+
+    @Autowired
     private UserService userService;
 
     @Context
@@ -53,12 +57,17 @@ public class EmployeeController {
     @GET
     @Path("/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response employeeProfile(@PathParam("id") long id) throws UserNotFoundException {
+    public Response employeeProfile(@PathParam("id") long id, @QueryParam("edit") String edit) throws UserNotFoundException {
 //        final ModelAndView mav = new ModelAndView("viewProfile");
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<EmployeeDto> employee = employeeService.getEmployeeById(id).map(e -> EmployeeDto.fromProfile(uriInfo, e));
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        Optional<EmployeeDto> dto;
+        if(edit != null && edit.equals("true"))
+            dto = employee.map(e -> EmployeeDto.fromEdit(uriInfo, e));
+        else
+            dto = employee.map(e -> EmployeeDto.fromProfile(uriInfo, e));
         if (employee.isPresent()) {
-            GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(employee.get()){};
+            GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto.get()){};
             return Response.ok(genericEntity).build();
         }
         return Response.serverError().build();
@@ -112,7 +121,7 @@ public class EmployeeController {
         return Response.ok(u.getId()).build();
     }
 
-    //TODO: PUT y DELETE? de employee
+    //TODO: PUT y DELETE? de employee. El delete esta en el user controller porque es el mismo para employer
     @PUT
     @Path("/{id}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })

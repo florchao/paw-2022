@@ -19,13 +19,9 @@ function setColor(btn) {
 
 const buttons = ["cocinar", "planchar", "menores", "mayores", "especiales", "mascotas"]
 window.onload = function() {
-    console.log("Entre");
     buttons.forEach(function(word) {
-        console.log(word)
-
         let property = document.getElementById(word + "-cb");
         let label = document.getElementById(word + "-label");
-        console.log(property.checked)
         if (property.checked === true) {
             label.style.backgroundColor = "#c4b5fd";
             window.sessionStorage.setItem(word, "#c4b5fd");

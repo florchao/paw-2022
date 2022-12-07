@@ -5,12 +5,11 @@ import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.ContactDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,10 +48,9 @@ public class ContactServiceImpl implements ContactService{
     public boolean create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         Optional<Employer> employer = employerService.getEmployerById(employerId);
-        Boolean exists;
+        boolean exists;
         if(employee.isPresent() && employer.isPresent()) {
-            exists = contactDao.existsContact(employee.get(), employer.get());
-            System.out.println("EXISTS: " + exists);
+            exists = !contactDao.existsContact(employee.get(), employer.get()).isEmpty();
             if (exists) {
                 return true;
             }
@@ -63,17 +61,11 @@ public class ContactServiceImpl implements ContactService{
 
     @Transactional
     @Override
-    public boolean contact(User to, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
+    public boolean contact(User to, User from, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
 //        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //TODO: traer el mail del user actual
-        Optional<User> optional = userService.findByUsername("kitty@mail.com");
-        if(optional.isPresent()) {
-            User from = optional.get();
-            if(create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
-                return false;
-            mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
+        if (create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
             return true;
-        }
+        mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
         return false;
     }
 
@@ -91,12 +83,12 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public Boolean existsContact(long employeeId, long employerId) throws UserNotFoundException {
+    public List<Contact> existsContact(long employeeId, long employerId) throws UserNotFoundException {
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         Optional<Employer> employer = employerService.getEmployerById(employerId);
         if(employee.isPresent() && employer.isPresent())
             return contactDao.existsContact(employee.get(), employer.get());
-        return false;
+        return Collections.emptyList();
     }
 
 

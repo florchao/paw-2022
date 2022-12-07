@@ -16,6 +16,8 @@ public class EmployeeDto {
     private List<String> availabilityArr;
     private List<String> abilitiesArr;
 
+    private boolean connected;
+
     private long id;
     private URI self;
 
@@ -26,7 +28,6 @@ public class EmployeeDto {
         dto.location = DtoUtils.firstWordsToUpper(employee.getLocation());
         dto.experienceYears = employee.getExperienceYears();
         dto.id = employee.getId().getId();
-
         final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("profile/employee").path(String.valueOf(employee.getId().getId()));
 
         dto.self = employeeUriBuilder.build();
@@ -42,6 +43,16 @@ public class EmployeeDto {
         dto.availabilityArr = employee.getAvailabilityArr();
 
         employee.nameAbilities(language);
+        dto.abilitiesArr = employee.getAbilitiesArr();
+
+        return dto;
+    }
+
+    public static EmployeeDto fromEdit(final UriInfo uriInfo, final Employee employee) {
+        final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+
+        dto.availabilityArr = employee.getAvailabilityArr();
+
         dto.abilitiesArr = employee.getAbilitiesArr();
 
         return dto;

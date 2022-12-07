@@ -6,6 +6,8 @@ import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
 import MyReviewCard from "../components/MyReviewCard";
 import {ApplicantService} from "../service/ApplicantService";
+import {useForm} from "react-hook-form";
+import useFormPersist from "react-hook-form-persist";
 
 export const Job = () => {
 
@@ -28,6 +30,27 @@ export const Job = () => {
         })
     }, [])
 
+    type FormData = {
+        content: string;
+    };
+
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
+
+
+    watch("content")
+
+    useFormPersist("form", {
+        watch,
+        setValue,
+        storage: window.localStorage,
+    })
+
+    const onSubmit = async (data: any, e: any) => {
+        const post = await ReviewService.putEmployerReview(e, job.employerId.id, data.content)
+        localStorage.clear()
+        setMyReview(post)
+    }
+
     useEffect(() => {
         JobService.getJob(id).then((e) => {
             setJob(e)
@@ -49,6 +72,7 @@ export const Job = () => {
             }
         }, [job]
     )
+
 
     useEffect(() => {
         console.log("my")
@@ -202,20 +226,30 @@ export const Job = () => {
                             <h1 className="pb-3 pt-3 font-semibold text-purple-900">
                                 {t('Job.reviewsFor')} {job.employerId.name}
                             </h1>
-                            {/*<c:if test="${myReview == null}">*/}
-                            {/*    <c:url value="/addReviewEmployer/${job.jobId}/${job.employerId.id.id}" var="postPath"/>*/}
-                            {/*    <form:form modelAttribute="reviewForm" action="${postPath}" method="post" pageEncoding="UTF-8">*/}
-                            {/*        <div className="">*/}
-                            {/*            <form:label path="content" class="block pb-3 pt-3 font-semibold text-gray-900"><spring:message code="reviews.form.label"/></form:label>*/}
-                            {/*            <form:textarea path="content" rows="3" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500" />*/}
-                            {/*            <form:errors path="content" element="p" cssStyle="color: red"/>*/}
-                            {/*            <div className="mt-5 col-start-2 col-span-4 row-span-3">*/}
-                            {/*                <button type="submit" className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="review.button"/></button>*/}
-                            {/*            </div>*/}
-                            {/*        </div>*/}
-                            {/*    </form:form>*/}
-                            {/*</c:if>*/}
-                            {/*<c:choose>*/}
+                            {myReview == null && (
+                                <form onSubmit={handleSubmit(onSubmit)}>
+                                    <div className="">
+                                        <label htmlFor="title" className="block pb-3 pt-3 font-semibold text-gray-900">
+                                            {t('ReviewForm.label_title')}
+                                        </label>
+                                        <textarea
+                                            value={getValues("content")}
+                                            {...register("content", {required: true, maxLength: 1000, minLength: 10})}
+                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                        {errors.content && (
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
+                                                {t('ReviewForm.error')}
+                                            </p>
+
+                                        )}
+                                        <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                                            <button type="submit"
+                                                    className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                                                {t('ReviewForm.button')}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>)}
 
                             {reviews === 0 && !myReview &&
                                 (<div className="grid content-center justify-center h-5/6 mt-16">

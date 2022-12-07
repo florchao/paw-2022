@@ -35,8 +35,7 @@ export const ContactEmployee = () => {
     };
 
     const onSubmit = async (data: any, e: any) => {
-        const contact = await ContactService.contactEmployee(e, data.phone, data.content, id)
-        console.log(contact)
+        const contact = await ContactService.contactEmployee(e, data.phone, data.content, id, 2)
         localStorage.clear()
         nav("/employee", {replace: true, state: {id: id, status: contact}})
     }
