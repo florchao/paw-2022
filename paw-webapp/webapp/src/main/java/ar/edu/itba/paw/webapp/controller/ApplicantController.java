@@ -56,11 +56,9 @@ public class ApplicantController {
             applicantService.apply(jobId, employee);
         } catch (AlreadyExistsException alreadyExistsException) {
             LOGGER.error(String.format("there has already been made a contact for %d by id %d", jobId, employeeId));
-            //TODO: ver de pasarle en el ok que hubo error
-            return Response.ok().build();
+            return Response.ok(-1).build();
         }
-        //TODO: ver de pasarle q salio joya
-        return Response.ok().build();
+        return Response.ok(0).build();
     }
 
     @GET
@@ -78,11 +76,11 @@ public class ApplicantController {
     public Response changeStatus(@PathParam("employeeId") long employeeId,
                                  @PathParam("jobId") long jobId,
                                  @FormDataParam("status") int status) throws JobNotFoundException, UserNotFoundException{
-        applicantService.changeStatus(status, employeeId, jobId);
+        int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
         Job job = jobService.getJobByID(jobId);
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         employee.ifPresent(value -> contactService.changedStatus(status, job, value));
-        return Response.ok().build();
+        return Response.ok(finalStatus).build();
     }
     //    @RequestMapping(value = "/changeStatus/{jobId}/{employeeId}/{status}", method = {RequestMethod.POST})
 //    public ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status) throws JobNotFoundException, UserNotFoundException {
@@ -127,6 +125,17 @@ public class ApplicantController {
         applicantService.withdrawApplication(employeeId,jobId);
         return Response.ok().build();
     }
+
+    @GET
+    @Path("/{employeeId}/{jobId}")
+    public Response getStatusApplication(@PathParam("employeeId") long employeeId,
+                                         @PathParam("jobId") long jobId){
+        int status = applicantService.getStatus(employeeId, jobId);
+        System.out.println("STATUS!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(status);
+        return Response.ok(status).build();
+    }
+
 //    @RequestMapping(value="/trabajosAplicados", method = {RequestMethod.GET})
 //    public ModelAndView appliedTo(@RequestParam(value = "page", required = false) Long page){
 //        ModelAndView mav = new ModelAndView("appliedJobs");

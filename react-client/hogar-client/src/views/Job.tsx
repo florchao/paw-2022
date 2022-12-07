@@ -12,20 +12,21 @@ export const Job = () => {
     const [job, setJob]: any = useState()
     const [reviews, setReviews]: any = useState()
     const [myReview, setMyReview]: any = useState()
-
-    //TODO: habria que sumarle algun numero cuando esta pending porque sino el condicional se rompe
-    //                          number?
-    const [status, setStatus]: any = useState()
+    const [status, setStatus] = useState<string>()
 
 
-    const employeeId = 4
-    const statusAux = 2;
+    const employeeId = 3
 
     const {id} = useLocation().state
 
     const {t} = useTranslation();
     const nav = useNavigate();
 
+    useEffect(() => {
+        ApplicantService.getApplicationStatus(employeeId, id).then((s) => {
+            setStatus(s)
+        })
+    }, [])
 
     useEffect(() => {
         JobService.getJob(id).then((e) => {
@@ -58,15 +59,15 @@ export const Job = () => {
     )
 
     function delApplication() {
-        ApplicantService.deleteApplication(employeeId, job.id).then(() => {
-                nav('/employee/jobs', {replace: true})
+        ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {
+                nav('/employee/jobs', {replace: true,  state: {id: employeeId}})
             }
         );
     }
 
-    function createApplicant(){
-        //TODO: refreshear pag
-        ApplicantService.createApplicant(employeeId, job.id)
+    async function createApplicant(){
+        const newStatus = await ApplicantService.createApplicant(employeeId, job.jobId)
+        setStatus(newStatus)
     }
 
 
@@ -89,12 +90,12 @@ export const Job = () => {
                                 <h1 className="block mb-2 ml-2 text-sm font-medium text-gray-600 "> {job.experienceYears}</h1>
                             </div>
 
-                            { statusAux &&
+                            { status &&
                                 {
                                     '-1':<div className="col-start-5 row-start-2">
                                             <button type="submit" onClick={createApplicant} className="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.apply')}</button>
                                         </div>,
-                                    '10': <div className="col-start-5 row-start-2">
+                                    '0': <div className="col-start-5 row-start-2">
                                             <h1 className="pb-3 pt-3 font-semibold text-purple-900">
                                                 {t('Job.statusTitle')}
                                             </h1>
@@ -111,8 +112,6 @@ export const Job = () => {
                                             <a className="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5">
                                                 {t('Job.accepted')}
                                             </a>
-                                        <br/><br/>
-                                        <button type="submit" onClick={delApplication} className="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.delete')}</button>
                                         </div>,
                                     '2':<div className="col-start-5 row-start-2">
                                             <h1 className="pb-3 pt-3 font-semibold text-purple-900">
@@ -121,10 +120,8 @@ export const Job = () => {
                                             <a className="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5">
                                                 {t('Job.rejected')}
                                             </a>
-                                        <br/><br/>
-                                            <button type="submit" onClick={delApplication} className="h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.delete')}</button>
                                         </div>
-                                }[statusAux]
+                                }[status]
                             }
                         </div>
                         <div className="grid grid-cols-5">

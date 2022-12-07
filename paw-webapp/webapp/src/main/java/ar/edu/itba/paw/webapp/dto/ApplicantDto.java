@@ -11,6 +11,8 @@ public class ApplicantDto {
 
     private JobDto job;
 
+    private long jobId;
+
     private int status;
 
     //TODO: ver si el status se lo derivo a JobDto
@@ -19,6 +21,7 @@ public class ApplicantDto {
         dto.employee = EmployeeDto.fromReview(uriInfo, applicant.getEmployeeID());
         dto.mail = applicant.getEmployeeID().getId().getEmail();
         dto.status = applicant.getStatus();
+        dto.jobId = applicant.getJobID().getJobId();
 
         return dto;
     }
@@ -34,6 +37,14 @@ public class ApplicantDto {
 
     public EmployeeDto getEmployee() {
         return employee;
+    }
+
+    public long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 
     public void setEmployee(EmployeeDto employee) {
