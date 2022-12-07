@@ -54,13 +54,14 @@ export const TRANSLATIONS_ES = {
     },
 
     Feedback: {
-        congrats: "¡Congratulations!",
-        error:  "An error occurred",
-        errorJob: "You've already applied to this job",
-        sentJob: "The application was sent with success",
-        errorContact: "You already have a connection with this employee",
-        sentContact: "The message was sent with success"
+        congrats: "¡Felicitaciones!",
+        error:  "Hubo un error",
+        errorJob: "Usted ya aplic\u00f3 para este trabajo",
+        sentJob: "La aplicaci\u00f3n fue enviada con \u00e9xito",
+        errorContact: "Usted ya tiene una conexi\u00f3n con este empleado",
+        sentContact: "El mensaje fue enviado con \u00e9xito"
     },
+
 
     NotFound:{
         title:"404 : No se encontró el recurso",
