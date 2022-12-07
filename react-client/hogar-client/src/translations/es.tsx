@@ -140,7 +140,13 @@ export const TRANSLATIONS_ES = {
         experience : "Mínimo de años de experiencia",
         availability : "Disponibilidad",
         abilities : "Habilidades requeridas",
-        description : "Descripción"
+        description : "Descripción",
+        delete:"Retirar aplicación",
+        apply:"Aplicar",
+        pending: "Pendiente",
+        accepted:"Aceptado",
+        rejected:"Rechazado",
+        statusTitle:"Estado de tu aplicación:"
     },
 
     Applicants:{
