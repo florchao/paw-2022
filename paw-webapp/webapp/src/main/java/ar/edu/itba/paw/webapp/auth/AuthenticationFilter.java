@@ -74,6 +74,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String createJWT(String[] credentials) {
+        Optional<User> algo = userService.findByUsername(credentials[0]);
+        User user = algo.orElseThrow(() -> new UserNotFoundException("User not found"));
         System.out.println("Creando JWT");
         // TODO get role and uid from username
 
@@ -87,7 +89,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try {
             jwtToken = Jwts.builder()
                     .claim("email", credentials[0])
-                    .claim("role", 1)
+                    .claim("role", user.getId())
+                    .claim("uid", user.getId())
                     .setId(UUID.randomUUID().toString())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(Instant.now().plus(1L, ChronoUnit.MINUTES)))
@@ -107,12 +110,14 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeaderContent = httpServletRequest.getHeader("Authorization");
-        if (authHeaderContent.startsWith("Basic")) {
-            String jwt = basicAuthentication(authHeaderContent);
-            if (jwt != null) {
+        if (authHeaderContent != null && authHeaderContent.startsWith("Basic")) {
+            try {
+                String jwt = basicAuthentication(authHeaderContent);
                 httpServletResponse.addHeader("Authorization", "Bearer " + jwt);
+            } catch (Exception e) {
+                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
             }
-        } else if (authHeaderContent.startsWith("Bearer")) {
+        } else if (authHeaderContent != null && authHeaderContent.startsWith("Bearer")) {
             bearerAuthentication(authHeaderContent);
         } else {
             System.out.println("No estas autenticado hermano");
