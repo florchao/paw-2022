@@ -38,6 +38,7 @@ public class RatingController {
         return Response.noContent().build();
     }
 
+//    TODO: los ids se pasan por el body
     @POST
     @Path("/{employeeId}/{employerId}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})

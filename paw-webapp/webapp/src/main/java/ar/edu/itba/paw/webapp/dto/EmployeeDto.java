@@ -23,6 +23,12 @@ public class EmployeeDto {
 
     private URI image;
 
+    private URI employerReview;
+
+    private URI ratings;
+
+    private URI delete;
+
     public static EmployeeDto fromExplore(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = new EmployeeDto();
 
@@ -30,9 +36,11 @@ public class EmployeeDto {
         dto.location = DtoUtils.firstWordsToUpper(employee.getLocation());
         dto.experienceYears = employee.getExperienceYears();
         dto.id = employee.getId().getId();
-        final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/employee").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employee").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/image").path(String.valueOf(employee.getId().getId()));
 
         dto.self = employeeUriBuilder.build();
+        dto.image = imageUriBuilder.build();
         return dto;
     }
 
@@ -52,11 +60,22 @@ public class EmployeeDto {
         employee.nameAbilities(language);
         dto.abilitiesArr = employee.getAbilitiesArr();
 
-        final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/review/employee").path(String.valueOf(employee.getId().getId()));
-        final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/image").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/review/employee").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder employerReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/review/").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder ratingsUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/rating").path(String.valueOf(employee.getId().getId()));
 
         dto.reviews = reviewBuilder.build();
-        dto.image = imageUriBuilder.build();
+        dto.employerReview = employerReviewBuilder.build();
+        dto.ratings = ratingsUriBuilder.build();
+
+        return dto;
+    }
+
+    public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee) {
+        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee);
+        final UriBuilder deleteUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/user").path(String.valueOf(employee.getId().getId()));
+
+        dto.delete = deleteUriBuilder.build();
 
         return dto;
     }
@@ -77,6 +96,18 @@ public class EmployeeDto {
         dto.name = DtoUtils.firstWordsToUpper(employee.getName());
 
         dto.id = employee.getId().getId();
+
+        final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/image").path(String.valueOf(employee.getId().getId()));
+        dto.image = imageUriBuilder.build();
+
+        return dto;
+    }
+
+    public static EmployeeDto fromApplicant(final UriInfo uriInfo, final Employee employee) {
+        final EmployeeDto dto = EmployeeDto.fromReview(uriInfo, employee);
+
+        final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employee").path(String.valueOf(employee.getId().getId()));
+        dto.self = employeeUriBuilder.build();
 
         return dto;
     }
@@ -160,4 +191,30 @@ public class EmployeeDto {
     public void setImage(URI image) {
         this.image = image;
     }
+
+    public URI getEmployerReview() {
+        return employerReview;
+    }
+
+    public void setEmployerReview(URI employerReview) {
+        this.employerReview = employerReview;
+    }
+
+    public URI getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(URI ratings) {
+        this.ratings = ratings;
+    }
+
+    public URI getDelete() {
+        return delete;
+    }
+
+    public void setDelete(URI delete) {
+        this.delete = delete;
+    }
 }
+
+

@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {EmployeeService} from "../service/EmployeeService";
 import {UserService} from "../service/UserService";
 
 const ReviewCard = (review: any)=> {
@@ -8,13 +7,13 @@ const ReviewCard = (review: any)=> {
     review = review.review
 
     useEffect(() => {
-        let id;
+        let img;
         if (review.employer !== undefined) {
-            id = review.employer.id;
+            img = review.employer.image;
         }
         else
-            id = review.employee.id
-        UserService.loadImage(id).then(
+            img = review.employee.image
+        UserService.loadImage(img).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")

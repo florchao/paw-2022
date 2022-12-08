@@ -51,8 +51,7 @@ export class EmployeeService {
     }
 
 
-    public static async getEmployee(id: number, edit:boolean) {
-        let url = 'http://localhost:8080/api/employee/' + id
+    public static async getEmployee(url: string, edit:boolean) {
         if(edit)
             url = url.concat('?edit=true')
         return await fetch(url, {

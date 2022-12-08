@@ -19,7 +19,7 @@ export const Job = () => {
 
     const employeeId = 3
 
-    const {id} = useLocation().state
+    const {self, id} = useLocation().state
 
     const {t} = useTranslation();
     const nav = useNavigate();
@@ -52,19 +52,19 @@ export const Job = () => {
     }
 
     useEffect(() => {
-        JobService.getJob(id).then((e) => {
+        JobService.getJob(self).then((e) => {
             setJob(e)
         })
     }, [])
 
     useEffect(() => {
             if (job !== undefined) {
-                ReviewService.getEmployerReviews(job.employerId.id).then(
+                ReviewService.getEmployerReviews(job.employerId.reviews).then(
                     (rsp) => {
                         setReviews(rsp)
                     }
                 )
-                ReviewService.getMyEmployerReview(job.employerId.id).then(
+                ReviewService.getMyEmployerReview(job.employerId.employeeReview).then(
                     (rsp) => {
                         setMyReview(rsp)
                     }
@@ -74,13 +74,13 @@ export const Job = () => {
     )
 
 
-    useEffect(() => {
-        console.log("my")
-            console.log(myReview)
-        console.log("revs")
-            console.log(reviews)
-        }, [myReview, reviews]
-    )
+    // useEffect(() => {
+    //     console.log("my")
+    //         console.log(myReview)
+    //     console.log("revs")
+    //         console.log(reviews)
+    //     }, [myReview, reviews]
+    // )
 
     function delApplication() {
         ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {

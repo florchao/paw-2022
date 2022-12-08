@@ -1,7 +1,6 @@
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {UserService} from "../service/UserService";
-import {RatingService} from "../service/RatingService";
 import {useTranslation} from "react-i18next";
 import {ContactService} from "../service/ContactService";
 
@@ -15,7 +14,7 @@ const EmployeeCard = (employee: any) => {
     const employerId = 1
 
     useEffect(() => {
-        UserService.loadImage(e.id).then(
+        UserService.loadImage(e.image).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")
@@ -36,7 +35,7 @@ const EmployeeCard = (employee: any) => {
 
     return (
         <div className="w-full col-span-5">
-            <Link to={"/employee"} state={{id: e.id, status: -1}}
+            <Link to={"/employee"} state={{self: e.self, image: e.image, status: -1}}
                   className="grid grid-cols-9 items-center w-full bg-white rounded-lg border shadow-md mb-5 md:flex-row md:max-w-full hover:bg-gray-100 ">
                 <img style={{maxHeight: 150}}
                      className="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg col-start-1 col-span-1"

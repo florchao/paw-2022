@@ -1,7 +1,7 @@
 export class ReviewService {
 
-    public static async getEmployeeReviews(id: number) {
-        return await fetch('http://localhost:8080/api/review/employee/' + id, {
+    public static async getEmployeeReviews(url: string) {
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -15,8 +15,8 @@ export class ReviewService {
                 })
     }
 
-    public static async getEmployerReviews(id: number) {
-        return await fetch('http://localhost:8080/api/review/employer/' + id, {
+    public static async getEmployerReviews(url: string) {
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -30,9 +30,9 @@ export class ReviewService {
                 })
     }
 
-    public static async getMyEmployerReview(employerId: number) {
+    public static async getMyEmployerReview(url: string) {
         //todo el id del employeeId despues va por token. Esta harcodeado
-        return await fetch('http://localhost:8080/api/review/employer/' + '4/' + employerId, {
+        return await fetch(url + '/1?type=employer', {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -51,9 +51,9 @@ export class ReviewService {
                 })
     }
 
-    public static async getMyEmployeeReview(employeeId: number) {
+    public static async getMyEmployeeReview(url: number) {
         //todo el id del employeeId despues va por token. Esta harcodeado
-        return await fetch('http://localhost:8080/api/review/employee/' + '1/' + employeeId, {
+        return await fetch(url +  '/2?type=employee', {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

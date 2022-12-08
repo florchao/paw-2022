@@ -24,11 +24,14 @@ public class ReviewController {
 
     private final static int PAGE_SIZE = 9;
 
+    //TODO: debería ser /api/reviews/{id}?type=(employee|employer)
+    //Es solo un GET y manejamos la lógica de que tipo de review es en el backend
     @GET
     @Path("/employee/{userId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployeeReviews(@PathParam("userId") long userId) {
-        List<ReviewDto> reviews = reviewService.getAllReviews(4L, userId, 0L, PAGE_SIZE).stream().map(r -> ReviewDto.fromEmployeeReview(uriInfo, r)).collect(Collectors.toList());
+        System.out.println("getEmployeeReviews");
+        List<ReviewDto> reviews = reviewService.getAllReviews(userId, null, 0L, PAGE_SIZE).stream().map(r -> ReviewDto.fromEmployeeReview(uriInfo, r)).collect(Collectors.toList());
 
         //TODO: si es empleado el que inició sesión
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
@@ -42,17 +45,23 @@ public class ReviewController {
     public Response getEmployerReviews(@PathParam("userId") long userId) {
         //todo employeeId hardcodeado
 
-        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(4L, userId, 0L, PAGE_SIZE).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
+        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(null, userId, 0L, PAGE_SIZE).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
         return Response.ok(genericEntity).build();
     }
 
     @GET
-    @Path("/employer/{employeeId}/{employerId}")
+    @Path("/{employeeId}/{employerId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getMyReviewToEmployer(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
-        Optional<ReviewDto> myReview = reviewService.getMyReviewEmployer(employeeId, employerId).map(r -> ReviewDto.fromEmployerReview(uriInfo, r));
+    public Response getMyReview(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId, @QueryParam("type") String type) {
+        Optional<ReviewDto> myReview;
+        System.out.println("GET MY REVIEW");
+        if(type.equals("employee")) {
+            myReview = reviewService.getMyReview(employeeId, employerId).map(r -> ReviewDto.fromEmployeeReview(uriInfo, r));
+        }else {
+            myReview = reviewService.getMyReviewEmployer(employerId, employeeId).map(r -> ReviewDto.fromEmployerReview(uriInfo, r));
+        }
         if (!myReview.isPresent())
             return Response.noContent().build();
         GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()) {
@@ -74,6 +83,7 @@ public class ReviewController {
 
     }
 
+    //TODO: los ids se pasan por body
     @POST
     @Path("/employer/{employerId}/{employeeId}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})

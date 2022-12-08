@@ -121,6 +121,7 @@ public class ContactController {
         return Response.ok().build();
     }
 
+    //TODO: los ids van por body en el POST
     @POST
     @Path("/{employee_id}/{employer_id}")
     @Consumes(value = {MediaType.APPLICATION_JSON,})
@@ -160,7 +161,7 @@ public class ContactController {
         return Response.ok(genericEntity).build();
     }
 
-
+    //TODO: al tener autorización vamos a poder chequear esto cuando traemos las empleadas y nos ahorramos una llamada a la API
     @GET
     @Path("/{employee_id}/{employer_id}")
     @Produces(value = {MediaType.APPLICATION_JSON})

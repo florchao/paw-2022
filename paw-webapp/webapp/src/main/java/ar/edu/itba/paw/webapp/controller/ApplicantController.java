@@ -61,14 +61,7 @@ public class ApplicantController {
         return Response.ok(0).build();
     }
 
-    @GET
-    @Path("/{jobId}")
-    @Produces(value = { MediaType.APPLICATION_JSON })
-    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") Long page){
-        List<ApplicantDto> list = applicantService.getApplicantsByJob(jobId,0L,PAGE_SIZE).stream().map(a -> ApplicantDto.fromJob(uriInfo, a)).collect(Collectors.toList());
-        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
-        return Response.ok(genericEntity).build();
-    }
+
 
     @PUT
     @Path("/{employeeId}/{jobId}")

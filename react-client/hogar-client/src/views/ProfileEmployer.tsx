@@ -35,22 +35,26 @@ export const ProfileEmployer = () => {
     }, [])
 
     useEffect(() => {
-        UserService.loadImage(id).then(
-            (img) => {
-                if (img.size === 0)
-                    setImage("./images/user.png")
-                else
-                    setImage(URL.createObjectURL(img))
-            });
-    }, [])
+        if (employer) {
+            UserService.loadImage(employer.image).then(
+                (img) => {
+                    if (img.size === 0)
+                        setImage("./images/user.png")
+                    else
+                        setImage(URL.createObjectURL(img))
+                });
+        }
+    }, [employer])
 
     useEffect(() => {
-            ReviewService.getEmployerReviews(id).then(
+        if (employer) {
+            ReviewService.getEmployerReviews(employer.reviews).then(
                 (rsp) => {
                     setReviews(rsp)
                 }
             )
-        }, []
+        }
+        }, [employer]
     )
 
     return (
@@ -100,7 +104,7 @@ export const ProfileEmployer = () => {
                                             </div>
                                         </div>
                                     }
-                                    {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard review={rev}/>)}
+                                    {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard review={rev} img={employer.image}/>)}
                                 </div>
                             }
                         </ul>

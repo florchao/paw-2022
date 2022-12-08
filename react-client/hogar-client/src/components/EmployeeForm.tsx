@@ -6,7 +6,7 @@ import {UserService} from "../service/UserService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 
-export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string, id:number}) => {
+export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: string, self:string}) => {
 
     type FormData = {
         mail: string;
@@ -22,6 +22,7 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
     const { register, handleSubmit, watch, formState: { errors }, getValues, setValue } = useForm<FormData>();
 
     const [image, setImage] = useState<File>()
+    const [imageURL, setImageURL] = useState<string>()
 
     watch("password")
     watch("confirmPassword")
@@ -123,28 +124,31 @@ export const EmployeeForm = ({onSubmit, from, id}: {onSubmit: any ,from: string,
     }, [])
 
     useEffect(() => {
-        if(id >= 0) {
-            EmployeeService.getEmployee(id, true).then((e: any) => {
+        if(self.length >= 0) {
+            EmployeeService.getEmployee(self, true).then((e: any) => {
                     setValue("name", e.name)
                     setValue("location", e.location)
                     setValue("experienceYears", e.experienceYears)
                     setValue("abilities", e.abilitiesArr)
                     setValue("availabilities", e.availabilityArr)
+                    setImageURL(e.image)
                 }
             )
         }
     }, [])
 
     useEffect(() => {
-        if(id >= 0) {
-            UserService.loadImage(id).then(
+        if(imageURL) {
+            console.log("self")
+            console.log(self)
+            UserService.loadImage(imageURL).then(
                 (img) => {
                     if (img.size > 0) {
                         setImage(new File([img], "img"));
                     }
                 })
         }
-    }, [])
+    }, [imageURL])
 
     window.onload =  imageDownload
 

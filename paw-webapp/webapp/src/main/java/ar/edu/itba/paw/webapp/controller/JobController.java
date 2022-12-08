@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.ApplicantDto;
 import ar.edu.itba.paw.webapp.dto.IdsDto;
 import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
@@ -46,7 +47,7 @@ public class JobController {
     UriInfo uriInfo;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE_JOBS = 9;
-    private static final long PAGE_SIZE = 8;
+    private static final int PAGE_SIZE = 8;
 
     private final static int PAGE_SIZE_REVIEWS = 2;
 
@@ -88,20 +89,6 @@ public class JobController {
 //        return crearTrabajo(form);
 //    }
 //
-    @GET
-    @Path("/{id}/employer")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createdJobs(@PathParam("id") long id) {
-//            @RequestParam(value = "publishedPage", required = false) Long page){
-//        if (page == null)
-//            page = 0L;
-        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromExplore(uriInfo, job)).collect(Collectors.toList());
-//        mav.addObject("JobList", jobList);
-//        mav.addObject("publishedPage", page);
-//        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));
-        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
-        return Response.ok(genericEntity).build();
-}
 
     @GET
     @Path("/{userId}")
@@ -155,6 +142,15 @@ public class JobController {
 //        mav.addObject("alreadyApplied", jobStatus);
 //        mav.addObject("status", status);
 //        return mav;
+    }
+
+    @GET
+    @Path("/{jobId}/applicants")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") Long page){
+        List<ApplicantDto> list = applicantService.getApplicantsByJob(jobId,0L,PAGE_SIZE).stream().map(a -> ApplicantDto.fromJob(uriInfo, a)).collect(Collectors.toList());
+        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
+        return Response.ok(genericEntity).build();
     }
 
 //    @RequestMapping(value = "addReviewEmployer/{jobId}/{employerId}", method = {RequestMethod.POST})

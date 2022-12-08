@@ -1,7 +1,7 @@
 export class RatingService {
 
-    public static async getEmployeeRating(id: number, employerId: number) {
-        return await fetch('http://localhost:8080/api/rating/' + id +'/' + employerId, {
+    public static async getEmployeeRating(url: string, employerId: number) {
+        return await fetch(url +'/' + employerId, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

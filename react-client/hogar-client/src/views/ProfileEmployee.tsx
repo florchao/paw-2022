@@ -3,7 +3,6 @@ import {EmployeeService} from "../service/EmployeeService";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
-import {verify} from "crypto";
 import {RatingService} from "../service/RatingService";
 import {useTranslation} from "react-i18next";
 import {UserService} from "../service/UserService";
@@ -16,14 +15,14 @@ import ErrorFeedback from "../components/ErrorFeedback";
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
-    const [image, setImage]: any = useState()
+    const [img, setImg]: any = useState()
     const [rating, setRating]: any = useState()
     const [showMessage, setShowMessage]: any = useState<boolean>(true)
 
     const [review, setReview]: any = useState()
     const [myReview, setMyReview]: any = useState()
 
-    const {id, status} = useLocation().state
+    const {self, image, status} = useLocation().state
 
     const { t } = useTranslation();
     const nav = useNavigate();
@@ -52,47 +51,53 @@ export const ProfileEmployee = () => {
     }
 
     function delEmployee() {
-        UserService.deleteUser(id).then(() => {
-                nav('/', {replace: true})
-            }
-        );
+        // UserService.deleteUser(id).then(() => {
+        //         nav('/', {replace: true})
+        //     }
+        // );
     }
 
     useEffect(() => {
-        EmployeeService.getEmployee(id, false).then((e) => setEmployee(e));
+        EmployeeService.getEmployee(self, false).then((e) => setEmployee(e));
     }, [])
 
     useEffect(() => {
-        UserService.loadImage(id).then(
-            (img) => {
-                if (img.size == 0)
-                    setImage("./images/user.png")
-                else
-                    setImage(URL.createObjectURL(img))
-            })
-    }, [])
+        if (employee) {
+            UserService.loadImage(image).then(
+                (img) => {
+                    if (img.size == 0)
+                        setImg("./images/user.png")
+                    else
+                        setImg(URL.createObjectURL(img))
+                })
+        }
+    }, [employee])
 
     useEffect(() => {
-            ReviewService.getEmployeeReviews(id).then(
+        if (employee) {
+            ReviewService.getEmployeeReviews(employee.reviews).then(
                 (rsp) => {
                     setReview(rsp)
                 }
             )
-        ReviewService.getMyEmployeeReview(id).then(
-            (rsp) => {
-                setMyReview(rsp)
-            }
-        )
-        }, []
+            ReviewService.getMyEmployeeReview(employee.employerReview).then(
+                (rsp) => {
+                    setMyReview(rsp)
+                }
+            )
+        }
+        }, [employee]
     )
 
     useEffect(() => {
-            RatingService.getEmployeeRating(id, employerId).then(
+        if (employee) {
+            RatingService.getEmployeeRating(employee.ratings, employerId).then(
                 (rsp) => {
                     setRating(rsp)
                 }
             )
-        }, []
+        }
+        }, [employee]
     )
 
     window.onload = () => setShowMessage(false)
@@ -104,7 +109,7 @@ export const ProfileEmployee = () => {
               <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                   <div className="grid grid-cols-5 justify-center">
                       <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                          <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={image} alt="profile pic"/>
+                          <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img} alt="profile pic"/>
                       </div>
                       <div className="ml-3 col-span-2">
                           <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
@@ -128,7 +133,8 @@ export const ProfileEmployee = () => {
                           </h1>
                       </div>
                       <div className="ml-3 col-start-5 row-start-2 w-fit">
-                          <Link to="/contact/employee" state={{id: employee.id, name: employee.name}}>
+                          <Link to="/edit" state={{self: employee.self}}>
+                              {/*name: employee.name}}>*/}
                               <button
                                   className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
                                   {t('Profile.connect')}
@@ -317,7 +323,7 @@ export const ProfileEmployee = () => {
                                   </div>
                               </form>)}
                           {myReview && <MyReviewCard review={myReview}/>}
-                          {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
+                          {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev} img={image}/>)}
                           {review && review.length === 0 && !myReview &&
                               <div className="grid content-center justify-center h-5/6 mt-16">
                               <div className="grid justify-items-center">

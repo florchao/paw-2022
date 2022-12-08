@@ -51,8 +51,8 @@ export class JobService {
     }
 
 
-    public static async getJob(id: number) {
-        return await fetch('http://localhost:8080/api/job/' + id, {
+    public static async getJob(url: string) {
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -77,7 +77,22 @@ export class JobService {
     }
 
     public static async getCreatedJob(id: number) {
-        return await fetch('http://localhost:8080/api/job/employer/' + id, {
+        return await fetch('http://localhost:8080/api/jobs/' + id, {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json"
+            },
+        }).then((resp) => resp.json())
+            .catch(
+                (error) => {
+                    console.log(error)
+                    throw error
+                })
+    }
+
+    public static async getApplicants(url : string){
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

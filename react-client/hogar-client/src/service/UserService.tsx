@@ -10,8 +10,8 @@ export class UserService{
         })
     }
 
-    public static async loadImage(id: number) {
-        return fetch('http://localhost:8080/api/image/' + id, {
+    public static async loadImage(url: string) {
+        return fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

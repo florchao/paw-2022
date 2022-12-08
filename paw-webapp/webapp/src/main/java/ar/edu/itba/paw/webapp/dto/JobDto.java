@@ -3,7 +3,9 @@ package ar.edu.itba.paw.webapp.dto;
 import ar.edu.itba.paw.model.Job;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.util.List;
 
 public class JobDto {
@@ -23,6 +25,10 @@ public class JobDto {
 
     private EmployerDto employerId;
 
+    private URI self;
+
+    private  URI applicants;
+
     //TODO: faltaría el status cuando lo llamo del explore, sabiendo quien es la empleada que lo ve
     public static JobDto fromExplore(final UriInfo uriInfo, final Job job) {
         final JobDto dto = new JobDto();
@@ -31,6 +37,12 @@ public class JobDto {
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
         dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
         dto.description = job.getDescription();
+
+        UriBuilder jobUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/job").path(String.valueOf(job.getJobId()));
+        UriBuilder applicantsUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/job").path(String.valueOf(job.getJobId())).path("applicants");
+        dto.self = jobUriBuilder.build();
+
+        dto.applicants = applicantsUriBuilder.build();
 
         return dto;
     }
@@ -129,5 +141,21 @@ public class JobDto {
 
     public void setEmployerId(EmployerDto employerId) {
         this.employerId = employerId;
+    }
+
+    public URI getSelf() {
+        return self;
+    }
+
+    public void setSelf(URI self) {
+        this.self = self;
+    }
+
+    public URI getApplicants() {
+        return applicants;
+    }
+
+    public void setApplicants(URI applicants) {
+        this.applicants = applicants;
     }
 }

@@ -1,7 +1,5 @@
-import {useTransition} from "react";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
-import {stat} from "fs";
 
 const JobCard  = (job: any)=> {
 
@@ -46,11 +44,11 @@ const JobCard  = (job: any)=> {
             </div>
             <div className="grid grid-col-2 w-80 justify-center">
                 <div className="mb-2">
-                    <Link to="/job" state={{id: job.jobId}} style={{marginRight: "15px"}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                    <Link to="/job" state={{self: job.self, id: job.id}} style={{marginRight: "15px"}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                         {t("JobCard.publication")}
                     </Link>
                     {status === undefined &&
-                        <Link to="/job/applicants" state={{id: job.jobId, title : job.title}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                        <Link to="/job/applicants" state={{applicants: job.applicants, title : job.title}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.applicants")}
                         </Link>
                     }

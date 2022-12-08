@@ -28,10 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -93,6 +90,21 @@ public class ExploreController {
         if (page == null)
             page = 0L;
         List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> JobDto.fromExplore(uriInfo, j)).collect(Collectors.toList());
+        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/jobs/{id}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response createdJobs(@PathParam("id") long id) {
+//            @RequestParam(value = "publishedPage", required = false) Long page){
+//        if (page == null)
+//            page = 0L;
+        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromExplore(uriInfo, job)).collect(Collectors.toList());
+//        mav.addObject("JobList", jobList);
+//        mav.addObject("publishedPage", page);
+//        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
     }
