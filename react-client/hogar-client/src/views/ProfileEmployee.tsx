@@ -7,19 +7,49 @@ import {verify} from "crypto";
 import {RatingService} from "../service/RatingService";
 import {useTranslation} from "react-i18next";
 import {UserService} from "../service/UserService";
+import MyReviewCard from "../components/MyReviewCard";
+import useFormPersist from "react-hook-form-persist";
+import {useForm} from "react-hook-form";
+import OkFeedback from "../components/OkFeedback";
+import ErrorFeedback from "../components/ErrorFeedback";
 
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
     const [image, setImage]: any = useState()
     const [rating, setRating]: any = useState()
+    const [showMessage, setShowMessage]: any = useState<boolean>(true)
 
     const [review, setReview]: any = useState()
+    const [myReview, setMyReview]: any = useState()
 
     const {id, status} = useLocation().state
 
     const { t } = useTranslation();
     const nav = useNavigate();
+
+
+    type FormData = {
+        content: string;
+    };
+
+    //todo const employerId
+    const employerId = 1
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
+
+    watch("content")
+
+    useFormPersist("form", {
+        watch,
+        setValue,
+        storage: window.localStorage,
+    })
+
+    const onSubmit = async (data: any, e: any) => {
+        const post = await ReviewService.putEmployeeReview(e, employee.id, data.content)
+        localStorage.clear()
+        setMyReview(post)
+    }
 
     function delEmployee() {
         UserService.deleteUser(id).then(() => {
@@ -29,7 +59,7 @@ export const ProfileEmployee = () => {
     }
 
     useEffect(() => {
-        EmployeeService.getEmployee(id).then((e) => setEmployee(e));
+        EmployeeService.getEmployee(id, false).then((e) => setEmployee(e));
     }, [])
 
     useEffect(() => {
@@ -48,17 +78,24 @@ export const ProfileEmployee = () => {
                     setReview(rsp)
                 }
             )
+        ReviewService.getMyEmployeeReview(id).then(
+            (rsp) => {
+                setMyReview(rsp)
+            }
+        )
         }, []
     )
 
     useEffect(() => {
-            RatingService.getEmployeeRating(id).then(
+            RatingService.getEmployeeRating(id, employerId).then(
                 (rsp) => {
                     setRating(rsp)
                 }
             )
         }, []
     )
+
+    window.onload = () => setShowMessage(false)
 
     return (
       <div className="grid overflow-auto h-screen grid-cols-6">
@@ -192,9 +229,22 @@ export const ProfileEmployee = () => {
                                       </li>
                                   }
                                   <p>({rating && rating.count})</p>
-
                               </ul>
+
                           }
+                          {rating && !rating.hasRated && (
+                              <a href="#alguno" rel="modal:open" className="transition hover:scale-105">
+                                  <div className="flex place-items-center">
+                                      <svg aria-hidden="true" className="w-5 h-5 text-blue-500"
+                                           fill='currentColor' viewBox="0 0 20 20"
+                                           xmlns="http://www.w3.org/2000/svg"><title>Fourth star</title>
+                                          <path
+                                              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                      </svg>
+                                      <p className="font-semibold text-blue-500 ml-1">Rate</p>
+                                  </div>
+                              </a>
+                          )}
                       </div>
                       <div className="ml-3 col-start-5 row-start-3">
                           <button type="submit" onClick={delEmployee}
@@ -242,9 +292,34 @@ export const ProfileEmployee = () => {
                           {t('Profile.reviews')}
                       </h1>
                       <ul role="list" className="divide-y divide-gray-300">
+                          {myReview == null && (
+                              <form onSubmit={handleSubmit(onSubmit)}>
+                                  <div className="">
+                                      <label htmlFor="title" className="block pb-3 pt-3 font-semibold text-gray-900">
+                                          {t('ReviewForm.label_title')}
+                                      </label>
+                                      <textarea
+                                          value={getValues("content")}
+                                          {...register("content", {required: true, maxLength: 1000, minLength: 10})}
+                                          className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                      {errors.content && (
+                                          <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
+                                              {t('ReviewForm.error')}
+                                          </p>
+
+                                      )}
+                                      <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                                          <button type="submit"
+                                                  className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                                              {t('ReviewForm.button')}
+                                          </button>
+                                      </div>
+                                  </div>
+                              </form>)}
+                          {myReview && <MyReviewCard review={myReview}/>}
                           {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
-                          {review && review.length === 0 && <div
-                              className="grid content-center justify-center h-5/6 mt-16">
+                          {review && review.length === 0 && !myReview &&
+                              <div className="grid content-center justify-center h-5/6 mt-16">
                               <div className="grid justify-items-center">
                                   <img src='/images/sinEmpleadas.png' alt="sinEmpleadas"
                                        className="mr-3 h-6 sm:h-52"/>
@@ -257,9 +332,14 @@ export const ProfileEmployee = () => {
                   </div>
               </div>
           </div> }
+          {status == '0' && showMessage &&
+              <OkFeedback type="profile"/>
+          }
+          {status == '1' && showMessage &&
+              <ErrorFeedback type="profile"/>
+          }
       </div>
-
-                      )
+    )
 }
 
 export default ProfileEmployee;

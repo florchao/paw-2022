@@ -12,15 +12,17 @@ export const ProfileEmployer = () => {
     const [reviews, setReviews]: any = useState(new Array(0))
 
     const nav = useNavigate();
-    //let {id} = useLocation().state
+    let id  = useLocation().state
     const {t} = useTranslation();
 
+    //TODO: esto es temporal, cuando creo un perfil nuevo me lleva al creado, sino al hadcodeado
 
-    const id = 1
-    //if(id === null)
-      //  id = 1
+    if(id === null || id === undefined)
+        id = 2
+        // id = 1
+    else
+        id = id.id
 
-    //todo cambiar el numero de id
     function delEmployer() {
         UserService.deleteUser(id).then(() => {
                 nav('/', {replace: true})
@@ -29,11 +31,9 @@ export const ProfileEmployer = () => {
     }
 
     useEffect(() => {
-        //todo harcodeado el numero de id
         EmployerService.getEmployer(id).then((val) => setEmployer(val));
     }, [])
 
-    //todo harcoded el id de la imagen
     useEffect(() => {
         UserService.loadImage(id).then(
             (img) => {
@@ -44,7 +44,6 @@ export const ProfileEmployer = () => {
             });
     }, [])
 
-    //todo harcoded el id de las reviews
     useEffect(() => {
             ReviewService.getEmployerReviews(id).then(
                 (rsp) => {

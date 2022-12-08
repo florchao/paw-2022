@@ -15,9 +15,9 @@ public class EmployeeDto {
 
     private List<String> availabilityArr;
     private List<String> abilitiesArr;
-
     private long id;
     private URI self;
+    private float rating;
 
     public static EmployeeDto fromExplore(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = new EmployeeDto();
@@ -26,13 +26,17 @@ public class EmployeeDto {
         dto.location = DtoUtils.firstWordsToUpper(employee.getLocation());
         dto.experienceYears = employee.getExperienceYears();
         dto.id = employee.getId().getId();
-
         final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("profile/employee").path(String.valueOf(employee.getId().getId()));
 
         dto.self = employeeUriBuilder.build();
         return dto;
     }
 
+    public static EmployeeDto fromExploreRating(final UriInfo uriInfo, final Employee employee, float rating) {
+        final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+        dto.rating = rating;
+        return dto;
+    }
     public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
 
@@ -42,6 +46,16 @@ public class EmployeeDto {
         dto.availabilityArr = employee.getAvailabilityArr();
 
         employee.nameAbilities(language);
+        dto.abilitiesArr = employee.getAbilitiesArr();
+
+        return dto;
+    }
+
+    public static EmployeeDto fromEdit(final UriInfo uriInfo, final Employee employee) {
+        final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+
+        dto.availabilityArr = employee.getAvailabilityArr();
+
         dto.abilitiesArr = employee.getAbilitiesArr();
 
         return dto;
@@ -95,6 +109,14 @@ public class EmployeeDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public List<String> getAvailabilityArr() {

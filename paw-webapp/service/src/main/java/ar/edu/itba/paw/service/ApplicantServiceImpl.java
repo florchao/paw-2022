@@ -101,7 +101,8 @@ public class ApplicantServiceImpl implements ApplicantService{
         Optional<Job> job = jobDao.getJobById(jobId);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         if(job.isPresent() && employee.isPresent()) {
-            return applicantDao.getStatus(employee.get(), job.get());
+            if (applicantDao.existsApplicant(employee.get(), job.get()))
+                return applicantDao.getStatus(employee.get(), job.get());
         }
         return -1;
     }

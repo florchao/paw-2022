@@ -105,6 +105,7 @@ public class EmployerController {
         employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
 //        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        principal.setName(name);
+        System.out.println("Employer id: " + u.getId());
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
         return Response.ok(u.getId()).build();
     }

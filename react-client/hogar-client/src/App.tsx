@@ -25,6 +25,7 @@ import CreatedJobs from "./views/CreatedJobs";
 import CreateJob from "./views/CreateJob";
 import RegisterEmployee from "./views/RegisterEmployee";
 import NewPassword from "./views/NewPassword";
+import EditEmployee from "./views/EditEmployee";
 
 export default function App() {
     return (
@@ -46,6 +47,7 @@ export default function App() {
                 <Route path="/employer" element={<ProfileEmployer/>}/>
                 <Route path="/register/employer" element={<RegisterEmployer/>}/>
                 <Route path="/register/employee" element={<RegisterEmployee/>}/>
+                <Route path="/edit" element={<EditEmployee/>}/>
                 <Route path="/job" element={<Job/>}/>
                 <Route path="/jobs" element={<CreatedJobs/>}/>
                 <Route path="/job/applicants" element={<Applicants/>}/>

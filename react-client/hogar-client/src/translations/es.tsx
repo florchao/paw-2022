@@ -28,7 +28,8 @@ export const TRANSLATIONS_ES = {
     },
 
     RegisterEmployee: {
-        title: "Crear perfil",
+        title_register: "Crear perfil",
+        title_edit: "Editar perfil",
         image: "Insertar imagen",
         name: "Nombre y Apellido",
         email: "Email",
@@ -38,7 +39,8 @@ export const TRANSLATIONS_ES = {
         confirmPassword: "Confirmar contraseña",
         abilities: "Habilidades",
         availability: "Disponibilidad",
-        button: "CREAR PERFIL",
+        button_register: "CREAR PERFIL",
+        button_edit: "EDITAR PERFIL",
         imageError: "Por favor ingrese una imagen",
         nameError: "Por favor ingrese su nombre",
         locationError: "Por favor ingrese una ubicación",
@@ -51,6 +53,16 @@ export const TRANSLATIONS_ES = {
 
     },
 
+    Feedback: {
+        congrats: "¡Felicitaciones!",
+        error:  "Hubo un error",
+        errorJob: "Usted ya aplic\u00f3 para este trabajo",
+        sentJob: "La aplicaci\u00f3n fue enviada con \u00e9xito",
+        errorContact: "Usted ya tiene una conexi\u00f3n con este empleado",
+        sentContact: "El mensaje fue enviado con \u00e9xito"
+    },
+
+
     NotFound:{
         title:"404 : No se encontró el recurso",
         goBack :"Volver a la página inicial"
@@ -59,6 +71,7 @@ export const TRANSLATIONS_ES = {
         name:"Nombre",
         location:"Ubicación",
         yearsExp: "Años de experiencia: ",
+        connected: "YA SE CONTACTO"
     },
     JobCard:{
         publication: "Ver publicaci\u00f3n",
@@ -112,8 +125,8 @@ export const TRANSLATIONS_ES = {
         employeeDesc:"Si estás buscando trabajo, este es el lugar perfecto para vos. Te ayudaremos para que puedas:",
         employeeDesc2:"- Cargar tu perfil con tus habilidades, disponibilidad e información para que nuestra comunidad de empleadores te pueda ver.",
         employeeDesc3:"- Explorar las distintas ofertas de trabajo ofrecidas en nuestra comunidad.",
-        createEmployee:"Crear cuenta de empleador",
-        createEmployer:"Crear cuenta de empleado"
+        createEmployee:"Crear cuenta de empleado",
+        createEmployer:"Crear cuenta de empleador"
     },
 
     Contacts: {
@@ -140,7 +153,13 @@ export const TRANSLATIONS_ES = {
         experience : "Mínimo de años de experiencia",
         availability : "Disponibilidad",
         abilities : "Habilidades requeridas",
-        description : "Descripción"
+        description : "Descripción",
+        delete:"Retirar aplicación",
+        apply:"Aplicar",
+        pending: "Pendiente",
+        accepted:"Aceptado",
+        rejected:"Rechazado",
+        statusTitle:"Estado de tu aplicación:"
     },
 
     Applicants:{

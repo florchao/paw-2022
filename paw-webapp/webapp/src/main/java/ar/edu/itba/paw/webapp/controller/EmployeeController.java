@@ -7,6 +7,7 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
+import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
@@ -42,6 +43,9 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @Autowired
+    private ContactService contactService;
+
+    @Autowired
     private UserService userService;
 
     @Context
@@ -53,12 +57,17 @@ public class EmployeeController {
     @GET
     @Path("/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response employeeProfile(@PathParam("id") long id) throws UserNotFoundException {
+    public Response employeeProfile(@PathParam("id") long id, @QueryParam("edit") String edit) throws UserNotFoundException {
 //        final ModelAndView mav = new ModelAndView("viewProfile");
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<EmployeeDto> employee = employeeService.getEmployeeById(id).map(e -> EmployeeDto.fromProfile(uriInfo, e));
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        Optional<EmployeeDto> dto;
+        if(edit != null && edit.equals("true"))
+            dto = employee.map(e -> EmployeeDto.fromEdit(uriInfo, e));
+        else
+            dto = employee.map(e -> EmployeeDto.fromProfile(uriInfo, e));
         if (employee.isPresent()) {
-            GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(employee.get()){};
+            GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto.get()){};
             return Response.ok(genericEntity).build();
         }
         return Response.serverError().build();
@@ -110,19 +119,26 @@ public class EmployeeController {
         User u = userService.create(mail, password, password, 1);
         employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, fromListToString(abilities), IOUtils.toByteArray(image));
         return Response.ok(u.getId()).build();
-        //Probando que llegue bien la información
-//        System.out.println(mail);
-//        System.out.println(password);
-//        System.out.println(confirmPassword);
-//        System.out.println(name);
-//        System.out.println(location);
-//        System.out.println(availabilities);
-//        System.out.println(abilities);
-//        System.out.println(experienceYears);
-//        return Response.ok(1).build();
     }
 
-    //TODO: PUT y DELETE? de employee
+    //TODO: PUT y DELETE? de employee. El delete esta en el user controller porque es el mismo para employer
+    @PUT
+    @Path("/{id}")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
+    public Response editEmployee(@FormDataParam("name") String name,
+                                  @FormDataParam("location") String location,
+                                  @FormDataParam("experienceYears") long experienceYears,
+                                  @FormDataParam("availabilities[]") List<String> availabilities,
+                                  @FormDataParam("abilities[]") List<String> abilities,
+                                  @FormDataParam("image") InputStream image,
+                                  @PathParam("id") long id) throws IOException, UserFoundException, PassMatchException {
+
+        employeeService.editProfile(name.toLowerCase(), location.toLowerCase(), id, fromListToArray(availabilities), experienceYears, fromListToArray(abilities), IOUtils.toByteArray(image));
+        LOGGER.debug(String.format("updated profile for userid %d", id));
+
+        return Response.ok(id).build();
+    }
+
 
 //    @RequestMapping(value = "/editarPerfil", method = {RequestMethod.GET})
 //    public ModelAndView editProfile(@ModelAttribute("employeeEditForm") final EmployeeEditForm form) throws UserNotFoundException {
@@ -162,5 +178,13 @@ public class EmployeeController {
             ret.append(str).append(",");
         }
         return ret.substring(0, ret.length() - 1);
+    }
+
+    private String[] fromListToArray(List<String> arr) {
+        String[] str = new String[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            str[i] = arr.get(i);
+        }
+        return str;
     }
 }

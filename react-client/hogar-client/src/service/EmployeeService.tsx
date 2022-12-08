@@ -51,8 +51,11 @@ export class EmployeeService {
     }
 
 
-    public static async getEmployee(id: number) {
-        return await fetch('http://localhost:8080/api/employee/' + id, {
+    public static async getEmployee(id: number, edit:boolean) {
+        let url = 'http://localhost:8080/api/employee/' + id
+        if(edit)
+            url = url.concat('?edit=true')
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -82,6 +85,24 @@ export class EmployeeService {
 
         return await fetch('http://localhost:8080/api/employee/', {
             method: 'POST',
+            headers: {},
+            body: formData
+        }).then((r) => r.text())
+    }
+
+    public static async editEmployee(e: any, id:number, name: string, location: string, experienceYears: number, availabilities: string[], abilities: string[], image:File) {
+        e.preventDefault();
+
+        const formData:any = new FormData();
+        formData.append("name", name)
+        formData.append("location", location)
+        formData.append("experienceYears", experienceYears)
+        availabilities.forEach(a => formData.append("availabilities[]", a))
+        abilities.forEach(a => formData.append("abilities[]", a))
+        formData.append("image", image, image.name)
+
+        return await fetch('http://localhost:8080/api/employee/' + id, {
+            method: 'PUT',
             headers: {},
             body: formData
         }).then((r) => r.text())

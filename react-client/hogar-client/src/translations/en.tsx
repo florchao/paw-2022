@@ -27,8 +27,9 @@ export const TRANSLATIONS_EN = {
     passwordsError: "Passwords do not match",
   },
 
-  RegisterEmployee: {
-    title: "Create profile",
+  EmployeeForm: {
+    title_register: "Create profile",
+    title_edit: "Edit profile",
     image: "Insert image",
     name: "Name and Last name",
     email: "Email",
@@ -38,7 +39,8 @@ export const TRANSLATIONS_EN = {
     confirmPassword: "Confirm password",
     abilities: "Abilities",
     availability: "Availabilities",
-    button: "CREATE PROFILE",
+    button_register: "CREATE PROFILE",
+    button_edit: "EDIT PROFILE",
     imageError: "Please enter an image",
     nameError: "Please enter your name",
     locationError: "Please enter a valid location",
@@ -50,6 +52,15 @@ export const TRANSLATIONS_EN = {
     abilitiesError: 'Please select at least one ability',
   },
 
+  Feedback: {
+    congrats: "¡Congratulations!",
+    error:  "An error occurred",
+    errorJob: "You've already applied to this job",
+    sentJob: "The application was sent with success",
+    errorContact: "You already have a connection with this employee",
+    sentContact: "The message was sent with success"
+  },
+
   NotFound:{
     title:"404 : Resource not found",
     goBack :"Go back to home page"
@@ -58,6 +69,8 @@ export const TRANSLATIONS_EN = {
     name:"Name",
     location:"Location",
     yearsExp: "Years of experience: ",
+    connected: "ALREADY CONNECTED"
+
   },
   JobCard:{
     publication:"See job offer",
@@ -142,6 +155,12 @@ export const TRANSLATIONS_EN = {
     description : "Description",
     noReviews: "There are no reviews",
     reviewsFor: "Reviews for ",
+    delete: "Withdraw application",
+    apply:"apply",
+    pending: "pending",
+    accepted:"accepted",
+    rejected:"rejected",
+    statusTitle:"Status of your application:"
   },
 
   Applicants:{
