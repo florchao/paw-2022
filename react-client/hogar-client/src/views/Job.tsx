@@ -5,6 +5,7 @@ import {JobService} from "../service/JobService";
 import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
 import MyReviewCard from "../components/MyReviewCard";
+import {ApplicantService} from "../service/ApplicantService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 
@@ -13,12 +14,21 @@ export const Job = () => {
     const [job, setJob]: any = useState()
     const [reviews, setReviews]: any = useState()
     const [myReview, setMyReview]: any = useState()
+    const [status, setStatus] = useState<string>()
 
-    const employeeId = 4
+
+    const employeeId = 3
 
     const {id} = useLocation().state
 
     const {t} = useTranslation();
+    const nav = useNavigate();
+
+    useEffect(() => {
+        ApplicantService.getApplicationStatus(employeeId, id).then((s) => {
+            setStatus(s)
+        })
+    }, [])
 
     type FormData = {
         content: string;
@@ -26,7 +36,6 @@ export const Job = () => {
 
     const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
 
-    const nav = useNavigate();
 
     watch("content")
 
@@ -65,6 +74,27 @@ export const Job = () => {
     )
 
 
+    useEffect(() => {
+        console.log("my")
+            console.log(myReview)
+        console.log("revs")
+            console.log(reviews)
+        }, [myReview, reviews]
+    )
+
+    function delApplication() {
+        ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {
+                nav('/employee/jobs', {replace: true,  state: {id: employeeId}})
+            }
+        );
+    }
+
+    async function createApplicant(){
+        const newStatus = await ApplicantService.createApplicant(employeeId, job.jobId)
+        setStatus(newStatus)
+    }
+
+
     return (
         <div className="grid h-screen grid-cols-6 overflow-auto">
             {job &&
@@ -83,27 +113,40 @@ export const Job = () => {
                                 <h1 className="pb-3 pt-3 text-purple-900 font-semibold">{t('Job.experience')}</h1>
                                 <h1 className="block mb-2 ml-2 text-sm font-medium text-gray-600 "> {job.experienceYears}</h1>
                             </div>
-                            {/*<sec:authorize access="hasAuthority('EMPLOYEE')">*/}
-                            {/*    <div class="col-start-5 row-start-2">*/}
-                            {/*        <c:if test="${alreadyApplied == -1}">*/}
-                            {/*            <form:form action="${postPath}" method="post">*/}
-                            {/*                <button class="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900"><spring:message code="viewJob.apply"/></button>*/}
-                            {/*            </form:form>*/}
-                            {/*        </c:if>*/}
-                            {/*        <c:if test="${alreadyApplied >= 0}">*/}
-                            {/*            <h1 class="pb-3 pt-3 font-semibold text-purple-900"><spring:message code="viewJob.status"/></h1>*/}
-                            {/*            <c:if test="${alreadyApplied == 0}">*/}
-                            {/*                <a class="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.pending"/> </a>*/}
-                            {/*            </c:if>*/}
-                            {/*            <c:if test="${alreadyApplied == 1}">*/}
-                            {/*                <a class="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.accepted"/> </a>*/}
-                            {/*            </c:if>*/}
-                            {/*            <c:if test="${alreadyApplied == 2}">*/}
-                            {/*                <a class="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5"><spring:message code="viewJob.denied"/> </a>*/}
-                            {/*            </c:if>*/}
-                            {/*        </c:if>*/}
-                            {/*    </div>*/}
-                            {/*</sec:authorize>*/}
+
+                            { status &&
+                                {
+                                    '-1':<div className="col-start-5 row-start-2">
+                                            <button type="submit" onClick={createApplicant} className="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.apply')}</button>
+                                        </div>,
+                                    '0': <div className="col-start-5 row-start-2">
+                                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                                {t('Job.statusTitle')}
+                                            </h1>
+                                            <a className="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5">
+                                                {t('Job.pending')}
+                                            </a>
+                                        <br/><br/>
+                                         <button type="submit" onClick={delApplication} className="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.delete')}</button>
+                                        </div>,
+                                    '1':<div className="col-start-5 row-start-2">
+                                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                                {t('Job.statusTitle')}
+                                            </h1>
+                                            <a className="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5">
+                                                {t('Job.accepted')}
+                                            </a>
+                                        </div>,
+                                    '2':<div className="col-start-5 row-start-2">
+                                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                                {t('Job.statusTitle')}
+                                            </h1>
+                                            <a className="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5">
+                                                {t('Job.rejected')}
+                                            </a>
+                                        </div>
+                                }[status]
+                            }
                         </div>
                         <div className="grid grid-cols-5">
                             <div className="col-span-2">

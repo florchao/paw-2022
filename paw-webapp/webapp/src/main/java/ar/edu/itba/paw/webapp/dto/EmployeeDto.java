@@ -15,11 +15,9 @@ public class EmployeeDto {
 
     private List<String> availabilityArr;
     private List<String> abilitiesArr;
-
-    private boolean connected;
-
     private long id;
     private URI self;
+    private float rating;
 
     private URI reviews;
 
@@ -38,6 +36,11 @@ public class EmployeeDto {
         return dto;
     }
 
+    public static EmployeeDto fromExploreRating(final UriInfo uriInfo, final Employee employee, float rating) {
+        final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+        dto.rating = rating;
+        return dto;
+    }
     public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
 
@@ -116,6 +119,14 @@ public class EmployeeDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public List<String> getAvailabilityArr() {

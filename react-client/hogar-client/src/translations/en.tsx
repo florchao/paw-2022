@@ -155,6 +155,12 @@ export const TRANSLATIONS_EN = {
     description : "Description",
     noReviews: "There are no reviews",
     reviewsFor: "Reviews for ",
+    delete: "Withdraw application",
+    apply:"apply",
+    pending: "pending",
+    accepted:"accepted",
+    rejected:"rejected",
+    statusTitle:"Status of your application:"
   },
 
   Applicants:{

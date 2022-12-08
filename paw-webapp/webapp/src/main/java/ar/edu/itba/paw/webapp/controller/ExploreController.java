@@ -8,6 +8,7 @@ import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.JobService;
+import ar.edu.itba.paw.service.RaitingService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.JobDto;
@@ -41,7 +42,8 @@ public class ExploreController {
 
     @Autowired
     private EmployeeService employeeService;
-
+    @Autowired
+    private RaitingService ratingService;
     @Autowired
     private JobService jobService;
     @Autowired
@@ -64,11 +66,15 @@ public class ExploreController {
             @QueryParam("order") String orderCriteria
     ) {
 
-        int employerId = 1;
         if (page == null)
             page = 0L;
-        List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(e -> EmployeeDto.fromExplore(uriInfo, e)).collect(Collectors.toList());
-        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
+        List <EmployeeDto> employeeDtos = new ArrayList<>(Collections.emptyList());
+        employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).forEach(employee ->
+                {
+                    float rating = ratingService.getRating(employee.getId().getId());
+                    employeeDtos.add(EmployeeDto.fromExploreRating(uriInfo, employee, rating));
+                });
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employeeDtos){};
         return Response.ok(genericEntity).build();
     }
 
