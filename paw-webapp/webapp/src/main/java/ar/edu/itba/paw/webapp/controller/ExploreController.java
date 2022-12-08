@@ -66,6 +66,7 @@ public class ExploreController {
 
         if (page == null)
             page = 0L;
+        String aux = SecurityContextHolder.getContext().getAuthentication().getName();
         List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(e -> EmployeeDto.fromExplore(uriInfo, e)).collect(Collectors.toList());
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
         return Response.ok(genericEntity).build();

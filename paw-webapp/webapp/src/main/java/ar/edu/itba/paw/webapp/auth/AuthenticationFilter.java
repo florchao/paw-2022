@@ -9,7 +9,10 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,6 +31,7 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Optional;
 
 @Component
@@ -46,26 +50,29 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         int BASIC_TOKEN_LENGTH = 6;
         String basicToken = basicAuth.substring(BASIC_TOKEN_LENGTH);
         String decoded = new String(Base64.getDecoder().decode(basicToken));
-        System.out.println(pawUserDetailsService);
         String[] credentials = decoded.split(":");
+        Authentication auth;
         try {
-            Authentication auth = authenticationManager.authenticate(
+            auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(credentials[0], credentials[1])
             );
         } catch (AuthenticationException e) {
-            System.out.println("noooo");
+            System.out.println("No estas autenticado hermano");
             throw new InsufficientAuthenticationException("Invalid credentials");
         }
-
-        createJWT(credentials);
-
+        UserDetails userDetails = pawUserDetailsService.loadUserByUsername(credentials[0]);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails == null ? Collections.emptyList() : userDetails.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) RequestContextHolder.getRequestAttributes()));
+        if (auth != null && auth.isAuthenticated()) {
+            createJWT(credentials);
+        }
     }
 
     private void createJWT(String[] credentials) {
         System.out.println("aca en createJWT");
-
-//        Optional<User> userToAuthenticate = userService.findByUsername(credentials[0]);
-        System.out.println(authenticationManager);
     }
 
     private void bearerAuthentication(String bearerAuth) {
@@ -82,17 +89,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         } else if (authHeaderContent.startsWith("Bearer")) {
             bearerAuthentication(authHeaderContent);
         } else {
+            System.out.println("No estas autenticado hermano");
             throw new IllegalArgumentException("Authentication not allowed");
         }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
-
-//    @Override
-//    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-//        System.out.println("==================================");
-////        ServletContext servletContext = servletRequest.getRealPath("/");x``
-////        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
-////        service = webApplicationContext.getBean(MyServices.class);
-//    }
 }
 
 

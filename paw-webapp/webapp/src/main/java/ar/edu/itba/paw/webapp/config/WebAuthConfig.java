@@ -54,15 +54,15 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource())
-                .and().sessionManagement()
+                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .and().exceptionHandling()
                 .accessDeniedPage("/403")
-//                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .csrf().disable();
                 .and().csrf().disable();
+//                .and().csrf().disable();
     }
 
     @Override
