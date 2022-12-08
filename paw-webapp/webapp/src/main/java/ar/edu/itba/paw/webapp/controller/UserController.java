@@ -12,7 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/api/user")
+@Path("/api/users")
 @Component
 public class UserController {
 
@@ -22,7 +22,7 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @PUT
-    @Path("/")
+    @Path("")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response updatePassword(@Valid final NewPasswordForm form) {
         boolean ans = userService.update(form.getMail(), form.getPassword());

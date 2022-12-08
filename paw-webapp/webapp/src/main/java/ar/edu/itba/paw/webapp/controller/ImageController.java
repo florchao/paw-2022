@@ -14,7 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Optional;
 
-@Path("/api/image")
+@Path("/api/images")
 @Component
 public class ImageController {
 

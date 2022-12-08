@@ -82,7 +82,7 @@ export class EmployeeService {
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
 
-        return await fetch('http://localhost:8080/api/employee/', {
+        return await fetch('http://localhost:8080/api/employees', {
             method: 'POST',
             headers: {},
             body: formData
@@ -100,7 +100,7 @@ export class EmployeeService {
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
 
-        return await fetch('http://localhost:8080/api/employee/' + id, {
+        return await fetch('http://localhost:8080/api/employees/' + id, {
             method: 'PUT',
             headers: {},
             body: formData

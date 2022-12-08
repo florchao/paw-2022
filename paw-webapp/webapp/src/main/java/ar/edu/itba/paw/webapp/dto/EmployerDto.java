@@ -23,9 +23,9 @@ public class EmployerDto {
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
         dto.id = employer.getId().getId();
 
-        final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/image").path(String.valueOf(employer.getId().getId()));
-        final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/review/employer").path(String.valueOf(employer.getId().getId()));
-        final UriBuilder employeeReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/review/").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/images").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
+        final UriBuilder employeeReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
 
 
         dto.image = imageUriBuilder.build();
@@ -40,7 +40,7 @@ public class EmployerDto {
 
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
 
-        final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/image").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/images").path(String.valueOf(employer.getId().getId()));
         dto.image = imageUriBuilder.build();
 
         return dto;

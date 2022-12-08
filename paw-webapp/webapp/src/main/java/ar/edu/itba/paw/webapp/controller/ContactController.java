@@ -12,6 +12,7 @@ import ar.edu.itba.paw.webapp.dto.ContactDto;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
 import ch.qos.logback.core.status.Status;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("/api/contact")
+@Path("/api/contacts")
 @Component
 public class ContactController {
 
@@ -110,7 +111,7 @@ public class ContactController {
 //    }
 
     @POST
-    @Path("/")
+    @Path("/us")
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response contactUs(@Valid ContactUsForm form) {
 //        if(error.hasErrors()) {
@@ -123,11 +124,12 @@ public class ContactController {
 
     //TODO: los ids van por body en el POST
     @POST
-    @Path("/{employee_id}/{employer_id}")
-    @Consumes(value = {MediaType.APPLICATION_JSON,})
-    public Response contactEmployee(@Valid ContactForm form,
-                                    @PathParam("employee_id") long employeeId,
-                                    @PathParam("employer_id") long employerId) throws UserNotFoundException, AlreadyExistsException {
+    @Path("")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
+    public Response contactEmployee(@FormDataParam("content") String content,
+                                    @FormDataParam("phone") String phone,
+                                    @FormDataParam("employee_id") long employeeId,
+                                    @FormDataParam("employer_id") long employerId) throws UserNotFoundException, AlreadyExistsException {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
@@ -142,7 +144,7 @@ public class ContactController {
         Optional<Employer> employer = employerService.getEmployerById(employerId);
         if (employee.isPresent() && employer.isPresent()) {
             employee.get().firstWordsToUpper();
-            boolean exists = contactService.contact(employee.get().getId(), employer.get().getId(), form.getContent(), employer.get().getName(), form.getPhone());
+            boolean exists = contactService.contact(employee.get().getId(), employer.get().getId(), content, employer.get().getName(), phone);
             if (exists) {
                 return Response.ok(1).build();
             }
@@ -151,21 +153,12 @@ public class ContactController {
         return Response.serverError().build();
     }
 
-    @GET
-    @Path("/{id}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response employeeContacts(@PathParam("id") long id) throws UserNotFoundException {
-        List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, 0L, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
-        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
-        };
-        return Response.ok(genericEntity).build();
-    }
 
     //TODO: al tener autorización vamos a poder chequear esto cuando traemos las empleadas y nos ahorramos una llamada a la API
     @GET
-    @Path("/{employee_id}/{employer_id}")
+    @Path("/{employeeId}/{employerId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response existsContact(@PathParam("employee_id") long employeeId, @PathParam("employer_id") long employerId) throws UserNotFoundException {
+    public Response existsContact(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) throws UserNotFoundException {
         List<ContactDto> exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(exists) {
         };

@@ -56,7 +56,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return path.equals("/api/employees");
+        return path.equals("/api/jobs") || path.equals("/api/employees");
     }
 
     private String basicAuthentication(String basicAuth) throws UserNotFoundException, IllegalArgumentException, InsufficientAuthenticationException {

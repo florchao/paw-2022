@@ -3,7 +3,7 @@ export class ContactService {
     public static async contactUs (e: any, name: string, mail: string, content: string) {
         e.preventDefault();
         const blog = {name, mail, content};
-        return await fetch('http://localhost:8080/api/contact/', {
+        return await fetch('http://localhost:8080/api/contacts/us', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(blog)
@@ -14,17 +14,22 @@ export class ContactService {
 
     public static async contactEmployee(e: any, phone: string, content: string, employee_id: number, employer_id: number) {
         e.preventDefault();
-        const contactForm = {phone, content};
 
-        return await fetch('http://localhost:8080/api/contact/' + employee_id + '/' + employer_id, {
+        const formData:any = new FormData();
+        formData.append('phone', phone);
+        formData.append('content', content);
+        formData.append('employee_id', employee_id);
+        formData.append('employer_id', employer_id);
+
+        return await fetch('http://localhost:8080/api/contacts/' + employee_id + '/' + employer_id, {
             method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(contactForm)
+            headers: {},
+            body: formData
         }).then((r) => r.text())
     }
 
     public static async contacts(id: number) {
-        return await fetch('http://localhost:8080/api/contact/' + id , {
+        return await fetch('http://localhost:8080/api/employee/' + id + '/contacts' , {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -39,7 +44,7 @@ export class ContactService {
     }
 
     public static async getContact(id: number, employerId: number) {
-        return await fetch('http://localhost:8080/api/contact/' + id +'/'+ employerId , {
+        return await fetch('http://localhost:8080/api/contacts/' + id +'/'+ employerId , {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

@@ -21,6 +21,8 @@ export const Job = () => {
 
     const {self, id} = useLocation().state
 
+    console.log(id)
+
     const {t} = useTranslation();
     const nav = useNavigate();
 

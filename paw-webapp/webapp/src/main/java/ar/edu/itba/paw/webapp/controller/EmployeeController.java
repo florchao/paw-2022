@@ -7,11 +7,12 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
-import ar.edu.itba.paw.service.ContactService;
-import ar.edu.itba.paw.service.EmployeeService;
-import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.ApplicantDto;
+import ar.edu.itba.paw.webapp.dto.ContactDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto;
+import ar.edu.itba.paw.webapp.dto.ReviewDto;
 import ar.edu.itba.paw.webapp.form.EmployeeEditForm;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -31,10 +32,13 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Path("/api/employee")
+@Path("/api/employees")
 @Component
 public class EmployeeController {
     private final int PAGE_SIZE = 4;
@@ -48,11 +52,44 @@ public class EmployeeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RaitingService ratingService;
+
+    @Autowired
+    private ApplicantService applicantService;
+
+    @Autowired
+    private ReviewService reviewService;
+
     @Context
     private UriInfo uriInfo;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
 
+    @GET
+    @Path("")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response filterEmployees(
+            @QueryParam("name") String name,
+            @QueryParam("experience") Long experienceYears,
+            @QueryParam("location") String location,
+            @QueryParam("availability") String availability,
+            @QueryParam("abilities") String abilities,
+            @QueryParam("page") Long page,
+            @QueryParam("order") String orderCriteria
+    ) {
+
+        if (page == null)
+            page = 0L;
+        List <EmployeeDto> employeeDtos = new ArrayList<>(Collections.emptyList());
+        employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).forEach(employee ->
+        {
+            float rating = ratingService.getRating(employee.getId().getId());
+            employeeDtos.add(EmployeeDto.fromExploreRating(uriInfo, employee, rating));
+        });
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employeeDtos){};
+        return Response.ok(genericEntity).build();
+    }
 
     @GET
     @Path("/{id}")
@@ -104,8 +141,55 @@ public class EmployeeController {
 //        mav.addObject("maxPage", maxPage);
     }
 
+    @GET
+    @Path("{id}/jobs")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response appliedTo(@QueryParam("page") Long page, @PathParam("id") long id){
+//        if (page == null)
+//            page = 0L;
+//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, 0L, PAGE_SIZE).stream().map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant)).collect(Collectors.toList());
+        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/{id}/contacts")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response employeeContacts(@PathParam("id") long id) throws UserNotFoundException {
+        List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, 0L, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
+        };
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/{id}/reviews")
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response getEmployeeReviews(@PathParam("id") long id) {
+        List<ReviewDto> reviews = reviewService.getAllReviews(id, null, 0L, PAGE_SIZE).stream().map(r -> ReviewDto.fromEmployeeReview(uriInfo, r)).collect(Collectors.toList());
+
+        //TODO: si es empleado el que inició sesión
+        GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
+        };
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/{employeeId}/reviews/{employerId}")
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response getMyReviewToEmployee(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
+        Optional<ReviewDto> myReview = reviewService.getMyReview(employeeId, employerId).map(r -> ReviewDto.fromEmployeeReview(uriInfo, r));
+        if (!myReview.isPresent())
+            return Response.noContent().build();
+        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()) {
+        };
+        return Response.ok(genericEntity).build();
+
+    }
+
     @POST
-    @Path("/")
+    @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
     public Response createEmployee(@FormDataParam("mail") String mail,
                                    @FormDataParam("password") String password,

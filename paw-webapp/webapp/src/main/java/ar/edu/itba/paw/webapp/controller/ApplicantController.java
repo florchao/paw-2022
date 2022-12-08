@@ -25,7 +25,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.*;
 import java.util.stream.Collectors;
-@Path("/api/applicant")
+@Path("/api/applicants")
 @Component
 public class ApplicantController {
 
@@ -46,8 +46,15 @@ public class ApplicantController {
     @Context
     private UriInfo uriInfo;
 
+    @GET
+    @Path("/{employeeId}/{jobId}")
+    public Response getStatusApplication(@PathParam("employeeId") long employeeId,
+                                         @PathParam("jobId") long jobId){
+        int status = applicantService.getStatus(employeeId, jobId);
+        return Response.ok(status).build();
+    }
     @POST
-    @Path("/")
+    @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
     public Response createApplicant(@FormDataParam("employeeId") long employeeId,
                                     @FormDataParam("jobId") long jobId) throws UserNotFoundException{
@@ -85,31 +92,6 @@ public class ApplicantController {
 //    }
 //
 
-    //TODO: que sea solo jobs cuando tengamos el token
-    @GET
-    @Path("{id}/jobs")
-    @Produces(value = { MediaType.APPLICATION_JSON })
-    public Response appliedTo(@QueryParam("page") Long page, @PathParam("id") long id){
-//        ModelAndView mav = new ModelAndView("appliedJobs");
-//        if (page == null)
-//            page = 0L;
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, 0L, PAGE_SIZE).stream().map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant)).collect(Collectors.toList());
-//        Map<Job, Integer> jobList = new LinkedHashMap<>();
-//        mav.addObject("page", page);
-//        mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
-//        for (Job job : list) {
-//            job.firstWordsToUpper();
-//            job.locationNameToUpper();
-//            job.getEmployerId().firstWordsToUpper();
-//            int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
-//            jobList.put(job, status);
-//        }
-//        mav.addObject("jobList", jobList);
-//        return mav;
-        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
-        return Response.ok(genericEntity).build();
-    }
 
     @DELETE
     @Path("/{employeeId}/{jobId}")
@@ -119,15 +101,7 @@ public class ApplicantController {
         return Response.ok().build();
     }
 
-    @GET
-    @Path("/{employeeId}/{jobId}")
-    public Response getStatusApplication(@PathParam("employeeId") long employeeId,
-                                         @PathParam("jobId") long jobId){
-        int status = applicantService.getStatus(employeeId, jobId);
-        System.out.println("STATUS!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(status);
-        return Response.ok(status).build();
-    }
+
 
 //    @RequestMapping(value="/trabajosAplicados", method = {RequestMethod.GET})
 //    public ModelAndView appliedTo(@RequestParam(value = "page", required = false) Long page){

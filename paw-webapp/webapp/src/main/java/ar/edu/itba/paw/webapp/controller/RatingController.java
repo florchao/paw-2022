@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 
-@Path("/api/rating")
+@Path("/api/ratings")
 @Component
 public class RatingController {
 
@@ -40,9 +40,9 @@ public class RatingController {
 
 //    TODO: los ids se pasan por el body
     @POST
-    @Path("/{employeeId}/{employerId}")
+    @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response postRating(@FormDataParam("rating") Long rating, @PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
+    public Response postRating(@FormDataParam("rating") Long rating, @FormDataParam("employeeId") long employeeId, @FormDataParam("employerId") long employerId) {
         if (rating == null)
             rating = 0L;
         float finalRating = ratingService.updateRating(employeeId, rating, employerId);

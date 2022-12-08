@@ -15,19 +15,18 @@ export class RatingService {
                 })
     }
 
-    public static async postEmployeeRating(employeeId: number, employerId: number) {
-        return await fetch('http://localhost:8080/api/rating/' + employeeId +'/' + employerId, {
+    public static async postEmployeeRating(e: any, employeeId: number, employerId: number, rating: number) {
+        e.preventDefault();
+        const formData: any = new FormData();
+        formData.append("employeeId", employeeId)
+        formData.append("employerId", employerId)
+        formData.append("rating", rating)
+
+        return await fetch('http://localhost:8080/api/ratings', {
             method: 'POST',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-        }).then((resp) => resp.json())
-            .catch(
-                (error) => {
-                    console.log(error)
-                    throw error
-                })
+            headers: {},
+            body: formData
+        }).then((r) => r.json())
     }
 
 }

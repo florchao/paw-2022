@@ -38,8 +38,8 @@ public class JobDto {
         dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
         dto.description = job.getDescription();
 
-        UriBuilder jobUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/job").path(String.valueOf(job.getJobId()));
-        UriBuilder applicantsUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/job").path(String.valueOf(job.getJobId())).path("applicants");
+        UriBuilder jobUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId()));
+        UriBuilder applicantsUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId())).path("applicants");
         dto.self = jobUriBuilder.build();
 
         dto.applicants = applicantsUriBuilder.build();
