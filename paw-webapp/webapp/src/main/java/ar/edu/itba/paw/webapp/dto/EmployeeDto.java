@@ -21,6 +21,10 @@ public class EmployeeDto {
     private long id;
     private URI self;
 
+    private URI reviews;
+
+    private URI image;
+
     public static EmployeeDto fromExplore(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = new EmployeeDto();
 
@@ -28,7 +32,7 @@ public class EmployeeDto {
         dto.location = DtoUtils.firstWordsToUpper(employee.getLocation());
         dto.experienceYears = employee.getExperienceYears();
         dto.id = employee.getId().getId();
-        final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("profile/employee").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/employee").path(String.valueOf(employee.getId().getId()));
 
         dto.self = employeeUriBuilder.build();
         return dto;
@@ -44,6 +48,12 @@ public class EmployeeDto {
 
         employee.nameAbilities(language);
         dto.abilitiesArr = employee.getAbilitiesArr();
+
+        final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/review/employee").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/image").path(String.valueOf(employee.getId().getId()));
+
+        dto.reviews = reviewBuilder.build();
+        dto.image = imageUriBuilder.build();
 
         return dto;
     }
@@ -122,5 +132,21 @@ public class EmployeeDto {
 
     public void setAbilitiesArr(List<String> abilitiesArr) {
         this.abilitiesArr = abilitiesArr;
+    }
+
+    public URI getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(URI reviews) {
+        this.reviews = reviews;
+    }
+
+    public URI getImage() {
+        return image;
+    }
+
+    public void setImage(URI image) {
+        this.image = image;
     }
 }
