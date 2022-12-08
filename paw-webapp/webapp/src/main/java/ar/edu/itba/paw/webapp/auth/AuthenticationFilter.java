@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.auth;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.UserService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -21,6 +23,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -29,10 +32,11 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Optional;
+import java.security.Key;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
@@ -46,7 +50,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    private void basicAuthentication(String basicAuth) {
+    private String basicAuthentication(String basicAuth) {
         int BASIC_TOKEN_LENGTH = 6;
         String basicToken = basicAuth.substring(BASIC_TOKEN_LENGTH);
         String decoded = new String(Base64.getDecoder().decode(basicToken));
@@ -66,13 +70,33 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         );
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 //        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) RequestContextHolder.getRequestAttributes()));
-        if (auth != null && auth.isAuthenticated()) {
-            createJWT(credentials);
-        }
+        return createJWT(credentials);
     }
 
-    private void createJWT(String[] credentials) {
-        System.out.println("aca en createJWT");
+    private String createJWT(String[] credentials) {
+        System.out.println("Creando JWT");
+        // TODO get role and uid from username
+
+
+        //TODO save secret key as env variable
+        String secret = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
+
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
+                SignatureAlgorithm.HS256.getJcaName());
+        String jwtToken = null;
+        try {
+            jwtToken = Jwts.builder()
+                    .claim("email", credentials[0])
+                    .claim("role", 1)
+                    .setId(UUID.randomUUID().toString())
+                    .setIssuedAt(Date.from(Instant.now()))
+                    .setExpiration(Date.from(Instant.now().plus(1L, ChronoUnit.MINUTES)))
+                    .signWith(hmacKey)
+                    .compact();
+        } catch (Exception e) {
+            System.out.println("No se pudo crear el JWT");
+        }
+        return jwtToken;
     }
 
     private void bearerAuthentication(String bearerAuth) {
@@ -82,10 +106,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("aca en authenticateUser");
         String authHeaderContent = httpServletRequest.getHeader("Authorization");
         if (authHeaderContent.startsWith("Basic")) {
-            basicAuthentication(authHeaderContent);
+            String jwt = basicAuthentication(authHeaderContent);
+            if (jwt != null) {
+                httpServletResponse.addHeader("Authorization", "Bearer " + jwt);
+            }
         } else if (authHeaderContent.startsWith("Bearer")) {
             bearerAuthentication(authHeaderContent);
         } else {
