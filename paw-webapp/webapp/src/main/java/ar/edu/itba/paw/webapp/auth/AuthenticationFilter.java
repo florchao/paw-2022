@@ -87,9 +87,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     .claim("email", credentials[0])
                     .claim("role", user.getId())
                     .claim("uid", user.getId())
-                    .setId(UUID.randomUUID().toString())
                     .setIssuedAt(Date.from(Instant.now()))
-                    .setExpiration(Date.from(Instant.now().plus(1L, ChronoUnit.MINUTES)))
+                    .setExpiration(Date.from(Instant.now().plus(10000L, ChronoUnit.HOURS)))
                     .signWith(hmacKey)
                     .compact();
         } catch (Exception e) {
@@ -114,10 +113,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid username or password");
             }
         } else if (authHeaderContent != null && authHeaderContent.startsWith("Bearer")) {
-            bearerAuthentication(authHeaderContent);
+            try {
+                bearerAuthentication(authHeaderContent);
+            } catch (Exception e) {
+                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            }
         } else {
-            System.out.println("No estas autenticado hermano");
-            throw new IllegalArgumentException("Authentication not allowed");
+            httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication error");
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
