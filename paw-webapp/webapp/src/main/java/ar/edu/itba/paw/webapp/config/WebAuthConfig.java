@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,7 +39,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); }
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,16 +56,26 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource())
-                .and().sessionManagement()
+                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                .antMatchers("/**").permitAll()
+//                .and().antMatcher("/**").authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/api/employer/{id}").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.GET,"/api/employee/{id}").anonymous()
+                .antMatchers(HttpMethod.GET,"/api/employees").anonymous()
+                .antMatchers(HttpMethod.GET,"/api/employee").anonymous()
+                .antMatchers(HttpMethod.GET,"/api/employees").anonymous()
+                .antMatchers(HttpMethod.GET,"/api/employees").anonymous()
+                .antMatchers("/**").anonymous()
+
                 .and().exceptionHandling()
                 .accessDeniedPage("/403")
-//                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .csrf().disable();
                 .and().csrf().disable();
+//                .and().csrf().disable();
     }
+
+
 
     @Override
     public void configure(final WebSecurity web) throws Exception {
