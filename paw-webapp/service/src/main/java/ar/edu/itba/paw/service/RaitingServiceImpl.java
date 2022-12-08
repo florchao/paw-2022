@@ -41,6 +41,12 @@ public class RaitingServiceImpl implements RaitingService {
     }
 
     @Override
+    public float getRating(long employeeId) {
+        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
+        return employee.map(value -> employeeDao.getPrevRating(value)).orElse(0f);
+    }
+
+    @Override
     public boolean hasAlreadyRated(long employeeId, long employerId) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
