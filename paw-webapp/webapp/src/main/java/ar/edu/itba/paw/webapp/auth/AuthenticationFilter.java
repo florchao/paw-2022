@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.auth;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.UserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +43,21 @@ import java.util.*;
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
 
+    String secret = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
+
     @Autowired
     private UserService userService;
-
 
     @Autowired
     private PawUserDetailsService pawUserDetailsService;
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.equals("/api/employees");
+    }
 
     private String basicAuthentication(String basicAuth) throws UserNotFoundException, IllegalArgumentException, InsufficientAuthenticationException {
         int BASIC_TOKEN_LENGTH = 6;
@@ -77,15 +86,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         User user = algo.orElseThrow(() -> new UserNotFoundException("User not found"));
 
         //TODO save secret key as env variable
-        String secret = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
-
         Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
                 SignatureAlgorithm.HS256.getJcaName());
         String jwtToken = null;
         try {
             jwtToken = Jwts.builder()
                     .claim("email", credentials[0])
-                    .claim("role", user.getId())
+                    .claim("role", user.getId() == 1 ? "EMPLOYER" : "EMPLOYEE")
                     .claim("uid", user.getId())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(Instant.now().plus(10000L, ChronoUnit.HOURS)))
@@ -97,9 +104,27 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         return jwtToken;
     }
 
-    private void bearerAuthentication(String bearerAuth) {
+    private void bearerAuthentication(String bearerAuth) throws InsufficientAuthenticationException {
         int BEARER_TOKEN_LENGTH = 7;
+
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
+                SignatureAlgorithm.HS256.getJcaName());
+
         String jwt = bearerAuth.substring(BEARER_TOKEN_LENGTH);
+        try {
+            Jws<Claims> parsed = Jwts.parserBuilder()
+                    .setSigningKey(hmacKey)
+                    .build()
+                    .parseClaimsJws(jwt);
+    //        System.out.println(parsed.getBody());
+            UserDetails userDetails = pawUserDetailsService.loadUserByUsername(parsed.getBody().get("email").toString());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails == null ? Collections.emptyList() : userDetails.getAuthorities()
+            );
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        } catch (Exception e) {
+            throw new InsufficientAuthenticationException("Invalid token");
+        }
     }
 
     @Override
@@ -124,8 +149,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
-
-
 
 
 

@@ -13,6 +13,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -49,6 +50,12 @@ public class EmployerController {
 //        Optional<User> user = userService.findByUsername(principal.getUsername());
 //        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
 //            if (user.isPresent()) {
+
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<User> user = userService.findByUsername(userName);
+        if (user.orElse(null).getId() != id) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
         Optional<EmployerDto> employer = employerService.getEmployerById(id).map(e -> EmployerDto.fromEmployer(uriInfo, e));
         if(employer.isPresent()){
             GenericEntity<EmployerDto> genericEntity = new GenericEntity<EmployerDto>(employer.get()){};
