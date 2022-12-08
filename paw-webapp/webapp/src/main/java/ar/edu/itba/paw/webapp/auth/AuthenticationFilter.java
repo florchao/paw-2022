@@ -50,7 +50,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    private String basicAuthentication(String basicAuth) {
+    private String basicAuthentication(String basicAuth) throws UserNotFoundException, IllegalArgumentException, InsufficientAuthenticationException {
         int BASIC_TOKEN_LENGTH = 6;
         String basicToken = basicAuth.substring(BASIC_TOKEN_LENGTH);
         String decoded = new String(Base64.getDecoder().decode(basicToken));
@@ -61,7 +61,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(credentials[0], credentials[1])
             );
         } catch (AuthenticationException e) {
-            System.out.println("No estas autenticado hermano");
             throw new InsufficientAuthenticationException("Invalid credentials");
         }
         UserDetails userDetails = pawUserDetailsService.loadUserByUsername(credentials[0]);
@@ -73,12 +72,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         return createJWT(credentials);
     }
 
-    private String createJWT(String[] credentials) {
+    private String createJWT(String[] credentials) throws UserNotFoundException, IllegalArgumentException {
         Optional<User> algo = userService.findByUsername(credentials[0]);
         User user = algo.orElseThrow(() -> new UserNotFoundException("User not found"));
-        System.out.println("Creando JWT");
-        // TODO get role and uid from username
-
 
         //TODO save secret key as env variable
         String secret = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
@@ -97,7 +93,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     .signWith(hmacKey)
                     .compact();
         } catch (Exception e) {
-            System.out.println("No se pudo crear el JWT");
+            throw new IllegalArgumentException("Invalid username or password");
         }
         return jwtToken;
     }
@@ -115,7 +111,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 String jwt = basicAuthentication(authHeaderContent);
                 httpServletResponse.addHeader("Authorization", "Bearer " + jwt);
             } catch (Exception e) {
-                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
+                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid username or password");
             }
         } else if (authHeaderContent != null && authHeaderContent.startsWith("Bearer")) {
             bearerAuthentication(authHeaderContent);
