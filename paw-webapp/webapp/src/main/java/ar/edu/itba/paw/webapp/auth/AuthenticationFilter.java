@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
@@ -53,11 +54,45 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        return path.equals("/api/jobs") || path.equals("/api/employees");
-    }
+    private final List<Pair> blackList = new ArrayList<>();
+
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        Pair requestPair = new Pair(request.getMethod(), request.getRequestURI());
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employees"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/applicants/{employeeId}/{jobId}"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/applicants/{employeeId}/{jobId}"));
+//        blackList.add(new Pair(HttpMethod.POST, "/api/applicants"));
+//        blackList.add(new Pair(HttpMethod.PUT, "/api/applicants/{employeeId}/{jobId}"));
+//        blackList.add(new Pair(HttpMethod.DELETE, "/api/applicants/{employeeId}/{jobId}"));
+//        blackList.add(new Pair(HttpMethod.POST, "/api/contacts/us"));
+//        blackList.add(new Pair(HttpMethod.POST, "/api/contacts"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/contacts/{employeeId}/{employerId}"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{id}"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{id}/jobs"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{id}/contacts"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{id}/reviews"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{employeeId}/reviews/{employerId}"));
+//        blackList.add(new Pair(HttpMethod.POST, "/api/employees"));
+//        blackList.add(new Pair(HttpMethod.PUT, "/api/employees/{id}"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employers/{id}"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employers/{id}/jobs"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employers/{id}/reviews"));
+//        blackList.add(new Pair(HttpMethod.GET, "/api/employers/{employerId}/reviews/{employeeId}"));
+//        blackList.add(new Pair(HttpMethod.POST, "/api/employers"));
+//        blackList.add(new Pair(HttpMethod.GET, "api/images/{id}"));
+//        blackList.add(new Pair(HttpMethod.GET, "api/jobs"));
+//        blackList.add(new Pair(HttpMethod.GET, "api/jobs/{id}"));
+//        blackList.add(new Pair(HttpMethod.GET, "api/jobs/{id}/applicants"));
+//        blackList.add(new Pair(HttpMethod.POST, "api/jobs"));
+//        blackList.add(new Pair(HttpMethod.DELETE, "api/jobs/{id}"));
+//        blackList.add(new Pair(HttpMethod.GET, "api/ratings/{employeeId}/{employerId}"));
+//        blackList.add(new Pair(HttpMethod.POST, "api/ratings"));
+//        blackList.add(new Pair(HttpMethod.POST, "api/reviews"));
+//        blackList.add(new Pair(HttpMethod.PUT, "api/users"));
+//        blackList.add(new Pair(HttpMethod.DELETE, "api/users/{id}"));
+//        return blackList.contains(requestPair);
+//    }
 
     private String basicAuthentication(String basicAuth) throws UserNotFoundException, IllegalArgumentException, InsufficientAuthenticationException {
         int BASIC_TOKEN_LENGTH = 6;
@@ -148,7 +183,35 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
+
+    class Pair {
+        private final String method;
+        private final String path;
+        Pair(String method, String path) {
+            this.method = method;
+            this.path = path;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Pair pair = (Pair) o;
+
+            if (!Objects.equals(method, pair.method)) return false;
+            return Objects.equals(path, pair.path);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = method != null ? method.hashCode() : 0;
+            result = 31 * result + (path != null ? path.hashCode() : 0);
+            return result;
+        }
+    }
 }
+
 
 
 

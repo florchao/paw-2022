@@ -61,7 +61,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-//                .and().antMatcher("/**").authorizeRequests()
+                .and().antMatcher("/**").authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/applicants/{employeeId}/{jobId}").anonymous()
                 .antMatchers(HttpMethod.POST, "/api/applicants").anonymous()
                 .antMatchers(HttpMethod.PUT, "/api/applicants/{employeeId}/{jobId}").anonymous()
