@@ -41,7 +41,7 @@ export const Job = () => {
 
     watch("content")
 
-    useFormPersist("form", {
+    useFormPersist("reviewEmployerForm", {
         watch,
         setValue,
         storage: window.localStorage,
@@ -49,7 +49,7 @@ export const Job = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.putEmployerReview(e, job.employerId.id, data.content)
-        localStorage.clear()
+        localStorage.removeItem("reviewEmployerForm")
         setMyReview(post)
     }
 

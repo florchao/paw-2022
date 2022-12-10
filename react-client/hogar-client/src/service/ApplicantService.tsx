@@ -1,7 +1,10 @@
+import {APPLICANT_URL, EMPLOYEE_URL, JOBS} from "../utils/utils";
+
+
 export class ApplicantService{
 
     public static async getAppliedJobs(id : number){
-        return await fetch('http://localhost:8080/api/employee' + id + '/jobs', {
+        return await fetch(EMPLOYEE_URL + id + JOBS, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -22,7 +25,7 @@ export class ApplicantService{
         formData.append("employeeId", employeeId)
         formData.append("jobId", jobId)
 
-        return await fetch('http://localhost:8080/api/applicants/', {
+        return await fetch(APPLICANT_URL, {
             method: 'POST',
             headers: {},
             body: formData
@@ -34,7 +37,7 @@ export class ApplicantService{
         const formData:any = new FormData();
         formData.append("status", status)
 
-        return await fetch('http://localhost:8080/api/applicants/' + employeeId +'/'+ jobId , {
+        return await fetch(APPLICANT_URL + employeeId +'/'+ jobId , {
             method: 'PUT',
             headers: {},
             body: formData
@@ -42,7 +45,7 @@ export class ApplicantService{
     }
 
     public static async deleteApplication(employeeId: number, jobId: number){
-        return await fetch('http://localhost:8080/api/applicants/' + employeeId +'/'+ jobId , {
+        return await fetch(APPLICANT_URL + employeeId +'/'+ jobId , {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -52,7 +55,7 @@ export class ApplicantService{
     }
 
     public static async getApplicationStatus(employeeId: number, jobId: number){
-        return await fetch('http://localhost:8080/api/applicants/' + employeeId +'/'+ jobId, {
+        return await fetch(APPLICANT_URL + employeeId +'/'+ jobId, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

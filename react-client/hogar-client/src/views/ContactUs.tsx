@@ -33,7 +33,7 @@ export const ContactUs = () => {
     watch("name")
     watch("content")
 
-    useFormPersist("form", {
+    useFormPersist("contactUsForm", {
         watch,
         setValue,
         storage: window.localStorage,
@@ -41,7 +41,7 @@ export const ContactUs = () => {
 
     const onSubmit = async (data: any, e: any) => {
         await ContactService.contactUs(e, data.name, data.mail, data.content)
-        localStorage.clear()
+        localStorage.removeItem("contactUsForm")
         reset()
         setShowFeedback(true)
     }

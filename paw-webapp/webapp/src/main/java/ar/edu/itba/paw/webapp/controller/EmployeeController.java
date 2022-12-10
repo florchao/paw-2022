@@ -41,7 +41,9 @@ import java.util.stream.Collectors;
 @Path("/api/employees")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 4;
+    private final int PAGE_SIZE = 100;
+
+    private final int PAGE_SIZE_REVIEWS = 5;
 
     @Autowired
     private EmployeeService employeeService;
@@ -167,7 +169,7 @@ public class EmployeeController {
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployeeReviews(@PathParam("id") long id) {
-        List<ReviewDto> reviews = reviewService.getAllReviews(id, null, 0L, PAGE_SIZE).stream().map(r -> ReviewDto.fromEmployeeReview(uriInfo, r)).collect(Collectors.toList());
+        List<ReviewDto> reviews = reviewService.getAllReviews(id, null, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployeeReview(uriInfo, r)).collect(Collectors.toList());
 
         //TODO: si es empleado el que inició sesión
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {

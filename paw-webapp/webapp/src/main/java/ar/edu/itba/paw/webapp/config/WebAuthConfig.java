@@ -57,7 +57,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource())
                 .and()
-//                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
@@ -93,10 +92,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "api/reviews").anonymous()
                 .antMatchers(HttpMethod.PUT, "api/users").anonymous()
                 .antMatchers(HttpMethod.DELETE, "api/users/{id}").anonymous()
-                .antMatchers("/**").anonymous()
 
                 .and().exceptionHandling()
                 .accessDeniedPage("/403")
+//                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .and().csrf().disable();
 //                .and().csrf().disable();
     }

@@ -1,8 +1,10 @@
+import {EMPLOYER_URL} from "../utils/utils";
+
 export class EmployerService {
 
     public static async getEmployer(id: number) {
         //todo harcodeado la url para el usuario
-        return await fetch('http://localhost:8080/api/employers/' + id, {
+        return await fetch(EMPLOYER_URL + id, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -27,7 +29,7 @@ export class EmployerService {
         formData.append("last", lastname)
         formData.append("image", image, image.name)
 
-        return await fetch('http://localhost:8080/api/employers/', {
+        return await fetch(EMPLOYER_URL, {
             method: 'POST',
             headers: {},
             body: formData

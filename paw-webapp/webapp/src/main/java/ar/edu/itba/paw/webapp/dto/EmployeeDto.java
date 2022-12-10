@@ -62,7 +62,7 @@ public class EmployeeDto {
 
         final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
         final UriBuilder employerReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
-        final UriBuilder ratingsUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/rating").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder ratingsUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/ratings").path(String.valueOf(employee.getId().getId()));
 
         dto.reviews = reviewBuilder.build();
         dto.employerReview = employerReviewBuilder.build();
@@ -73,7 +73,7 @@ public class EmployeeDto {
 
     public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee);
-        final UriBuilder deleteUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/user").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder deleteUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/users").path(String.valueOf(employee.getId().getId()));
 
         dto.delete = deleteUriBuilder.build();
 

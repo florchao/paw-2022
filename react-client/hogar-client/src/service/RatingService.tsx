@@ -1,3 +1,5 @@
+import {RATINGS_URL} from "../utils/utils";
+
 export class RatingService {
 
     public static async getEmployeeRating(url: string, employerId: number) {
@@ -22,7 +24,7 @@ export class RatingService {
         formData.append("employerId", employerId)
         formData.append("rating", rating)
 
-        return await fetch('http://localhost:8080/api/ratings', {
+        return await fetch(RATINGS_URL, {
             method: 'POST',
             headers: {},
             body: formData

@@ -1,3 +1,5 @@
+import {REVIEWS_URL} from "../utils/utils";
+
 export class ReviewService {
 
     public static async getEmployeeReviews(url: string) {
@@ -81,7 +83,7 @@ export class ReviewService {
         formData.append("employerId", employerId)
         formData.append("forEmployee", false)
 
-        return await fetch('http://localhost:8080/api/reviews', {
+        return await fetch(REVIEWS_URL, {
             method: 'POST',
             headers: {},
             body: formData
@@ -97,7 +99,7 @@ export class ReviewService {
         formData.append("employerId", 2)
         formData.append("forEmployee", true)
 
-        return await fetch('http://localhost:8080/api/reviews', {
+        return await fetch(REVIEWS_URL, {
             method: 'POST',
             headers: {},
             body: formData

@@ -1,9 +1,11 @@
+import {CONTACT_URL, CONTACTS, EMPLOYEE_URL} from "../utils/utils";
+
 export class ContactService {
 
     public static async contactUs (e: any, name: string, mail: string, content: string) {
         e.preventDefault();
         const blog = {name, mail, content};
-        return await fetch('http://localhost:8080/api/contacts/us', {
+        return await fetch(CONTACT_URL + 'us', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(blog)
@@ -21,7 +23,7 @@ export class ContactService {
         formData.append('employee_id', employee_id);
         formData.append('employer_id', employer_id);
 
-        return await fetch('http://localhost:8080/api/contacts/' + employee_id + '/' + employer_id, {
+        return await fetch(CONTACT_URL + employee_id + '/' + employer_id, {
             method: 'POST',
             headers: {},
             body: formData
@@ -29,7 +31,7 @@ export class ContactService {
     }
 
     public static async contacts(id: number) {
-        return await fetch('http://localhost:8080/api/employee/' + id + '/contacts' , {
+        return await fetch(EMPLOYEE_URL + id + CONTACTS , {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -44,7 +46,7 @@ export class ContactService {
     }
 
     public static async getContact(id: number, employerId: number) {
-        return await fetch('http://localhost:8080/api/contacts/' + id +'/'+ employerId , {
+        return await fetch(CONTACT_URL + id +'/'+ employerId , {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
