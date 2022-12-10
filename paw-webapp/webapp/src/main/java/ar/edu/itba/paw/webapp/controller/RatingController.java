@@ -38,16 +38,18 @@ public class RatingController {
         return Response.noContent().build();
     }
 
-//    TODO: los ids se pasan por el body
     @POST
     @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response postRating(@FormDataParam("rating") Long rating, @FormDataParam("employeeId") long employeeId, @FormDataParam("employerId") long employerId) {
         if (rating == null)
             rating = 0L;
-        float finalRating = ratingService.updateRating(employeeId, rating, employerId);
-        long voteCount = employeeService.getRatingVoteCount(employeeId);
-        return Response.ok().build();
+        if(ratingService.hasAlreadyRated(employeeId, employerId))
+            return Response.serverError().build();
+        float newRating = ratingService.updateRating(employeeId, rating, employerId);
+        Rating r = new Rating(newRating, employeeService.getRatingVoteCount(employeeId), ratingService.hasAlreadyRated(employeeId, employerId));
+        GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(r) {};
+        return Response.status(201).entity(genericEntity).build();
     }
 
     static class Rating {

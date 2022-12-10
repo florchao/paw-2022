@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("/api/review")
+@Path("/api/reviews")
 @Component
 public class ReviewController {
     @Autowired

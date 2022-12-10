@@ -25,7 +25,7 @@ const RegisterEmployer = () => {
     watch("password")
     watch("confirmPassword")
 
-    useFormPersist("form", {
+    useFormPersist("registerEmployerForm", {
         watch,
         setValue,
         storage: window.localStorage,
@@ -90,7 +90,7 @@ const RegisterEmployer = () => {
 
     const onSubmit = async (data:any, e: any) => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
-        localStorage.clear()
+        localStorage.removeItem("registerEmployerForm")
         nav('/employer', {replace: true, state: {id: post}})
     }
 

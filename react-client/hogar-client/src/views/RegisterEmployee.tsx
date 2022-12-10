@@ -7,7 +7,7 @@ const RegisterEmployee = () => {
 
     const onSubmit = async (data:any, e: any, image:File) => {
         const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.availabilities, data.abilities, image!)
-        localStorage.clear()
+        localStorage.removeItem("employeeForm")
         nav('/employee', {replace: true, state: {id: post, status: -1}})
     }
 

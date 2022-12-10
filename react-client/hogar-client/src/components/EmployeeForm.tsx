@@ -33,7 +33,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
     watch("abilities")
 
 
-    useFormPersist("form", {
+    useFormPersist("employeeForm", {
         watch,
         setValue,
         storage: window.localStorage,

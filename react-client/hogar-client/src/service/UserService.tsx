@@ -1,7 +1,9 @@
+import {USER_URL} from "../utils/utils";
+
 export class UserService{
 
     public static async deleteUser(id: number) {
-        return await fetch('http://localhost:8080/api/users/' + id, {
+        return await fetch(USER_URL + id, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -29,7 +31,7 @@ export class UserService{
     public static async newPassword(e: any, mail: string, password: string, confirmPassword: string){
         e.preventDefault();
         const form = {mail, password, confirmPassword};
-        return await fetch('http://localhost:8080/api/users/',{
+        return await fetch(USER_URL,{
             method: 'PUT',
             headers: {"Content-Type": "application/json",
             },
