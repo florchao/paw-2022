@@ -1,10 +1,8 @@
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
-import {ContactService} from "../service/ContactService";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
-import {undefined} from "zod";
 
 export const LoginCard = () => {
     const {t} = useTranslation();
@@ -33,11 +31,12 @@ export const LoginCard = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const result = await UserService.getUser(e, data.email, data.password)
-        console.log(result.status)
         if (result.status === 200) {
             let body = await result.json()
             localStorage['hogar-role'] = body.role
             localStorage['hogar-uid'] = body.uid
+            let authHeader = result.headers.get('Authorization')
+            localStorage['hogar-jwt'] = authHeader?.slice(7)
             localStorage.removeItem("loginForm")
             nav("/explore", {replace: true})
         }
