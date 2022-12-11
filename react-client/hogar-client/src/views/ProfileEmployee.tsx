@@ -14,6 +14,7 @@ import ErrorFeedback from "../components/ErrorFeedback";
 import Modal from "react-modal";
 import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
+import {BACK_SLASH, EMPLOYEE_URL, IMAGE_URL} from "../utils/utils";
 
 export const ProfileEmployee = () => {
 
@@ -25,7 +26,7 @@ export const ProfileEmployee = () => {
     const [review, setReview]: any = useState()
     const [myReview, setMyReview]: any = useState()
 
-    const {self, image, status} = useLocation().state
+    const {self, image, status, id} = useLocation().state
 
     const {t} = useTranslation();
     const nav = useNavigate();
@@ -62,20 +63,29 @@ export const ProfileEmployee = () => {
     }
 
     useEffect(() => {
-        EmployeeService.getEmployee(self, false).then((e) => setEmployee(e));
+        let url
+        if(self == undefined && id != undefined) {
+            url =  EMPLOYEE_URL + BACK_SLASH + id
+        } else
+            url = self
+        EmployeeService.getEmployee(url, false).then((e) => setEmployee(e));
     }, [])
 
     useEffect(() => {
-        if (employee) {
-            UserService.loadImage(image).then(
-                (img) => {
-                    if (img.size == 0)
-                        setImg("./images/user.png")
-                    else
-                        setImg(URL.createObjectURL(img))
-                })
-        }
-    }, [employee])
+        let url
+        if(image == undefined && id != undefined) {
+            url =  IMAGE_URL + BACK_SLASH + id
+        } else
+            url = image
+        UserService.loadImage(url).then(
+            (img) => {
+                if (img.size == 0)
+                    setImg("./images/user.png")
+                else
+                    setImg(URL.createObjectURL(img))
+            })
+
+    }, [])
 
     useEffect(() => {
             if (employee) {
