@@ -4,7 +4,6 @@ import useFormPersist from "react-hook-form-persist";
 import {ContactService} from "../service/ContactService";
 import {redirect, useLocation, useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
-import {undefined} from "zod";
 
 export const LoginCard = () => {
     const {t} = useTranslation();
@@ -36,8 +35,10 @@ export const LoginCard = () => {
         console.log(result.status)
         if (result.status === 200) {
             let body = await result.json()
-            await localStorage.setItem('hogar-role', body.role)
-            await localStorage.setItem('hogar-uid', body.uid)
+            localStorage['hogar-role'] = body.role
+            localStorage['hogar-uid'] = body.uid
+            let authHeader = result.headers.get('Authorization')
+            localStorage['hogar-jwt'] = authHeader?.slice(7)
             localStorage.removeItem("loginForm")
             nav("/explore")
             window.location.reload()
