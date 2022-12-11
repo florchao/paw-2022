@@ -4,6 +4,7 @@ import useFormPersist from "react-hook-form-persist";
 import {ContactService} from "../service/ContactService";
 import {useLocation, useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
+import {undefined} from "zod";
 
 export const LoginCard = () => {
     const {t} = useTranslation();
@@ -16,8 +17,8 @@ export const LoginCard = () => {
     const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
     const nav = useNavigate();
 
-    const invalidEmail = (email : string) => {
-        if( email.length <= 5)
+    const invalidEmail = (email: string) => {
+        if (email.length <= 5)
             return false
     };
 
@@ -32,9 +33,14 @@ export const LoginCard = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const result = await UserService.getUser(e, data.email, data.password)
-        console.log(result)
-        localStorage.removeItem("loginForm")
-        // nav("/employee", {replace: true, state: {id: id, status: result}})
+        console.log(result.status)
+        if (result.status === 200) {
+            let body = await result.json()
+            localStorage['hogar-role'] = body.role
+            localStorage['hogar-uid'] = body.uid
+            localStorage.removeItem("loginForm")
+            nav("/explore", {replace: true})
+        }
     }
 
     return (
@@ -46,7 +52,7 @@ export const LoginCard = () => {
                         <label className="text-sm font-medium text-gray-900">{t('LogIn.mail')}</label>
                         <input type="email"
                                value={getValues("email")}
-                               {...register("email", {required:true, validate:{invalidEmail}} )}
+                               {...register("email", {required: true, validate: {invalidEmail}})}
                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                         />
                         {/*<input id="username" name="j_username" type="text"*/}
@@ -56,15 +62,15 @@ export const LoginCard = () => {
                         <label className="text-sm font-medium text-gray-900">{t('LogIn.password')}</label>
                         <input type="password"
                                value={getValues("password")}
-                               {...register("password", {required:true} )}
+                               {...register("password", {required: true})}
                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                         />
                     </div>
                     <div className="form-group mb-6">
                     </div>
                     <div className="form-group mb-6">
-                            {/*<input name="j_rememberme" type="checkbox"/>*/}
-                            {/*{t('LogIn.remember')}*/}
+                        {/*<input name="j_rememberme" type="checkbox"/>*/}
+                        {/*{t('LogIn.remember')}*/}
                     </div>
                     <div className="form-group mb-6">
                         <button type="submit"

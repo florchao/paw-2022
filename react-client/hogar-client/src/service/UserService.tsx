@@ -12,7 +12,7 @@ export class UserService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + btoa(email + ":" + password),
             }
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     console.log(error)
