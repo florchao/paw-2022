@@ -29,13 +29,12 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Optional<Employee> getEmployeeById(long id) {
         Optional<Employee> employee = (employeeDao.getEmployeeById(id));
-        if(!employee.isPresent()){
-            return employee;
+        if(employee.isPresent()){
+            //esto hay que hacerlo por los empleados que ya estan creados sino  ahora se setea cuando se crea el empleado
+            employee.get().setAbilitiesArr(employee.get().getAbilities());
+            employee.get().setAvailabilityArr(employee.get().getAvailability());
         }
-        List<String> abilitiesArr = new ArrayList<>(Arrays.asList(employee.get().getAbilities().split(",")));
-        List<String> availabilityArr = new ArrayList<>(Arrays.asList(employee.get().getAvailability().split(",")));
-        Employee aux = new Employee(employee.get().getName(), employee.get().getLocation(), employee.get().getId(), availabilityArr, employee.get().getExperienceYears(), abilitiesArr);
-        return Optional.of(aux);
+        return employee;
     }
 
     @Transactional
