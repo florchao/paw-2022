@@ -107,13 +107,20 @@ export const TRANSLATIONS_EN = {
     account:"Don't have an account yet?",
     register:"Register",
     forgot:"Don't have a password yet?",
-    setP:"Set it"
+    setP:"Set it",
+    invalidEmail: "Please enter a valid email",
+    invalidPassword: "Please enter a password",
   },
   Navbar:{
     explore:"Explore",
     register:"Register",
     login:"Login",
-    contactUs:"Contact Us"
+    contactUs:"Contact Us",
+    profile: "Profile",
+    logout: "Logout",
+    jobsApplied: "Jobs applied",
+    jobsPosted: "Jobs posted",
+    contacts: "Contacts"
   },
   Register:{
     employer:"Employer",
