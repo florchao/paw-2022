@@ -1,10 +1,10 @@
-import {APPLICANT_URL, EMPLOYEE_URL, JOBS} from "../utils/utils";
+import {APPLICANT_URL, BACK_SLASH, EMPLOYEE_URL, JOBS} from "../utils/utils";
 
 
 export class ApplicantService{
 
     public static async getAppliedJobs(id : number){
-        return await fetch(EMPLOYEE_URL + id + JOBS, {
+        return await fetch(EMPLOYEE_URL + BACK_SLASH + id + JOBS, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -37,7 +37,7 @@ export class ApplicantService{
         const formData:any = new FormData();
         formData.append("status", status)
 
-        return await fetch(APPLICANT_URL + employeeId +'/'+ jobId , {
+        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId +'/'+ jobId , {
             method: 'PUT',
             headers: {},
             body: formData
@@ -45,7 +45,7 @@ export class ApplicantService{
     }
 
     public static async deleteApplication(employeeId: number, jobId: number){
-        return await fetch(APPLICANT_URL + employeeId +'/'+ jobId , {
+        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -55,7 +55,7 @@ export class ApplicantService{
     }
 
     public static async getApplicationStatus(employeeId: number, jobId: number){
-        return await fetch(APPLICANT_URL + employeeId +'/'+ jobId, {
+        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

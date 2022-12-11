@@ -165,21 +165,28 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeaderContent = httpServletRequest.getHeader("Authorization");
-        if (authHeaderContent != null && authHeaderContent.startsWith("Basic")) {
+        if(authHeaderContent == null){
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            return;
+        }
+        if (authHeaderContent.startsWith("Basic")) {
             try {
                 String jwt = basicAuthentication(authHeaderContent);
                 httpServletResponse.addHeader("Authorization", "Bearer " + jwt);
             } catch (Exception e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid username or password");
+                return;
             }
-        } else if (authHeaderContent != null && authHeaderContent.startsWith("Bearer")) {
+        } else if (authHeaderContent.startsWith("Bearer")) {
             try {
                 bearerAuthentication(authHeaderContent);
             } catch (Exception e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+                return;
             }
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication error");
+            return;
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

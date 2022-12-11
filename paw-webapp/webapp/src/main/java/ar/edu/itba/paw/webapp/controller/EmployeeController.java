@@ -203,6 +203,10 @@ public class EmployeeController {
                                    @FormDataParam("abilities[]") List<String> abilities,
                                    @FormDataParam("image") InputStream image) throws IOException, UserFoundException, PassMatchException {
         User u = userService.create(mail, password, password, 1);
+
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uid = String.valueOf(hogarUser.getUserID());
+
         employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, fromListToString(abilities), IOUtils.toByteArray(image));
         return Response.ok(u.getId()).build();
     }

@@ -1,10 +1,10 @@
-import {EMPLOYER_URL} from "../utils/utils";
+import {BACK_SLASH, EMPLOYER_URL} from "../utils/utils";
 
 export class EmployerService {
 
     public static async getEmployer(id: number) {
         //todo harcodeado la url para el usuario
-        return await fetch(EMPLOYER_URL + id, {
+        return await fetch(EMPLOYER_URL + BACK_SLASH + id, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',

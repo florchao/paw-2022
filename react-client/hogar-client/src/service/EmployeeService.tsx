@@ -1,4 +1,4 @@
-import {EMPLOYEE_URL} from "../utils/utils";
+import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees() {
@@ -102,7 +102,7 @@ export class EmployeeService {
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
 
-        return await fetch(EMPLOYEE_URL + id, {
+        return await fetch(EMPLOYEE_URL + BACK_SLASH + id, {
             method: 'PUT',
             headers: {},
             body: formData

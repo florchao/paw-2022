@@ -1,9 +1,9 @@
-import {RATINGS_URL} from "../utils/utils";
+import {BACK_SLASH, RATINGS_URL} from "../utils/utils";
 
 export class RatingService {
 
     public static async getEmployeeRating(url: string, employerId: number) {
-        return await fetch(url +'/' + employerId, {
+        return await fetch(url + BACK_SLASH + employerId, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

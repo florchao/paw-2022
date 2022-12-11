@@ -1,4 +1,4 @@
-import {JOB_URL} from "../utils/utils";
+import {BACK_SLASH, JOB_URL} from "../utils/utils";
 
 export class JobService {
     public static async getJobs() {
@@ -79,7 +79,7 @@ export class JobService {
     }
 
     public static async getCreatedJob(id: number) {
-        return await fetch(JOB_URL + id, {
+        return await fetch(JOB_URL + BACK_SLASH + id, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -109,7 +109,7 @@ export class JobService {
     }
 
     public static async getIds() {
-        return await fetch(JOB_URL + 'ids', {
+        return await fetch(JOB_URL + BACK_SLASH + 'ids', {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
