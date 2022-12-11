@@ -18,7 +18,7 @@ export const ContactEmployee = () => {
     watch("phone")
     watch("content")
 
-    useFormPersist("form", {
+    useFormPersist("contactForm", {
         watch,
         setValue,
         storage: window.localStorage,
@@ -36,7 +36,7 @@ export const ContactEmployee = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const contact = await ContactService.contactEmployee(e, data.phone, data.content, id, 2)
-        localStorage.clear()
+        localStorage.removeItem("contactForm")
         nav("/employee", {replace: true, state: {id: id, status: contact}})
     }
 

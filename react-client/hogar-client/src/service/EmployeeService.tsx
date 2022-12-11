@@ -1,6 +1,8 @@
+import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+
 export class EmployeeService {
     public static async getEmployees() {
-        return await fetch('http://localhost:8080/api/employees', {
+        return await fetch(EMPLOYEE_URL, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -21,7 +23,7 @@ export class EmployeeService {
         availability?: string
     ) {
 
-        let url = 'http://localhost:8080/api/employees?'
+        let url = EMPLOYEE_URL + '?'
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
@@ -51,8 +53,7 @@ export class EmployeeService {
     }
 
 
-    public static async getEmployee(id: number, edit:boolean) {
-        let url = 'http://localhost:8080/api/employee/' + id
+    public static async getEmployee(url: string, edit:boolean) {
         if(edit)
             url = url.concat('?edit=true')
         return await fetch(url, {
@@ -83,7 +84,7 @@ export class EmployeeService {
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
 
-        return await fetch('http://localhost:8080/api/employee/', {
+        return await fetch(EMPLOYEE_URL, {
             method: 'POST',
             headers: {},
             body: formData
@@ -101,7 +102,7 @@ export class EmployeeService {
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
 
-        return await fetch('http://localhost:8080/api/employee/' + id, {
+        return await fetch(EMPLOYEE_URL + BACK_SLASH + id, {
             method: 'PUT',
             headers: {},
             body: formData

@@ -1,21 +1,10 @@
+import {APPLICANT_URL, BACK_SLASH, EMPLOYEE_URL, JOBS} from "../utils/utils";
+
+
 export class ApplicantService{
-    public static async getApplicants(id : number){
-        return await fetch('http://localhost:8080/api/applicant/' + id, {
-            method: 'GET',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-        }).then((resp) => resp.json())
-            .catch(
-                (error) => {
-                    console.log(error)
-                    throw error
-                })
-    }
 
     public static async getAppliedJobs(id : number){
-        return await fetch('http://localhost:8080/api/applicant/' + id + '/jobs', {
+        return await fetch(EMPLOYEE_URL + BACK_SLASH + id + JOBS, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -36,7 +25,7 @@ export class ApplicantService{
         formData.append("employeeId", employeeId)
         formData.append("jobId", jobId)
 
-        return await fetch('http://localhost:8080/api/applicant/', {
+        return await fetch(APPLICANT_URL, {
             method: 'POST',
             headers: {},
             body: formData
@@ -48,7 +37,7 @@ export class ApplicantService{
         const formData:any = new FormData();
         formData.append("status", status)
 
-        return await fetch('http://localhost:8080/api/applicant/' + employeeId +'/'+ jobId , {
+        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId +'/'+ jobId , {
             method: 'PUT',
             headers: {},
             body: formData
@@ -56,7 +45,7 @@ export class ApplicantService{
     }
 
     public static async deleteApplication(employeeId: number, jobId: number){
-        return await fetch('http://localhost:8080/api/applicant/' + employeeId +'/'+ jobId , {
+        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -66,7 +55,7 @@ export class ApplicantService{
     }
 
     public static async getApplicationStatus(employeeId: number, jobId: number){
-        return await fetch('http://localhost:8080/api/applicant/' + employeeId +'/'+ jobId, {
+        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

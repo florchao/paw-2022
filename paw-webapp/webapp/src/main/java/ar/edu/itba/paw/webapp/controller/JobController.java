@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.ApplicantDto;
 import ar.edu.itba.paw.webapp.dto.IdsDto;
 import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
@@ -32,7 +33,7 @@ import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Path("/api/job")
+@Path("/api/jobs")
 @Component
 public class JobController {
     @Autowired
@@ -46,9 +47,57 @@ public class JobController {
     UriInfo uriInfo;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE_JOBS = 9;
-    private static final long PAGE_SIZE = 8;
+    private static final int PAGE_SIZE = 8;
 
     private final static int PAGE_SIZE_REVIEWS = 2;
+
+    @GET
+    @Path("")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response filterJobs(
+            @QueryParam("name") String name,
+            @QueryParam("experience") Long experienceYears,
+            @QueryParam("location") String location,
+            @QueryParam("availability") String availability,
+            @QueryParam("abilities") String abilities,
+            @QueryParam("page") Long page
+    ) {
+
+        if (page == null)
+            page = 0L;
+        List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> JobDto.fromExplore(uriInfo, j)).collect(Collectors.toList());
+        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response verTrabajo(@PathParam("id") long id) throws JobNotFoundException{
+        Job job = null;
+        try {
+            job = jobService.getJobByID(id);
+        } catch (JobNotFoundException exception){
+            exception.getMessage();
+            exception.getCause();
+        }
+        if (job == null ){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        JobDto jobDto = JobDto.fromJob(uriInfo, job);
+        int jobStatus = -1;
+        GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto){};
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/{jobId}/applicants")
+    @Produces(value = { MediaType.APPLICATION_JSON })
+    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") Long page){
+        List<ApplicantDto> list = applicantService.getApplicantsByJob(jobId,0L,PAGE_SIZE).stream().map(a -> ApplicantDto.fromJob(uriInfo, a)).collect(Collectors.toList());
+        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
+        return Response.ok(genericEntity).build();
+    }
 
     @GET
     @Path("/ids")
@@ -58,14 +107,23 @@ public class JobController {
         return Response.ok(genericEntity).build();
     }
 
+
     @POST
-    @Path("/")
+    @Path("")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response postJob(@Valid final JobForm form) {
         //TODO: poner el id del empleador que esta iniciado sesión
         Job job = jobService.create(form.getTitle(), form.getLocation(), 2, form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
         return Response.ok(job.getJobId()).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(value = { MediaType.APPLICATION_JSON, })
+    public Response deleteJob(@PathParam("id") long id) {
+        jobService.deleteJob(id);
+        return Response.ok().build();
     }
 
 //    @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
@@ -88,74 +146,6 @@ public class JobController {
 //        return crearTrabajo(form);
 //    }
 //
-    @GET
-    @Path("/{id}/employer")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createdJobs(@PathParam("id") long id) {
-//            @RequestParam(value = "publishedPage", required = false) Long page){
-//        if (page == null)
-//            page = 0L;
-        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromExplore(uriInfo, job)).collect(Collectors.toList());
-//        mav.addObject("JobList", jobList);
-//        mav.addObject("publishedPage", page);
-//        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));
-        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
-        return Response.ok(genericEntity).build();
-}
-
-    @GET
-    @Path("/{userId}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response verTrabajo(@PathParam("userId") long userId) throws JobNotFoundException{
-        Job job = null;
-        try {
-            job = jobService.getJobByID(userId);
-        } catch (JobNotFoundException exception){
-            exception.getMessage();
-            exception.getCause();
-        }
-        if (job == null ){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        JobDto jobDto = JobDto.fromJob(uriInfo, job);
-        int jobStatus = -1;
-        GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto){};
-        return Response.ok(genericEntity).build();
-//        Employer employer = job.getEmployerId();
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        HogarUser principal = (HogarUser) auth.getPrincipal();
-//        if (page == null)
-//            page = 0L;
-//        List<Review> reviews;
-//        int maxPage;
-//        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))){
-//            Optional<Review> myReview = reviewService.getMyReviewEmployer(principal.getUserID(), employer.getId().getId());
-//            if (myReview.isPresent()) {
-//                myReview.get().getEmployeeId().firstWordsToUpper();
-//                mav.addObject("myReview", myReview.get());
-//            }
-//            reviews = reviewService.getAllReviewsEmployer(principal.getUserID(), employer.getId().getId(), page, PAGE_SIZE_REVIEWS);
-//            maxPage = reviewService.getPageNumberEmployer(principal.getUserID(), employer.getId().getId(), PAGE_SIZE_REVIEWS);
-//        } else {
-//            maxPage = reviewService.getPageNumberEmployer(null, employer.getId().getId(), PAGE_SIZE_REVIEWS);
-//            reviews = reviewService.getAllReviewsEmployer(null, employer.getId().getId(), page, PAGE_SIZE_REVIEWS);
-//        }
-//        for (Review rev : reviews) {
-//            rev.getEmployeeId().firstWordsToUpper();
-//        }
-//        mav.addObject("ReviewList", reviews);
-//        mav.addObject("page", page);
-//        mav.addObject("maxPage", maxPage);
-//        Boolean existsApplied = jobService.alreadyApplied(id, principal.getUserID());
-//        if(existsApplied){
-//            jobStatus = applicantService.getStatus(principal.getUserID(), job.getJobId());
-//        }
-//        mav.addObject("abilities", Abilities.getIds());
-//        mav.addObject("availability", Availability.getIds());
-//        mav.addObject("alreadyApplied", jobStatus);
-//        mav.addObject("status", status);
-//        return mav;
-    }
 
 //    @RequestMapping(value = "addReviewEmployer/{jobId}/{employerId}", method = {RequestMethod.POST})
 //    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long jobId, @PathVariable final long employerId) throws JobNotFoundException {

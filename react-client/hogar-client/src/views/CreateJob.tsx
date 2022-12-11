@@ -28,7 +28,7 @@ export const CreateJob = () => {
     watch("abilities")
 
 
-    useFormPersist("form", {
+    useFormPersist("jobForm", {
         watch,
         setValue,
         storage: window.localStorage,
@@ -60,7 +60,7 @@ export const CreateJob = () => {
 
     const onSubmit = async (data:any, e: any) => {
         const post = await JobService.postJob(e, data.title, data.location, data.experienceYears, data.availability, data.abilities, data.description)
-        localStorage.clear()
+        localStorage.removeItem("jobForm")
         nav('/job', {replace: true, state: {id: post}})
     }
 

@@ -19,7 +19,9 @@ export const Job = () => {
 
     const employeeId = 3
 
-    const {id} = useLocation().state
+    const {self, id} = useLocation().state
+
+    console.log(id)
 
     const {t} = useTranslation();
     const nav = useNavigate();
@@ -39,7 +41,7 @@ export const Job = () => {
 
     watch("content")
 
-    useFormPersist("form", {
+    useFormPersist("reviewEmployerForm", {
         watch,
         setValue,
         storage: window.localStorage,
@@ -47,24 +49,24 @@ export const Job = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.putEmployerReview(e, job.employerId.id, data.content)
-        localStorage.clear()
+        localStorage.removeItem("reviewEmployerForm")
         setMyReview(post)
     }
 
     useEffect(() => {
-        JobService.getJob(id).then((e) => {
+        JobService.getJob(self).then((e) => {
             setJob(e)
         })
     }, [])
 
     useEffect(() => {
             if (job !== undefined) {
-                ReviewService.getEmployerReviews(job.employerId.id).then(
+                ReviewService.getEmployerReviews(job.employerId.reviews).then(
                     (rsp) => {
                         setReviews(rsp)
                     }
                 )
-                ReviewService.getMyEmployerReview(job.employerId.id).then(
+                ReviewService.getMyEmployerReview(job.employerId.employeeReview).then(
                     (rsp) => {
                         setMyReview(rsp)
                     }
@@ -74,13 +76,13 @@ export const Job = () => {
     )
 
 
-    useEffect(() => {
-        console.log("my")
-            console.log(myReview)
-        console.log("revs")
-            console.log(reviews)
-        }, [myReview, reviews]
-    )
+    // useEffect(() => {
+    //     console.log("my")
+    //         console.log(myReview)
+    //     console.log("revs")
+    //         console.log(reviews)
+    //     }, [myReview, reviews]
+    // )
 
     function delApplication() {
         ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {

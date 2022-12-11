@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {EmployeeService} from "../service/EmployeeService";
 import {UserService} from "../service/UserService";
 
 const ContactCard = (contact: any) => {

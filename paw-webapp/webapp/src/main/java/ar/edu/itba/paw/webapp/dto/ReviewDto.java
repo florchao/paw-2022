@@ -26,7 +26,7 @@ public class ReviewDto {
 
         dto.reviewId = review.getReviewId();
 
-        dto.employer = EmployerDto.fromEmployer(uriInfo, review.getEmployerId());
+        dto.employer = EmployerDto.fromReviews(uriInfo, review.getEmployerId());
 
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         dto.created = formatter.format(review.getCreated());

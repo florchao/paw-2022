@@ -1,18 +1,18 @@
 import {useLocation} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
-import {ApplicantService} from "../service/ApplicantService";
 import ApplicantCard from "../components/ApplicantCard";
+import {JobService} from "../service/JobService";
 
 export const Applicants =()=>{
 
-    const [applicants, setApplicants]: any = useState()
+    const [applicantList, setApplicantList]: any = useState()
 
-    const {id, title} = useLocation().state
+    const {applicants, title} = useLocation().state
     const { t } = useTranslation();
 
     useEffect(() => {
-        ApplicantService.getApplicants(id).then( (e) => {setApplicants(e)});
+        JobService.getApplicants(applicants).then( (e) => {setApplicantList(e)});
     }, [])
 
     return (
@@ -25,7 +25,7 @@ export const Applicants =()=>{
             <div className=" grid grid-row-4 col-span-4 col-start-2 row-span-6 h-full">
                 <div className=" bg-gray-200 rounded-3xl overflow-auto p-5 mb-5 shadow-2xl">
                     <div className="flow-root">
-                        {applicants && applicants.length == 0 ?
+                        {applicantList && applicantList.length == 0 ?
                             <div className = "grid content-center justify-center h-5/6 mt-16">
                                 <div className = "grid justify-items-center">
                                     <img src={ '/images/sinEmpleadas.png' } alt="sinEmpleadas" className="mr-3 h-6 sm:h-52"/>
@@ -34,7 +34,7 @@ export const Applicants =()=>{
                             </div>
                             :
                             <ul role="list" className="divide-y divide-gray-300">
-                                {applicants && applicants.map((applicant: Object) => (<ApplicantCard applicant={applicant}/>))}
+                                {applicantList && applicantList.map((applicant: Object) => (<ApplicantCard applicant={applicant}/>))}
                             </ul>
                         }
 

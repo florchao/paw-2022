@@ -1,6 +1,8 @@
+import {BACK_SLASH, JOB_URL} from "../utils/utils";
+
 export class JobService {
     public static async getJobs() {
-        return await fetch('http://localhost:8080/api/jobs', {
+        return await fetch(JOB_URL, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -21,7 +23,7 @@ export class JobService {
         availability?: string
     ) {
 
-        let url = 'http://localhost:8080/api/jobs?'
+        let url = JOB_URL + '?'
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
@@ -51,8 +53,8 @@ export class JobService {
     }
 
 
-    public static async getJob(id: number) {
-        return await fetch('http://localhost:8080/api/job/' + id, {
+    public static async getJob(url: string) {
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -69,7 +71,7 @@ export class JobService {
     public static async postJob(e: any, title: string, location: string, experienceYears: number, availability: string, abilities: string[], description: string) {
         e.preventDefault();
         const jobForm = {title, location, experienceYears, availability, abilities, description};
-        return await fetch('http://localhost:8080/api/job', {
+        return await fetch(JOB_URL, {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(jobForm)
@@ -77,7 +79,22 @@ export class JobService {
     }
 
     public static async getCreatedJob(id: number) {
-        return await fetch('http://localhost:8080/api/job/employer/' + id, {
+        return await fetch(JOB_URL + BACK_SLASH + id, {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json"
+            },
+        }).then((resp) => resp.json())
+            .catch(
+                (error) => {
+                    console.log(error)
+                    throw error
+                })
+    }
+
+    public static async getApplicants(url : string){
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -92,7 +109,7 @@ export class JobService {
     }
 
     public static async getIds() {
-        return await fetch('http://localhost:8080/api/job/ids', {
+        return await fetch(JOB_URL + BACK_SLASH + 'ids', {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",

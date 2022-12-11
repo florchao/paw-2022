@@ -9,8 +9,8 @@ const ApplicantCard = (applicant: any) =>{
     const [image, setImage]: any = useState()
     const [status, setStatus] = useState<string>(a.status)
     const { t } = useTranslation();
+
     async function acceptApplicant(){
-        console.log('accept!!!!')
         const s = await ApplicantService.updateStatus(a.employee.id, a.jobId, 1)
         setStatus(s)
     }
@@ -20,7 +20,7 @@ const ApplicantCard = (applicant: any) =>{
         setStatus(s)
     }
     useEffect(() => {
-        UserService.loadImage(a.employee.id).then(
+        UserService.loadImage(a.employee.image).then(
             (img) => {
                 if (img.size == 0)
                     setImage("../images/user.png")
@@ -37,7 +37,7 @@ const ApplicantCard = (applicant: any) =>{
                         <img className="w-8 h-8 rounded-full object-cover" src={image} alt="employee photo"/>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <Link to={"/employee"} state={{id: a.employee.id}}>
+                        <Link to={"/employee"} state={{self: a.employee.self, image: a.employee.image}}>
 
                         <p className="text-xl font-medium text-gray-900 truncate">
                             {a.employee.name}

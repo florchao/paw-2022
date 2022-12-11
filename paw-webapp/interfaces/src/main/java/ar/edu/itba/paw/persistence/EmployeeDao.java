@@ -26,7 +26,6 @@ public interface EmployeeDao {
     float getPrevRating(Employee employeeId);
 
     long getRatingVoteCount(Employee employeeId);
-
     void incrementVoteCountValue(Employee employeeId);
 
 }
