@@ -119,7 +119,7 @@ public class ContactController {
 //            //return contactPage(form, "error");
 //        }
         contactService.contactUS(form.getContent(), form.getMail(), form.getName());
-        return Response.ok().build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
     //TODO: los ids van por body en el POST
@@ -148,7 +148,7 @@ public class ContactController {
             if (exists) {
                 return Response.ok(1).build();
             }
-            return Response.ok(0).build();
+            return Response.status(Response.Status.CREATED).entity(0).build();
         }
         return Response.serverError().build();
     }

@@ -50,6 +50,10 @@ public class ApplicantController {
     @Path("/{employeeId}/{jobId}")
     public Response getStatusApplication(@PathParam("employeeId") long employeeId,
                                          @PathParam("jobId") long jobId){
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(hogarUser.getUserID() != employeeId){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
         int status = applicantService.getStatus(employeeId, jobId);
         return Response.ok(status).build();
     }
@@ -59,13 +63,17 @@ public class ApplicantController {
     public Response createApplicant(@FormDataParam("employeeId") long employeeId,
                                     @FormDataParam("jobId") long jobId) throws UserNotFoundException{
         User employee = userService.getUserById(employeeId);
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(hogarUser.getUserID() != employeeId){
+            return Response.status(Response.Status.FORBIDDEN).entity(-1).build();
+        }
         try {
             applicantService.apply(jobId, employee);
         } catch (AlreadyExistsException alreadyExistsException) {
             LOGGER.error(String.format("there has already been made a contact for %d by id %d", jobId, employeeId));
             return Response.ok(-1).build();
         }
-        return Response.ok(0).build();
+        return Response.status(Response.Status.CREATED).entity(0).build();
     }
 
 
@@ -76,6 +84,7 @@ public class ApplicantController {
     public Response changeStatus(@PathParam("employeeId") long employeeId,
                                  @PathParam("jobId") long jobId,
                                  @FormDataParam("status") int status) throws JobNotFoundException, UserNotFoundException{
+
         int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
         Job job = jobService.getJobByID(jobId);
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
@@ -98,7 +107,7 @@ public class ApplicantController {
     public Response deleteApplication(@PathParam("employeeId") long employeeId,
                                       @PathParam("jobId") long jobId){
         applicantService.withdrawApplication(employeeId,jobId);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 
 

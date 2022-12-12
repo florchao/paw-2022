@@ -19,6 +19,8 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -97,8 +99,16 @@ public class EmployeeController {
     @Path("/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response employeeProfile(@PathParam("id") long id, @QueryParam("edit") String edit) throws UserNotFoundException {
-//        final ModelAndView mav = new ModelAndView("viewProfile");
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
+            HogarUser user = (HogarUser) auth.getPrincipal();
+            if (user.getUserID() == id) {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+        }
+
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         Optional<EmployeeDto> dto;
         if(edit != null && edit.equals("true"))
@@ -109,7 +119,7 @@ public class EmployeeController {
             GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto.get()){};
             return Response.ok(genericEntity).build();
         }
-        return Response.serverError().build();
+        return Response.noContent().build();
 //        mav.addObject("status", status);
 //        if (page == null)
 //            page = 0L;
