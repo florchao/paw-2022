@@ -91,7 +91,8 @@ const RegisterEmployer = () => {
     const onSubmit = async (data:any, e: any) => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
         localStorage.removeItem("registerEmployerForm")
-        nav('/employer', {replace: true, state: {id: post}})
+        //TODO: hay que ver que devuelve el register(200) e iniciar sesion asi dsp redirige a employerLanding
+        nav('/', {replace: true, state: {id: post}})
     }
 
     return (

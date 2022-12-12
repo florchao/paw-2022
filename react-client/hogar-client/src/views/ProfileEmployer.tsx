@@ -13,12 +13,13 @@ export const ProfileEmployer = () => {
 
     const nav = useNavigate();
     let id  = localStorage.getItem("hogar-uid") as unknown as number
-console.log(id)
+
     const {t} = useTranslation();
 
 
     function delEmployer() {
         UserService.deleteUser(id).then(() => {
+                localStorage.clear()
                 nav('/', {replace: true})
             }
         );
