@@ -4,12 +4,8 @@ import {Link} from "react-router-dom";
 const JobCard  = (job: any)=> {
 
     const { t } = useTranslation();
-    let status;
     job = job.job;
-    if(job.status !== null && job.status !== undefined) {
-        status = job.status
-        job = job.job
-    }
+
     return (
         <div className="max-w-sm mb-5 mr-5 w-80 h-52 bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
             <div className="flex justify-end px-4 pt-4">
@@ -47,22 +43,22 @@ const JobCard  = (job: any)=> {
                     <Link to="/job" state={{self: job.self, id: job.jobId}} style={{marginRight: "15px"}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                         {t("JobCard.publication")}
                     </Link>
-                    {status === undefined &&
+                    {localStorage.getItem("hogar-role") === "EMPLOYER" &&
                         <Link to="/job/applicants" state={{applicants: job.applicants, title : job.title}} className="text-sm focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.applicants")}
                         </Link>
                     }
-                    {status === 0 &&
+                    {localStorage.getItem("hogar-role") === "EMPLOYEE" && job.status === 0 &&
                         <a className="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.pending")}
                         </a>
                     }
-                    { status === 1 &&
+                    {localStorage.getItem("hogar-role") === "EMPLOYEE" &&  job.status === 1 &&
                         <a className="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.accepted")}
                         </a>
                     }
-                    { status === 2 &&
+                    { localStorage.getItem("hogar-role") === "EMPLOYEE" && job.status === 2 &&
                         <a className="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5">
                             {t("JobCard.denied")}
                         </a>

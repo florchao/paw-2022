@@ -19,7 +19,8 @@ export const ExploreJobs = () => {
     }, [])
 
     return (
-        <div className="grid content-start h-screen overflow-auto pl-5 pr-5">
+        <div className="grid content-start h-screen overflow-auto pl-5 pr-5 pb-5">
+            <div className="my-10 w-full"></div>
             <div className="grid grid-cols-4">
                 <FilterForm setList={setJobs} type="jobs"/>
                 <div className="col-span-3 col-start-2">

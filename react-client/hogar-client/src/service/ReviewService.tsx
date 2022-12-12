@@ -1,4 +1,4 @@
-import {REVIEWS_URL} from "../utils/utils";
+import {BACK_SLASH, REVIEWS_URL} from "../utils/utils";
 
 export class ReviewService {
 
@@ -7,7 +7,8 @@ export class ReviewService {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => resp.json())
             .catch(
@@ -22,7 +23,8 @@ export class ReviewService {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => resp.json())
             .catch(
@@ -33,12 +35,12 @@ export class ReviewService {
     }
 
     public static async getMyEmployerReview(url: string) {
-        //todo el id del employeeId despues va por token. Esta harcodeado
-        return await fetch(url + '/1', {
+        return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => {
                 if (resp.status == 200) {
@@ -55,11 +57,13 @@ export class ReviewService {
 
     public static async getMyEmployeeReview(url: number) {
         //todo el id del employeeId despues va por token. Esta harcodeado
-        return await fetch(url +  '/2', {
+        return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+
             },
         }).then((resp) => {
                 if (resp.status == 200) {
@@ -74,34 +78,36 @@ export class ReviewService {
                 })
     }
 
-    public static async putEmployerReview(e: any, employerId: number, message: string) {
+    public static async postEmployerReview(e: any, employerId: number, message: string) {
         e.preventDefault();
         const formData: any = new FormData();
         formData.append("content", message)
-        //formData.append("employeeId", localstorage.getItem("id"))
-        formData.append("employeeId", 1)
+        formData.append("employeeId", localStorage.getItem("hogar-uid"))
         formData.append("employerId", employerId)
         formData.append("forEmployee", false)
 
         return await fetch(REVIEWS_URL, {
             method: 'POST',
-            headers: {},
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
             body: formData
         }).then((r) => r.json())
     }
 
-    public static async putEmployeeReview(e: any, employeeId: number, message: string) {
+    public static async postEmployeeReview(e: any, employeeId: number, message: string) {
         e.preventDefault();
         const formData: any = new FormData();
         formData.append("content", message)
         formData.append("employeeId", employeeId)
-        //formData.append("employerId", localstorage.getItem("id"))
-        formData.append("employerId", 2)
+        formData.append("employerId", localStorage.getItem("hogar-uid"))
         formData.append("forEmployee", true)
 
         return await fetch(REVIEWS_URL, {
             method: 'POST',
-            headers: {},
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
             body: formData
         }).then((r) => r.json())
     }

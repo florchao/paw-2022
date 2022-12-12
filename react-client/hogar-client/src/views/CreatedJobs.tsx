@@ -14,7 +14,7 @@ export const CreatedJobs = () => {
     const id = 6
 
     useEffect(() => {
-        JobService.getCreatedJob(id).then( (j) => {
+        JobService.getCreatedJobs(id).then( (j) => {
             setCreatedJobs(j)
         });
     }, [])

@@ -36,7 +36,7 @@ export const AppliedJobs = () => {
             {appliedJobs && appliedJobs.length > 0 &&
                 appliedJobs.map((a: any) => (
                     <div className="flex flex-wrap content-start justify-center">
-                        <JobCard job={a}/>
+                        <JobCard job={a.job}/>
                     </div>
                 ))}
             </div>

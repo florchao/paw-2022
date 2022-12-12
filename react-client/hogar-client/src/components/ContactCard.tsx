@@ -9,7 +9,7 @@ const ContactCard = (contact: any) => {
 
     useEffect(() => {
         //TODO:usar el de Employer
-        UserService.loadImage(contact.employer.id).then(
+        UserService.loadImage(contact.employer.image).then(
             (img) => {
                 if (img.size == 0)
                     setImage("./images/user.png")
@@ -29,7 +29,7 @@ const ContactCard = (contact: any) => {
             </div>
             <div className="flex flex-col items-center pb-6 ">
                 <img className="object-cover mb-3 w-24 h-24 rounded-full shadow-lg"
-                     src={image} alt="Employer Image"/>
+                     src={image? image : "./images/user.png"} alt="Employer Image"/>
                 <h5 className="mb-1 text-xl font-medium text-gray-900">
                     {contact.employer.name}
                 </h5>

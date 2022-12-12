@@ -95,9 +95,9 @@ export const TRANSLATIONS_ES = {
         connect: "CONTACTAR",
         alreadyConnected: "YA SE CONECTO",
         reviews: "OPINIONES",
-        noReviews: "No hay opiniones"
-        // viewProfile.editProfile = EDITAR PERFIL
-        // viewProfile.rateUser = Califica a
+        noReviews: "No hay opiniones",
+        editProfile: "EDITAR PERFIL",
+        rateUser: "Califica a ",
         // viewProfile.thankEmployer = \u00a1Gracias por su colaboracion!
         //     viewProfile.delete = Eliminar perfil
     },

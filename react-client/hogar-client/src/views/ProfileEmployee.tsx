@@ -50,7 +50,7 @@ export const ProfileEmployee = () => {
     })
 
     const onSubmit = async (data: any, e: any) => {
-        const post = await ReviewService.putEmployeeReview(e, employee.id, data.content)
+        const post = await ReviewService.postEmployeeReview(e, employee.id, data.content)
         localStorage.removeItem("reviewEmployeeForm")
         setMyReview(post)
     }
@@ -94,17 +94,18 @@ export const ProfileEmployee = () => {
                         setReview(rsp)
                     }
                 )
-                ReviewService.getMyEmployeeReview(employee.employerReview).then(
-                    (rsp) => {
-                        setMyReview(rsp)
-                    }
-                )
+                if(localStorage.getItem("hogar-role") == "EMPLOYER")
+                    ReviewService.getMyEmployeeReview(employee.employerReview).then(
+                        (rsp) => {
+                            setMyReview(rsp)
+                        }
+                    )
             }
         }, [employee]
     )
 
     useEffect(() => {
-            if (employee) {
+            if (employee && localStorage.getItem("hogar-role") == "EMPLOYER") {
                 RatingService.getEmployeeRating(employee.ratings, employerId).then(
                     (rsp) => {
                         setRating(rsp)
@@ -170,13 +171,22 @@ export const ProfileEmployee = () => {
                                 </h1>
                             </div>
                             <div className="ml-3 col-start-5 row-start-2 w-fit">
-                                <Link to="/contacts" state={{id: employee.id}}>
-                                    {/*name: employee.name}}>*/}
-                                    <button
-                                        className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
-                                        {t('Profile.connect')}
-                                    </button>
-                                </Link>
+                                {localStorage.getItem("hogar-role") == "EMPLOYER" &&
+                                    <Link to="/contact/employee" state={{id: employee.id, name: employee.name}}>
+                                        <button
+                                            className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
+                                            {t('Profile.connect')}
+                                        </button>
+                                    </Link>
+                                }
+                                {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                                    <Link to="/edit" state={{self: employee.self}}>
+                                        <button
+                                            className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
+                                            {t('Profile.editProfile')}
+                                        </button>
+                                    </Link>
+                                }
                                 {rating && rating.count !== 0 &&
                                     <div className={"flex items-center"}>
                                         <Rating
@@ -297,23 +307,25 @@ export const ProfileEmployee = () => {
                                                 <path
                                                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                             </svg>
-                                            <p className="font-semibold text-blue-500 ml-1">Rate</p>
+                                            <p className="font-semibold text-blue-500 ml-1">{t('Profile.rateUser')}{employee.name} </p>
                                         </div>
                                     </button>
                                 )}
                             </div>
-                            <div className="ml-3 col-start-5 row-start-3">
-                                <button type="submit" onClick={delEmployee}
-                                        className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
-                                    <div className="grid grid-rows-1 grid-cols-3">
-                                        <img src={'./images/bin.png'} alt="bin"
-                                             className="mr-3 h-6 sm:h-5 col-start-1"/>
-                                        <p className="col-span-2">
-                                            {t('EmployerProfile.delete')}
-                                        </p>
-                                    </div>
-                                </button>
-                            </div>
+                            {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                                <div className="ml-3 col-start-5 row-start-3">
+                                    <button type="submit" onClick={delEmployee}
+                                            className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
+                                        <div className="grid grid-rows-1 grid-cols-3">
+                                            <img src={'./images/bin.png'} alt="bin"
+                                                 className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                            <p className="col-span-2">
+                                                {t('EmployerProfile.delete')}
+                                            </p>
+                                        </div>
+                                    </button>
+                                </div>
+                            }
                         </div>
                         <div className="grid grid-cols-2">
                             <div className="col-span-1">
@@ -348,7 +360,7 @@ export const ProfileEmployee = () => {
                                 {t('Profile.reviews')}
                             </h1>
                             <ul role="list" className="divide-y divide-gray-300">
-                                {myReview == null && (
+                                {localStorage.getItem("hogar-role") == "EMPLOYER" && myReview == null && (
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <div className="">
                                             <label htmlFor="title"

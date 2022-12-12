@@ -72,7 +72,7 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
     return (
         <div>
             <div
-                className="bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-fit">
+                className="bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-full">
                 <h1 className="font-semibold text-violet-900 hover:cursor-pointer" onClick={resetHandler}>{t('FilterForm.reset')}</h1>
                 <div className={'flex flex-col items-center'}>
                     <h1 className="font-semibold mt-2">{t('FilterForm.expYears')}</h1>
@@ -111,38 +111,38 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
                         onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('FilterForm.locationError'))}
                         onChange={(e: any) => setLocation(e.target.value)}/>
                     <h1 className="font-semibold mt-2">{t('FilterForm.abilities')}</h1>
-                    <div className={'grid grid-cols-12 w-3/4'}>
-                        <div className={'col-span-3 col-start-1]'}>
+                    <div className={'grid grid-cols-12 w-3/4 gap-x-1 items-center'}>
+                        <div className={'col-span-10 col-start-1]'}>
                             <h1>{t('Abilities.cook')}</h1>
                         </div>
                         <div className={'col-start-11'}>
                             <input type={'checkbox'}  onChange={() => abilitiesHandler(1)}></input>
                         </div>
-                        <div className={'col-span-3 col-start-1]'}>
+                        <div className={'col-span-10 col-start-1]'}>
                             <h1>{t('Abilities.iron')}</h1>
                         </div>
                         <div className={'col-start-11'}>
                             <input type={'checkbox'}  onChange={() => abilitiesHandler(2)}></input>
                         </div>
-                        <div className={'col-span-3 col-start-1]'}>
+                        <div className={'col-span-10 col-start-1]'}>
                             <h1>{t('Abilities.child')}</h1>
                         </div>
                         <div className={'col-start-11'}>
                             <input type={'checkbox'}  onChange={() => abilitiesHandler(3)}></input>
                         </div>
-                        <div className={'col-span-3 col-start-1'}>
+                        <div className={'col-span-10 col-start-1'}>
                             <h1>{t('Abilities.older')}</h1>
                         </div>
                         <div className={'col-start-11'}>
                             <input type={'checkbox'}  onChange={() => abilitiesHandler(4)}></input>
                         </div>
-                        <div className={'col-span-3 col-start-1]'}>
+                        <div className={'col-span-10 col-start-1]'}>
                             <h1>{t('Abilities.specialNeeds')}</h1>
                         </div>
                         <div className={'col-start-11'}>
                             <input type={'checkbox'}  onChange={() => abilitiesHandler(5)}></input>
                         </div>
-                        <div className={'col-span-3 col-start-1]'}>
+                        <div className={'col-span-10 col-start-1]'}>
                             <h1>{t('Abilities.pets')}</h1>
                         </div>
                         <div className={'col-start-11'}>
@@ -150,20 +150,20 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
                         </div>
                     </div>
                     <h1 className="font-semibold mt-2">{t('FilterForm.availability')}</h1>
-                    <div className={'grid grid-cols-12 w-3/4'}>
-                        <div className={'col-span-3 col-start-1]'}>
+                    <div className={'grid grid-cols-12 w-3/4 gap-x-1'}>
+                        <div className={'col-span-10 col-start-1'}>
                             <h1>{t('Availabilities.half')}</h1>
                         </div>
                         <div className={'col-start-11'}>
                             <input type={'checkbox'} checked={availability[0]} onChange={() => availabilityHandler(1)}></input>
                         </div>
-                        <div className={'col-span-3 col-start-1'}>
+                        <div className={'col-span-10 col-start-1'}>
                             <h1>{t('Availabilities.complete')}</h1>
                         </div>
                         <div className={'col-start-11'}>
                             <input type={'checkbox'} checked={availability[1]} onChange={() => availabilityHandler(2)}></input>
                         </div>
-                        <div className={'col-span-3 col-start-1]'}>
+                        <div className={'col-span-10 col-start-1]'}>
                             <h1>{t('Availabilities.bed')}</h1>
                         </div>
                         <div className={'col-start-11'}>

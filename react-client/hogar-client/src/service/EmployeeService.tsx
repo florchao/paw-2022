@@ -104,7 +104,9 @@ export class EmployeeService {
 
         return await fetch(EMPLOYEE_URL + BACK_SLASH + id, {
             method: 'PUT',
-            headers: {},
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
             body: formData
         }).then((r) => r.text())
     }

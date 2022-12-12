@@ -8,7 +8,8 @@ export class ApplicantService{
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => resp.json())
             .catch(
@@ -27,7 +28,9 @@ export class ApplicantService{
 
         return await fetch(APPLICANT_URL, {
             method: 'POST',
-            headers: {},
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
             body: formData
         }).then((r) => r.text())
     }
@@ -39,7 +42,9 @@ export class ApplicantService{
 
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId +'/'+ jobId , {
             method: 'PUT',
-            headers: {},
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
             body: formData
         }).then((r) => r.text())
     }
@@ -49,7 +54,9 @@ export class ApplicantService{
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+
             }
         })
     }
@@ -59,7 +66,8 @@ export class ApplicantService{
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((r) => r.text())
     }

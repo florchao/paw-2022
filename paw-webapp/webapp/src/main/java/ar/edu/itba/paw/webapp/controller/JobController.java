@@ -65,7 +65,13 @@ public class JobController {
 
         if (page == null)
             page = 0L;
-        List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> JobDto.fromExplore(uriInfo, j)).collect(Collectors.toList());
+
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> {
+            int status = applicantService.getStatus(principal.getUserID(), j.getJobId());
+            return JobDto.fromExplore(uriInfo, j, status);
+        }).collect(Collectors.toList());
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
     }

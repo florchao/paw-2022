@@ -25,7 +25,9 @@ export class ContactService {
 
         return await fetch(CONTACT_URL + BACK_SLASH + employee_id + BACK_SLASH + employer_id, {
             method: 'POST',
-            headers: {},
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
             body: formData
         }).then((r) => r.text())
     }
@@ -35,7 +37,8 @@ export class ContactService {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => resp.json())
             .catch(
@@ -50,7 +53,8 @@ export class ContactService {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => {
             return resp.json()

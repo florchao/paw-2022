@@ -21,11 +21,11 @@ export const Explore = () => {
 
     // @ts-ignore
     return (
-        <div className="grid grid-cols-8 content-start h-screen overflow-auto pl-5 pr-5">
-            <div className="col-span-2 mr-4 flex flex-col items-center">
+        <div className="grid grid-cols-12 content-start h-screen overflow-auto pl-5 pr-5 pt-20 pb-5">
+            <div className="col-span-3 mr-4 flex flex-col items-center">
                 <FilterForm setList={setEmployees} type="employee"/>
             </div>
-            <div className="col-span-5 mr-5">
+            <div className="col-span-9 mr-5">
                 <h1 className={'text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8'}>{t('Explore.employees')}</h1>
                 <div className={'flex flex-row-reverse'}>
                     <div className={'flex flex-row'}>

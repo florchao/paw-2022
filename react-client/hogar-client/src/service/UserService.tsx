@@ -25,7 +25,8 @@ export class UserService {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
         })
     }
@@ -51,7 +52,8 @@ export class UserService {
         const form = {mail, password, confirmPassword};
         return await fetch(USERS_URL,{
             method: 'PUT',
-            headers: {"Content-Type": "application/json",
+            headers: {
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(form)
         })

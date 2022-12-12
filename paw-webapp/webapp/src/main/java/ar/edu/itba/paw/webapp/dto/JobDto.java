@@ -29,8 +29,25 @@ public class JobDto {
 
     private  URI applicants;
 
+    private Integer status;
+
     //TODO: faltaría el status cuando lo llamo del explore, sabiendo quien es la empleada que lo ve
-    public static JobDto fromExplore(final UriInfo uriInfo, final Job job) {
+    public static JobDto fromExplore(final UriInfo uriInfo, final Job job, int status) {
+        final JobDto dto = new JobDto();
+
+        dto.jobId = job.getJobId();
+        dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
+        dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
+        dto.description = job.getDescription();
+        dto.status = status;
+
+        UriBuilder jobUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId()));
+        dto.self = jobUriBuilder.build();
+
+        return dto;
+    }
+
+    public static JobDto fromCreated(final UriInfo uriInfo, final Job job) {
         final JobDto dto = new JobDto();
 
         dto.jobId = job.getJobId();
@@ -157,5 +174,13 @@ public class JobDto {
 
     public void setApplicants(URI applicants) {
         this.applicants = applicants;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

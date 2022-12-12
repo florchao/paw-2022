@@ -8,6 +8,7 @@ import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.EmployerDto;
 import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto;
@@ -116,7 +117,7 @@ public class EmployerController {
 //            @RequestParam(value = "publishedPage", required = false) Long page){
 //        if (page == null)
 //            page = 0L;
-        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromExplore(uriInfo, job)).collect(Collectors.toList());
+        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job)).collect(Collectors.toList());
 //        mav.addObject("JobList", jobList);
 //        mav.addObject("publishedPage", page);
 //        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));
@@ -130,7 +131,9 @@ public class EmployerController {
     public Response getEmployerReviews(@PathParam("id") long id) {
         //todo employeeId hardcodeado
 
-        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(null, id, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(principal.getUserID(), id, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
         return Response.ok(genericEntity).build();

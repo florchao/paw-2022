@@ -46,7 +46,7 @@ export const Contacts = () => {
                 </div>
             }
             {contacts && contacts.length > 0 && contacts.map((contact: any) =>
-                <div className="flex flex-wrap content-start pl-5 pr-5">
+                <div className="flex flex-wrap justify-center pl-5 pr-5">
                         <button onClick={openModal}
                            className=" transition hover:scale-105">
                             <ContactCard contact={contact}/>

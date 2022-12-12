@@ -17,20 +17,13 @@ export const Job = () => {
     const [status, setStatus] = useState<string>()
 
 
-    const employeeId = 3
+    let employeeId: number;
+    employeeId = localStorage.getItem('hogar-uid')? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
 
     const {self, id} = useLocation().state
 
-    console.log(id)
-
     const {t} = useTranslation();
     const nav = useNavigate();
-
-    useEffect(() => {
-        ApplicantService.getApplicationStatus(employeeId, id).then((s) => {
-            setStatus(s)
-        })
-    }, [])
 
     type FormData = {
         content: string;
@@ -48,7 +41,7 @@ export const Job = () => {
     })
 
     const onSubmit = async (data: any, e: any) => {
-        const post = await ReviewService.putEmployerReview(e, job.employerId.id, data.content)
+        const post = await ReviewService.postEmployerReview(e, job.employerId.id, data.content)
         localStorage.removeItem("reviewEmployerForm")
         setMyReview(post)
     }
@@ -75,18 +68,16 @@ export const Job = () => {
         }, [job]
     )
 
-
-    // useEffect(() => {
-    //     console.log("my")
-    //         console.log(myReview)
-    //     console.log("revs")
-    //         console.log(reviews)
-    //     }, [myReview, reviews]
-    // )
+    useEffect(() => {
+        if (localStorage.getItem("hogar-role") == "EMPLOYEE")
+            ApplicantService.getApplicationStatus(employeeId, id).then((s) => {
+                setStatus(s)
+            })
+    }, [])
 
     function delApplication() {
         ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {
-                nav('/employee/jobs', {replace: true,  state: {id: employeeId}})
+                nav('/jobs', {replace: true,  state: {id: employeeId}})
             }
         );
     }

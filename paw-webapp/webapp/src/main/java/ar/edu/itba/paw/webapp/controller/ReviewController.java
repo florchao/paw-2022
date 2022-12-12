@@ -35,7 +35,11 @@ public class ReviewController {
                                   @FormDataParam("forEmployee") boolean forEmployee) {
         //TODO: poner el id del empleado que esta iniciado sesión
         Review review = reviewService.create(employeeId, employerId, message, new Date(), forEmployee);
-        ReviewDto reviewDto = ReviewDto.fromEmployeeReview(uriInfo, review);
+        ReviewDto reviewDto;
+        if(forEmployee)
+         reviewDto= ReviewDto.fromEmployeeReview(uriInfo, review);
+        else
+            reviewDto= ReviewDto.fromEmployerReview(uriInfo, review);
         GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(reviewDto) {
         };
 

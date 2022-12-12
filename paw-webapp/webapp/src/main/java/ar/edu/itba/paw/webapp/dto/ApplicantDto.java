@@ -11,9 +11,9 @@ public class ApplicantDto {
 
     private JobDto job;
 
-    private long jobId;
+    private Long jobId;
 
-    private int status;
+    private Integer status;
 
     //TODO: ver si el status se lo derivo a JobDto
     public static ApplicantDto fromJob(final UriInfo uriInfo, final Applicant applicant){
@@ -29,22 +29,13 @@ public class ApplicantDto {
     public static ApplicantDto fromEmployee(final UriInfo uriInfo, final Applicant applicant){
         final ApplicantDto dto = new ApplicantDto();
 
-        dto.job = JobDto.fromExplore(uriInfo, applicant.getJobID());
-        dto.status = applicant.getStatus();
+        dto.job = JobDto.fromExplore(uriInfo, applicant.getJobID(), applicant.getStatus());
 
         return dto;
     }
 
     public EmployeeDto getEmployee() {
         return employee;
-    }
-
-    public long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(long jobId) {
-        this.jobId = jobId;
     }
 
     public void setEmployee(EmployeeDto employee) {
@@ -67,11 +58,19 @@ public class ApplicantDto {
         this.job = job;
     }
 
-    public int getStatus() {
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
+
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }
