@@ -170,7 +170,7 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
                             <input type={'checkbox'} checked={availability[2]} onChange={() => availabilityHandler(3)}></input>
                         </div>
                     </div>
-                    <input value={'Filter'} type="submit"
+                    <input value={t('FilterForm.filter') as string} type="submit"
                            className="mt-4 border shadow-md text-lg w-5/6 focus:outline-none text-violet-900 bg-purple-400 border border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5 hover:cursor-pointer"
                            onClick={handleFilter}
                     />
