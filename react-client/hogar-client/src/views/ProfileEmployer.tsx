@@ -12,16 +12,10 @@ export const ProfileEmployer = () => {
     const [reviews, setReviews]: any = useState(new Array(0))
 
     const nav = useNavigate();
-    let id  = useLocation().state
+    let id  = localStorage.getItem("hogar-uid") as unknown as number
+console.log(id)
     const {t} = useTranslation();
 
-    //TODO: esto es temporal, cuando creo un perfil nuevo me lleva al creado, sino al hadcodeado
-
-    if(id === null || id === undefined)
-        id = 2
-        // id = 1
-    else
-        id = id.id
 
     function delEmployer() {
         UserService.deleteUser(id).then(() => {
