@@ -25,28 +25,28 @@ export const Navbar = () => {
                         {localStorage.getItem("hogar-role") && localStorage.getItem("hogar-role") == "EMPLOYEE" &&
                             <li>
                                 <Link to="/jobs" state={{id: localStorage.getItem("hogar-uid")}}>
-                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Trabajos Aplicados</h1>
+                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{t('Navbar.jobsApplied')}</h1>
                                 </Link>
                             </li>
                         }
                         {localStorage.getItem("hogar-role") && localStorage.getItem("hogar-role") == "EMPLOYER" &&
                             <li>
                                 <Link to="/jobs" state={{id: localStorage.getItem("hogar-uid")}}>
-                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Trabajos Publicados</h1>
+                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{t('Navbar.jobsPosted')}</h1>
                                 </Link>
                             </li>
                         }
                         {localStorage.getItem("hogar-role") && localStorage.getItem("hogar-role") == "EMPLOYEE" &&
                             <li>
                                 <Link to="/contacts" state={{id: localStorage.getItem("hogar-uid")}} >
-                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Contacts</h1>
+                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{t('Navbar.contacts')}</h1>
                                 </Link>
                             </li>
                         }
                         {localStorage.getItem("hogar-role") &&
                             <li>
                                 <Link to="/profile" state={{id: localStorage.getItem("hogar-uid")}}>
-                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Perfil</h1>
+                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{t('Navbar.profile')}</h1>
                                 </Link>
                             </li>
                         }
@@ -69,6 +69,18 @@ export const Navbar = () => {
                                 <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{t('Navbar.contactUs')}</h1>
                             </Link>
                         </li>
+                        {localStorage.getItem("hogar-uid") &&
+                            <li>
+                                <button onClick={() => {
+                                        localStorage.removeItem("hogar-uid");
+                                        localStorage.removeItem("hogar-role");
+                                        window.location.replace("/")
+                                    }
+                                }>
+                                    <h1 className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{t('Navbar.logout')}</h1>
+                                </button>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

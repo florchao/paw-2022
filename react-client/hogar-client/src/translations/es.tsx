@@ -108,13 +108,20 @@ export const TRANSLATIONS_ES = {
         account:"Todavía no tenes una cuenta?",
         register:"Registrarse",
         forgot:"Te olvidaste tu contraseña?",
-        setP:"Setear contraseña"
+        setP:"Setear contraseña",
+        invalidEmail:"El mail ingresado no es válido",
+        invalidPassword:"La contraseña ingresada no es válida",
     },
     Navbar:{
         explore:"Explorar",
         register:"Registrar",
         login:"Iniciar Sesión",
-        contactUs:"Contactanos"
+        contactUs:"Contactanos",
+        profile:"Perfil",
+        logout: "Cerrar Sesión",
+        jobsApplied: "Trabajos aplicados",
+        jobsPosted: "Trabajos publicados",
+        contacts: "Contactos"
       },
     Register:{
         employer:"Empleador",

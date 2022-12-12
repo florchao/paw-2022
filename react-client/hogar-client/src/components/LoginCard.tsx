@@ -2,9 +2,8 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {ContactService} from "../service/ContactService";
-import {useLocation, useNavigate} from "react-router-dom";
+import {redirect, useLocation, useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
-import {undefined} from "zod";
 
 export const LoginCard = () => {
     const {t} = useTranslation();
@@ -38,8 +37,11 @@ export const LoginCard = () => {
             let body = await result.json()
             localStorage['hogar-role'] = body.role
             localStorage['hogar-uid'] = body.uid
+            let authHeader = result.headers.get('Authorization')
+            localStorage['hogar-jwt'] = authHeader?.slice(7)
             localStorage.removeItem("loginForm")
-            nav("/explore", {replace: true})
+            nav("/explore")
+            window.location.reload()
         }
     }
 
@@ -55,6 +57,7 @@ export const LoginCard = () => {
                                {...register("email", {required: true, validate: {invalidEmail}})}
                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                         />
+                        {errors.email && <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.invalidEmail')}</p>}
                         {/*<input id="username" name="j_username" type="text"*/}
                         {/*       className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>*/}
                     </div>
@@ -65,6 +68,7 @@ export const LoginCard = () => {
                                {...register("password", {required: true})}
                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                         />
+                        {errors.password && <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.invalidPassword')}</p>}
                     </div>
                     <div className="form-group mb-6">
                     </div>
