@@ -2,7 +2,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {ContactService} from "../service/ContactService";
-import {redirect, useLocation, useNavigate} from "react-router-dom";
+import {Link, redirect, useLocation, useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
 
 export const LoginCard = () => {
@@ -88,7 +88,9 @@ export const LoginCard = () => {
                     <div className="form-group mb-6">
                         <p className="text-sm font-semibold text-gray-900">
                             {t('LogIn.account')}
-                            <a className="text-violet-900">{t('LogIn.register')}</a>
+                            <Link to={"/register"}>
+                                <a className="text-violet-900">{t('LogIn.register')}</a>
+                            </Link>
                         </p>
                     </div>
                     <div className="form-group mb-6 grid grid-cols-6">

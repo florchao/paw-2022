@@ -18,6 +18,8 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -59,19 +61,16 @@ public class EmployerController {
     @Path(value = "/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response employerProfile(@PathParam("id") long id) throws UserNotFoundException {
-        //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        UserDetails principal = (UserDetails) auth.getPrincipal();
-//        if (page == null)
-//            page = 0L;
-//        Optional<User> user = userService.findByUsername(principal.getUsername());
-//        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-//            if (user.isPresent()) {
 
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<User> user = userService.findByUsername(userName);
-        if (user.orElse(null).getId() != id) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if(auth != null) {
+            HogarUser user = (HogarUser) auth.getPrincipal();
+            if (user.getUserID() != id) {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         }
+
         Optional<EmployerDto> employer = employerService.getEmployerById(id).map(e -> EmployerDto.fromEmployer(uriInfo, e));
         if(employer.isPresent()){
             GenericEntity<EmployerDto> genericEntity = new GenericEntity<EmployerDto>(employer.get()){};
