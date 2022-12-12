@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -124,12 +125,20 @@ public class Employee implements Serializable {
         this.availabilityArr = availabilityArr;
     }
 
+    public void setAvailabilityArr(String availability){
+        this.availabilityArr = new ArrayList<>(Arrays.asList(availability.split(",")));
+    }
+
     public List<String> getAbilitiesArr() {
         return abilitiesArr;
     }
 
     public void setAbilitiesArr(List<String> abilitiesArr) {
         this.abilitiesArr = abilitiesArr;
+    }
+
+    public void setAbilitiesArr(String abilities){
+        this.abilitiesArr = new ArrayList<>(Arrays.asList(abilities.split(",")));
     }
 
     public void setAvailability(String availability) {
