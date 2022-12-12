@@ -100,6 +100,14 @@ public class JobController {
     @Path("/{jobId}/applicants")
     @Produces(value = { MediaType.APPLICATION_JSON })
     public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") Long page){
+
+        Job job = jobService.getJobByID(jobId);
+
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         List<ApplicantDto> list = applicantService.getApplicantsByJob(jobId,0L,PAGE_SIZE).stream().map(a -> ApplicantDto.fromJob(uriInfo, a)).collect(Collectors.toList());
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
         return Response.ok(genericEntity).build();
@@ -119,7 +127,10 @@ public class JobController {
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response postJob(@Valid final JobForm form) {
         //TODO: poner el id del empleador que esta iniciado sesión
-        Job job = jobService.create(form.getTitle(), form.getLocation(), 2, form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
+
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Job job = jobService.create(form.getTitle(), form.getLocation(), hogarUser.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
         return Response.ok(job.getJobId()).build();
     }
@@ -128,6 +139,14 @@ public class JobController {
     @Path("/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response deleteJob(@PathParam("id") long id) {
+
+        Job job = jobService.getJobByID(id);
+
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         jobService.deleteJob(id);
         return Response.ok().build();
     }

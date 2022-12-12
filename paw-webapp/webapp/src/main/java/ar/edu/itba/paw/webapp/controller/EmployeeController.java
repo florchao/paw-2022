@@ -85,6 +85,13 @@ public class EmployeeController {
 
         if (page == null)
             page = 0L;
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         List <EmployeeDto> employeeDtos = new ArrayList<>(Collections.emptyList());
         employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).forEach(employee ->
         {
@@ -104,7 +111,7 @@ public class EmployeeController {
 
         if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
             HogarUser user = (HogarUser) auth.getPrincipal();
-            if (user.getUserID() == id) {
+            if (user.getUserID() != id) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
         }
@@ -157,9 +164,14 @@ public class EmployeeController {
     @Path("{id}/jobs")
     @Produces(value = { MediaType.APPLICATION_JSON })
     public Response appliedTo(@QueryParam("page") Long page, @PathParam("id") long id){
-//        if (page == null)
-//            page = 0L;
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (page == null)
+            page = 0L;
+
+        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getUserID() != id) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, 0L, PAGE_SIZE).stream().map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant)).collect(Collectors.toList());
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
         return Response.ok(genericEntity).build();
@@ -169,6 +181,12 @@ public class EmployeeController {
     @Path("/{id}/contacts")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response employeeContacts(@PathParam("id") long id) throws UserNotFoundException {
+
+        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getUserID() != id) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, 0L, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
         };
@@ -233,44 +251,16 @@ public class EmployeeController {
                                   @FormDataParam("image") InputStream image,
                                   @PathParam("id") long id) throws IOException, UserFoundException, PassMatchException {
 
+        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getUserID() != id) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         employeeService.editProfile(name.toLowerCase(), location.toLowerCase(), id, fromListToArray(availabilities), experienceYears, fromListToArray(abilities), IOUtils.toByteArray(image));
         LOGGER.debug(String.format("updated profile for userid %d", id));
 
         return Response.ok(id).build();
     }
-
-
-//    @RequestMapping(value = "/editarPerfil", method = {RequestMethod.GET})
-//    public ModelAndView editProfile(@ModelAttribute("employeeEditForm") final EmployeeEditForm form) throws UserNotFoundException {
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Optional<Employee> employee = employeeService.getEmployeeById(principal.getUserID());
-//        final ModelAndView mav = new ModelAndView("editProfile");
-//        mav.addObject("abilities", Abilities.getIds());
-//        mav.addObject("availability", Availability.getIds());
-//        if(employee.isPresent()) {
-//            form.setAbilities(new String[]{String.join(", ", employee.get().getAbilitiesArr())});
-//            form.setAbilities(employee.get().getAbilitiesArr().toArray(new String[0]));
-//            form.setAvailability(employee.get().getAvailabilityArr().toArray(new String[0]));
-//            form.setLocation(employee.get().getLocation());
-//            form.setName(employee.get().getName());
-//            form.setExperienceYears(employee.get().getExperienceYears());
-//        }
-//        mav.addObject("userId", principal.getUserID());
-//        return mav;
-//    }
-
-//    @RequestMapping(value = "/editEmployee", method = {RequestMethod.POST})
-//    public ModelAndView edit(@Valid @ModelAttribute("employeeEditForm") final EmployeeEditForm form, final BindingResult errors) throws UserNotFoundException {
-//
-//        if(errors.hasErrors()) {
-//            LOGGER.debug("Could not update profile");
-//            return editProfile(form);
-//        }
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        employeeService.editProfile(form.getName().toLowerCase(), form.getLocation().toLowerCase(), (principal.getUserID()), form.getAvailability(), form.getExperienceYears(), form.getAbilities(), form.getImage().getBytes());
-//        LOGGER.debug(String.format("updated profile for userid %d", principal.getUserID()));
-//        return new ModelAndView("redirect:/verPerfil/");
-//    }
 
     private String fromListToString(List<String> arr){
         StringBuilder ret = new StringBuilder();

@@ -8,7 +8,7 @@ import java.net.URI;
 
 public class EmployerDto {
     private String name;
-    private long id;
+    private Long id;
 
     private String email;
 
@@ -46,7 +46,7 @@ public class EmployerDto {
         return dto;
     }
     public static EmployerDto fromContact(final UriInfo uriInfo, final Employer employer) {
-        EmployerDto dto = EmployerDto.fromEmployer(uriInfo, employer);
+        EmployerDto dto = EmployerDto.fromReviews(uriInfo, employer);
 
         dto.email = employer.getId().getEmail();
 
@@ -61,11 +61,11 @@ public class EmployerDto {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

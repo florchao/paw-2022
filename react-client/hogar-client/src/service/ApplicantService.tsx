@@ -20,10 +20,9 @@ export class ApplicantService{
     }
 
 
-    public static async createApplicant(employeeId: number, jobId: number){
+    public static async createApplicant(jobId: number){
 
         const formData:any = new FormData();
-        formData.append("employeeId", employeeId)
         formData.append("jobId", jobId)
 
         return await fetch(APPLICANT_URL, {

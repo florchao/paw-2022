@@ -45,11 +45,15 @@ export const Contacts = () => {
                     </div>
                 </div>
             }
-            {contacts && contacts.length > 0 && contacts.map((contact: any) =>
-                <div className="flex flex-wrap justify-center pl-5 pr-5">
+            {contacts && contacts.length > 0 &&
+                <div className="flex flex-wrap content-center justify-center pl-5 pr-5">
+                {contacts.map((contact: any) =>
+                    <div>
                         <button onClick={openModal}
-                           className=" transition hover:scale-105">
-                            <ContactCard contact={contact}/>
+                                className=" transition hover:scale-105 ">
+                            <div className="flex flex-wrap content-center justify-center">
+                                <ContactCard contact={contact}/>
+                            </div>
                         </button>
                         <Modal
                             isOpen={modalIsOpen}
@@ -65,7 +69,7 @@ export const Contacts = () => {
                                     bottom: 'auto',
                                     borderRadius: '10px',
                                     marginRight: '-50%',
-                                    overflow:'visible',
+                                    overflow: 'visible',
                                     transform: 'translate(-50%, -50%)',
                                 },
                             }}
@@ -79,7 +83,8 @@ export const Contacts = () => {
                             </button>
                             <ContactCardModal contact={contact}/>
                         </Modal>
-                </div>)
+                    </div>)}
+            </div>
             }
         </div>
     )

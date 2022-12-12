@@ -12,7 +12,7 @@ public interface ApplicantService {
     Applicant create(long jobID, long employeeID) throws AlreadyExistsException;
     List<Applicant> getApplicantsByJob(long jobID, Long page, int pageSize);
     int getPageNumber(long jobID, int pageSize);
-    void apply(long jobID, User user) throws AlreadyExistsException;
+    void apply(long jobID, long employeeID) throws AlreadyExistsException;
     List<Applicant> getAppliedJobsByApplicant(long employeeID, Long page, int pageSize);
     int getPageNumberForAppliedJobs(Long employeeId, int pageSize);
 

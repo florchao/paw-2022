@@ -70,10 +70,10 @@ public class ApplicantServiceImpl implements ApplicantService{
 
     @Transactional
     @Override
-    public void apply(long jobID, User user) throws AlreadyExistsException {
+    public void apply(long jobID, long employeeID) throws AlreadyExistsException {
         Optional<Job> job = jobDao.getJobById(jobID);
         if (job.isPresent()) {
-            Optional<Employee> employee = employeeDao.getEmployeeById(user.getId());
+            Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
             Employer employer= job.get().getEmployerId();
             employer.firstWordsToUpper();
             job.get().firstWordsToUpper();
@@ -81,7 +81,7 @@ public class ApplicantServiceImpl implements ApplicantService{
                 employee.get().firstWordsToUpper();
                 mailingService.sendApplyMail(employer.getId().getEmail(), job.get().getTitle(), employee.get().getName(), jobID);
             }
-            create(jobID, user.getId());
+            create(jobID, employeeID);
         }
     }
 

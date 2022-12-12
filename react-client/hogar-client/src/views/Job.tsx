@@ -83,7 +83,7 @@ export const Job = () => {
     }
 
     async function createApplicant(){
-        const newStatus = await ApplicantService.createApplicant(employeeId, job.jobId)
+        const newStatus = await ApplicantService.createApplicant(job.jobId)
         setStatus(newStatus)
     }
 
