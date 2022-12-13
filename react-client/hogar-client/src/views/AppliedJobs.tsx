@@ -10,7 +10,7 @@ export const AppliedJobs = () => {
 
     const { t } = useTranslation();
 
-    const { id } = useLocation().state
+    let id  = localStorage.getItem("hogar-uid") as unknown as number
 
     useEffect(() => {
         ApplicantService.getAppliedJobs(id).then( (e) => {setAppliedJobs(e)});

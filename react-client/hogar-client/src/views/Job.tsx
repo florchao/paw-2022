@@ -53,7 +53,8 @@ export const Job = () => {
     }, [])
 
     useEffect(() => {
-            if (job !== undefined) {
+        //TODO: corregir tema reviews
+            if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
                 ReviewService.getEmployerReviews(job.employerId.reviews).then(
                     (rsp) => {
                         setReviews(rsp)
@@ -77,7 +78,7 @@ export const Job = () => {
 
     function delApplication() {
         ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {
-                nav('/jobs', {replace: true,  state: {id: employeeId}})
+                nav('/jobs', {replace: true})
             }
         );
     }
@@ -85,6 +86,12 @@ export const Job = () => {
     async function createApplicant(){
         const newStatus = await ApplicantService.createApplicant(job.jobId)
         setStatus(newStatus)
+    }
+
+    function delJob(){
+        JobService.deleteJob(job.jobId).then(()=>{
+            nav('/jobs', {replace: true})
+        })
     }
 
 
@@ -176,21 +183,17 @@ export const Job = () => {
                                 <h1 className="block ml-2 mb-2 text-sm font-medium text-gray-600 text-ellipsis overflow-hidden">{job.description}</h1>
                             </div>
                         </div>
+                        {localStorage.getItem("hogar-role") == "EMPLOYER" &&
                         <div className="grid grid-rows-3 grid-cols-5">
                             <div className="col-start-2 row-start-3">
-                                {/*<sec:authorize access="hasAuthority('EMPLOYER')">*/}
-                                {/*    <form:form action="${deletePath}" method="delete">*/}
-                                {/*        <button type="submit" class="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">*/}
-                                {/*            <div class="grid grid-rows-1 grid-cols-3">*/}
-                                {/*                <img src="<c:url value='/public/bin.png'/>" alt="bin" class="mr-3 h-6 sm:h-5 col-start-1">*/}
-                                {/*                    <p class="col-span-2"><spring:message code="viewJob.delete"/></p>*/}
-                                {/*            </div>*/}
-                                {/*        </button>*/}
-                                {/*    </form:form>*/}
-                                {/*</sec:authorize>*/}
+                                <button type="submit" onClick={delJob} className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
+                                    <div className="grid grid-rows-1 grid-cols-3">
+                                        <img src="/images/bin.png" alt="bin" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                            <p className="col-span-2">{t('Job.deleteJob')}</p>
+                                    </div>
+                                </button>
                             </div>
                             <div className="col-start-4 row-start-3">
-                                {/*<sec:authorize access="hasAuthority('EMPLOYER')">*/}
                                 {/*    <c:if test="${job.opened}">*/}
                                 {/*        <form:form action="${closePath}" method="post">*/}
                                 {/*            <button type="submit" class="text-sm focus:outline-none text-purple-700 bg-yellow-300 border-violet-700 hover:bg-yellow-200 font-small rounded-lg text-sm px-5 py-2.5">*/}
@@ -211,84 +214,88 @@ export const Job = () => {
                                 {/*            </button>*/}
                                 {/*        </form:form>*/}
                                 {/*    </c:if>*/}
-                                {/*</sec:authorize>*/}
                             </div>
-                        </div>
-                        {/*                    <sec:authorize access="hasAuthority('EMPLOYEE')">*/}
-                        <div className="flow-root">
-                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
-                                {t('Job.reviewsFor')} {job.employerId.name}
-                            </h1>
-                            {myReview == null && (
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="">
-                                        <label htmlFor="title" className="block pb-3 pt-3 font-semibold text-gray-900">
-                                            {t('ReviewForm.label_title')}
-                                        </label>
-                                        <textarea
-                                            value={getValues("content")}
-                                            {...register("content", {required: true, maxLength: 1000, minLength: 10})}
-                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                        {errors.content && (
-                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
-                                                {t('ReviewForm.error')}
-                                            </p>
+                        </div>}
+                        {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                            <div className="flow-root">
+                                <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                    {t('Job.reviewsFor')} {job.employerId.name}
+                                </h1>
+                                {myReview == null && (
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <div className="">
+                                            <label htmlFor="title"
+                                                   className="block pb-3 pt-3 font-semibold text-gray-900">
+                                                {t('ReviewForm.label_title')}
+                                            </label>
+                                            <textarea
+                                                value={getValues("content")}
+                                                {...register("content", {
+                                                    required: true,
+                                                    maxLength: 1000,
+                                                    minLength: 10
+                                                })}
+                                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                            {errors.content && (
+                                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
+                                                    {t('ReviewForm.error')}
+                                                </p>
 
-                                        )}
-                                        <div className="mt-5 col-start-2 col-span-4 row-span-3">
-                                            <button type="submit"
-                                                    className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                                {t('ReviewForm.button')}
-                                            </button>
+                                            )}
+                                            <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                                                <button type="submit"
+                                                        className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                                                    {t('ReviewForm.button')}
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>)}
-
-                            {reviews === 0 && !myReview &&
-                                (<div className="grid content-center justify-center h-5/6 mt-16">
-                                        <div className="grid justify-items-center">
-                                            <img src={'./images/sinEmpleadas.png'} alt="sinEmpleadas"
-                                                 className="mr-3 h-6 sm:h-52"/>
-                                            <p className="text-3xl font-semibold text-purple-700">
-                                                {t('Job.noReviews')}
-                                            </p>
+                                    </form>)}
+                                {reviews === 0 && !myReview &&
+                                    (<div className="grid content-center justify-center h-5/6 mt-16">
+                                            <div className="grid justify-items-center">
+                                                <img src={'./images/sinEmpleadas.png'} alt="sinEmpleadas"
+                                                     className="mr-3 h-6 sm:h-52"/>
+                                                <p className="text-3xl font-semibold text-purple-700">
+                                                    {t('Job.noReviews')}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
-                            <ul role="list" className="divide-y divide-gray-300">
-                                {myReview && <MyReviewCard review={myReview}/>}
-                                {reviews && reviews.length > 0 && reviews.map((rev: any) => <ReviewCard review={rev}/>)}
-                                {/*                    <c:url value="/trabajo/${job.jobId}" var="getPath"/>*/}
-                                {/*                    <form method="get" action="${getPath}">*/}
-                                {/*                        <c:if test="${maxPage > 0 && page + 1 <= maxPage}">*/}
-                                {/*                            <div class="flex flex-row justify-center mt-4">*/}
-                                {/*                                <c:choose>*/}
-                                {/*                                    <c:when test="${page < 1}">*/}
-                                {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>*/}
-                                {/*                                    </c:when>*/}
-                                {/*                                    <c:otherwise>*/}
-                                {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>*/}
-                                {/*                                    </c:otherwise>*/}
-                                {/*                                </c:choose>*/}
-                                {/*                                <div class="bg--300 w-16 flex justify-center">*/}
-                                {/*                                    <h1 class="text-purple-900">${page + 1} of ${maxPage}</h1>*/}
-                                {/*                                </div>*/}
-                                {/*                                <c:choose>*/}
-                                {/*                                    <c:when test="${page + 1 == maxPage}">*/}
-                                {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>*/}
-                                {/*                                    </c:when>*/}
-                                {/*                                    <c:otherwise>*/}
-                                {/*                                        <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>*/}
-                                {/*                                    </c:otherwise>*/}
-                                {/*                                </c:choose>*/}
-                                {/*                        </c:if>*/}
-                                {/*    </div>*/}
-                                {/*    <input style="visibility: hidden" type="number" name="page" id="pageNumber"/>*/}
-                                {/*</form>*/}
-                            </ul>
-                            {/*)}*/}
-                        </div>
-                        {/*</sec:authorize>*/}
+                                    )}
+                                <ul role="list" className="divide-y divide-gray-300">
+                                    {myReview && <MyReviewCard review={myReview}/>}
+                                    {reviews && reviews.length > 0 && reviews.map((rev: any) => <ReviewCard
+                                        review={rev}/>)}
+                                    {/*                    <c:url value="/trabajo/${job.jobId}" var="getPath"/>*/}
+                                    {/*                    <form method="get" action="${getPath}">*/}
+                                    {/*                        <c:if test="${maxPage > 0 && page + 1 <= maxPage}">*/}
+                                    {/*                            <div class="flex flex-row justify-center mt-4">*/}
+                                    {/*                                <c:choose>*/}
+                                    {/*                                    <c:when test="${page < 1}">*/}
+                                    {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>*/}
+                                    {/*                                    </c:when>*/}
+                                    {/*                                    <c:otherwise>*/}
+                                    {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>*/}
+                                    {/*                                    </c:otherwise>*/}
+                                    {/*                                </c:choose>*/}
+                                    {/*                                <div class="bg--300 w-16 flex justify-center">*/}
+                                    {/*                                    <h1 class="text-purple-900">${page + 1} of ${maxPage}</h1>*/}
+                                    {/*                                </div>*/}
+                                    {/*                                <c:choose>*/}
+                                    {/*                                    <c:when test="${page + 1 == maxPage}">*/}
+                                    {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>*/}
+                                    {/*                                    </c:when>*/}
+                                    {/*                                    <c:otherwise>*/}
+                                    {/*                                        <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>*/}
+                                    {/*                                    </c:otherwise>*/}
+                                    {/*                                </c:choose>*/}
+                                    {/*                        </c:if>*/}
+                                    {/*    </div>*/}
+                                    {/*    <input style="visibility: hidden" type="number" name="page" id="pageNumber"/>*/}
+                                    {/*</form>*/}
+                                </ul>
+                                {/*)}*/}
+                            </div>
+                        }
                     </div>
                 </div>}
         </div>

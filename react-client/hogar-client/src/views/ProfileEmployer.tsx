@@ -20,6 +20,7 @@ export const ProfileEmployer = () => {
     function delEmployer() {
         UserService.deleteUser(id).then(() => {
                 localStorage.clear()
+            //TODO: si bien se borra local storage sigue apareciendo la pagina como si fuese empleado
                 nav('/', {replace: true})
             }
         );

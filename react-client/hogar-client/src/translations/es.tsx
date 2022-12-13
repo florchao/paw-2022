@@ -166,7 +166,10 @@ export const TRANSLATIONS_ES = {
         pending: "Pendiente",
         accepted:"Aceptado",
         rejected:"Rechazado",
-        statusTitle:"Estado de tu aplicación:"
+        statusTitle:"Estado de tu aplicación:",
+        deleteJob:"Eliminar trabajo",
+        openJob:"Abrir trabajo",
+        closeJob:"Cerrar trabajo"
     },
 
     Applicants:{

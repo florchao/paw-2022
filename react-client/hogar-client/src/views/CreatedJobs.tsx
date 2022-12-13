@@ -9,9 +9,7 @@ export const CreatedJobs = () => {
 
     const { t } = useTranslation()
 
-    // const { id } = useLocation().state
-
-    const id = 6
+    let id  = localStorage.getItem("hogar-uid") as unknown as number
 
     useEffect(() => {
         JobService.getCreatedJobs(id).then( (j) => {

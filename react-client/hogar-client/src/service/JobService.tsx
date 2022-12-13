@@ -1,4 +1,4 @@
-import {BACK_SLASH, EMPLOYER_URL, JOB_URL, JOBS} from "../utils/utils";
+import {BACK_SLASH, EMPLOYER_URL, JOB_URL, JOBS, USERS_URL} from "../utils/utils";
 
 export class JobService {
     public static async getJobs() {
@@ -88,7 +88,7 @@ export class JobService {
     }
 
     public static async getCreatedJobs(id: number) {
-        return await fetch(EMPLOYER_URL + BACK_SLASH + id + BACK_SLASH + JOBS, {
+        return await fetch(EMPLOYER_URL + BACK_SLASH + id + JOBS, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -133,5 +133,16 @@ export class JobService {
                     console.log(error)
                     throw error
                 })
+    }
+
+    public static async deleteJob(id: number) {
+        return await fetch(JOB_URL + BACK_SLASH + id, {
+            method: 'DELETE',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            }
+        })
     }
 }
