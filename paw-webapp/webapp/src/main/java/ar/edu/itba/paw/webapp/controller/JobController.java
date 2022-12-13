@@ -154,8 +154,9 @@ public class JobController {
 
     @PUT
     @Path("/{id}")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
-    public Response updateJobStatus(@PathParam("id") long id, @FormDataParam("status") boolean status) throws JobNotFoundException{
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
+    public Response updateJobStatus(@PathParam("id") long id,
+                                    @FormDataParam("status") boolean status) throws JobNotFoundException{
         Job job = jobService.getJobByID(id);
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -163,11 +164,12 @@ public class JobController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
         if(status){
-            jobService.closeJob(id);
-        }else{
             jobService.openJob(id);
+        }else{
+            //TODO: rechazar todos los postulantes del trabajo si se esta cerrando (correción del profe)
+            jobService.closeJob(id);
         }
-        return Response.ok(!status).build();
+        return Response.ok(status).build();
     }
 //    @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
 //    public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){

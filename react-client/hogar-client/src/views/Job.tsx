@@ -15,7 +15,7 @@ export const Job = () => {
     const [reviews, setReviews]: any = useState()
     const [myReview, setMyReview]: any = useState()
     const [status, setStatus] = useState<string>()
-    const [jobStatus, setJobStatus] = useState<boolean>()
+    const [opened, setOpened] = useState<boolean>()
 
     let employeeId: number;
     employeeId = localStorage.getItem('hogar-uid')? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
@@ -49,7 +49,7 @@ export const Job = () => {
     useEffect(() => {
         JobService.getJob(self).then((e) => {
             setJob(e)
-            setJobStatus(e.opened)
+            setOpened(e.opened)
         })
     }, [])
 
@@ -97,14 +97,12 @@ export const Job = () => {
 
     async function openJob(){
         const s = await JobService.updateJobStatus(job.jobId, true)
-        if(s === 'true')
-            setJobStatus(true)
+        setOpened(true)
     }
 
     async function closeJob(){
         const s = await JobService.updateJobStatus(job.jobId, false)
-        if(s === 'false')
-            setJobStatus(false)
+        setOpened(false)
     }
 
 
@@ -207,7 +205,7 @@ export const Job = () => {
                                 </button>
                             </div>
                             <div className="col-start-4 row-start-3">
-                                {jobStatus ?
+                                {opened ?
                                     <button type="submit" onClick={closeJob} className="text-sm focus:outline-none text-purple-700 bg-yellow-300 border-violet-700 hover:bg-yellow-200 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
                                             <img src="/images/editing_purple.png" alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
