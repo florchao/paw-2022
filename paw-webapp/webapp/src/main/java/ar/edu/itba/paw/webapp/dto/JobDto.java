@@ -20,6 +20,8 @@ public class JobDto {
 
     private Long experienceYears;
 
+    private boolean opened;
+
     private List<String> availability;
     private List<String> abilities;
 
@@ -79,6 +81,7 @@ public class JobDto {
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
         dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
+        dto.opened = job.isOpened();
 
         dto.description = job.getDescription();
         dto.experienceYears = job.getExperienceYears();
@@ -114,6 +117,14 @@ public class JobDto {
 
     public String getLocation() {
         return location;
+    }
+
+    public boolean isOpened() {
+        return opened;
+    }
+
+    public void setOpened(boolean opened) {
+        this.opened = opened;
     }
 
     public void setLocation(String location) {

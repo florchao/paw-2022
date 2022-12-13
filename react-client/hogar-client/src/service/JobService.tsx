@@ -1,4 +1,5 @@
-import {BACK_SLASH, EMPLOYER_URL, JOB_URL, JOBS, USERS_URL} from "../utils/utils";
+        import {BACK_SLASH, EMPLOYER_URL, JOB_URL, JOBS} from "../utils/utils";
+
 
 export class JobService {
     public static async getJobs() {
@@ -144,5 +145,21 @@ export class JobService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
         })
+    }
+
+    public static async updateJobStatus(id: number, status: boolean){
+
+        const formData:any = new FormData();
+        formData.append("status", status)
+
+        return await fetch(JOB_URL + BACK_SLASH + id , {
+            method: 'PUT',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
+            body: formData
+        }).then((r) => r.text())
     }
 }

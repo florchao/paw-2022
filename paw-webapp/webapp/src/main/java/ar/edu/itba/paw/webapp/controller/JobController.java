@@ -12,6 +12,7 @@ import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,7 @@ public class JobController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         JobDto jobDto = JobDto.fromJob(uriInfo, job);
-        int jobStatus = -1;
+
         GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto){};
         return Response.ok(genericEntity).build();
     }
@@ -151,6 +152,23 @@ public class JobController {
         return Response.ok().build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
+    public Response updateJobStatus(@PathParam("id") long id, @FormDataParam("status") boolean status) throws JobNotFoundException{
+        Job job = jobService.getJobByID(id);
+
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        if(status){
+            jobService.closeJob(id);
+        }else{
+            jobService.openJob(id);
+        }
+        return Response.ok(!status).build();
+    }
 //    @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
 //    public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
 //        ModelAndView mav = new ModelAndView("createJob");
@@ -236,23 +254,5 @@ public class JobController {
 //            redirectAttributes.addAttribute("page", form.getPageNumber());
 //
 //        return new ModelAndView("redirect:/trabajos");
-//    }
-//
-//    @RequestMapping(value = "/deleteJob/{jobId}", method = {RequestMethod.POST, RequestMethod.DELETE})
-//    public ModelAndView deleteJob(@PathVariable final long jobId){
-//        jobService.deleteJob(jobId);
-//        return new ModelAndView("redirect:/misTrabajos");
-//    }
-//
-//    @RequestMapping(value = "/closeJob/{jobId}", method = {RequestMethod.POST})
-//    public ModelAndView closeJob(@PathVariable final long jobId){
-//        jobService.closeJob(jobId);
-//        return new ModelAndView("redirect:/trabajo/" + jobId);
-//    }
-//
-//    @RequestMapping(value = "/openJob/{jobId}", method = {RequestMethod.POST})
-//    public ModelAndView openJob(@PathVariable final long jobId){
-//        jobService.openJob(jobId);
-//        return new ModelAndView("redirect:/trabajo/" + jobId);
 //    }
 }

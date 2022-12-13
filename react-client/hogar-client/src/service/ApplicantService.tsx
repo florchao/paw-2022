@@ -39,7 +39,7 @@ export class ApplicantService{
         const formData:any = new FormData();
         formData.append("status", status)
 
-        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId +'/'+ jobId , {
+        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
