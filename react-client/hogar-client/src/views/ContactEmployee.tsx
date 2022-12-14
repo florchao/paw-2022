@@ -1,6 +1,5 @@
 import './style.css'
-import {useEffect, useState} from "react";
-import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import {ContactService} from "../service/ContactService";
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
@@ -22,6 +21,7 @@ export const ContactEmployee = () => {
         watch,
         setValue,
         storage: window.localStorage,
+        timeout: 1000 * 60 * 2,
     })
 
     const { id, name } = useLocation().state

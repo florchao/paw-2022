@@ -37,7 +37,8 @@ export const Job = () => {
     useFormPersist("reviewEmployerForm", {
         watch,
         setValue,
-        storage: window.localStorage,
+        storage: localStorage.getItem('hogar-role') == "EMPLOYEE"? window.localStorage : undefined,
+        timeout: 1000 * 60 * 2,
     })
 
     const onSubmit = async (data: any, e: any) => {
@@ -96,12 +97,12 @@ export const Job = () => {
     }
 
     async function openJob(){
-        const s = await JobService.updateJobStatus(job.jobId, true)
+        await JobService.updateJobStatus(job.jobId, true)
         setOpened(true)
     }
 
     async function closeJob(){
-        const s = await JobService.updateJobStatus(job.jobId, false)
+        await JobService.updateJobStatus(job.jobId, false)
         setOpened(false)
     }
 

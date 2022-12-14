@@ -1,11 +1,10 @@
-import {RefObject, useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {JobService} from "../service/JobService";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
-import {number} from "zod";
-import exp from "constants";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
+import {IdsService} from "../service/IdsService";
 
 export const CreateJob = () => {
 
@@ -32,6 +31,7 @@ export const CreateJob = () => {
         watch,
         setValue,
         storage: window.localStorage,
+        timeout: 1000 * 60 * 2,
     })
 
     const [ids, setIds] = useState<any>();
@@ -41,7 +41,7 @@ export const CreateJob = () => {
     const nav = useNavigate();
 
     useEffect(() => {
-        JobService.getIds().then((i) => {
+        IdsService.getIds().then((i) => {
             setIds(i)
         });
     }, [])
@@ -139,7 +139,7 @@ export const CreateJob = () => {
                                 <div className="flex flex-wrap ml-8">
                                     <div className="mb-8">
                                         <label htmlFor="cocinar-cb" id="cocinar-label"
-                                               onClick={(e) => {
+                                               onClick={() => {
                                                    setColor('cocinar', ids.abilities[0])
                                                }}
                                                className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[0].toString()) ?

@@ -24,7 +24,7 @@ export const ProfileEmployee = () => {
     const [showMessage, setShowMessage]: any = useState<boolean>(true)
 
     const [review, setReview]: any = useState()
-    const [myReview, setMyReview]: any = useState()
+    const [myReview, setMyReview]: any = useState(null)
 
     const {self, image, status, id} = useLocation().state
 
@@ -46,7 +46,8 @@ export const ProfileEmployee = () => {
     useFormPersist("reviewEmployeeForm", {
         watch,
         setValue,
-        storage: window.localStorage,
+        storage: localStorage.getItem('hogar-role') == "EMPLOYER"? window.localStorage : undefined,
+        timeout: 1000 * 60,
     })
 
     const onSubmit = async (data: any, e: any) => {
@@ -98,6 +99,9 @@ export const ProfileEmployee = () => {
                     ReviewService.getMyEmployeeReview(employee.employerReview).then(
                         (rsp) => {
                             setMyReview(rsp)
+                            if(rsp != undefined) {
+                                localStorage.removeItem("reviewEmployeeForm")
+                            }
                         }
                     )
             }

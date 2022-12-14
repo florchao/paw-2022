@@ -1,8 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
-import {ContactService} from "../service/ContactService";
-import {Link, redirect, useLocation, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
 
 export const LoginCard = () => {
@@ -28,6 +27,7 @@ export const LoginCard = () => {
         watch,
         setValue,
         storage: window.localStorage,
+        timeout: 1000 * 60 * 2,
     })
 
     const onSubmit = async (data: any, e: any) => {
@@ -40,7 +40,11 @@ export const LoginCard = () => {
             let authHeader = result.headers.get('Authorization')
             localStorage['hogar-jwt'] = authHeader?.slice(7)
             localStorage.removeItem("loginForm")
-            nav("/explore")
+            if(body.role === "EMPLOYER") {
+                nav("/", {replace: true})
+            } else {
+                nav("/explore")
+            }
             window.location.reload()
         }
     }

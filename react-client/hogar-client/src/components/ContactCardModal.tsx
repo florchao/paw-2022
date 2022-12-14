@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
-import {EmployeeService} from "../service/EmployeeService";
 import {useTranslation} from "react-i18next";
 import {UserService} from "../service/UserService";
 
 const ContactCardModal = (contact: any) => {
 
     const [image, setImage]: any = useState()
+
+    console.log(contact.contact)
 
     const { t } = useTranslation();
 

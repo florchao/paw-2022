@@ -114,14 +114,6 @@ public class JobController {
         return Response.ok(genericEntity).build();
     }
 
-    @GET
-    @Path("/ids")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response getIds() {
-        GenericEntity<IdsDto> genericEntity = new GenericEntity<IdsDto>(IdsDto.fromForm(Availability.getIds(), Abilities.getIds())){};
-        return Response.ok(genericEntity).build();
-    }
-
 
     @POST
     @Path("")

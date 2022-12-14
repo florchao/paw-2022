@@ -29,6 +29,7 @@ const RegisterEmployer = () => {
         watch,
         setValue,
         storage: window.localStorage,
+        timeout: 1000 * 60 * 2,
     })
 
     const nav = useNavigate();

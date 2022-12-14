@@ -41,7 +41,7 @@ export const EmployerLanding = () => {
                         </p>
                         <div className="pb-4 grid col-start-2 col-span-2 mt-7">
                             <Button name={t('EmployerLanding.buttonJob')}
-                                    link="/myjobs"/>
+                                    link="/jobs"/>
                         </div>
                     </div>
                 </div>

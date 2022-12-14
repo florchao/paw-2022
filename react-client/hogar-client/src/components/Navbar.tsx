@@ -5,10 +5,11 @@ export const Navbar = () => {
     const { t } = useTranslation();
 
     return (
-        <nav className="bg-white w-full px-2 sm:px-4 py-2.5 fixed shadow-md rounded" style={{backgroundColor: "#ac70ff"}}>
-            <div className="container flex flex-wrap justify-between items-center mx-auto">
-                <Link to="/explore" className="flex items-center">
-                    <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Hogar</span>
+        <nav className="bg-white w-full pr-2 sm:px-4 py-2.5 fixed shadow-md rounded z-10" style={{backgroundColor: "#ac70ff"}}>
+            <div className="flex flex-wrap justify-between mx-auto">
+                <Link to={localStorage.getItem('hogar-role') == "EMPLOYEE"? "/explore" : "/"} className="flex items-center">
+                    <img src={'./images/hogar.png'} alt="logo" className="mr-3 h-9"/>
+                    {/*<span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Hogar</span>*/}
                 </Link>
                 {/*<button data-collapse-toggle="navbar-default" type="button" className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">*/}
                 {/*    <span className="sr-only">Open main menu</span>*/}
@@ -74,6 +75,7 @@ export const Navbar = () => {
                                 <button onClick={() => {
                                         localStorage.removeItem("hogar-uid");
                                         localStorage.removeItem("hogar-role");
+                                        localStorage.removeItem("hogar-jwt");
                                         window.location.replace("/")
                                     }
                                 }>

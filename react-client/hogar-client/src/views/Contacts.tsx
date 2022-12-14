@@ -10,6 +10,7 @@ export const Contacts = () => {
 
     const { t } = useTranslation();
     const [contacts, setContacts]: any = useState()
+    const [modalData, setModalData]: any = useState()
 
     const {id} = useLocation().state
 
@@ -45,16 +46,17 @@ export const Contacts = () => {
                     </div>
                 </div>
             }
-            {contacts && contacts.length > 0 &&
                 <div className="flex flex-wrap content-center justify-center pl-5 pr-5">
-                {contacts.map((contact: any) =>
-                    <div>
-                        <button onClick={openModal}
-                                className=" transition hover:scale-105 ">
+                {contacts && contacts.length > 0 && contacts.map((contact: any) =>
+                        <button onClick={() => {
+                            setModalData(contact)
+                            openModal()
+                        }}>
                             <div className="flex flex-wrap content-center justify-center">
                                 <ContactCard contact={contact}/>
                             </div>
                         </button>
+                        )}
                         <Modal
                             isOpen={modalIsOpen}
                             onRequestClose={closeModal}
@@ -81,11 +83,10 @@ export const Contacts = () => {
                             >
                                 x
                             </button>
-                            <ContactCardModal contact={contact}/>
+                            <ContactCardModal contact={modalData}/>
                         </Modal>
-                    </div>)}
             </div>
-            }
+
         </div>
     )
 }

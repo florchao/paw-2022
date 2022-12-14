@@ -37,6 +37,7 @@ export const ContactUs = () => {
         watch,
         setValue,
         storage: window.localStorage,
+        timeout: 1000 * 60 * 60
     })
 
     const onSubmit = async (data: any, e: any) => {

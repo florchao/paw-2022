@@ -21,7 +21,7 @@ const ContactCard = (contact: any) => {
 
     return (
         <div
-            className="max-w-sm mb-5 mr-5 px-5 w-80 h-80 bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
+            className="max-w-sm mb-5 mr-5 px-5 w-80 h-80 bg-white transition hover:scale-105 rounded-lg border border-gray-200 shadow-md overflow-hidden">
             <div className="flex justify-end px-4 pt-4">
                 <p className="hidden sm:inline-block text-gray-500 text-sm p-1.5">
                     {contact && contact.created}

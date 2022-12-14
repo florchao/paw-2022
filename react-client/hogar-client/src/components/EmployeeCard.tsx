@@ -62,7 +62,7 @@ const EmployeeCard = (employee: any) => {
                     </div>
                 )}
 
-                <ul className="flex items-center gap-x-1 col-start-8">
+                <div className="flex items-center gap-x-1 col-start-8 col-span-2">
                     {e.rating != 0 &&
                         <div className={"flex items-center"}>
                             <Rating
@@ -70,6 +70,7 @@ const EmployeeCard = (employee: any) => {
                                 readonly
                                 size={25}
                                 SVGclassName="inline-block"
+                                SVGstyle={{zIndex: "0"}}
                             />
                         </div>
                         // <ul className="flex items-center gap-x-1">
@@ -168,7 +169,7 @@ const EmployeeCard = (employee: any) => {
                         //     }
                         // </ul>
                     }
-                </ul>
+                </div>
             </Link>
         </div>
     )

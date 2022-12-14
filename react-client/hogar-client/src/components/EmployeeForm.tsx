@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {JobService} from "../service/JobService";
 import {EmployeeService} from "../service/EmployeeService";
 import {UserService} from "../service/UserService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
+import {IdsService} from "../service/IdsService";
 
 export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: string, self:string}) => {
 
@@ -33,10 +33,11 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
     watch("abilities")
 
 
-    useFormPersist("employeeForm", {
+    useFormPersist(from == "create"? "employeeForm": "employeeEditForm", {
         watch,
         setValue,
         storage: window.localStorage,
+        timeout: 1000 * 60 * 2,
     })
 
     const [ids, setIds] = useState<any>();
@@ -117,7 +118,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
     }
 
     useEffect(() => {
-        JobService.getIds().then((i) => {
+        IdsService.getIds().then((i) => {
             setIds(i)
         });
         imageDownload()
