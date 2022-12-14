@@ -7,7 +7,8 @@ export class RatingService {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => resp.json())
             .catch(
@@ -26,7 +27,9 @@ export class RatingService {
 
         return await fetch(RATINGS_URL, {
             method: 'POST',
-            headers: {},
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
             body: formData
         }).then((r) => r.json())
     }

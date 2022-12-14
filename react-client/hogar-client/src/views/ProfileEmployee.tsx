@@ -36,8 +36,7 @@ export const ProfileEmployee = () => {
         content: string;
     };
 
-    //todo const employerId
-    const employerId = 5
+    const employerId = localStorage.getItem("hogar-uid") as unknown as number
 
     const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
 
