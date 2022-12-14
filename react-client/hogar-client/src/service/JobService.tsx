@@ -58,8 +58,8 @@ export class JobService {
     }
 
 
-    public static async getJob(id: number) {
-        return await fetch(JOB_URL + BACK_SLASH + id, {
+    public static async getJob(url: string) {
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
