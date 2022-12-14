@@ -24,14 +24,10 @@ public class Employee implements Serializable {
     private User id;
     @Column(length = 100, nullable = false)
     private String availability;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> availabilityArr;
     @Column(nullable = false)
     private long experienceYears;
     @Column(length = 100, nullable = false)
     private String abilities;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> abilitiesArr;
     @Column(nullable = false)
     private float rating;
     @Column(nullable = false)
@@ -48,13 +44,11 @@ public class Employee implements Serializable {
         this.experienceYears = experienceYears;
         this.abilities = abilities;
     }
-    public Employee(String name, String location, User id, List<String> availabilityArr, long experienceYears, List<String> abilitiesArr) {
+    public Employee(String name, String location, User id, long experienceYears) {
         this.name = name;
         this.location = location;
         this.id = id;
-        this.availabilityArr = availabilityArr;
         this.experienceYears = experienceYears;
-        this.abilitiesArr = abilitiesArr;
     }
 
     public String getName() {
@@ -117,30 +111,6 @@ public class Employee implements Serializable {
         return availability;
     }
 
-    public List<String> getAvailabilityArr() {
-        return availabilityArr;
-    }
-
-    public void setAvailabilityArr(List<String> availabilityArr) {
-        this.availabilityArr = availabilityArr;
-    }
-
-    public void setAvailabilityArr(String availability){
-        this.availabilityArr = new ArrayList<>(Arrays.asList(availability.split(",")));
-    }
-
-    public List<String> getAbilitiesArr() {
-        return abilitiesArr;
-    }
-
-    public void setAbilitiesArr(List<String> abilitiesArr) {
-        this.abilitiesArr = abilitiesArr;
-    }
-
-    public void setAbilitiesArr(String abilities){
-        this.abilitiesArr = new ArrayList<>(Arrays.asList(abilities.split(",")));
-    }
-
     public void setAvailability(String availability) {
         this.availability = availability;
     }
@@ -168,32 +138,43 @@ public class Employee implements Serializable {
         return getId()+ " - "
                 + getName() + " - "
                 + getLocation() + " - "
-                + getAvailabilityArr() + " - "
-                + getExperienceYears() + " - "
-                + getAbilitiesArr();
+                + getExperienceYears() + " - ";
     }
 
-     public void nameAbilities(String language){
-        ArrayList<String> toReturn = new ArrayList<>();
-        for (String ability: abilitiesArr) {
-            if(language.equals("es"))
-                toReturn.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
-            else
-                toReturn.add(Abilities.getAbilityById(Integer.parseInt(ability)).getName());
-        }
-        setAbilitiesArr(toReturn);
+    public List<String> nameAbilities(List<String> abilities, String language){
+        ArrayList<String> jobAbilities = new ArrayList<>();
+        if(language.equals("es"))
+            for (String ability: abilities) {
+                jobAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
+            }
+        else
+            for (String ability: abilities) {
+                jobAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getName());
+            }
+        return jobAbilities;
     }
 
+    public List<String> nameAvailability(List<String> availabilityAr, String language){
+        ArrayList<String> jobAvailability = new ArrayList<>();
+        if(language.equals("es"))
+            for (String availability: availabilityAr) {
+                jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
+            }
+        else
+            for (String availability: availabilityAr) {
+                jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
+            }
+        return jobAvailability;
+    }
 
-    public void nameAvailability(String language){
-        ArrayList<String> toReturn = new ArrayList<>();
-        for (String availability: availabilityArr) {
-            if(language.equals("es"))
-                toReturn.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
-            else
-                toReturn.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
-        }
-        setAvailabilityArr(toReturn);
+    public List<String> getAvailabilityArr(String availability, String language){
+        List<String> aux = new ArrayList<>(Arrays.asList(availability.split(",")));
+        return nameAvailability(aux, language);
+    }
+
+    public List<String> getAbilitiesArr(String abilities, String language){
+        List<String> aux = new ArrayList<>(Arrays.asList(abilities.split(",")));
+        return nameAbilities(aux, language);
     }
 
     @Override
@@ -201,11 +182,11 @@ public class Employee implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return experienceYears == employee.experienceYears && Float.compare(employee.rating, rating) == 0 && voteCount == employee.voteCount && Objects.equals(name, employee.name) && Objects.equals(location, employee.location) && Objects.equals(id, employee.id) && Objects.equals(availability, employee.availability) && Objects.equals(availabilityArr, employee.availabilityArr) && Objects.equals(abilities, employee.abilities) && Objects.equals(abilitiesArr, employee.abilitiesArr);
+        return experienceYears == employee.experienceYears && Float.compare(employee.rating, rating) == 0 && voteCount == employee.voteCount && Objects.equals(name, employee.name) && Objects.equals(location, employee.location) && Objects.equals(id, employee.id) && Objects.equals(availability, employee.availability) &&  Objects.equals(abilities, employee.abilities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, location, id, availability, availabilityArr, experienceYears, abilities, abilitiesArr, rating, voteCount);
+        return Objects.hash(name, location, id, availability, experienceYears, abilities, rating, voteCount);
     }
 }

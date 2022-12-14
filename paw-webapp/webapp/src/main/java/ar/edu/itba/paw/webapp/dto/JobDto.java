@@ -87,11 +87,9 @@ public class JobDto {
         dto.experienceYears = job.getExperienceYears();
 
         String language = LocaleContextHolder.getLocale().getLanguage();
-        job.nameAbilities(language);
-        dto.abilities = job.getAbilitiesArr();
+        dto.abilities = job.getAbilitiesArr(job.getAbilities(), language);
 
-        job.nameAvailability(language);
-        dto.availability = job.getAvailabilityArr();
+        dto.availability = job.getAvailabilityArr(job.getAvailability(), language);
 
         dto.employerId = EmployerDto.fromEmployer(uriInfo, job.getEmployerId());
 

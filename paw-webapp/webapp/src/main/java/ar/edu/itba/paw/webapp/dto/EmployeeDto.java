@@ -54,11 +54,8 @@ public class EmployeeDto {
 
         String language = LocaleContextHolder.getLocale().getLanguage();
 
-        employee.nameAvailability(language);
-        dto.availabilityArr = employee.getAvailabilityArr();
-
-        employee.nameAbilities(language);
-        dto.abilitiesArr = employee.getAbilitiesArr();
+        dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), language);
+        dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), language);
 
         final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
         final UriBuilder employerReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
@@ -82,10 +79,11 @@ public class EmployeeDto {
 
     public static EmployeeDto fromEdit(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+        String language = LocaleContextHolder.getLocale().getLanguage();
 
-        dto.availabilityArr = employee.getAvailabilityArr();
+        dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), language);
+        dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), language);
 
-        dto.abilitiesArr = employee.getAbilitiesArr();
 
         return dto;
     }

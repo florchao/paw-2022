@@ -51,9 +51,6 @@ public class JobServiceImpl implements JobService{
     @Override
     public Job getJobByID(long jobID) throws JobNotFoundException {
         Job job = jobDao.getJobById(jobID).orElseThrow(()-> new JobNotFoundException("job" + jobID + "does not exists"));
-        //esto hay que hacerlo por los trabajos que ya estan creados sino  ahora se setea cuando se crea el trabajo
-        job.setAvailabilityArr(job.getAvailability());
-        job.setAbilitiesArr(job.getAbilities());
         return job;
     }
 

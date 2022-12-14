@@ -22,8 +22,6 @@ public class EmployeeJpaDao implements EmployeeDao{
         employee.setRating(0);
         employee.setVoteCount(0);
         employee.getId().setImage(image);
-        employee.setAvailabilityArr(availability);
-        employee.setAbilitiesArr(abilites);
         em.persist(employee);
         return employee;
     }

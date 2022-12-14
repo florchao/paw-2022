@@ -22,8 +22,6 @@ public class JobJpaDao implements  JobDao{
     @Override
     public Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description) {
         final Job job = new Job(title.toLowerCase(), location.toLowerCase(), employerId, availability, experienceYears, abilities, description);
-        job.setAbilitiesArr(abilities);
-        job.setAvailabilityArr(availability);
         em.persist(job);
         return job;
     }

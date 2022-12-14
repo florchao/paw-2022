@@ -29,11 +29,6 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Optional<Employee> getEmployeeById(long id) {
         Optional<Employee> employee = (employeeDao.getEmployeeById(id));
-        if(employee.isPresent()){
-            //esto hay que hacerlo por los empleados que ya estan creados sino  ahora se setea cuando se crea el empleado
-            employee.get().setAbilitiesArr(employee.get().getAbilities());
-            employee.get().setAvailabilityArr(employee.get().getAvailability());
-        }
         return employee;
     }
 
