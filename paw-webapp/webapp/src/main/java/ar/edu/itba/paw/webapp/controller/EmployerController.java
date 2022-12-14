@@ -23,6 +23,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -112,11 +113,11 @@ public class EmployerController {
     @GET
     @Path("/{id}/jobs")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createdJobs(@PathParam("id") long id) {
+    public Response createdJobs(@PathParam("id") long id, @Context HttpServletRequest request) {
 //            @RequestParam(value = "publishedPage", required = false) Long page){
 //        if (page == null)
 //            page = 0L;
-        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job)).collect(Collectors.toList());
+        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).collect(Collectors.toList());
 //        mav.addObject("JobList", jobList);
 //        mav.addObject("publishedPage", page);
 //        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));

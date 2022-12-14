@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Abilities;
-import ar.edu.itba.paw.model.Availability;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
@@ -13,7 +11,6 @@ import ar.edu.itba.paw.webapp.dto.ApplicantDto;
 import ar.edu.itba.paw.webapp.dto.ContactDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto;
-import ar.edu.itba.paw.webapp.form.EmployeeEditForm;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -23,13 +20,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
@@ -80,13 +72,15 @@ public class EmployeeController {
             @QueryParam("availability") String availability,
             @QueryParam("abilities") String abilities,
             @QueryParam("page") Long page,
-            @QueryParam("order") String orderCriteria
+            @QueryParam("order") String orderCriteria,
+            @Context HttpServletRequest request
     ) {
 
         if (page == null)
             page = 0L;
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
 
         if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -96,7 +90,7 @@ public class EmployeeController {
         employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).forEach(employee ->
         {
             float rating = ratingService.getRating(employee.getId().getId());
-            employeeDtos.add(EmployeeDto.fromExploreRating(uriInfo, employee, rating));
+            employeeDtos.add(EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language")));
         });
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employeeDtos){};
         return Response.ok(genericEntity).build();
@@ -105,7 +99,7 @@ public class EmployeeController {
     @GET
     @Path("/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response employeeProfile(@PathParam("id") long id, @QueryParam("edit") String edit) throws UserNotFoundException {
+    public Response employeeProfile(@PathParam("id") long id, @QueryParam("edit") String edit, @Context HttpServletRequest request) throws UserNotFoundException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -121,7 +115,7 @@ public class EmployeeController {
         if(edit != null && edit.equals("true"))
             dto = employee.map(e -> EmployeeDto.fromEdit(uriInfo, e));
         else
-            dto = employee.map(e -> EmployeeDto.fromProfile(uriInfo, e));
+            dto = employee.map(e -> EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language")));
         if (employee.isPresent()) {
             GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto.get()){};
             return Response.ok(genericEntity).build();
@@ -163,7 +157,7 @@ public class EmployeeController {
     @GET
     @Path("{id}/jobs")
     @Produces(value = { MediaType.APPLICATION_JSON })
-    public Response appliedTo(@QueryParam("page") Long page, @PathParam("id") long id){
+    public Response appliedTo(@QueryParam("page") Long page, @PathParam("id") long id, @Context HttpServletRequest request){
         if (page == null)
             page = 0L;
 
@@ -172,7 +166,7 @@ public class EmployeeController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, 0L, PAGE_SIZE).stream().map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant)).collect(Collectors.toList());
+        List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, 0L, PAGE_SIZE).stream().map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant, request.getHeader("Accept-Language"))).collect(Collectors.toList());
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
         return Response.ok(genericEntity).build();
     }

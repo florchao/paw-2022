@@ -26,10 +26,10 @@ public class ApplicantDto {
         return dto;
     }
 
-    public static ApplicantDto fromEmployee(final UriInfo uriInfo, final Applicant applicant){
+    public static ApplicantDto fromEmployee(final UriInfo uriInfo, final Applicant applicant, String language){
         final ApplicantDto dto = new ApplicantDto();
 
-        dto.job = JobDto.fromExplore(uriInfo, applicant.getJobID(), applicant.getStatus());
+        dto.job = JobDto.fromExplore(uriInfo, applicant.getJobID(), applicant.getStatus(), language);
 
         return dto;
     }

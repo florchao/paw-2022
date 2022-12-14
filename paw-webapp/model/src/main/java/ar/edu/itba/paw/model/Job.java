@@ -173,32 +173,13 @@ public class Job implements Serializable {
     }
 
 
-    public void firstWordsToUpper() {
+    public String firstWordsToUpper() {
         StringBuilder finalName = new StringBuilder();
         for (String word : getTitle().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        setTitle(finalName.toString());
-    }
-
-    public void employerNameToUpper(Employer employerId) {
-        StringBuilder finalName = new StringBuilder();
-        for (String word : employerId.getName().split(" ")) {
-            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalName.setLength(finalName.length() - 1);
-        employerId.setName(finalName.toString());
-        return;
-    }
-
-    public void locationNameToUpper(){
-        StringBuilder finalName = new StringBuilder();
-        for (String word : getLocation().split(" ")) {
-            finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalName.setLength(finalName.length() - 1);
-        setLocation(finalName.toString());
+        return finalName.toString();
     }
 
     public boolean isOpened() {
@@ -211,7 +192,7 @@ public class Job implements Serializable {
 
     public List<String> nameAbilities(List<String> abilities, String language){
         ArrayList<String> jobAbilities = new ArrayList<>();
-        if(language.equals("es"))
+        if(language.startsWith("es-"))
             for (String ability: abilities) {
                 jobAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
             }
@@ -224,7 +205,7 @@ public class Job implements Serializable {
 
     public List<String> nameAvailability(List<String> availabilityAr, String language){
         ArrayList<String> jobAvailability = new ArrayList<>();
-        if(language.equals("es"))
+        if(language.startsWith("es-"))
             for (String availability: availabilityAr) {
                 jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
             }
@@ -233,6 +214,13 @@ public class Job implements Serializable {
                 jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
             }
         return jobAvailability;
+    }
+
+    public String nameLocation(String location, String language){
+        if(language.startsWith("es-"))
+            return Location.getLocationById(Integer.parseInt(location)).getNameEs();
+        else
+            return Location.getLocationById(Integer.parseInt(location)).getName();
     }
 
     @Override

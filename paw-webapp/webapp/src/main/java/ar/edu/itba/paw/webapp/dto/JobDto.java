@@ -34,12 +34,12 @@ public class JobDto {
     private Integer status;
 
     //TODO: faltaría el status cuando lo llamo del explore, sabiendo quien es la empleada que lo ve
-    public static JobDto fromExplore(final UriInfo uriInfo, final Job job, int status) {
+    public static JobDto fromExplore(final UriInfo uriInfo, final Job job, int status, String language) {
         final JobDto dto = new JobDto();
 
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
-        dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
+        dto.location = job.nameLocation(job.getLocation(), language);
         dto.description = job.getDescription();
         dto.status = status;
 
@@ -49,12 +49,13 @@ public class JobDto {
         return dto;
     }
 
-    public static JobDto fromCreated(final UriInfo uriInfo, final Job job) {
+    public static JobDto fromCreated(final UriInfo uriInfo, final Job job, String language) {
         final JobDto dto = new JobDto();
 
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
-        dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
+        dto.location = job.nameLocation(job.getLocation(), language);
+
         dto.description = job.getDescription();
 
         UriBuilder jobUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId()));
@@ -66,27 +67,31 @@ public class JobDto {
         return dto;
     }
 
-    public static JobDto fromAppliedJobs(final UriInfo uriInfo, final Job job) {
+    public static JobDto fromAppliedJobs(final UriInfo uriInfo, final Job job, String language) {
         final JobDto dto = new JobDto();
 
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
-        dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
+
+        dto.location = job.nameLocation(job.getLocation(), language);
+
 
         return dto;
     }
 
-    public static JobDto fromJob(final UriInfo uriInfo, final Job job) {
+    public static JobDto fromJob(final UriInfo uriInfo, final Job job, String language) {
         final JobDto dto = new JobDto();
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
-        dto.location = DtoUtils.firstWordsToUpper(job.getLocation());
+
+        dto.location = job.nameLocation(job.getLocation(), language);
+
         dto.opened = job.isOpened();
 
         dto.description = job.getDescription();
         dto.experienceYears = job.getExperienceYears();
 
-        String language = LocaleContextHolder.getLocale().getLanguage();
+
         dto.abilities = job.getAbilitiesArr(job.getAbilities(), language);
 
         dto.availability = job.getAvailabilityArr(job.getAvailability(), language);

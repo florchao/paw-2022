@@ -78,8 +78,8 @@ public class ContactServiceImpl implements ContactService{
     @Transactional
     @Override
     public void changedStatus(int status, Job job, Employee employee) {
-        job.firstWordsToUpper();
-        mailingService.sendChangeStatus(status, employee.getId().getEmail(), job.getEmployerId().getId().getEmail(), job.getTitle());
+        String titile = job.firstWordsToUpper();
+        mailingService.sendChangeStatus(status, employee.getId().getEmail(), job.getEmployerId().getId().getEmail(), titile);
     }
 
     @Override

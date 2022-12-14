@@ -76,10 +76,10 @@ public class ApplicantServiceImpl implements ApplicantService{
             Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
             Employer employer= job.get().getEmployerId();
             employer.firstWordsToUpper();
-            job.get().firstWordsToUpper();
+            String title = job.get().firstWordsToUpper();
             if(employee.isPresent()) {
-                employee.get().firstWordsToUpper();
-                mailingService.sendApplyMail(employer.getId().getEmail(), job.get().getTitle(), employee.get().getName(), jobID);
+                String name = employee.get().firstWordsToUpper();
+                mailingService.sendApplyMail(employer.getId().getEmail(), title, name, jobID);
             }
             create(jobID, employeeID);
         }

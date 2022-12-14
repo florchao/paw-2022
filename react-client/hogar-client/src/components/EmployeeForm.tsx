@@ -262,13 +262,25 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                     "ml-3 col-span-3 w-4/5 justify-self-center":
                                     "ml-3 col-span-3 col-start-4 w-4/5 justify-self-center"
                                 }>
+
                                     <label htmlFor="location"
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('EmployeeForm.location')}
                                     </label>
-                                    <input type="text"
-                                           {...register("location", {required: true, maxLength: 100})}
-                                           className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                    {ids &&
+                                        <select
+                                            {...register("location", {required: true})}
+                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
+                                            <option value={ids.locations[0]}
+                                                    label={t('Locations.west')}/>
+                                            <option value={ids.locations[1]}
+                                                    label={t('Locations.north')}/>
+                                            <option value={ids.locations[2]}
+                                                    label={t('Locations.south')}/>
+                                            <option value={ids.locations[3]}
+                                                    label={t('Locations.caba')}/>
+                                        </select>
+                                    }
                                     { errors.location &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.locationError')}</p>
                                     }

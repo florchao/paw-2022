@@ -143,8 +143,8 @@ public class ContactController {
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
         Optional<Employer> employer = employerService.getEmployerById(employerId);
         if (employee.isPresent() && employer.isPresent()) {
-            employee.get().firstWordsToUpper();
-            boolean exists = contactService.contact(employee.get().getId(), employer.get().getId(), content, employer.get().getName(), phone);
+            String name = employee.get().firstWordsToUpper();
+            boolean exists = contactService.contact(employee.get().getId(), employer.get().getId(), content, name, phone);
             if (exists) {
                 return Response.ok(1).build();
             }

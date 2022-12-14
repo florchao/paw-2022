@@ -33,7 +33,7 @@ public class EmployeeDto {
         final EmployeeDto dto = new EmployeeDto();
 
         dto.name = DtoUtils.firstWordsToUpper(employee.getName());
-        dto.location = DtoUtils.firstWordsToUpper(employee.getLocation());
+
         dto.experienceYears = employee.getExperienceYears();
         dto.id = employee.getId().getId();
         final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId()));
@@ -44,15 +44,17 @@ public class EmployeeDto {
         return dto;
     }
 
-    public static EmployeeDto fromExploreRating(final UriInfo uriInfo, final Employee employee, float rating) {
+    public static EmployeeDto fromExploreRating(final UriInfo uriInfo, final Employee employee, float rating, String language) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+        dto.location = employee.nameLocation(employee.getLocation(), language);
         dto.rating = rating;
         return dto;
     }
-    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee) {
+    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, String language) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
 
-        String language = LocaleContextHolder.getLocale().getLanguage();
+
+        dto.location = employee.nameLocation(employee.getLocation(), language);
 
         dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), language);
         dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), language);
@@ -68,8 +70,8 @@ public class EmployeeDto {
         return dto;
     }
 
-    public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee) {
-        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee);
+    public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee, String language) {
+        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, language);
         final UriBuilder deleteUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/users").path(String.valueOf(employee.getId().getId()));
 
         dto.delete = deleteUriBuilder.build();
@@ -79,10 +81,11 @@ public class EmployeeDto {
 
     public static EmployeeDto fromEdit(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
-        String language = LocaleContextHolder.getLocale().getLanguage();
 
-        dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), language);
-        dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), language);
+        dto.location = employee.getLocation();
+
+        dto.abilitiesArr = employee.getAbilitiesIds(employee.getAbilities());
+        dto.availabilityArr = employee.getAvailabilityIds(employee.getAvailability());
 
 
         return dto;

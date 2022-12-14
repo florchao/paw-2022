@@ -94,7 +94,9 @@ export const TRANSLATIONS_EN = {
     connect: "CONTACT",
     alreadyConnected: "ALREADY CONNECTED",
     reviews: "REVIEWS",
-    noReviews: "There are no reviews"
+    noReviews: "There are no reviews",
+    editProfile: "EDIT PROFILE",
+    rateUser: "Rate ",
     // viewProfile.editProfile = EDITAR PERFIL
     // viewProfile.rateUser = Califica a
     // viewProfile.thankEmployer = \u00a1Gracias por su colaboracion!
@@ -254,6 +256,13 @@ export const TRANSLATIONS_EN = {
     half: "Part time",
     complete: "Full time",
     bed: "Overnight",
+  },
+
+  Locations: {
+    west: "GBA West",
+    south: "GBA South",
+    north: "GBA North",
+    caba: "CABA"
   },
 
   Abilities: {

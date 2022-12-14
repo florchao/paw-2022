@@ -23,10 +23,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -61,7 +63,8 @@ public class JobController {
             @QueryParam("location") String location,
             @QueryParam("availability") String availability,
             @QueryParam("abilities") String abilities,
-            @QueryParam("page") Long page
+            @QueryParam("page") Long page,
+            @Context HttpServletRequest request
     ) {
 
         if (page == null)
@@ -71,7 +74,7 @@ public class JobController {
 
         List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> {
             int status = applicantService.getStatus(principal.getUserID(), j.getJobId());
-            return JobDto.fromExplore(uriInfo, j, status);
+            return JobDto.fromExplore(uriInfo, j, status, request.getHeader("Accept-Language"));
         }).collect(Collectors.toList());
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
@@ -80,7 +83,7 @@ public class JobController {
     @GET
     @Path("/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response verTrabajo(@PathParam("id") long id) throws JobNotFoundException{
+    public Response verTrabajo(@PathParam("id") long id, @Context HttpServletRequest request) throws JobNotFoundException{
         Job job = null;
         try {
             job = jobService.getJobByID(id);
@@ -91,7 +94,7 @@ public class JobController {
         if (job == null ){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        JobDto jobDto = JobDto.fromJob(uriInfo, job);
+        JobDto jobDto = JobDto.fromJob(uriInfo, job, request.getHeader("Accept-Language"));
 
         GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto){};
         return Response.ok(genericEntity).build();

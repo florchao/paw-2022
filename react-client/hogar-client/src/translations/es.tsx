@@ -264,6 +264,13 @@ export const TRANSLATIONS_ES = {
         bed: "Con cama",
     },
 
+    Locations: {
+        west: "Zona Oeste",
+        south: "Zona Sur",
+        north: "Zona Norte",
+        caba: "CABA"
+    },
+
     Abilities: {
         cook: "Cocinar",
         iron: "Planchar",

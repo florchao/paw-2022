@@ -115,23 +115,15 @@ public class Employee implements Serializable {
         this.availability = availability;
     }
 
-    public void firstWordsToUpper() {
+    public String firstWordsToUpper() {
         StringBuilder finalName = new StringBuilder();
         for (String word : getName().split(" ")) {
             finalName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
         }
         finalName.setLength(finalName.length() - 1);
-        setName(finalName.toString());
+        return finalName.toString();
     }
 
-    public void locationFirstWordsToUpper() {
-        StringBuilder finalLocation = new StringBuilder();
-        for (String word : getLocation().split(" ")) {
-            finalLocation.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-        }
-        finalLocation.setLength(finalLocation.length() - 1);
-        setLocation(finalLocation.toString());
-    }
 
     @Override
     public String toString() {
@@ -142,39 +134,54 @@ public class Employee implements Serializable {
     }
 
     public List<String> nameAbilities(List<String> abilities, String language){
-        ArrayList<String> jobAbilities = new ArrayList<>();
-        if(language.equals("es"))
+        ArrayList<String> employeeAbilities = new ArrayList<>();
+        if(language.startsWith("es-"))
             for (String ability: abilities) {
-                jobAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
+                employeeAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
             }
         else
             for (String ability: abilities) {
-                jobAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getName());
+                employeeAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getName());
             }
-        return jobAbilities;
+        return employeeAbilities;
     }
 
-    public List<String> nameAvailability(List<String> availabilityAr, String language){
-        ArrayList<String> jobAvailability = new ArrayList<>();
-        if(language.equals("es"))
+    public List<String> nameAvailabilities(List<String> availabilityAr, String language){
+        ArrayList<String> employeeAvailabilities = new ArrayList<>();
+        if(language.startsWith("es-"))
             for (String availability: availabilityAr) {
-                jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
+                employeeAvailabilities.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
             }
         else
             for (String availability: availabilityAr) {
-                jobAvailability.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
+                employeeAvailabilities.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getName());
             }
-        return jobAvailability;
+        return employeeAvailabilities;
     }
 
     public List<String> getAvailabilityArr(String availability, String language){
         List<String> aux = new ArrayList<>(Arrays.asList(availability.split(",")));
-        return nameAvailability(aux, language);
+        return nameAvailabilities(aux, language);
     }
 
     public List<String> getAbilitiesArr(String abilities, String language){
         List<String> aux = new ArrayList<>(Arrays.asList(abilities.split(",")));
         return nameAbilities(aux, language);
+    }
+
+    public String nameLocation(String location, String language){
+        if(language.startsWith("es-"))
+            return Location.getLocationById(Integer.parseInt(location)).getNameEs();
+        else
+            return Location.getLocationById(Integer.parseInt(location)).getName();
+    }
+
+    public List<String> getAvailabilityIds(String availability){
+        return new ArrayList<>(Arrays.asList(availability.split(",")));
+    }
+
+    public List<String> getAbilitiesIds(String abilities){
+        return new ArrayList<>(Arrays.asList(abilities.split(",")));
     }
 
     @Override

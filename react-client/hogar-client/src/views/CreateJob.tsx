@@ -92,9 +92,20 @@ export const CreateJob = () => {
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('CreateJob.location')}
                                     </label>
-                                    <input type="text"
-                                           {...register("location", {required: true, maxLength: 100})}
-                                           className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                    {ids &&
+                                        <select
+                                            {...register("location", {required: true})}
+                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
+                                            <option value={ids.locations[0]}
+                                                    label={t('Locations.west')}/>
+                                            <option value={ids.locations[1]}
+                                                    label={t('Locations.north')}/>
+                                            <option value={ids.locations[2]}
+                                                    label={t('Locations.south')}/>
+                                            <option value={ids.locations[3]}
+                                                    label={t('Locations.caba')}/>
+                                        </select>
+                                    }
                                     {errors.location &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('CreateJob.locationError')}</p>
                                     }
