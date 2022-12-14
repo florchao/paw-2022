@@ -48,7 +48,7 @@ export const Job = () => {
     }
 
     useEffect(() => {
-        JobService.getJob(self).then((e) => {
+        JobService.getJob(id).then((e) => {
             setJob(e)
             setOpened(e.opened)
         })
