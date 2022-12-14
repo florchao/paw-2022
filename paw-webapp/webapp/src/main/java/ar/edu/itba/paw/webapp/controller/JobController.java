@@ -122,8 +122,6 @@ public class JobController {
     @Path("")
     @Consumes(value = { MediaType.APPLICATION_JSON, })
     public Response postJob(@Valid final JobForm form) {
-        //TODO: poner el id del empleador que esta iniciado sesión
-
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Job job = jobService.create(form.getTitle(), form.getLocation(), hogarUser.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
