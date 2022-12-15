@@ -14,7 +14,7 @@ import ErrorFeedback from "../components/ErrorFeedback";
 import Modal from "react-modal";
 import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
-import {BACK_SLASH, EMPLOYEE_URL, IMAGE_URL} from "../utils/utils";
+import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
 
 export const ProfileEmployee = () => {
 
@@ -56,10 +56,14 @@ export const ProfileEmployee = () => {
     }
 
     function delEmployee() {
-        // UserService.deleteUser(id).then(() => {
-        //         nav('/', {replace: true})
-        //     }
-        // );
+        UserService.deleteUser(employee.delete).then(() => {
+                localStorage.removeItem("hogar-uid")
+                localStorage.removeItem("hogar-jwt")
+                localStorage.removeItem("hogar-role")
+                nav('/', {replace: true})
+                window.location.reload()
+            }
+        );
     }
 
     useEffect(() => {
@@ -367,11 +371,10 @@ export const ProfileEmployee = () => {
                                 </ul>
                             </div>
                         </div>
-                        <div className="flow-root">
+                        {review && <div className="flow-root">
                             <h1 className="pb-3 pt-3 font-semibold">
                                 {t('Profile.reviews')}
                             </h1>
-                            <ul role="list" className="divide-y divide-gray-300">
                                 {localStorage.getItem("hogar-role") == "EMPLOYER" && myReview == null && (
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <div className="">
@@ -401,9 +404,10 @@ export const ProfileEmployee = () => {
                                             </div>
                                         </div>
                                     </form>)}
+                            <ul role="list" className="divide-y divide-gray-300">
                                 {myReview && <MyReviewCard review={myReview}/>}
-                                {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
-                                {review && review.length === 0 && !myReview &&
+                                {review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
+                                {review.length === 0 && !myReview &&
                                     <div className="grid content-center justify-center h-5/6 mt-16">
                                         <div className="grid justify-items-center">
                                             <img src='/images/sinEmpleadas.png' alt="sinEmpleadas"
@@ -415,6 +419,7 @@ export const ProfileEmployee = () => {
                                     </div>}
                             </ul>
                         </div>
+                        }
                     </div>
                 </div>}
             {status == '0' && showMessage &&

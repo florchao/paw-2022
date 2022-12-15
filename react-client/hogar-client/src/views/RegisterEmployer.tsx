@@ -114,7 +114,7 @@ const RegisterEmployer = () => {
                                 </div>
                                 <label htmlFor="image-input" id="image-label"
                                        className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                    {t('RegisterEmployee.image')}
+                                    {t('RegisterEmployer.image')}
                                 </label>
                                 <input id="image-input"
                                        type="file"

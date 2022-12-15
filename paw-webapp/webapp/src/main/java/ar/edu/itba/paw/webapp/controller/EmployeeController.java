@@ -197,9 +197,16 @@ public class EmployeeController {
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployeeReviews(@PathParam("id") long id) {
-        List<ReviewDto> reviews = reviewService.getAllReviews(id, null, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployeeReview(uriInfo, r)).collect(Collectors.toList());
 
-        //TODO: si es empleado el que inició sesión
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        HogarUser principal = (HogarUser) auth.getPrincipal();
+
+        List<ReviewDto> reviews = reviewService.getAllReviews(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))? principal.getUserID() : null, 0L, PAGE_SIZE_REVIEWS)
+                .stream()
+                .map(r -> ReviewDto.fromEmployeeReview(uriInfo, r))
+                .collect(Collectors.toList());
+
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
         return Response.ok(genericEntity).build();

@@ -31,7 +31,7 @@ export const Home = () => {
 
                 </div>
                 <div className="pt-8">
-                    <img src={ './images/indexImage.jpg' } alt="primera foto"/>
+                    <img src={ './images/indexImage.jpg' } alt="primera foto" className={"rounded-full"}/>
                 </div>
             </div>
     )

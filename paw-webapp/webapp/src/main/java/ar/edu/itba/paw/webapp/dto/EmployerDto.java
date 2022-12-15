@@ -17,6 +17,8 @@ public class EmployerDto {
 
     private URI employeeReview;
 
+    private URI delete;
+
     public static EmployerDto fromEmployer(final UriInfo uriInfo, final Employer employer) {
         final EmployerDto dto = new EmployerDto();
 
@@ -26,11 +28,12 @@ public class EmployerDto {
         final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/images").path(String.valueOf(employer.getId().getId()));
         final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
         final UriBuilder employeeReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
-
+        final UriBuilder deleteBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/users").path(String.valueOf(employer.getId().getId()));
 
         dto.image = imageUriBuilder.build();
         dto.reviews = reviewBuilder.build();
         dto.employeeReview = employeeReviewBuilder.build();
+        dto.delete = deleteBuilder.build();
 
         return dto;
     }
@@ -99,5 +102,13 @@ public class EmployerDto {
 
     public void setEmployeeReview(URI employeeReview) {
         this.employeeReview = employeeReview;
+    }
+
+    public URI getDelete() {
+        return delete;
+    }
+
+    public void setDelete(URI delete) {
+        this.delete = delete;
     }
 }

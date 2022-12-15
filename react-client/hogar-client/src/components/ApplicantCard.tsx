@@ -56,7 +56,7 @@ const ApplicantCard = (applicant: any) =>{
                             {a.employee.hourlyFee}$/hs
                         </p>
                     </div>
-
+                    <div className="flex flex-1 justify-end">
                     {status == '1' &&
                         <p className="font-semibold text-lg text-green-400 px-8">{t('Applicants.accepted')}</p>
                     }
@@ -74,6 +74,7 @@ const ApplicantCard = (applicant: any) =>{
                         </div>
 
                     }
+                </div>
                 </div>
                 </li>
     )

@@ -1,4 +1,4 @@
-import {BACK_SLASH, USER_URL, USERS_URL} from "../utils/utils";
+import {USER_URL, USERS_URL} from "../utils/utils";
 
 export class UserService {
 
@@ -20,8 +20,8 @@ export class UserService {
                 })
     }
 
-    public static async deleteUser(id: number) {
-        return await fetch(USERS_URL + BACK_SLASH + id, {
+    public static async deleteUser(url: string) {
+        return await fetch(url, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',

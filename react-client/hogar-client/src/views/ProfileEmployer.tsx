@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {EmployerService} from "../service/EmployerService";
 import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
 import {useTranslation} from "react-i18next";
 
@@ -18,10 +18,12 @@ export const ProfileEmployer = () => {
 
 
     function delEmployer() {
-        UserService.deleteUser(id).then(() => {
-                localStorage.clear()
-            //TODO: si bien se borra local storage sigue apareciendo la pagina como si fuese empleado
+        UserService.deleteUser(employer.delete).then(() => {
+                localStorage.removeItem("hogar-uid")
+                localStorage.removeItem("hogar-jwt")
+                localStorage.removeItem("hogar-role")
                 nav('/', {replace: true})
+                window.location.reload()
             }
         );
     }

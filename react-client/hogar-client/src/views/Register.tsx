@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 const Register = () => {
     const {t} = useTranslation();
     return (
-        <div className="grid content-start h-screen overflow-auto pl-5 pr-5">
-            <div id="roles" className="grid grid-cols-3 items-start p-10 gap-y-7 mt-9">
+        <div className="grid content-start h-screen overflow-auto pl-5 pr-5 ">
+            <div id="roles" className="grid grid-cols-3 items-start p-10 gap-y-7 mt-14">
                 <div className="h-96 w-96">
                     <img className="object-cover w-full h-full rounded-full"
                          src={'./images/empleador.jpg'} alt="employer"/>
