@@ -27,7 +27,7 @@ export const TRANSLATIONS_ES = {
         passwordsError: "Las contraseñas no coinciden"
     },
 
-    RegisterEmployee: {
+    EmployeeForm: {
         title_register: "Crear perfil",
         title_edit: "Editar perfil",
         image: "Insertar imagen",
@@ -36,6 +36,7 @@ export const TRANSLATIONS_ES = {
         password: "Contraseña",
         location: "Zona",
         experienceYears: "Años de experiencia",
+        hourlyFee: "Tarifa por hora",
         confirmPassword: "Confirmar contraseña",
         abilities: "Habilidades",
         availability: "Disponibilidad",
@@ -89,6 +90,7 @@ export const TRANSLATIONS_ES = {
     },
     Profile:{
         location: "Zona",
+        hourlyFee: "Tarifa por hora",
         experience: "Años de experiencia",
         abilities: "Habilidades",
         availability: "Posible Jornada",
@@ -178,6 +180,7 @@ export const TRANSLATIONS_ES = {
         reject: "Rechazar",
         accepted: "Aceptado",
         rejected: "Rechazado",
+        hourlyFee: "Tarifa por hora",
         noApplicants: "No hay aplicantes para este trabajo"
     },
 

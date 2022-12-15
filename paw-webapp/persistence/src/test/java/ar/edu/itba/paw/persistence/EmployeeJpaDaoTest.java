@@ -41,6 +41,8 @@ public class EmployeeJpaDaoTest {
     private static final long EXPERIENCE_YEARS = 10;
     private static final long EXPERIENCE_YEARS2 = 20;
 
+    private static final long HOURLY_FEE = 100;
+
     private static final String ABILITIES = "4";
 
     private static final byte[] IMAGE = null;
@@ -66,7 +68,7 @@ public class EmployeeJpaDaoTest {
                 .setParameter(4, ROLE)
                 .executeUpdate();
         Optional<User> user = userJpaDao.getUserById(0);
-        final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, IMAGE);
+        final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, IMAGE);
         em.flush();
 
         Assert.assertEquals(ID, employee.getId().getId());
@@ -89,9 +91,9 @@ public class EmployeeJpaDaoTest {
 
         byte [] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
-        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
 
-        employeeJpaDao.update(employee, "NameAux",  "LocationAux", "AvailabilityAux", (long) 12, "AbilitiesAux", image);
+        employeeJpaDao.update(employee, "NameAux",  "LocationAux", "AvailabilityAux", (long) 12, (long) 200, "AbilitiesAux", image);
 
 
         Assert.assertEquals("NameAux", employee.getName());
@@ -113,7 +115,7 @@ public class EmployeeJpaDaoTest {
 
         byte [] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
-        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
 
         List<Employee> list = employeeJpaDao.getEmployees(10);
 
@@ -128,11 +130,11 @@ public class EmployeeJpaDaoTest {
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, ROLE);
         User user3 = userJpaDao.create(USERNAME3, PASSWORD, ROLE);
 
-        Employee employee = employeeJpaDao.create(user, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS2, ABILITIES, image);
+        Employee employee = employeeJpaDao.create(user, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS2, HOURLY_FEE, ABILITIES, image);
 
-        Employee employee2 = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Employee employee2 = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
 
-        Employee employee3 = employeeJpaDao.create(user3, NAME2, "Almagro", AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Employee employee3 = employeeJpaDao.create(user3, NAME2, "Almagro", AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         //String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria
         List<Employee> list = employeeJpaDao.getFilteredEmployees(NAME, EXPERIENCE_YEARS, LOCATION, new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
 
@@ -160,7 +162,7 @@ public class EmployeeJpaDaoTest {
 
         byte [] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
-        employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS,HOURLY_FEE, ABILITIES, image);
 
 
         Optional<Employee> employee = employeeJpaDao.getEmployeeById(0);
@@ -185,7 +187,7 @@ public class EmployeeJpaDaoTest {
                 .executeUpdate();
         byte [] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
-        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
 
 
         Boolean ans = employeeJpaDao.isEmployee(employee);
@@ -202,7 +204,7 @@ public class EmployeeJpaDaoTest {
                 .executeUpdate();
         byte [] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
-        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE,  ABILITIES, image);
 
 
         employeeJpaDao.getPrevRating(employee);
@@ -221,7 +223,7 @@ public class EmployeeJpaDaoTest {
                 .executeUpdate();
         byte [] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
-        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
 
 
         employeeJpaDao.getRatingVoteCount(employee);

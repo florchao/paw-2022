@@ -103,8 +103,12 @@ public class EmployeeController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
-            HogarUser user = (HogarUser) auth.getPrincipal();
+        HogarUser user = null;
+
+        System.out.println("AUTH: " + auth.getAuthorities());
+
+        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
+             user = (HogarUser) auth.getPrincipal();
             if (user.getUserID() != id) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
@@ -114,8 +118,10 @@ public class EmployeeController {
         Optional<EmployeeDto> dto;
         if(edit != null && edit.equals("true"))
             dto = employee.map(e -> EmployeeDto.fromEdit(uriInfo, e));
+        else if(user != null)
+            dto = employee.map(e -> EmployeeDto.fromMyProfile(uriInfo, e, request.getHeader("Accept-Language")));
         else
-            dto = employee.map(e -> EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language")));
+            dto = employee.map(e -> EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language"), auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))));
         if (employee.isPresent()) {
             GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto.get()){};
             return Response.ok(genericEntity).build();
@@ -221,25 +227,23 @@ public class EmployeeController {
                                    @FormDataParam("name") String name,
                                    @FormDataParam("location") String location,
                                    @FormDataParam("experienceYears") long experienceYears,
+                                   @FormDataParam("hourlyFee") long hourlyFee,
                                    @FormDataParam("availabilities[]") List<String> availabilities,
                                    @FormDataParam("abilities[]") List<String> abilities,
                                    @FormDataParam("image") InputStream image) throws IOException, UserFoundException, PassMatchException {
         User u = userService.create(mail, password, password, 1);
 
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String uid = String.valueOf(hogarUser.getUserID());
-
-        employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, fromListToString(abilities), IOUtils.toByteArray(image));
-        return Response.ok(u.getId()).build();
+        employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(u.getId())).build()).build();
     }
 
-    //TODO: PUT y DELETE? de employee. El delete esta en el user controller porque es el mismo para employer
     @PUT
     @Path("/{id}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
     public Response editEmployee(@FormDataParam("name") String name,
                                   @FormDataParam("location") String location,
                                   @FormDataParam("experienceYears") long experienceYears,
+                                    @FormDataParam("hourlyFee") long hourlyFee,
                                   @FormDataParam("availabilities[]") List<String> availabilities,
                                   @FormDataParam("abilities[]") List<String> abilities,
                                   @FormDataParam("image") InputStream image,
@@ -250,7 +254,7 @@ public class EmployeeController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        employeeService.editProfile(name.toLowerCase(), location.toLowerCase(), id, fromListToArray(availabilities), experienceYears, fromListToArray(abilities), IOUtils.toByteArray(image));
+        employeeService.editProfile(name.toLowerCase(), location.toLowerCase(), id, fromListToArray(availabilities), experienceYears, hourlyFee, fromListToArray(abilities), IOUtils.toByteArray(image));
         LOGGER.debug(String.format("updated profile for userid %d", id));
 
         return Response.ok(id).build();

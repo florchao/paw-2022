@@ -36,6 +36,7 @@ export const TRANSLATIONS_EN = {
     password: "Password",
     location: "Location",
     experienceYears: "Years of experience",
+    hourlyFee: "Hourly fee",
     confirmPassword: "Confirm password",
     abilities: "Abilities",
     availability: "Availabilities",
@@ -88,6 +89,7 @@ export const TRANSLATIONS_EN = {
   },
   Profile:{
     location: "Location",
+    hourlyFee: "Hourly fee",
     experience: "Years of experience",
     abilities: "Availability",
     availability: "Abilities",
@@ -181,6 +183,7 @@ export const TRANSLATIONS_EN = {
     reject: "Reject",
     accepted: "Accepted",
     rejected: "Rejected",
+    hourlyFee: "Hourly fee",
     noApplicants: "There are no applicants for this job"
   },
 

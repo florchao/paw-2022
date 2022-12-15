@@ -27,6 +27,8 @@ public class RaitingJpaDaoTest {
     private static final String LOCATION = "location";
     private static final String AVAILABILITY = "1";
     private static final long EXPERIENCE_YEARS = 10;
+    private static final long HOURLY_FEE = 100;
+
     private static final String ABILITIES = "4";
     @Autowired
     private EmployerJpaDao employerJdbcDao;
@@ -47,7 +49,7 @@ public class RaitingJpaDaoTest {
         User user = userJpaDao.create(USERNAME, PASSWORD, 2);
         final Employer employer = employerJdbcDao.create(NAME,user, image);
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         Assert.assertFalse(raitingJpaDao.hasAlreadyRated(employee, employer));
     }
 }

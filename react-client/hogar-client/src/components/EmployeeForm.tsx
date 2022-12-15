@@ -15,6 +15,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
         name: string;
         location: string;
         experienceYears: number;
+        hourlyFee: number;
         availabilities: string[];
         abilities: string[];
     };
@@ -29,6 +30,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
     watch("name")
     watch("location")
     watch("experienceYears")
+    watch("hourlyFee")
     watch("availabilities")
     watch("abilities")
 
@@ -132,6 +134,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                     setValue("experienceYears", e.experienceYears)
                     setValue("abilities", e.abilitiesArr)
                     setValue("availabilities", e.availabilityArr)
+                    setValue("hourlyFee", e.hourlyFee)
                     setImageURL(e.image)
                 }
             )
@@ -285,7 +288,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.locationError')}</p>
                                     }
                                 </div>
-                                <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
+                                <div className="ml-3 col-span-2 col-start-4 w-4/5 justify-self-center">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('EmployeeForm.experienceYears')}
                                     </label>
@@ -294,6 +297,18 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                            {...register("experienceYears", {required: true, max: 100})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                     {errors.experienceYears &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.expYearsError')}</p>
+                                    }
+                                </div>
+                                <div className="ml-3 col-span-1 col-start-6 w-4/5 justify-self-center">
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                                        {t('EmployeeForm.hourlyFee')}
+                                    </label>
+                                    <input type="number"
+                                           id="hourlyFee"
+                                           {...register("hourlyFee", {required: true})}
+                                           className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                    {errors.hourlyFee &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.expYearsError')}</p>
                                     }
                                 </div>

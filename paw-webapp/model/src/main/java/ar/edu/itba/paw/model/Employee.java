@@ -26,6 +26,9 @@ public class Employee implements Serializable {
     private String availability;
     @Column(nullable = false)
     private long experienceYears;
+
+    @Column(nullable = false)
+    private long hourlyFee;
     @Column(length = 100, nullable = false)
     private String abilities;
     @Column(nullable = false)
@@ -36,13 +39,14 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(String name, String location, User id, String availability, long experienceYears, String abilities) {
+    public Employee(String name, String location, User id, String availability, long experienceYears, long hourlyFee, String abilities) {
         this.name = name;
         this.location = location;
         this.id = id;
         this.availability = availability;
         this.experienceYears = experienceYears;
         this.abilities = abilities;
+        this.hourlyFee = hourlyFee;
     }
     public Employee(String name, String location, User id, long experienceYears) {
         this.name = name;
@@ -113,6 +117,14 @@ public class Employee implements Serializable {
 
     public void setAvailability(String availability) {
         this.availability = availability;
+    }
+
+    public long getHourlyFee() {
+        return hourlyFee;
+    }
+
+    public void setHourlyFee(long hourlyFee) {
+        this.hourlyFee = hourlyFee;
     }
 
     public String firstWordsToUpper() {
@@ -189,11 +201,11 @@ public class Employee implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return experienceYears == employee.experienceYears && Float.compare(employee.rating, rating) == 0 && voteCount == employee.voteCount && Objects.equals(name, employee.name) && Objects.equals(location, employee.location) && Objects.equals(id, employee.id) && Objects.equals(availability, employee.availability) &&  Objects.equals(abilities, employee.abilities);
+        return experienceYears == employee.experienceYears && hourlyFee == employee.hourlyFee && Float.compare(employee.rating, rating) == 0 && voteCount == employee.voteCount && Objects.equals(name, employee.name) && Objects.equals(location, employee.location) && Objects.equals(id, employee.id) && Objects.equals(availability, employee.availability) &&  Objects.equals(abilities, employee.abilities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, location, id, availability, experienceYears, abilities, rating, voteCount);
+        return Objects.hash(name, location, id, availability, experienceYears, abilities, rating, voteCount, hourlyFee);
     }
 }

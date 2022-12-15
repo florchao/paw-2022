@@ -38,6 +38,8 @@ public class ContactJpaDaoTest {
     private static final int ROLE = 2;
 
     private static final long EXPERIENCE_YEARS = 10;
+    private static final long HOURLY_FEE = 100;
+
     private static final String ABILITIES = "Abilities";
 
     @Autowired
@@ -60,7 +62,7 @@ public class ContactJpaDaoTest {
         User user = userJpaDao.create(USERNAME, PASSWORD, ROLE);
         final Employer employer = employerJdbcDao.create(NAME,user, image);
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
 
         final Contact contact = contactJpaDao.create(employee, employer, DATE,MESSAGE, PHONE );
 
@@ -89,7 +91,7 @@ public class ContactJpaDaoTest {
                 .setParameter(4, 1)
                 .executeUpdate();
 
-        final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user.get(), NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         contactJpaDao.create(employee, employer, DATE,MESSAGE, PHONE );
 
         List<Contact> list = contactJpaDao.getAllContacts(employee, 0L, 2);
@@ -105,7 +107,7 @@ public class ContactJpaDaoTest {
         User user3 = userJpaDao.create(USERNAME3, PASSWORD, ROLE);
         final Employer employer2 = employerJdbcDao.create(NAME,user3, image);
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
 
         final Contact contact = contactJpaDao.create(employee, employer, DATE,MESSAGE, PHONE );
 

@@ -26,7 +26,7 @@ export const ProfileEmployee = () => {
     const [review, setReview]: any = useState()
     const [myReview, setMyReview]: any = useState(null)
 
-    const {self, image, status, id} = useLocation().state
+    const {self, status, id} = useLocation().state
 
     const {t} = useTranslation();
     const nav = useNavigate();
@@ -72,28 +72,25 @@ export const ProfileEmployee = () => {
     }, [])
 
     useEffect(() => {
-        let url
-        if(image == undefined && id != undefined) {
-            url =  IMAGE_URL + BACK_SLASH + id
-        } else
-            url = image
-        UserService.loadImage(url).then(
-            (img) => {
-                if (img.size == 0)
-                    setImg("./images/user.png")
-                else
-                    setImg(URL.createObjectURL(img))
-            })
-
-    }, [])
+        if(employee) {
+            UserService.loadImage(employee.image).then(
+                (img) => {
+                    if (img.size == 0)
+                        setImg("./images/user.png")
+                    else
+                        setImg(URL.createObjectURL(img))
+                })
+        }
+    }, [employee])
 
     useEffect(() => {
             if (employee) {
-                ReviewService.getEmployeeReviews(employee.reviews).then(
-                    (rsp) => {
-                        setReview(rsp)
-                    }
-                )
+                if(localStorage.getItem('hogar-uid') != null)
+                    ReviewService.getEmployeeReviews(employee.reviews).then(
+                        (rsp) => {
+                            setReview(rsp)
+                        }
+                    )
                 if(localStorage.getItem("hogar-role") == "EMPLOYER")
                     ReviewService.getMyEmployeeReview(employee.employerReview).then(
                         (rsp) => {
@@ -158,12 +155,24 @@ export const ProfileEmployee = () => {
                                 </p>
                             </div>
                             <div className="ml-3 col-span-2">
-                                <h1 className="block mb-2 font-medium text-gray-900 font-semibold">
-                                    {t('Profile.location')}
-                                </h1>
-                                <h1 className="block mb-2 text-sm font-medium text-gray-600 text-ellipsis overflow-hidden">
-                                    {employee.location}
-                                </h1>
+                                <div className="grid grid-cols-2">
+                                    <div className="col-span-1">
+                                        <h1 className="block mb-2 font-medium text-gray-900 font-semibold">
+                                            {t('Profile.location')}
+                                        </h1>
+                                        <h1 className="block mb-2 text-sm font-medium text-gray-600 text-ellipsis overflow-hidden">
+                                            {employee.location}
+                                        </h1>
+                                    </div>
+                                    <div>
+                                        <h1 className="block mb-2 font-medium text-gray-900 font-semibold">
+                                            {t('Profile.hourlyFee')}
+                                        </h1>
+                                        <h1 className="block mb-2 text-sm font-medium text-gray-600 text-ellipsis overflow-hidden">
+                                            {employee.hourlyFee}
+                                        </h1>
+                                    </div>
+                                </div>
                             </div>
                             <div className="ml-3 col-span-2">
                                 <h1 className="block mb-2 font-medium text-gray-900 font-semibold">
@@ -393,8 +402,7 @@ export const ProfileEmployee = () => {
                                         </div>
                                     </form>)}
                                 {myReview && <MyReviewCard review={myReview}/>}
-                                {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}
-                                                                                                     img={image}/>)}
+                                {review && review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
                                 {review && review.length === 0 && !myReview &&
                                     <div className="grid content-center justify-center h-5/6 mt-16">
                                         <div className="grid justify-items-center">

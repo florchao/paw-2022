@@ -56,6 +56,8 @@ public class ReviewJpaDaoTest {
     private static final String LOCATION = "Location";
     private static final String AVAILABILITY = "Availability";
     private static final long EXPERIENCE_YEARS = 10;
+    private static final long HOURLY_FEE = 100;
+
     private static final String ABILITIES = "Abilities";
 
     private static final Date DATE = new Date();
@@ -66,7 +68,7 @@ public class ReviewJpaDaoTest {
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
         final Employer employer = employerJpaDao.create(NAME, user, image);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
 
 
         Review review = reviewJpaDao.create(employee, employer, TEXT, DATE, true);
@@ -83,7 +85,7 @@ public class ReviewJpaDaoTest {
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
         final Employer employer = employerJpaDao.create(NAME, user, image);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         reviewJpaDao.create(employee, employer, TEXT, DATE, true);
 
         Optional<Review> reviewList = reviewJpaDao.getMyReview(employee, employer);
@@ -98,7 +100,7 @@ public class ReviewJpaDaoTest {
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
         final Employer employer = employerJpaDao.create(NAME, user, image);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         reviewJpaDao.create(employee, employer, TEXT, DATE, false);
 
         List<Review> reviewList = reviewJpaDao.getAllReviewsEmployer(employee, employer, 0L,3 );
@@ -113,7 +115,7 @@ public class ReviewJpaDaoTest {
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
         final Employer employer = employerJpaDao.create(NAME, user, image);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         reviewJpaDao.create(employee, employer, TEXT, DATE, true);
 
         List<Review> reviewList = reviewJpaDao.getMyProfileReviews(employee, 0, 1);
@@ -129,7 +131,7 @@ public class ReviewJpaDaoTest {
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
         final Employer employer = employerJpaDao.create(NAME, user, image);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         reviewJpaDao.create(employee, employer, TEXT, DATE, false);
 
         List<Review> reviewList = reviewJpaDao.getMyProfileReviewsEmployer(employer, 0, 1);
@@ -145,7 +147,7 @@ public class ReviewJpaDaoTest {
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
         final Employer employer = employerJpaDao.create(NAME, user, image);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         Review review = reviewJpaDao.create(employee, employer, TEXT, DATE, true);
 
         Optional<Review> reviewList = reviewJpaDao.getMyReviewEmployer(employee, employer);

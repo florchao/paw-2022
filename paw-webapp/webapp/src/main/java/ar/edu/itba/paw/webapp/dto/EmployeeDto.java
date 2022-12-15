@@ -15,6 +15,7 @@ public class EmployeeDto {
 
     private List<String> availabilityArr;
     private List<String> abilitiesArr;
+    private Long hourlyFee;
     private long id;
     private URI self;
     private float rating;
@@ -33,8 +34,9 @@ public class EmployeeDto {
         final EmployeeDto dto = new EmployeeDto();
 
         dto.name = DtoUtils.firstWordsToUpper(employee.getName());
-
         dto.experienceYears = employee.getExperienceYears();
+        dto.hourlyFee = employee.getHourlyFee();
+
         dto.id = employee.getId().getId();
         final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId()));
         final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/images").path(String.valueOf(employee.getId().getId()));
@@ -50,7 +52,7 @@ public class EmployeeDto {
         dto.rating = rating;
         return dto;
     }
-    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, String language) {
+    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, String language, Boolean anonymous) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
 
 
@@ -59,19 +61,23 @@ public class EmployeeDto {
         dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), language);
         dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), language);
 
-        final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
-        final UriBuilder employerReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
-        final UriBuilder ratingsUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/ratings").path(String.valueOf(employee.getId().getId()));
+        System.out.println("ANONYMOUS: " + anonymous);
 
-        dto.reviews = reviewBuilder.build();
-        dto.employerReview = employerReviewBuilder.build();
-        dto.ratings = ratingsUriBuilder.build();
+        if(!anonymous) {
+            final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
+            final UriBuilder employerReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
+            final UriBuilder ratingsUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/ratings").path(String.valueOf(employee.getId().getId()));
+
+            dto.reviews = reviewBuilder.build();
+            dto.employerReview = employerReviewBuilder.build();
+            dto.ratings = ratingsUriBuilder.build();
+        }
 
         return dto;
     }
 
     public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee, String language) {
-        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, language);
+        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, language, false);
         final UriBuilder deleteUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/users").path(String.valueOf(employee.getId().getId()));
 
         dto.delete = deleteUriBuilder.build();
@@ -109,6 +115,8 @@ public class EmployeeDto {
 
         final UriBuilder employeeUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(employee.getId().getId()));
         dto.self = employeeUriBuilder.build();
+
+        dto.hourlyFee = employee.getHourlyFee();
 
         return dto;
     }
@@ -215,6 +223,14 @@ public class EmployeeDto {
 
     public void setDelete(URI delete) {
         this.delete = delete;
+    }
+
+    public Long getHourlyFee() {
+        return hourlyFee;
+    }
+
+    public void setHourlyFee(Long hourlyFee) {
+        this.hourlyFee = hourlyFee;
     }
 }
 

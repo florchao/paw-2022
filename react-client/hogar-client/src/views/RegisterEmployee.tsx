@@ -6,9 +6,10 @@ const RegisterEmployee = () => {
     const nav = useNavigate();
 
     const onSubmit = async (data:any, e: any, image:File) => {
-        const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.availabilities, data.abilities, image!)
+        const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.hourlyFee, data.availabilities, data.abilities, image!)
         localStorage.removeItem("employeeForm")
-        nav('/employee', {replace: true, state: {id: post, status: -1}})
+        console.log(post.value)
+        nav('/employee', {replace: true, state: {self: post.value, status: -1}})
     }
 
     return(

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.omg.PortableInterceptor.HOLDING;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -60,6 +61,7 @@ public class ApplicantJpaDaoTest {
     private static final String AVAILABILITY = "Availability";
     private static final String ABILITIES = "Abilities";
     private static final long EXPERIENCE_YEARS = 10;
+    private static final long HOURLY_FEE = 100;
     private static final String DESCRIPTION = "Description";
 
 
@@ -74,7 +76,7 @@ public class ApplicantJpaDaoTest {
         byte [] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         final Employer employer = employerJpaDao.create(NAME,user.get(), image);
         Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
@@ -89,7 +91,7 @@ public class ApplicantJpaDaoTest {
     public void testGetJobsByApplicant() {
         byte [] image = {};
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         final List<Applicant> list = applicantJpaDao.getAppliedJobsByApplicant(employee, 0L, 1);
         Assert.assertNotNull(list);
         Assert.assertEquals(0, list.size());
@@ -111,7 +113,7 @@ public class ApplicantJpaDaoTest {
         byte [] image = {};
         User user1 = userJpaDao.create(USERNAME, PASSWORD, 1);
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         final Employer employer = employerJpaDao.create(NAME,user1, image);
         final Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
         final Applicant applicant = applicantJpaDao.create(job, employee);
@@ -133,7 +135,7 @@ public class ApplicantJpaDaoTest {
         byte [] image = {};
         User user1 = userJpaDao.create(USERNAME, PASSWORD, 1);
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE,  ABILITIES, image);
         final Employer employer = employerJpaDao.create(NAME,user1, image);
         final Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
         final Applicant applicant = applicantJpaDao.create(job, employee);
@@ -154,7 +156,7 @@ public class ApplicantJpaDaoTest {
         byte [] image = {};
         User user1 = userJpaDao.create(USERNAME, PASSWORD, 1);
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         final Employer employer = employerJpaDao.create(NAME,user1, image);
         final Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
         final Applicant applicant = applicantJpaDao.create(job, employee);

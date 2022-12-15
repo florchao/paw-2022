@@ -9,9 +9,9 @@ const EditEmployee = () => {
     const nav = useNavigate();
 
     const handleSubmit = async (data: any, e: any, image:File) => {
-        const edit = await EmployeeService.editEmployee(e, self, data.name, data.location, data.experienceYears, data.availabilities, data.abilities, image!)
+        const edit = await EmployeeService.editEmployee(e, self, data.name, data.location, data.experienceYears, data.hourlyFee, data.availabilities, data.abilities, image!)
         localStorage.removeItem("employeeForm")
-        nav('/employee', {replace: true, state: {id: edit, status: -1}})
+        nav('/profile', {replace: true, state: {id: edit, status: -1}})
     }
 
     return(

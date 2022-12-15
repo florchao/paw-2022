@@ -48,6 +48,14 @@ const ApplicantCard = (applicant: any) =>{
                         </Link>
 
                     </div>
+                    <div className="flex-1 self-center">
+                        <p className="text-l font-medium text-gray-900 truncate">
+                            {t('Applicants.hourlyFee')}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                            {a.employee.hourlyFee}$/hs
+                        </p>
+                    </div>
 
                     {status == '1' &&
                         <p className="font-semibold text-lg text-green-400 px-8">{t('Applicants.accepted')}</p>

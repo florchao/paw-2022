@@ -54,7 +54,8 @@ export default function App() {
                 {localStorage.getItem("hogar-role") && localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/explore" element={<Explore/>}/>}
                 
                 {localStorage.getItem("hogar-role") && localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/employee" element={<ProfileEmployee/>}/>}
-                
+                {!localStorage.getItem("hogar-role") && <Route path="/employee" element={<ProfileEmployee/>}/>}
+
                 {localStorage.getItem("hogar-role") && localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/profile" element={<ProfileEmployer/>}/>}
                 {localStorage.getItem("hogar-role") && localStorage.getItem("hogar-role") == "EMPLOYEE" && <Route path="/profile" element={<ProfileEmployee/>}/>}
 

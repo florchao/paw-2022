@@ -11,6 +11,7 @@ create table if not exists employee(
     location TEXT,
     availability TEXT,
     experienceYears INT,
+    hourlyFee INT,
     abilities TEXT,
     voteCount INT,
     rating float4,

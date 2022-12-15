@@ -58,10 +58,14 @@ export class EmployeeService {
             url = url.concat('?edit=true')
         return await fetch(url, {
             method: 'GET',
-            headers: {
+            headers: localStorage.getItem('hogar-jwt') != null ? {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
+            }: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json"
-            },
+            }
         }).then((resp) => resp.json())
             .catch(
                 (error) => {
@@ -70,7 +74,7 @@ export class EmployeeService {
                 })
     }
 
-    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, availabilities: string[], abilities: string[], image:File) {
+    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
         e.preventDefault();
 
         const formData:any = new FormData();
@@ -80,6 +84,7 @@ export class EmployeeService {
         formData.append("name", name)
         formData.append("location", location)
         formData.append("experienceYears", experienceYears)
+        formData.append("hourlyFee", hourlyFee)
         availabilities.forEach(a => formData.append("availabilities[]", a))
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
@@ -88,21 +93,22 @@ export class EmployeeService {
             method: 'POST',
             headers: {},
             body: formData
-        }).then((r) => r.text())
+        }).then((r) => r.json())
     }
 
-    public static async editEmployee(e: any, id:number, name: string, location: string, experienceYears: number, availabilities: string[], abilities: string[], image:File) {
+    public static async editEmployee(e: any, self:string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
         e.preventDefault();
 
         const formData:any = new FormData();
         formData.append("name", name)
         formData.append("location", location)
         formData.append("experienceYears", experienceYears)
+        formData.append("hourlyFee", hourlyFee)
         availabilities.forEach(a => formData.append("availabilities[]", a))
         abilities.forEach(a => formData.append("abilities[]", a))
         formData.append("image", image, image.name)
 
-        return await fetch(EMPLOYEE_URL + BACK_SLASH + id, {
+        return await fetch(self, {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string

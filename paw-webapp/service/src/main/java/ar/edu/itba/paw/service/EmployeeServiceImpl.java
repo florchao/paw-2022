@@ -34,7 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional
     @Override
-    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, String[] abilities, byte [] image) {
+    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, long hourlyFee, String[] abilities, byte [] image) {
         StringBuilder abilitiesSB = new StringBuilder();
         StringBuilder availabilitySB = new StringBuilder();
         name = name.trim().replaceAll(" +", " ");
@@ -56,19 +56,19 @@ public class EmployeeServiceImpl implements EmployeeService{
         Optional<Employee> employee = employeeDao.getEmployeeById(id);
         if(employee.isPresent())
             if(image.length == 0)
-                employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString(), employee.get().getId().getImage());
+                employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString(), employee.get().getId().getImage());
             else
-                employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, abilitiesSB.toString(), image);
+                employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString(), image);
     }
 
     @Transactional
     @Override
-    public Employee create(String name, String location, Long id, String availability, long experienceYears, String abilities, byte[] image) {
+    public Employee create(String name, String location, Long id, String availability, long experienceYears, long hourlyFee, String abilities, byte[] image) {
         name = name.trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
         Optional<User> user=  userDao.getUserById(id);
         if(user.isPresent())
-            return employeeDao.create(user.get(), name, location, availability, experienceYears, abilities, image);
+            return employeeDao.create(user.get(), name, location, availability, experienceYears, hourlyFee, abilities, image);
         return null;
     }
 
