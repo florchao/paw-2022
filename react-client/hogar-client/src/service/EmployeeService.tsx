@@ -4,7 +4,11 @@ export class EmployeeService {
     public static async getEmployees() {
         return await fetch(EMPLOYEE_URL, {
             method: 'GET',
-            headers: {
+            headers: localStorage.getItem('hogar-jwt') != null ?{
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
+            } : {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
@@ -34,7 +38,11 @@ export class EmployeeService {
 
         return await fetch(url, {
             method: 'GET',
-            headers: {
+            headers: localStorage.getItem('hogar-jwt') != null ?{
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
+            } : {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }

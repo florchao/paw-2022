@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
@@ -80,19 +81,27 @@ public class EmployeeController {
             page = 0L;
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        HogarUser hogarUser;
 
-
-        if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
+        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
             return Response.status(Response.Status.FORBIDDEN).build();
+        } else if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+            System.out.println("EMPLOYER");
+            hogarUser = (HogarUser) auth.getPrincipal();
+        } else {
+            hogarUser = null;
         }
 
-        List <EmployeeDto> employeeDtos = new ArrayList<>(Collections.emptyList());
-        employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).forEach(employee ->
+        List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(employee ->
         {
             float rating = ratingService.getRating(employee.getId().getId());
-            employeeDtos.add(EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language")));
-        });
-        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employeeDtos){};
+            if(hogarUser != null) {
+                Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
+                return EmployeeDto.fromExploreContact(uriInfo, employee, rating, request.getHeader("Accept-Language"), hasContact);
+            } else
+                return EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language"));
+        }).collect(Collectors.toList());
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
         return Response.ok(genericEntity).build();
     }
 
@@ -104,8 +113,6 @@ public class EmployeeController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         HogarUser user = null;
-
-        System.out.println("AUTH: " + auth.getAuthorities());
 
         if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
              user = (HogarUser) auth.getPrincipal();
@@ -121,7 +128,14 @@ public class EmployeeController {
         else if(user != null)
             dto = employee.map(e -> EmployeeDto.fromMyProfile(uriInfo, e, request.getHeader("Accept-Language")));
         else
-            dto = employee.map(e -> EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language"), auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))));
+            dto = employee.map(e -> {
+                if(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+                    HogarUser hogarUser = (HogarUser) auth.getPrincipal();
+                    Boolean hasContact = !contactService.existsContact(e.getId().getId(), hogarUser.getUserID()).isEmpty();
+                    return EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language"), false, hasContact);
+                }
+                return EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language"), true, false);
+            });
         if (employee.isPresent()) {
             GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto.get()){};
             return Response.ok(genericEntity).build();

@@ -2,17 +2,13 @@ import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {UserService} from "../service/UserService";
 import {useTranslation} from "react-i18next";
-import {ContactService} from "../service/ContactService";
 import {Rating} from "react-simple-star-rating";
 
 const EmployeeCard = (employee: any) => {
     const e = employee.employee
     const [image, setImage]: any = useState()
-    const [connected, setConnected]: any = useState()
 
     const {t} = useTranslation();
-    //todo const employerId
-    const employerId = 1
 
     useEffect(() => {
         UserService.loadImage(e.image).then(
@@ -24,15 +20,6 @@ const EmployeeCard = (employee: any) => {
             }
         )
     }, [])
-
-    useEffect(() => {
-            if (employerId !== null)
-                ContactService.getContact(e.id, employerId).then(
-                    (rsp) => {
-                        setConnected(rsp)
-                    }
-                )
-        }, [])
 
     return (
         <div className="w-full col-span-5">
@@ -54,13 +41,13 @@ const EmployeeCard = (employee: any) => {
                     </p>
                 </div>
 
-                {connected && connected.length > 0 && (
+                {e.contacted &&
                     <div className="col-start-6 col-span-2 w-fit">
                         <p className="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2.5 mb-2">
                             {t('EmployeeCard.connected')}
                         </p>
                     </div>
-                )}
+                }
 
                 <div className="flex items-center gap-x-1 col-start-8 col-span-2">
                     {e.rating != 0 &&
