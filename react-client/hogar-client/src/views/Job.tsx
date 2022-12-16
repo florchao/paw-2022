@@ -8,12 +8,14 @@ import MyReviewCard from "../components/MyReviewCard";
 import {ApplicantService} from "../service/ApplicantService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
+import PaginationButtons from "../components/PaginationButtons";
 
 export const Job = () => {
 
     const [job, setJob]: any = useState()
     const [reviews, setReviews]: any = useState()
     const [myReview, setMyReview]: any = useState()
+    const [pages, setPages]: any = useState(0)
     const [status, setStatus] = useState<string>()
     const [opened, setOpened] = useState<boolean>()
 
@@ -57,9 +59,12 @@ export const Job = () => {
     useEffect(() => {
         //TODO: corregir tema reviews
             if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
-                ReviewService.getEmployerReviews(job.employerId.reviews).then(
+                ReviewService.getEmployerReviews(job.employerId.reviews, 0).then(
                     (rsp) => {
-                        setReviews(rsp)
+                        rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                        rsp.json().then((reviews) => {
+                            setReviews(reviews)
+                        })
                     }
                 )
                 ReviewService.getMyEmployerReview(job.employerId.reviews).then(
@@ -104,6 +109,13 @@ export const Job = () => {
     async function closeJob(){
         await JobService.updateJobStatus(job.jobId, false)
         setOpened(false)
+    }
+
+    const changePage = async (page: number) => {
+        const post = await ReviewService.getEmployerReviews(job.employerId.reviews, page)
+        post.json().then((reviews) => {
+            setReviews(reviews)
+        })
     }
 
 
@@ -177,9 +189,6 @@ export const Job = () => {
                                 </h1>
                                 <ul role="list"
                                     className="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                                    {/*<c:forEach var="availability" items="${job.availabilityArr}">*/}
-                                    {/*    <li><c:out value="${availability}"/></li>*/}
-                                    {/*</c:forEach>*/}
                                     {job.availability.map((availability: String, i:number) => (
                                         <li key={i}>
                                             {availability}
@@ -266,38 +275,14 @@ export const Job = () => {
                                     )}
                                 <ul role="list" className="divide-y divide-gray-300">
                                     {myReview && <MyReviewCard review={myReview}/>}
-                                    {reviews && reviews.length > 0 && reviews.map((rev: any) => <ReviewCard
-                                        key={rev.employee.id}
-                                        review={rev}/>)}
-                                    {/*                    <c:url value="/trabajo/${job.jobId}" var="getPath"/>*/}
-                                    {/*                    <form method="get" action="${getPath}">*/}
-                                    {/*                        <c:if test="${maxPage > 0 && page + 1 <= maxPage}">*/}
-                                    {/*                            <div class="flex flex-row justify-center mt-4">*/}
-                                    {/*                                <c:choose>*/}
-                                    {/*                                    <c:when test="${page < 1}">*/}
-                                    {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>*/}
-                                    {/*                                    </c:when>*/}
-                                    {/*                                    <c:otherwise>*/}
-                                    {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>*/}
-                                    {/*                                    </c:otherwise>*/}
-                                    {/*                                </c:choose>*/}
-                                    {/*                                <div class="bg--300 w-16 flex justify-center">*/}
-                                    {/*                                    <h1 class="text-purple-900">${page + 1} of ${maxPage}</h1>*/}
-                                    {/*                                </div>*/}
-                                    {/*                                <c:choose>*/}
-                                    {/*                                    <c:when test="${page + 1 == maxPage}">*/}
-                                    {/*                                        <button type="submit" class="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>*/}
-                                    {/*                                    </c:when>*/}
-                                    {/*                                    <c:otherwise>*/}
-                                    {/*                                        <button type="submit" id="prevPageButton" class=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>*/}
-                                    {/*                                    </c:otherwise>*/}
-                                    {/*                                </c:choose>*/}
-                                    {/*                        </c:if>*/}
-                                    {/*    </div>*/}
-                                    {/*    <input style="visibility: hidden" type="number" name="page" id="pageNumber"/>*/}
-                                    {/*</form>*/}
+                                    {reviews && reviews.length > 0 &&
+                                        <div>
+                                            {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
+                                                                                   review={rev}/>)}
+                                            <PaginationButtons changePages={changePage} pages={pages}/>
+                                        </div>
+                                    }
                                 </ul>
-                                {/*)}*/}
                             </div>
                         }
                     </div>

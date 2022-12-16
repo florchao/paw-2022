@@ -15,6 +15,7 @@ import Modal from "react-modal";
 import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
 import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+import PaginationButtons from "../components/PaginationButtons";
 
 export const ProfileEmployee = () => {
 
@@ -25,6 +26,7 @@ export const ProfileEmployee = () => {
 
     const [review, setReview]: any = useState()
     const [myReview, setMyReview]: any = useState(null)
+    const [pages, setPages]: any = useState(0)
 
     const {self, status, id} = useLocation().state
 
@@ -90,9 +92,12 @@ export const ProfileEmployee = () => {
     useEffect(() => {
             if (employee) {
                 if(localStorage.getItem('hogar-uid') != null)
-                    ReviewService.getEmployeeReviews(employee.reviews).then(
+                    ReviewService.getEmployeeReviews(employee.reviews, 0).then(
                         (rsp) => {
-                            setReview(rsp)
+                            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            rsp.json().then((reviews) => {
+                                setReview(reviews)
+                            })
                         }
                     )
                 if(localStorage.getItem("hogar-role") == "EMPLOYER")
@@ -118,6 +123,13 @@ export const ProfileEmployee = () => {
             }
         }, [employee]
     )
+
+    const changePage = async (page: number) => {
+        const post = await ReviewService.getEmployeeReviews(employee.reviews, page)
+        post.json().then((reviews) => {
+            setReview(reviews)
+        })
+    }
 
     window.onload = () => setShowMessage(false)
 
@@ -311,7 +323,13 @@ export const ProfileEmployee = () => {
                                     </form>)}
                             <ul role="list" className="divide-y divide-gray-300">
                                 {myReview && <MyReviewCard review={myReview}/>}
-                                {review.length > 0 && review.map((rev: any) => <ReviewCard key={rev.employer.id} review={rev}/>)}
+                                {review.length > 0 &&
+                                    <div>
+                                        {review.map((rev: any) =>
+                                            <ReviewCard key={rev.employer.id} review={rev}/>)}
+                                        <PaginationButtons pages={pages} changePages={changePage}/>
+                                    </div>
+                                }
                                 {review.length === 0 && !myReview &&
                                     <div className="grid content-center justify-center h-5/6 mt-16">
                                         <div className="grid justify-items-center">

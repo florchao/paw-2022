@@ -50,7 +50,7 @@ export const ProfileEmployer = () => {
 
     useEffect(() => {
         if (employer) {
-            ReviewService.getEmployerReviews(employer.reviews).then(
+            ReviewService.getEmployerReviews(employer.reviews, 0).then(
                 (rsp) => {
                     setReviews(rsp)
                 }
@@ -69,6 +69,13 @@ export const ProfileEmployer = () => {
             }
         }, [employer]
     )
+
+    const changePage = async (page: number) => {
+        const post = await ReviewService.getEmployerReviews(employer.reviews, page)
+        post.json().then((reviews) => {
+            setReviews(reviews)
+        })
+    }
 
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">

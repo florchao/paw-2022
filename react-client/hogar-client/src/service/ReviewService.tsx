@@ -2,7 +2,10 @@ import {BACK_SLASH, REVIEWS_URL} from "../utils/utils";
 
 export class ReviewService {
 
-    public static async getEmployeeReviews(url: string) {
+    public static async getEmployeeReviews(url: string, page:number) {
+        if(page > 0) {
+            url = url + "?page=" + page
+        }
         return await fetch(url, {
             method: 'GET',
             headers: {
@@ -10,7 +13,7 @@ export class ReviewService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     console.log(error)
@@ -18,7 +21,10 @@ export class ReviewService {
                 })
     }
 
-    public static async getEmployerReviews(url: string) {
+    public static async getEmployerReviews(url: string, page: number) {
+        if(page > 0) {
+            url = url + "?page=" + page
+        }
         return await fetch(url, {
             method: 'GET',
             headers: {
@@ -26,7 +32,7 @@ export class ReviewService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     console.log(error)
