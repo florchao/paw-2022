@@ -274,7 +274,13 @@ public class EmployeeController {
                                  @FormDataParam("abilities[]") List<String> abilities,
                                  @FormDataParam("image") InputStream image,
                                  @PathParam("id") long id) throws IOException, UserFoundException, PassMatchException {
-
+        if(name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
+                experienceYears < 0 || experienceYears > 100 ||
+                location.length() > 100 || !location.matches("[a-z A-z\\s0-9,]+") ||
+                availabilities.isEmpty() || abilities.isEmpty() ||
+                image== null){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getUserID() != id) {
             return Response.status(Response.Status.FORBIDDEN).build();
