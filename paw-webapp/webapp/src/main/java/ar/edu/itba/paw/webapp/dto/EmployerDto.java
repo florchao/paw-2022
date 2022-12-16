@@ -44,9 +44,9 @@ public class EmployerDto {
         final EmployerDto dto = new EmployerDto();
 
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
-
+        dto.id = employer.getId().getId();
         final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
-         dto.reviews = reviewBuilder.build();
+        dto.reviews = reviewBuilder.build();
 
         return dto;
     }

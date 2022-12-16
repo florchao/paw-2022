@@ -53,10 +53,10 @@ public class EmployerController {
     @Context
     private UriInfo uriInfo;
 
-    private final static long PAGE_SIZE = 23;
+    private final static long PAGE_SIZE = 5;
     private final static long PAGE_SIZE_PROFILE = 2;
 
-    private final static int PAGE_SIZE_REVIEWS = 5;
+    private final static int PAGE_SIZE_REVIEWS = 1;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployerController.class);
 
@@ -134,16 +134,20 @@ public class EmployerController {
     @GET
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getEmployerReviews(@PathParam("id") long id) {
+    public Response getEmployerReviews(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         HogarUser principal = (HogarUser) auth.getPrincipal();
 
-        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))? principal.getUserID() : null, id, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
+        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))? principal.getUserID() : null, id, page, PAGE_SIZE_REVIEWS)
+                .stream()
+                .map(r -> ReviewDto.fromEmployerReview(uriInfo, r))
+                .collect(Collectors.toList());
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
-        return Response.ok(genericEntity).build();
+        int pages = reviewService.getPageNumberEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))? principal.getUserID() : null, id, PAGE_SIZE_REVIEWS);
+        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
     }
 
     @GET

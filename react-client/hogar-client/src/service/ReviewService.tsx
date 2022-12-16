@@ -84,6 +84,7 @@ export class ReviewService {
         formData.append("content", message)
         formData.append("employeeId", localStorage.getItem("hogar-uid"))
         formData.append("employerId", employerId)
+        console.log(employerId)
         formData.append("forEmployee", false)
 
         return await fetch(REVIEWS_URL, {

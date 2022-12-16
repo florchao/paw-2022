@@ -112,7 +112,7 @@ public class ReviewServiceImpl implements ReviewService{
             if (employee.isPresent() && employer.isPresent())
                 return reviewDao.getPageNumberEmployer(employee.get(), employer.get(), pageSize);
         }
-        return 0;
+        return employer.map(value -> reviewDao.getPageNumberEmployer(null, value, pageSize)).orElse(0);
     }
 
     @Transactional(readOnly = true)
