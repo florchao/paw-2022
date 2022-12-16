@@ -53,7 +53,7 @@ public class EmployerController {
     @Context
     private UriInfo uriInfo;
 
-    private final static long PAGE_SIZE = 9;
+    private final static long PAGE_SIZE = 23;
     private final static long PAGE_SIZE_PROFILE = 2;
 
     private final static int PAGE_SIZE_REVIEWS = 5;
@@ -116,20 +116,19 @@ public class EmployerController {
     @GET
     @Path("/{id}/jobs")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createdJobs(@PathParam("id") long id, @QueryParam("page") Long page, @QueryParam("profile") String profile, @Context HttpServletRequest request) {
-        if (page == null)
-            page = 0L;
-
-        System.out.println("profile: " + profile);
-
-        List<JobDto> jobs = jobService.getUserJobs(id, page, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).collect(Collectors.toList());
+    public Response createdJobs(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page, @QueryParam("profile") String profile, @Context HttpServletRequest request) {
+        List<JobDto> jobs = jobService.getUserJobs(id, page, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE)
+                .stream()
+                .map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).
+                collect(Collectors.toList());
 
         if(jobs.isEmpty()){
             return Response.noContent().build();
         }
+        int pages = jobService.getMyJobsPageNumber(id, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE);
 
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
-        return Response.ok(genericEntity).build();
+        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
     }
 
     @GET
