@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @Path("/api/employees")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 5;
+    private final int PAGE_SIZE = 1;
 
     private final int PAGE_SIZE_REVIEWS = 5;
 
@@ -91,11 +91,15 @@ public class EmployeeController {
         List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(employee ->
         {
             float rating = ratingService.getRating(employee.getId().getId());
-            employeeDtos.add(EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language")));
-        });
+            if(hogarUser != null) {
+                Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
+                return EmployeeDto.fromExploreContact(uriInfo, employee, rating, request.getHeader("Accept-Language"), hasContact);
+            } else
+                return EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language"));
+        }).collect(Collectors.toList());
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
-        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employeeDtos){};
-        return Response.ok(genericEntity).header("X-Total-Count", Integer.toString(pages)).build();
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
+        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
     }
 
     @GET
