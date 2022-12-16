@@ -95,16 +95,6 @@ public class ApplicantController {
         employee.ifPresent(value -> contactService.changedStatus(status, job, value));
         return Response.ok(finalStatus).build();
     }
-    //    @RequestMapping(value = "/changeStatus/{jobId}/{employeeId}/{status}", method = {RequestMethod.POST})
-//    public ModelAndView changeStatus(@PathVariable final int jobId, @PathVariable final int employeeId, @PathVariable final int status) throws JobNotFoundException, UserNotFoundException {
-//        applicantService.changeStatus(status, employeeId, jobId);
-//        Job job = jobService.getJobByID(jobId).orElseThrow(()-> new JobNotFoundException("job" + jobId + "does not exists"));
-//        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-//        employee.ifPresent(value -> contactService.changedStatus(status, job, value));
-//        return new ModelAndView("redirect:/aplicantes/" + jobId);
-//    }
-//
-
 
     @DELETE
     @Path("/{employeeId}/{jobId}")
@@ -120,26 +110,4 @@ public class ApplicantController {
         return Response.noContent().build();
     }
 
-
-
-//    @RequestMapping(value="/trabajosAplicados", method = {RequestMethod.GET})
-//    public ModelAndView appliedTo(@RequestParam(value = "page", required = false) Long page){
-//        ModelAndView mav = new ModelAndView("appliedJobs");
-//        if (page == null)
-//            page = 0L;
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        List<Job> list = applicantService.getJobsByApplicant(principal.getUserID(), page, PAGE_SIZE);
-//        Map<Job, Integer> jobList = new LinkedHashMap<>();
-//        mav.addObject("page", page);
-//        mav.addObject("maxPage",applicantService.getPageNumberForAppliedJobs(principal.getUserID(), PAGE_SIZE));
-//        for (Job job : list) {
-//            job.firstWordsToUpper();
-//            job.locationNameToUpper();
-//            job.getEmployerId().firstWordsToUpper();
-//            int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
-//            jobList.put(job, status);
-//        }
-//        mav.addObject("jobList", jobList);
-//        return mav;
-//    }
 }

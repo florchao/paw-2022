@@ -190,17 +190,18 @@ public class EmployeeController {
     @GET
     @Path("/{id}/contacts")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response employeeContacts(@PathParam("id") long id) throws UserNotFoundException {
+    public Response employeeContacts(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page) throws UserNotFoundException {
 
         HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getUserID() != id) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, 0L, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, page, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        int pages = contactService.getPageNumber(id, PAGE_SIZE);
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
         };
-        return Response.ok(genericEntity).build();
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET

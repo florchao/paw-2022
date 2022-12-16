@@ -53,7 +53,7 @@ public class EmployerController {
     @Context
     private UriInfo uriInfo;
 
-    private final static long PAGE_SIZE = 5;
+    private final static long PAGE_SIZE = 7;
     private final static long PAGE_SIZE_PROFILE = 2;
 
     private final static int PAGE_SIZE_REVIEWS = 1;
@@ -81,35 +81,6 @@ public class EmployerController {
             return Response.ok(genericEntity).build();
         }
 
-//                mav.addObject("page", page);
-//                mav.addObject("maxPage",reviewService.getMyProfileReviewsEmployerPageNumber(user.get().getId(), PAGE_SIZE));
-//                mav.addObject("ReviewList", myReviews);
-//            }
-//            return mav;
-//        }
-//        final ModelAndView mav = new ModelAndView("viewProfile");
-//        if (user.isPresent()) {
-//            mav.addObject("user", user.get());
-//            Optional<Employee> employee = employeeService.getEmployeeById(user.get().getId());
-//            if (employee.isPresent()) {
-//                employee.get().firstWordsToUpper();
-//                employee.get().locationFirstWordsToUpper();
-//                String language = LocaleContextHolder.getLocale().getLanguage();
-//                employee.get().nameAvailability(language);
-//                employee.get().nameAbilities(language);
-//                mav.addObject("employee", employee.get());
-//            }
-//            mav.addObject("userId", user.get().getId());
-//            List<Review> myReviews = reviewService.getMyProfileReviews(user.get().getId(), page, PAGE_SIZE);
-//            for (Review rev : myReviews) {
-//                rev.getEmployerId().firstWordsToUpper();
-//            }
-//            mav.addObject("myProfileFlag", true);
-//            mav.addObject("page", page);
-//            mav.addObject("maxPage",reviewService.getMyProfileReviewsPageNumber(user.get().getId(), PAGE_SIZE));
-//            mav.addObject("ReviewList", myReviews);
-//        }
-//        return mav;
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
@@ -125,10 +96,15 @@ public class EmployerController {
         if(jobs.isEmpty()){
             return Response.noContent().build();
         }
-        int pages = jobService.getMyJobsPageNumber(id, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE);
+        if(profile != null && profile.equals("true")){
+            GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
+            return Response.ok(genericEntity).build();
+        }
+
+        int pages = jobService.getMyJobsPageNumber(id, PAGE_SIZE);
 
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
-        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET

@@ -4,20 +4,27 @@ import {Link} from "react-router-dom";
 import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
 import {BACK_SLASH, EMPLOYER_URL, JOBS} from "../utils/utils";
+import PaginationButtons from "../components/PaginationButtons";
 
 export const CreatedJobs = () => {
     const [createdJobs, setCreatedJobs]: any = useState()
+    const [pages, setPages]: any = useState(0)
 
     const { t } = useTranslation()
 
     let id  = localStorage.getItem("hogar-uid") as unknown as number
 
     useEffect(() => {
+        changePage(0)
+    }, [])
+
+    const changePage = async (page: number) => {
         let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
-        JobService.getCreatedJobs(url, false).then( async (j) => {
+        JobService.getCreatedJobs(url, false, page).then( async (j) => {
+            j.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
             j.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j.json())
         });
-    }, [])
+    }
 
     return (
         <div className="grid content-start h-screen overflow-auto pl-5 pr-5">
@@ -44,11 +51,12 @@ export const CreatedJobs = () => {
                 </div>
             }
             {createdJobs && createdJobs.length > 0 &&
+                <div>
                 <div className="flex flex-wrap content-start justify-center">
                     {createdJobs.map((j: any) => (
                         <JobCard key={j.jobId} job={j}/>
                     ))}
-                    <div className="grid content-center justify-center">
+                    <div className="w-80 mr-5 mb-5 grid content-center justify-center">
                         <Link to="/create/job">
                             <button type="button"
                                     className="text-lg focus:outline-none text-purple-700 bg-yellow-300 hover:bg-yellow-200 font-small rounded-lg text-lg px-5 py-2.5">
@@ -56,6 +64,8 @@ export const CreatedJobs = () => {
                             </button>
                         </Link>
                     </div>
+                </div>
+                    <PaginationButtons changePages={changePage} pages={pages}/>
                 </div>
             }
         </div>

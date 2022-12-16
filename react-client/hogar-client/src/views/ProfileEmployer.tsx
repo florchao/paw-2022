@@ -66,7 +66,7 @@ export const ProfileEmployer = () => {
 
     useEffect(() => {
             if (employer) {
-                JobService.getCreatedJobs(employer.jobs, true).then(
+                JobService.getCreatedJobs(employer.jobs, true, 0).then(
                     async (rsp) => {
                         rsp.status === 204 ? setJobs([]) : setJobs(await rsp.json())
                     }

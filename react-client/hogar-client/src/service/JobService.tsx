@@ -87,9 +87,11 @@ export class JobService {
         }).then((r) => r.json())
     }
 
-    public static async getCreatedJobs(url: string, profile: boolean) {
+    public static async getCreatedJobs(url: string, profile: boolean, page: number) {
         if(profile)
             url = url + QUERY_PARAM + 'profile=true'
+        if(page > 0)
+            url = url + QUERY_PARAM + 'page=' + page.toString()
         return await fetch(url, {
             method: 'GET',
             headers: {
@@ -107,7 +109,7 @@ export class JobService {
 
     public static async getApplicants(url : string, page: number){
         if (page > 0) {
-            url = url + "?page=" + page.toString()
+            url = url + QUERY_PARAM + "page=" + page.toString()
         }
         console.log(url)
         return await fetch(url, {

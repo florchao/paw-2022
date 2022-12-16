@@ -283,6 +283,11 @@ export const TRANSLATIONS_ES = {
         pets: "Cuidado de mascotas",
     },
 
+
+    Pagination: {
+        of: "de",
+    },
+
     EmployerProfile:{
         delete: "Borrar perfil",
         reviews: "Opiniones",

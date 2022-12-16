@@ -5,11 +5,13 @@ import {useLocation} from "react-router-dom";
 import ContactCard from "../components/ContactCard";
 import ContactCardModal from "../components/ContactCardModal";
 import Modal from "react-modal";
+import PaginationButtons from "../components/PaginationButtons";
 
 export const Contacts = () => {
 
     const { t } = useTranslation();
     const [contacts, setContacts]: any = useState()
+    const [pages, setPages]: any = useState(0)
     const [modalData, setModalData]: any = useState()
 
     const {id} = useLocation().state
@@ -27,8 +29,19 @@ export const Contacts = () => {
     }
 
     useEffect(() => {
-        ContactService.contacts(id).then((val) => setContacts(val));
+        changePage(0)
     }, [])
+
+    const changePage = async (page: number) => {
+        ContactService.contacts(id, page).then(
+            (rsp) => {
+                rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                rsp.json().then((conts: any) => {
+                    setContacts(conts)
+                })
+            }
+        );
+    }
 
     return (
         <div className="grid content-start h-screen overflow-auto pl-5 pr-5" id="main">
@@ -47,16 +60,21 @@ export const Contacts = () => {
                 </div>
             }
                 <div className="flex flex-wrap content-center justify-center pl-5 pr-5">
-                {contacts && contacts.length > 0 && contacts.map((contact: any) =>
-                        <button key={contact.employer.id} onClick={() => {
-                            setModalData(contact)
-                            openModal()
-                        }}>
-                            <div className="flex flex-wrap content-center justify-center">
-                                <ContactCard contact={contact}/>
-                            </div>
-                        </button>
-                        )}
+                    {contacts && contacts.length > 0 &&
+                        <div>
+                            {contacts.map((contact: any) =>
+                            <button key={contact.employer.id} onClick={() => {
+                                setModalData(contact)
+                                openModal()
+                            }}>
+                                <div className="flex flex-wrap content-center justify-center">
+                                    <ContactCard contact={contact}/>
+                                </div>
+                            </button>
+                            )}
+                            <PaginationButtons changePages={changePage} pages={pages}/>
+                        </div>
+                    }
                         <Modal
                             isOpen={modalIsOpen}
                             onRequestClose={closeModal}

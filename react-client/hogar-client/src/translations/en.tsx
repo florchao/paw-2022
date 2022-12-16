@@ -273,6 +273,10 @@ export const TRANSLATIONS_EN = {
     pets: "Pet care",
   },
 
+  Pagination: {
+    of: "of",
+  },
+
   EmployerProfile:{
     delete: "Delete profile",
     reviews: "Reviews",

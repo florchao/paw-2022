@@ -34,15 +34,19 @@ export class ContactService {
         }).then((r) => r.text())
     }
 
-    public static async contacts(id: number) {
-        return await fetch(EMPLOYEE_URL + BACK_SLASH + id + CONTACTS , {
+    public static async contacts(id: number, page: number) {
+        let url = EMPLOYEE_URL + BACK_SLASH + id + CONTACTS
+        if(page > 0) {
+            url = url + "?page=" + page
+        }
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     console.log(error)
