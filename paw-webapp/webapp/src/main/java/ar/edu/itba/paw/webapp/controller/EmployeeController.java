@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
@@ -28,7 +27,6 @@ import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -249,6 +247,15 @@ public class EmployeeController {
                                    @FormDataParam("availabilities[]") List<String> availabilities,
                                    @FormDataParam("abilities[]") List<String> abilities,
                                    @FormDataParam("image") InputStream image) throws IOException, UserFoundException, PassMatchException {
+        if(!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
+                password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
+                name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
+                experienceYears < 0 || experienceYears > 100 ||
+                location.length() > 100 || !location.matches("[a-z A-z\\s0-9,]+") ||
+                availabilities.isEmpty() || abilities.isEmpty() ||
+                image== null){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         User u = userService.create(mail, password, password, 1);
 
         employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
@@ -259,13 +266,13 @@ public class EmployeeController {
     @Path("/{id}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
     public Response editEmployee(@FormDataParam("name") String name,
-                                  @FormDataParam("location") String location,
-                                  @FormDataParam("experienceYears") long experienceYears,
-                                    @FormDataParam("hourlyFee") long hourlyFee,
-                                  @FormDataParam("availabilities[]") List<String> availabilities,
-                                  @FormDataParam("abilities[]") List<String> abilities,
-                                  @FormDataParam("image") InputStream image,
-                                  @PathParam("id") long id) throws IOException, UserFoundException, PassMatchException {
+                                 @FormDataParam("location") String location,
+                                 @FormDataParam("experienceYears") long experienceYears,
+                                 @FormDataParam("hourlyFee") long hourlyFee,
+                                 @FormDataParam("availabilities[]") List<String> availabilities,
+                                 @FormDataParam("abilities[]") List<String> abilities,
+                                 @FormDataParam("image") InputStream image,
+                                 @PathParam("id") long id) throws IOException, UserFoundException, PassMatchException {
 
         HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getUserID() != id) {

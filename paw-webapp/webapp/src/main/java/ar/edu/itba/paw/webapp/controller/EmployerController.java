@@ -175,6 +175,14 @@ public class EmployerController {
                                    @FormDataParam("image") InputStream image
                                    ) throws UserFoundException, PassMatchException, IOException {
 
+        if(!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
+                password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
+                name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
+                lastName.length() > 100 || !lastName.matches("[a-zA-z\\s'-]+|^$") || lastName.isEmpty()
+                || image==null){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         final User u = userService.create(mail, password, confirmPassword, 2);
         String fullName = name + " " + lastName;
         employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
