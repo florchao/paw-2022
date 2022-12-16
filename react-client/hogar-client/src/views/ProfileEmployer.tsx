@@ -7,11 +7,13 @@ import {UserService} from "../service/UserService";
 import {useTranslation} from "react-i18next";
 import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
+import PaginationButtons from "../components/PaginationButtons";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
     const [image, setImage]: any = useState()
     const [reviews, setReviews]: any = useState(new Array(0))
+    const [pages, setPages]: any = useState(0)
     const [jobs, setJobs]: any = useState(new Array(0))
 
 
@@ -52,7 +54,10 @@ export const ProfileEmployer = () => {
         if (employer) {
             ReviewService.getEmployerReviews(employer.reviews, 0).then(
                 (rsp) => {
-                    setReviews(rsp)
+                    rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                    rsp.json().then((reviews) => {
+                        setReviews(reviews)
+                    })
                 }
             )
         }
@@ -160,7 +165,13 @@ export const ProfileEmployer = () => {
                                             </div>
                                         </div>
                                     }
-                                    {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard key={rev.employee.id} review={rev}/>)}
+                                    {reviews.length > 0 &&
+                                        <div >
+                                            {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
+                                                                                   review={rev}/>)}
+                                            <PaginationButtons changePages={changePage} pages={pages}/>
+                                        </div>
+                                    }
                                 </div>
                             }
                         </ul>
