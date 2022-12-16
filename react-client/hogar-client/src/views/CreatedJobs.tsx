@@ -14,8 +14,8 @@ export const CreatedJobs = () => {
 
     useEffect(() => {
         let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
-        JobService.getCreatedJobs(url, false).then( (j) => {
-            setCreatedJobs(j)
+        JobService.getCreatedJobs(url, false).then( async (j) => {
+            j.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j.json())
         });
     }, [])
 
@@ -46,7 +46,7 @@ export const CreatedJobs = () => {
             {createdJobs && createdJobs.length > 0 &&
                 <div className="flex flex-wrap content-start justify-center">
                     {createdJobs.map((j: any) => (
-                        <JobCard job={j}/>
+                        <JobCard key={j.jobId} job={j}/>
                     ))}
                     <div className="grid content-center justify-center">
                         <Link to="/create/job">

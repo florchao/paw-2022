@@ -42,7 +42,7 @@ export default function App() {
                 <Route path="/contact" element={<ContactUs/>}/>
 
                 {!localStorage.getItem("hogar-role") && <Route path="/login" element={<Login/>}/>}
-                {!localStorage.getItem("hogar-role") &&  <Route path="/newPassword" element={<NewPassword/>}/>}
+                {!localStorage.getItem("hogar-role") &&  <Route path="/password" element={<NewPassword/>}/>}
                 {!localStorage.getItem("hogar-role") && <Route path="/register" element={<Register/>}/>}
                 {!localStorage.getItem("hogar-role") && <Route path="/register/employer" element={<RegisterEmployer/>}/>}
                 {!localStorage.getItem("hogar-role") && <Route path="/register/employee" element={<RegisterEmployee/>}/>}

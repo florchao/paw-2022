@@ -48,7 +48,7 @@ export const Contacts = () => {
             }
                 <div className="flex flex-wrap content-center justify-center pl-5 pr-5">
                 {contacts && contacts.length > 0 && contacts.map((contact: any) =>
-                        <button onClick={() => {
+                        <button key={contact.employer.id} onClick={() => {
                             setModalData(contact)
                             openModal()
                         }}>
@@ -65,7 +65,7 @@ export const Contacts = () => {
                                     backgroundColor: 'rgb(0,0,0,0.50)'
                                 },
                                 content: {
-                                    top: '50%',
+                                    top: '55%',
                                     left: '50%',
                                     right: 'auto',
                                     bottom: 'auto',

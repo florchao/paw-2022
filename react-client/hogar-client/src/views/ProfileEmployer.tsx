@@ -62,8 +62,8 @@ export const ProfileEmployer = () => {
     useEffect(() => {
             if (employer) {
                 JobService.getCreatedJobs(employer.jobs, true).then(
-                    (rsp) => {
-                        setJobs(rsp)
+                    async (rsp) => {
+                        rsp.status === 204 ? setJobs([]) : setJobs(await rsp.json())
                     }
                 )
             }
@@ -124,7 +124,7 @@ export const ProfileEmployer = () => {
                         {jobs && jobs.length > 0 &&
                             <div className="flex flex-wrap content-start justify-center">
                                 {jobs.map((j: any) => (
-                                    <JobCard job={j}/>
+                                    <JobCard key={j.jobId} job={j}/>
                                 ))}
                                 <div className="grid content-center justify-center">
                                     <Link to="/jobs">
@@ -153,7 +153,7 @@ export const ProfileEmployer = () => {
                                             </div>
                                         </div>
                                     }
-                                    {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard review={rev} img={employer.image}/>)}
+                                    {reviews.length > 0 && reviews.map((rev: any) => <ReviewCard key={rev.employee.id} review={rev}/>)}
                                 </div>
                             }
                         </ul>

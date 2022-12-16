@@ -34,7 +34,7 @@ export const Explore = () => {
                         <h1 className={'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.experience')}</h1>
                     </div>
                 </div>
-                {employees && employees.map((employee: Object) => (<EmployeeCard employee={employee}/>))}
+                {employees && employees.map((employee: any) => (<EmployeeCard key={employee.id} employee={employee}/>))}
                 {employees == 0 && (
                     <div className="grid content-center justify-center h-5/6 mt-16">
                         <div className="grid justify-items-center">

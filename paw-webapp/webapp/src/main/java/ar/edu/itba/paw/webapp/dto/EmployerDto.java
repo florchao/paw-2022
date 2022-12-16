@@ -29,21 +29,32 @@ public class EmployerDto {
 
         final UriBuilder imageUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/images").path(String.valueOf(employer.getId().getId()));
         final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
-        final UriBuilder employeeReviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
         final UriBuilder deleteBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/users").path(String.valueOf(employer.getId().getId()));
         final UriBuilder jobsBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("jobs");
 
         dto.image = imageUriBuilder.build();
         dto.reviews = reviewBuilder.build();
-        dto.employeeReview = employeeReviewBuilder.build();
         dto.delete = deleteBuilder.build();
         dto.jobs = jobsBuilder.build();
 
         return dto;
     }
 
+    public static EmployerDto fromJob(final UriInfo uriInfo, final Employer employer) {
+        final EmployerDto dto = new EmployerDto();
+
+        dto.name = DtoUtils.firstWordsToUpper(employer.getName());
+
+        final UriBuilder reviewBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
+         dto.reviews = reviewBuilder.build();
+
+        return dto;
+    }
+
     public static EmployerDto fromReviews(final UriInfo uriInfo, final Employer employer) {
         final EmployerDto dto = new EmployerDto();
+
+        dto.id = employer.getId().getId();
 
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
 

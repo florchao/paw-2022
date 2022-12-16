@@ -96,7 +96,7 @@ public class JobDto {
 
         dto.availability = job.getAvailabilityArr(job.getAvailability(), language);
 
-        dto.employerId = EmployerDto.fromEmployer(uriInfo, job.getEmployerId());
+        dto.employerId = EmployerDto.fromJob(uriInfo, job.getEmployerId());
 
         return dto;
 

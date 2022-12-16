@@ -48,11 +48,11 @@ const RegisterEmployer = () => {
     };
 
     const validatePassword = (password: string) => {
-        return password == getValues("confirmPassword")
+        return password === getValues("confirmPassword")
     };
 
     const validateConPassword = (confPassword: string) => {
-        return confPassword == getValues("password")
+        return confPassword === getValues("password")
     };
 
     function urltoFile(url: string, filename:string){
@@ -94,7 +94,7 @@ const RegisterEmployer = () => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
         localStorage.removeItem("registerEmployerForm")
 
-        if (post.status == 201) {
+        if (post.status === 201) {
             const result = await UserService.getUser(e, data.mail, data.password)
 
             console.log("status == 201")
@@ -143,7 +143,7 @@ const RegisterEmployer = () => {
                                            }
                                        }}
                                        style={{visibility: "hidden"}}/>
-                                {image?.size == 0 &&
+                                {image?.size === 0 &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.imageError')}</p>
                                 }
                             </div>

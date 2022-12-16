@@ -255,8 +255,8 @@ export const ProfileEmployee = () => {
                                 </h1>
                                 <ul role="list"
                                     className="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                                    {employee.abilitiesArr.map((ability: String) => (
-                                        <li>
+                                    {employee.abilitiesArr.map((ability: String, i: number) => (
+                                        <li key={i}>
                                             {ability}
                                         </li>
                                     ))}
@@ -268,8 +268,8 @@ export const ProfileEmployee = () => {
                                 </h1>
                                 <ul role="list"
                                     className="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                                    {employee.availabilityArr.map((availability: String) => (
-                                        <li>
+                                    {employee.availabilityArr.map((availability: String, i: number) => (
+                                        <li key={i}>
                                             {availability}
                                         </li>
                                     ))}
@@ -311,7 +311,7 @@ export const ProfileEmployee = () => {
                                     </form>)}
                             <ul role="list" className="divide-y divide-gray-300">
                                 {myReview && <MyReviewCard review={myReview}/>}
-                                {review.length > 0 && review.map((rev: any) => <ReviewCard review={rev}/>)}
+                                {review.length > 0 && review.map((rev: any) => <ReviewCard key={rev.employer.id} review={rev}/>)}
                                 {review.length === 0 && !myReview &&
                                     <div className="grid content-center justify-center h-5/6 mt-16">
                                         <div className="grid justify-items-center">

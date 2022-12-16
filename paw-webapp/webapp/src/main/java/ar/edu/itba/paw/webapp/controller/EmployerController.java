@@ -110,7 +110,7 @@ public class EmployerController {
 //            mav.addObject("ReviewList", myReviews);
 //        }
 //        return mav;
-        return Response.serverError().build();
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @GET
@@ -123,6 +123,11 @@ public class EmployerController {
         System.out.println("profile: " + profile);
 
         List<JobDto> jobs = jobService.getUserJobs(id, page, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).collect(Collectors.toList());
+
+        if(jobs.isEmpty()){
+            return Response.noContent().build();
+        }
+
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
     }
@@ -131,11 +136,12 @@ public class EmployerController {
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployerReviews(@PathParam("id") long id) {
-        //todo employeeId hardcodeado
 
-        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(principal.getUserID(), id, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
+        HogarUser principal = (HogarUser) auth.getPrincipal();
+
+        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))? principal.getUserID() : null, id, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
         return Response.ok(genericEntity).build();
@@ -145,7 +151,6 @@ public class EmployerController {
     @Path("/{employerId}/reviews/{employeeId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getMyReview(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId, @QueryParam("type") String type) {
-        System.out.println("HOLAAAA");
         Optional<ReviewDto> myReview = reviewService.getMyReviewEmployer(employeeId, employerId).map(r -> ReviewDto.fromEmployerReview(uriInfo, r));
 
         if (!myReview.isPresent())
