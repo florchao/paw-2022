@@ -147,7 +147,6 @@ public class EmployerController {
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
         int pages = reviewService.getPageNumberEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))? principal.getUserID() : null, id, PAGE_SIZE_REVIEWS);
-        System.out.println("PAGES: " + pages);
         return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 

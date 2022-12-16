@@ -2,18 +2,34 @@ import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {ApplicantService} from "../service/ApplicantService";
 import JobCard from "../components/JobCard";
+import PaginationButtons from "../components/PaginationButtons";
 
 export const AppliedJobs = () => {
 
     const [appliedJobs, setAppliedJobs]: any = useState()
+    const [pages, setPages]: any = useState(0)
 
     const { t } = useTranslation();
 
     let id  = localStorage.getItem("hogar-uid") as unknown as number
 
     useEffect(() => {
-        ApplicantService.getAppliedJobs(id).then( (e) => {setAppliedJobs(e)});
+        ApplicantService.getAppliedJobs(id, 0).then( (rsp) => {
+                rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                rsp.json().then((jobs) => {
+                    setAppliedJobs(jobs)
+                })
+            }
+        );
     }, [])
+
+    const changePage = async (page: number) => {
+        const get = await ApplicantService.getAppliedJobs(id, page)
+        get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        get.json().then((jobs) => {
+            setAppliedJobs(jobs)
+        })
+    }
 
     return (
         <div className="grid content-start h-screen overflow-auto pl-5 pr-5">
@@ -39,43 +55,7 @@ export const AppliedJobs = () => {
                     </div>
                 ))}
             </div>
-            {/*<c:choose>*/}
-            {/*    <c:when test="${jobList.size() == 0}">*/}
-            {/*        <div className="grid content-center justify-center h-5/6 mt-16">*/}
-            {/*            <div className="grid justify-items-center">*/}
-            {/*                <img src="<c:url value='/public/sinTrabajos.png'/>" alt="sinTrabajos"*/}
-            {/*                     className="mr-3 h-6 sm:h-52">*/}
-            {/*                    <p className="text-3xl font-semibold text-purple-700">*/}
-            {/*                        <spring:message code="appliedJobs.noJobs"/>*/}
-            {/*                    </p>*/}
-            {/*                    <br/>*/}
-            {/*                    <a href="<c:url value="/trabajos"/>">*/}
-            {/*                        <button type="button"*/}
-            {/*                                className="text-lg focus:outline-none text-purple-700 bg-yellow-300 hover:bg-yellow-200 font-small rounded-lg text-lg px-5 py-2.5">*/}
-            {/*                            <spring:message code="appliedJobs.explore"/>*/}
-            {/*                        </button>*/}
-            {/*                    </a>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </c:when>*/}
-            {/*    <c:otherwise>*/}
-            {/*        <div className="flex flex-wrap content-start justify-center">*/}
-            {/*            <c:forEach var="entry" items="${jobList}">*/}
-            {/*                <c:set var="job" value="${entry.key}" scope="request"/>*/}
-            {/*                <c:set var="applied" value="${entry.value}" scope="request"/>*/}
-            {/*                <div>*/}
-            {/*                    <*/}
-            {/*                    % request.setCharacterEncoding("utf-8");%>*/}
-            {/*                    <jsp:include page="components/jobCard.jsp">*/}
-            {/*                        <jsp:param name="title" value="${job.title}"/>*/}
-            {/*                        <jsp:param name="description" value="${job.description}"/>*/}
-            {/*                        <jsp:param name="location" value="${job.location}"/>*/}
-            {/*                        <jsp:param name="jobid" value="${job.jobId}"/>*/}
-            {/*                        <jsp:param name="apply" value="${applied}"/>*/}
-            {/*                    </jsp:include>*/}
-            {/*                </div>*/}
-            {/*            </c:forEach>*/}
-            {/*        </div>*/}
+            <PaginationButtons changePages={changePage} pages={pages}/>
         </div>
     )
 }

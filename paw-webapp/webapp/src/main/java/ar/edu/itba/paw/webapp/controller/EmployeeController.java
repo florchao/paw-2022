@@ -184,7 +184,7 @@ public class EmployeeController {
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumberForAppliedJobs(id, PAGE_SIZE);
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
-        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
