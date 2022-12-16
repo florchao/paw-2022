@@ -105,7 +105,11 @@ export class JobService {
                 })
     }
 
-    public static async getApplicants(url : string){
+    public static async getApplicants(url : string, page: number){
+        if (page > 0) {
+            url = url + "?page=" + page.toString()
+        }
+        console.log(url)
         return await fetch(url, {
             method: 'GET',
             headers: {
@@ -113,7 +117,7 @@ export class JobService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     console.log(error)
