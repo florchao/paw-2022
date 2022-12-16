@@ -50,7 +50,7 @@ public class JobController {
     UriInfo uriInfo;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE_JOBS = 9;
-    private static final int PAGE_SIZE = 8;
+    private static final int PAGE_SIZE = 1;
 
     private final static int PAGE_SIZE_REVIEWS = 2;
 
@@ -103,7 +103,7 @@ public class JobController {
     @GET
     @Path("/{jobId}/applicants")
     @Produces(value = { MediaType.APPLICATION_JSON })
-    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") Long page){
+    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page){
 
         Job job = jobService.getJobByID(jobId);
 
@@ -112,9 +112,13 @@ public class JobController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        List<ApplicantDto> list = applicantService.getApplicantsByJob(jobId,0L,PAGE_SIZE).stream().map(a -> ApplicantDto.fromJob(uriInfo, a)).collect(Collectors.toList());
+        List<ApplicantDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
+                .stream()
+                .map(a -> ApplicantDto.fromJob(uriInfo, a))
+                .collect(Collectors.toList());
+        int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
-        return Response.ok(genericEntity).build();
+        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
     }
 
 
