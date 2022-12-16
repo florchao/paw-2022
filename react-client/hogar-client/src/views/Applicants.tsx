@@ -3,6 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import ApplicantCard from "../components/ApplicantCard";
 import {JobService} from "../service/JobService";
+import PaginationButtons from "../components/PaginationButtons";
 
 export const Applicants = () => {
 
@@ -10,28 +11,20 @@ export const Applicants = () => {
 
     const {applicants, title} = useLocation().state
     const {t} = useTranslation();
-    const [currentPage, setCurrentPage]: any = useState(0)
     const [totalPages, setTotalPages]: any = useState(100)
-    console.log("buenasssss")
 
     async function setApplicantsByPage(page: number) {
-        console.log(page)
-        console.log(totalPages)
-        if (page > totalPages-1 || page < 0) {
-            return
-        }
-        await setCurrentPage(page)
         const result = await JobService.getApplicants(applicants, page)
         if (result.status === 200) {
             let body = await result.json()
             let pageCountHeader = result.headers.get('X-Total-Count')
             setApplicantList(body)
-            await setTotalPages(pageCountHeader)
+            setTotalPages(pageCountHeader)
         }
     }
 
     useEffect(() => {
-        setApplicantsByPage(currentPage)
+        setApplicantsByPage(0)
     }, [])
 
     return (
@@ -58,12 +51,7 @@ export const Applicants = () => {
                                     <ApplicantCard key={applicant.employee.id} applicant={applicant}/>))}
                             </ul>
                         }
-                        <div className={'bg-red-400'}>
-                            <div className={'flex flex-row justify-center'}>
-                                <h1 onClick={() => setApplicantsByPage(currentPage - 1)}>{"<"}</h1>
-                                <h1 onClick={() => setApplicantsByPage(currentPage + 1)}>{">"}</h1>
-                            </div>
-                        </div>
+                        <PaginationButtons changePages={setApplicantsByPage} pages={totalPages}></PaginationButtons>
 
                         {/*<c:url value="/aplicantes/${jobID}" var="getPath"/>*/}
                         {/*                    <form:form method="get" action="${getPath}">*/}
