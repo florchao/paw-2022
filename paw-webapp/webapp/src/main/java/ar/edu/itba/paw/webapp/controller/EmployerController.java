@@ -164,16 +164,12 @@ public class EmployerController {
                                    @FormDataParam("last") String lastName,
                                    @FormDataParam("image") InputStream image
                                    ) throws UserFoundException, PassMatchException, IOException {
+
         final User u = userService.create(mail, password, confirmPassword, 2);
         String fullName = name + " " + lastName;
-//        HogarUser current = new HogarUser(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))), name, u.getId());
-//        Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYER")));
-//        SecurityContextHolder.getContext().setAuthentication(auth);
         employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        principal.setName(name);
-        System.out.println("Employer id: " + u.getId());
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
-        return Response.ok(u.getId()).build();
+
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(u.getId())).build()).build();
     }
 }

@@ -20,7 +20,7 @@ export const Job = () => {
     let employeeId: number;
     employeeId = localStorage.getItem('hogar-uid')? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
 
-    const {self, id} = useLocation().state
+    const {self} = useLocation().state
 
     const {t} = useTranslation();
     const nav = useNavigate();
@@ -72,11 +72,11 @@ export const Job = () => {
     )
 
     useEffect(() => {
-        if (localStorage.getItem("hogar-role") == "EMPLOYEE")
-            ApplicantService.getApplicationStatus(employeeId, id).then((s) => {
+        if (job && localStorage.getItem("hogar-role") == "EMPLOYEE")
+            ApplicantService.getApplicationStatus(employeeId, job.jobId).then((s) => {
                 setStatus(s)
             })
-    }, [])
+    }, [job])
 
     function delApplication() {
         ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {

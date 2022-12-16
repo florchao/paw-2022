@@ -61,8 +61,7 @@ export const CreateJob = () => {
     const onSubmit = async (data:any, e: any) => {
         const post = await JobService.postJob(e, data.title, data.location, data.experienceYears, data.availability, data.abilities, data.description)
         localStorage.removeItem("jobForm")
-        //TODO: ver que pasar envez de id
-        nav('/job', {replace: true, state: {id: post}})
+        nav('/job', {replace: true, state: {self: post.value}})
     }
 
     return (

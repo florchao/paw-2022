@@ -33,6 +33,6 @@ export class EmployerService {
             method: 'POST',
             headers: {},
             body: formData
-        }).then((r) => r.text())
+        })
     }
 }

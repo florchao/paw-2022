@@ -1,4 +1,4 @@
-import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+import {EMPLOYEE_URL} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees() {
@@ -93,7 +93,7 @@ export class EmployeeService {
             method: 'POST',
             headers: {},
             body: formData
-        }).then((r) => r.json())
+        })
     }
 
     public static async editEmployee(e: any, self:string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
