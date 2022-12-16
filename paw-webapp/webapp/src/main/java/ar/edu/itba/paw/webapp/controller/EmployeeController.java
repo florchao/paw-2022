@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class EmployeeController {
     private final int PAGE_SIZE = 1;
 
-    private final int PAGE_SIZE_REVIEWS = 5;
+    private final int PAGE_SIZE_REVIEWS = 1;
 
     @Autowired
     private EmployeeService employeeService;
@@ -172,18 +172,19 @@ public class EmployeeController {
     @GET
     @Path("{id}/jobs")
     @Produces(value = { MediaType.APPLICATION_JSON })
-    public Response appliedTo(@QueryParam("page") Long page, @PathParam("id") long id, @Context HttpServletRequest request){
-        if (page == null)
-            page = 0L;
-
+    public Response appliedTo(@QueryParam("page") @DefaultValue("0") Long page, @PathParam("id") long id, @Context HttpServletRequest request){
         HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getUserID() != id) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, 0L, PAGE_SIZE).stream().map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant, request.getHeader("Accept-Language"))).collect(Collectors.toList());
+        List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, page, PAGE_SIZE)
+                .stream()
+                .map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant, request.getHeader("Accept-Language")))
+                .collect(Collectors.toList());
+        int pages = applicantService.getPageNumberForAppliedJobs(id, PAGE_SIZE);
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
-        return Response.ok(genericEntity).build();
+        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -205,20 +206,20 @@ public class EmployeeController {
     @GET
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getEmployeeReviews(@PathParam("id") long id) {
+    public Response getEmployeeReviews(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         HogarUser principal = (HogarUser) auth.getPrincipal();
 
-        List<ReviewDto> reviews = reviewService.getAllReviews(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))? principal.getUserID() : null, 0L, PAGE_SIZE_REVIEWS)
+        List<ReviewDto> reviews = reviewService.getAllReviews(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))? principal.getUserID() : null, page, PAGE_SIZE_REVIEWS)
                 .stream()
                 .map(r -> ReviewDto.fromEmployeeReview(uriInfo, r))
                 .collect(Collectors.toList());
-
+        int pages = reviewService.getPageNumber(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))? principal.getUserID() : null, PAGE_SIZE_REVIEWS);
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
-        return Response.ok(genericEntity).build();
+        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
     }
 
     @GET
