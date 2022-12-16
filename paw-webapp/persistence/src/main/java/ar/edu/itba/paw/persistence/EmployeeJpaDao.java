@@ -16,6 +16,8 @@ public class EmployeeJpaDao implements EmployeeDao{
         return Optional.ofNullable(em.find(Employee.class, id));
     }
 
+    List<String> orderCriteriaWhiteList = new ArrayList<>(Arrays.asList("rating", "experienceYears"));
+
     @Override
     public Employee create(User user, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites, byte[] image) {
         final Employee employee = new Employee(name.toLowerCase(), location.toLowerCase(), user, availability, experienceYears, hourlyFee, abilites);
@@ -39,7 +41,7 @@ public class EmployeeJpaDao implements EmployeeDao{
 
     @Override
     public List<Employee> getEmployees(long pageSize) {
-        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e", Employee.class)
+        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e order by e.rating desc", Employee.class)
                 .setFirstResult(0)
                 .setMaxResults((int) pageSize);
         return employeeList.getResultList();
@@ -116,7 +118,7 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize) {
+    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize, String orderCriteria) {
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, Object> paramMap = new HashMap<>();
         stringBuilder.append("SELECT count(e) FROM Employee e where ");
@@ -157,13 +159,21 @@ public class EmployeeJpaDao implements EmployeeDao{
             stringBuilder.append(" and   ");
         }
         stringBuilder.setLength(stringBuilder.length() - 7);
+        stringBuilder.append(" group by e.id");
+        if (orderCriteria != null && orderCriteriaWhiteList.contains(orderCriteria)){
+            stringBuilder.append(" order by ")
+                    .append(orderCriteria)
+                    .append(" desc");
+        } else {
+            stringBuilder.append(" order by e.rating desc");
+        }
 
         TypedQuery<Long> filteredQuery = em.createQuery(stringBuilder.toString(), Long.class);
         for (String key : paramMap.keySet()) {
             filteredQuery.setParameter(key, paramMap.get(key));
         }
 
-        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
+        return (int) Math.ceil( (double) filteredQuery.getResultList().size() / pageSize);
 
     }
 

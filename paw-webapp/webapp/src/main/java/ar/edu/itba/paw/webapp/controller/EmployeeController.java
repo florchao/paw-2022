@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @Path("/api/employees")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 100;
+    private final int PAGE_SIZE = 5;
 
     private final int PAGE_SIZE_REVIEWS = 5;
 
@@ -71,16 +71,11 @@ public class EmployeeController {
             @QueryParam("location") String location,
             @QueryParam("availability") String availability,
             @QueryParam("abilities") String abilities,
-            @QueryParam("page") Long page,
+            @QueryParam("page") @DefaultValue("0") Long page,
             @QueryParam("order") String orderCriteria,
             @Context HttpServletRequest request
     ) {
-
-        if (page == null)
-            page = 0L;
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 
         if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -92,8 +87,9 @@ public class EmployeeController {
             float rating = ratingService.getRating(employee.getId().getId());
             employeeDtos.add(EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language")));
         });
+        int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employeeDtos){};
-        return Response.ok(genericEntity).build();
+        return Response.ok(genericEntity).header("X-Total-Count", Integer.toString(pages)).build();
     }
 
     @GET
