@@ -286,7 +286,10 @@ export const TRANSLATIONS_ES = {
     EmployerProfile:{
         delete: "Borrar perfil",
         reviews: "Opiniones",
-        noReviews: "No hay opiniones"
+        noReviews: "No hay opiniones",
+        jobs: "Trabajos publicados",
+        noJobs: "No hay trabajos publicados",
+        viewMore: "Ver más trabajos",
     },
 
     EmployerLanding:{

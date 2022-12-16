@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
+import {BACK_SLASH, EMPLOYER_URL, JOBS} from "../utils/utils";
 
 export const CreatedJobs = () => {
     const [createdJobs, setCreatedJobs]: any = useState()
@@ -12,7 +13,8 @@ export const CreatedJobs = () => {
     let id  = localStorage.getItem("hogar-uid") as unknown as number
 
     useEffect(() => {
-        JobService.getCreatedJobs(id).then( (j) => {
+        let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
+        JobService.getCreatedJobs(url, false).then( (j) => {
             setCreatedJobs(j)
         });
     }, [])

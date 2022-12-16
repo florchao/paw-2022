@@ -30,6 +30,7 @@ import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,8 @@ public class EmployerController {
     private UriInfo uriInfo;
 
     private final static long PAGE_SIZE = 9;
+    private final static long PAGE_SIZE_PROFILE = 2;
+
     private final static int PAGE_SIZE_REVIEWS = 5;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployerController.class);
@@ -113,14 +116,13 @@ public class EmployerController {
     @GET
     @Path("/{id}/jobs")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createdJobs(@PathParam("id") long id, @Context HttpServletRequest request) {
-//            @RequestParam(value = "publishedPage", required = false) Long page){
-//        if (page == null)
-//            page = 0L;
-        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).collect(Collectors.toList());
-//        mav.addObject("JobList", jobList);
-//        mav.addObject("publishedPage", page);
-//        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));
+    public Response createdJobs(@PathParam("id") long id, @QueryParam("page") Long page, @QueryParam("profile") String profile, @Context HttpServletRequest request) {
+        if (page == null)
+            page = 0L;
+
+        System.out.println("profile: " + profile);
+
+        List<JobDto> jobs = jobService.getUserJobs(id, page, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).collect(Collectors.toList());
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
     }

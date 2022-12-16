@@ -277,6 +277,9 @@ export const TRANSLATIONS_EN = {
     delete: "Delete profile",
     reviews: "Reviews",
     noReviews: "There are no reviews",
+    jobs: "Jobs",
+    noJobs: "There are no jobs",
+    viewMore: "View more jobs",
   },
 
   EmployerLanding:{
