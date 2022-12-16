@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
+import {BACK_SLASH, EMPLOYER_URL, JOBS} from "../utils/utils";
 
 export const CreatedJobs = () => {
     const [createdJobs, setCreatedJobs]: any = useState()
@@ -12,8 +13,9 @@ export const CreatedJobs = () => {
     let id  = localStorage.getItem("hogar-uid") as unknown as number
 
     useEffect(() => {
-        JobService.getCreatedJobs(id).then( (j) => {
-            setCreatedJobs(j)
+        let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
+        JobService.getCreatedJobs(url, false).then( async (j) => {
+            j.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j.json())
         });
     }, [])
 
@@ -44,7 +46,7 @@ export const CreatedJobs = () => {
             {createdJobs && createdJobs.length > 0 &&
                 <div className="flex flex-wrap content-start justify-center">
                     {createdJobs.map((j: any) => (
-                        <JobCard job={j}/>
+                        <JobCard key={j.jobId} job={j}/>
                     ))}
                     <div className="grid content-center justify-center">
                         <Link to="/create/job">

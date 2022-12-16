@@ -99,10 +99,6 @@ export const TRANSLATIONS_EN = {
     noReviews: "There are no reviews",
     editProfile: "EDIT PROFILE",
     rateUser: "Rate ",
-    // viewProfile.editProfile = EDITAR PERFIL
-    // viewProfile.rateUser = Califica a
-    // viewProfile.thankEmployer = \u00a1Gracias por su colaboracion!
-    //     viewProfile.delete = Eliminar perfil
   },
   LogIn:{
     mail:"E-Mail",
@@ -280,7 +276,10 @@ export const TRANSLATIONS_EN = {
   EmployerProfile:{
     delete: "Delete profile",
     reviews: "Reviews",
-    noReviews: "There are no reviews"
+    noReviews: "There are no reviews",
+    jobs: "Jobs",
+    noJobs: "There are no jobs",
+    viewMore: "View more jobs",
   },
 
   EmployerLanding:{

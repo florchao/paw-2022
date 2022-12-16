@@ -89,19 +89,21 @@ export const LoginCard = () => {
                         {/*        className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Login*/}
                         {/*</button>*/}
                     </div>
-                    <div className="form-group mb-6">
-                        <p className="text-sm font-semibold text-gray-900">
-                            {t('LogIn.account')}
-                            <Link to={"/register"}>
-                                <a className="text-violet-900">{t('LogIn.register')}</a>
-                            </Link>
-                        </p>
-                    </div>
                     <div className="form-group mb-6 grid grid-cols-6">
-                        <p className="text-sm font-semibold text-gray-900 col-span-3">
-                            {t('LogIn.forgot')}
-                            <a className="text-violet-800">{t('LogIn.setP')}</a>
+                        <p className="text-xs text-gray-900 col-span-2">
+                            {t('LogIn.account')}
                         </p>
+                        <Link to={"/register"}>
+                            <p className="text-xs text-violet-900">{t('LogIn.register')}</p>
+                        </Link>
+                    </div>
+                    <div className="form-group grid grid-cols-6">
+                        <p className="text-xs text-gray-900 col-span-2">
+                            {t('LogIn.forgot')}
+                        </p>
+                        <Link to={"/password"}>
+                            <p className="text-xs text-violet-900">{t('LogIn.setP')}</p>
+                        </Link>
                     </div>
                 </div>
             </form>

@@ -23,7 +23,9 @@ export class ContactService {
         formData.append('employee_id', employee_id);
         formData.append('employer_id', employer_id);
 
-        return await fetch(CONTACT_URL + BACK_SLASH + employee_id + BACK_SLASH + employer_id, {
+        console.log("HOLA")
+
+        return await fetch(CONTACT_URL, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string

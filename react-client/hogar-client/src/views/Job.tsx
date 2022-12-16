@@ -20,7 +20,7 @@ export const Job = () => {
     let employeeId: number;
     employeeId = localStorage.getItem('hogar-uid')? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
 
-    const {self, id} = useLocation().state
+    const {self} = useLocation().state
 
     const {t} = useTranslation();
     const nav = useNavigate();
@@ -62,7 +62,7 @@ export const Job = () => {
                         setReviews(rsp)
                     }
                 )
-                ReviewService.getMyEmployerReview(job.employerId.employeeReview).then(
+                ReviewService.getMyEmployerReview(job.employerId.reviews).then(
                     (rsp) => {
                         setMyReview(rsp)
                     }
@@ -72,11 +72,11 @@ export const Job = () => {
     )
 
     useEffect(() => {
-        if (localStorage.getItem("hogar-role") == "EMPLOYEE")
-            ApplicantService.getApplicationStatus(employeeId, id).then((s) => {
+        if (job && localStorage.getItem("hogar-role") == "EMPLOYEE")
+            ApplicantService.getApplicationStatus(employeeId, job.jobId).then((s) => {
                 setStatus(s)
             })
-    }, [])
+    }, [job])
 
     function delApplication() {
         ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {
@@ -165,11 +165,8 @@ export const Job = () => {
                                 <h1 className="pb-3 pt-3 font-semibold text-purple-900"> {t('Job.abilities')}</h1>
                                 <ul role="list"
                                     className="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                                    {/*<c:forEach var="ability" items="${job.abilitiesArr}">*/}
-                                    {/*    <li><c:out value="${ability}"/></li>*/}
-                                    {/*</c:forEach>*/}
-                                    {job.abilities.map((ability: String) => (
-                                        <li>
+                                    {job.abilities.map((ability: String, i: number) => (
+                                        <li key={i}>
                                             {ability}
                                         </li>
                                     ))}
@@ -183,8 +180,8 @@ export const Job = () => {
                                     {/*<c:forEach var="availability" items="${job.availabilityArr}">*/}
                                     {/*    <li><c:out value="${availability}"/></li>*/}
                                     {/*</c:forEach>*/}
-                                    {job.availability.map((availability: String) => (
-                                        <li>
+                                    {job.availability.map((availability: String, i:number) => (
+                                        <li key={i}>
                                             {availability}
                                         </li>
                                     ))}
@@ -270,6 +267,7 @@ export const Job = () => {
                                 <ul role="list" className="divide-y divide-gray-300">
                                     {myReview && <MyReviewCard review={myReview}/>}
                                     {reviews && reviews.length > 0 && reviews.map((rev: any) => <ReviewCard
+                                        key={rev.employee.id}
                                         review={rev}/>)}
                                     {/*                    <c:url value="/trabajo/${job.jobId}" var="getPath"/>*/}
                                     {/*                    <form method="get" action="${getPath}">*/}

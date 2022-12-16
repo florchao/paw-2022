@@ -1,4 +1,4 @@
-import {BACK_SLASH, EMPLOYER_URL, JOB_URL, JOBS} from "../utils/utils";
+import {BACK_SLASH, JOB_URL, QUERY_PARAM} from "../utils/utils";
 
 export class JobService {
     public static async getJobs() {
@@ -84,18 +84,20 @@ export class JobService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: JSON.stringify(jobForm)
-        }).then((r) => r.text())
+        }).then((r) => r.json())
     }
 
-    public static async getCreatedJobs(id: number) {
-        return await fetch(EMPLOYER_URL + BACK_SLASH + id + JOBS, {
+    public static async getCreatedJobs(url: string, profile: boolean) {
+        if(profile)
+            url = url + QUERY_PARAM + 'profile=true'
+        return await fetch(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     console.log(error)

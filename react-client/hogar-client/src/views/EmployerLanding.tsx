@@ -7,8 +7,6 @@ export const EmployerLanding = () => {
     const { t } = useTranslation();
 
     return (
-        <html>
-        <body>
         <div className="flex h-screen overflow-auto pl-5 pr-5 justify-center">
             <div id="roles" className="grid grid-cols-2 items-start p-10 gap-y-7 mt-9 content-center">
                 <div className="grid grid-cols-3">
@@ -47,9 +45,6 @@ export const EmployerLanding = () => {
                 </div>
             </div>
         </div>
-        </body>
-
-        </html>
     )
 }
 

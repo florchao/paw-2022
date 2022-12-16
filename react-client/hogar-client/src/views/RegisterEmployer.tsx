@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {EmployerService} from "../service/EmployerService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
+import {UserService} from "../service/UserService";
 
 const RegisterEmployer = () => {
 
@@ -47,11 +48,11 @@ const RegisterEmployer = () => {
     };
 
     const validatePassword = (password: string) => {
-        return password == getValues("confirmPassword")
+        return password === getValues("confirmPassword")
     };
 
     const validateConPassword = (confPassword: string) => {
-        return confPassword == getValues("password")
+        return confPassword === getValues("password")
     };
 
     function urltoFile(url: string, filename:string){
@@ -92,8 +93,24 @@ const RegisterEmployer = () => {
     const onSubmit = async (data:any, e: any) => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
         localStorage.removeItem("registerEmployerForm")
-        //TODO: hay que ver que devuelve el register(200) e iniciar sesion asi dsp redirige a employerLanding
-        nav('/', {replace: true, state: {id: post}})
+
+        if (post.status === 201) {
+            const result = await UserService.getUser(e, data.mail, data.password)
+
+            console.log("status == 201")
+
+            if (result.status === 200) {
+                let body = await result.json()
+                localStorage['hogar-role'] = body.role
+                localStorage['hogar-uid'] = body.uid
+                let authHeader = result.headers.get('Authorization')
+                localStorage['hogar-jwt'] = authHeader?.slice(7)
+            }
+            let body = await post.json()
+            console.log("body", body)
+            nav('/', {replace: true, state: {self: body.value, status: -1}})
+            window.location.reload()
+        }
     }
 
     return (
@@ -126,7 +143,7 @@ const RegisterEmployer = () => {
                                            }
                                        }}
                                        style={{visibility: "hidden"}}/>
-                                {image?.size == 0 &&
+                                {image?.size === 0 &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.imageError')}</p>
                                 }
                             </div>

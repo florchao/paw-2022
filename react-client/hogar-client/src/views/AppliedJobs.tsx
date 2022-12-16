@@ -1,7 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {ApplicantService} from "../service/ApplicantService";
-import {useLocation} from "react-router-dom";
 import JobCard from "../components/JobCard";
 
 export const AppliedJobs = () => {
@@ -35,7 +34,7 @@ export const AppliedJobs = () => {
             <div className="flex flex-wrap content-start justify-center">
             {appliedJobs && appliedJobs.length > 0 &&
                 appliedJobs.map((a: any) => (
-                    <div className="flex flex-wrap content-start justify-center">
+                    <div key={a.job.jobId} className="flex flex-wrap content-start justify-center">
                         <JobCard job={a.job}/>
                     </div>
                 ))}

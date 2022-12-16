@@ -49,7 +49,7 @@ public class RatingController {
         float newRating = ratingService.updateRating(employeeId, rating, employerId);
         Rating r = new Rating(newRating, employeeService.getRatingVoteCount(employeeId), ratingService.hasAlreadyRated(employeeId, employerId));
         GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(r) {};
-        return Response.status(201).entity(genericEntity).build();
+        return Response.status(Response.Status.CREATED).entity(genericEntity).build();
     }
 
     static class Rating {

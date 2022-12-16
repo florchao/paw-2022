@@ -34,7 +34,7 @@ export const Applicants =()=>{
                             </div>
                             :
                             <ul role="list" className="divide-y divide-gray-300">
-                                {applicantList && applicantList.map((applicant: Object) => (<ApplicantCard applicant={applicant}/>))}
+                                {applicantList && applicantList.map((applicant: any) => (<ApplicantCard key={applicant.employee.id} applicant={applicant}/>))}
                             </ul>
                         }
 

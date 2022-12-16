@@ -28,8 +28,8 @@ export const ExploreJobs = () => {
                     <div className="col-span-3 col-start-2">
                         <div className="flex flex-wrap content-start justify-center">
                             {jobs && jobs.map(
-                                (job: Object) => (
-                                    <div className="flex flex-wrap content-start justify-center">
+                                (job: any) => (
+                                    <div key={job.jobId} className="flex flex-wrap content-start justify-center">
                                         <JobCard job={job}/>
                                     </div>
                                 ))}

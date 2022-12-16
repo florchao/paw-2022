@@ -126,7 +126,7 @@ public class JobController {
 
         Job job = jobService.create(form.getTitle(), form.getLocation(), hogarUser.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
-        return Response.ok(job.getJobId()).build();
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId())).build()).build();
     }
 
     @DELETE

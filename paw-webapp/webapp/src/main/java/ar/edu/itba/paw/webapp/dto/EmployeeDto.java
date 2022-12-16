@@ -20,6 +20,8 @@ public class EmployeeDto {
     private URI self;
     private float rating;
 
+    private Boolean isContacted;
+
     private URI reviews;
 
     private URI image;
@@ -52,7 +54,15 @@ public class EmployeeDto {
         dto.rating = rating;
         return dto;
     }
-    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, String language, Boolean anonymous) {
+
+    public static EmployeeDto fromExploreContact(final UriInfo uriInfo, final Employee employee, float rating, String language, Boolean isContacted) {
+        final EmployeeDto dto = EmployeeDto.fromExploreRating(uriInfo, employee, rating, language);
+
+        dto.isContacted = isContacted;
+
+        return dto;
+    }
+    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, String language, Boolean anonymous, Boolean isContacted) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
 
 
@@ -71,13 +81,14 @@ public class EmployeeDto {
             dto.reviews = reviewBuilder.build();
             dto.employerReview = employerReviewBuilder.build();
             dto.ratings = ratingsUriBuilder.build();
+            dto.isContacted = isContacted;
         }
 
         return dto;
     }
 
     public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee, String language) {
-        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, language, false);
+        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, language, false, false);
         final UriBuilder deleteUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("/api/users").path(String.valueOf(employee.getId().getId()));
 
         dto.delete = deleteUriBuilder.build();
@@ -231,6 +242,14 @@ public class EmployeeDto {
 
     public void setHourlyFee(Long hourlyFee) {
         this.hourlyFee = hourlyFee;
+    }
+
+    public Boolean getContacted() {
+        return isContacted;
+    }
+
+    public void setContacted(Boolean contacted) {
+        isContacted = contacted;
     }
 }
 

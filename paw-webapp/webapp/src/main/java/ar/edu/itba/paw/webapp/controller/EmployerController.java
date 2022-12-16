@@ -30,6 +30,7 @@ import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,8 @@ public class EmployerController {
     private UriInfo uriInfo;
 
     private final static long PAGE_SIZE = 9;
+    private final static long PAGE_SIZE_PROFILE = 2;
+
     private final static int PAGE_SIZE_REVIEWS = 5;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployerController.class);
@@ -107,20 +110,24 @@ public class EmployerController {
 //            mav.addObject("ReviewList", myReviews);
 //        }
 //        return mav;
-        return Response.serverError().build();
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @GET
     @Path("/{id}/jobs")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createdJobs(@PathParam("id") long id, @Context HttpServletRequest request) {
-//            @RequestParam(value = "publishedPage", required = false) Long page){
-//        if (page == null)
-//            page = 0L;
-        List<JobDto> jobs = jobService.getUserJobs(id, 0L, PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).collect(Collectors.toList());
-//        mav.addObject("JobList", jobList);
-//        mav.addObject("publishedPage", page);
-//        mav.addObject("publishedMaxPage",jobService.getMyJobsPageNumber(principal.getUserID(), PAGE_SIZE));
+    public Response createdJobs(@PathParam("id") long id, @QueryParam("page") Long page, @QueryParam("profile") String profile, @Context HttpServletRequest request) {
+        if (page == null)
+            page = 0L;
+
+        System.out.println("profile: " + profile);
+
+        List<JobDto> jobs = jobService.getUserJobs(id, page, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE).stream().map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).collect(Collectors.toList());
+
+        if(jobs.isEmpty()){
+            return Response.noContent().build();
+        }
+
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
         return Response.ok(genericEntity).build();
     }
@@ -129,11 +136,12 @@ public class EmployerController {
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployerReviews(@PathParam("id") long id) {
-        //todo employeeId hardcodeado
 
-        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(principal.getUserID(), id, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
+        HogarUser principal = (HogarUser) auth.getPrincipal();
+
+        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))? principal.getUserID() : null, id, 0L, PAGE_SIZE_REVIEWS).stream().map(r -> ReviewDto.fromEmployerReview(uriInfo, r)).collect(Collectors.toList());
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
         return Response.ok(genericEntity).build();
@@ -143,7 +151,6 @@ public class EmployerController {
     @Path("/{employerId}/reviews/{employeeId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getMyReview(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId, @QueryParam("type") String type) {
-        System.out.println("HOLAAAA");
         Optional<ReviewDto> myReview = reviewService.getMyReviewEmployer(employeeId, employerId).map(r -> ReviewDto.fromEmployerReview(uriInfo, r));
 
         if (!myReview.isPresent())
@@ -164,16 +171,12 @@ public class EmployerController {
                                    @FormDataParam("last") String lastName,
                                    @FormDataParam("image") InputStream image
                                    ) throws UserFoundException, PassMatchException, IOException {
+
         final User u = userService.create(mail, password, confirmPassword, 2);
         String fullName = name + " " + lastName;
-//        HogarUser current = new HogarUser(form.getMail(), u.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(String.valueOf((u.getRole())))), name, u.getId());
-//        Authentication auth = new UsernamePasswordAuthenticationToken(current,null, Collections.singletonList(new SimpleGrantedAuthority("EMPLOYER")));
-//        SecurityContextHolder.getContext().setAuthentication(auth);
         employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        principal.setName(name);
-        System.out.println("Employer id: " + u.getId());
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
-        return Response.ok(u.getId()).build();
+
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(u.getId())).build()).build();
     }
 }
