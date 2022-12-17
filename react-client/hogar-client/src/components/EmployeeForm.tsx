@@ -6,7 +6,7 @@ import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
 
-export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: string, self:string}) => {
+export const EmployeeForm = ({onSubmit, from, self}: { onSubmit: any, from: string, self: string }) => {
 
     type FormData = {
         mail: string;
@@ -20,7 +20,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
         abilities: string[];
     };
 
-    const { register, handleSubmit, watch, formState: { errors }, getValues, setValue } = useForm<FormData>();
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
 
     const [image, setImage] = useState<File>()
     const [imageURL, setImageURL] = useState<string>()
@@ -35,7 +35,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
     watch("abilities")
 
 
-    useFormPersist(from == "create"? "employeeForm": "employeeEditForm", {
+    useFormPersist(from == "create" ? "employeeForm" : "employeeEditForm", {
         watch,
         setValue,
         storage: window.localStorage,
@@ -46,8 +46,8 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
 
     const {t} = useTranslation();
 
-    const invalidEmail = (email : String) => {
-        if( email.length === 0)
+    const invalidEmail = (email: String) => {
+        if (email.length === 0)
             return false
         return !!String(email)
             .toLowerCase()
@@ -60,18 +60,22 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
         return password == getValues("confirmPassword")
     };
 
-    const validateConPassword = (confPassword: string) => {
+    const validateConfPassword = (confPassword: string) => {
         return confPassword == getValues("password")
     };
 
-    function urltoFile(url: string, filename:string){
+    function urltoFile(url: string, filename: string) {
         return (fetch(url)
-                .then(function(res){return res.arrayBuffer();})
-                .then(function(buf){return new File([buf], filename);})
+                .then(function (res) {
+                    return res.arrayBuffer();
+                })
+                .then(function (buf) {
+                    return new File([buf], filename);
+                })
         );
     }
 
-    const setColorAb = (name: string, id:number) => {
+    const setColorAb = (name: string, id: number) => {
         let label = document.getElementById(name + "-label")
         if (getValues("abilities").toString() === "false" || !getValues("abilities").includes(id.toString())) {
             if (label != null)
@@ -83,7 +87,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
         }
     }
 
-    const setColorAv = (name: string, id:number) => {
+    const setColorAv = (name: string, id: number) => {
         let label = document.getElementById(name + "-label")
         if (getValues("availabilities").toString() === "false" || !getValues("availabilities").includes(id.toString())) {
             if (label != null)
@@ -98,14 +102,14 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
     const imageUpload = (e: any) => {
         const file = e.target.files[0];
         getBase64(file).then(base64 => {
-            localStorage["img"] = base64;
-            console.debug("file stored",base64);
+            localStorage["imgEmployeeForm"] = base64;
+            console.debug("file stored", base64);
         });
     };
 
     const imageDownload = async () => {
-        if (localStorage.getItem("img") !== null) {
-            const img = await urltoFile(localStorage.getItem("img")!, "img")
+        if (localStorage.getItem("imgEmployeeForm") !== null) {
+            const img = await urltoFile(localStorage.getItem("imgEmployeeForm")!, "imgEmployeeForm")
             setImage(img)
         }
     }
@@ -127,7 +131,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
     }, [])
 
     useEffect(() => {
-        if(self.length >= 0) {
+        if (self.length >= 0) {
             EmployeeService.getEmployee(self, true).then((e: any) => {
                     setValue("name", e.name)
                     setValue("location", e.location)
@@ -142,21 +146,21 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
     }, [])
 
     useEffect(() => {
-        if(imageURL) {
+        if (imageURL) {
             console.log("self")
             console.log(self)
             UserService.loadImage(imageURL).then(
                 (img) => {
                     if (img.size > 0) {
-                        setImage(new File([img], "img"));
+                        setImage(new File([img], "imgEmployeeForm"));
                     }
                 })
         }
     }, [imageURL])
 
-    window.onload =  imageDownload
+    window.onload = imageDownload
 
-    const submitForm = async (data:any, e: any) => {
+    const submitForm = async (data: any, e: any) => {
         onSubmit(data, e, image)
     }
 
@@ -166,14 +170,14 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                 <div className="grid grid-cols-6">
                     <div className="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                         <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
-                            {from == "create"? t('EmployeeForm.title_register') : t('EmployeeForm.title_edit')}
+                            {from == "create" ? t('EmployeeForm.title_register') : t('EmployeeForm.title_edit')}
                         </p>
                         <div className="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                             <div className="grid grid-cols-6 gap-6">
                                 <div className="row-span-4 col-span-2 m-6">
                                     <div className="overflow-hidden bg-gray-100 rounded-full">
                                         <img id="picture"
-                                             src={image? URL.createObjectURL(image) : '/images/user.png'}
+                                             src={image ? URL.createObjectURL(image) : '/images/user.png'}
                                              alt="user pic"/>
                                     </div>
                                     <label htmlFor="image-input" id="image-label"
@@ -232,10 +236,10 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                type="password"
                                                {...register("password", {required: true, validate: {validatePassword}})}
                                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                                        {errors.password && errors.password.type == "required" &&
+                                        {errors.password && errors.password.type === "required" &&
                                             <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.passwordError')}</p>
                                         }
-                                        {errors.password && errors.password.type == "validate" &&
+                                        {errors.password && errors.password.type !== "validate" &&
                                             <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.passwordsError')}</p>
                                         }
                                     </div>
@@ -250,19 +254,19 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                type="password"
                                                {...register("confirmPassword", {
                                                    required: true,
-                                                   validate: {validateConPassword}
+                                                   validate: {validateConfPassword}
                                                })}
                                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
-                                        {errors.confirmPassword && errors.confirmPassword.type == "required" &&
+                                        {errors.confirmPassword && errors.confirmPassword.type === "required" &&
                                             <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.passwordError')}</p>
                                         }
-                                        {errors.confirmPassword && errors.confirmPassword.type == "validate" &&
+                                        {errors.confirmPassword && errors.confirmPassword.type !== "validate" &&
                                             <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.passwordsError')}</p>
                                         }
                                     </div>
                                 }
-                                <div className={from == "create"?
-                                    "ml-3 col-span-3 w-4/5 justify-self-center":
+                                <div className={from == "create" ?
+                                    "ml-3 col-span-3 w-4/5 justify-self-center" :
                                     "ml-3 col-span-3 col-start-4 w-4/5 justify-self-center"
                                 }>
 
@@ -284,7 +288,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                     label={t('Locations.caba')}/>
                                         </select>
                                     }
-                                    { errors.location &&
+                                    {errors.location &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.locationError')}</p>
                                     }
                                 </div>
@@ -325,13 +329,13 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                onClick={() => {
                                                    setColorAb('cocinar', ids.abilities[0])
                                                }}
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[0].toString())?
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[0].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.cook')}
                                         </label>
                                         <input type="checkbox"
-                                               {... register("abilities", {required:true})}
+                                               {...register("abilities", {required: true})}
                                             // onChange={(e) => console.log(getValues("abilities"))}
                                                id="cocinar-cb"
                                                value={ids.abilities[0]}
@@ -343,14 +347,14 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                onClick={() =>
                                                    setColorAb('planchar', ids.abilities[1])
                                                }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[1].toString())?
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[1].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.iron')}
                                         </label>
                                         <input type="checkbox"
                                                id="planchar-cb"
-                                               {...register("abilities", {required:true})}
+                                               {...register("abilities", {required: true})}
                                             // onChange={(e) => console.log(getValues("abilities"))}
                                                value={ids.abilities[1]}
                                                style={{visibility: "hidden"}}
@@ -362,13 +366,13 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                onClick={() =>
                                                    setColorAb('menores', ids.abilities[2])
                                                }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[2].toString())?
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[2].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.child')}
                                         </label>
                                         <input type="checkbox"
-                                               {...register("abilities", {required:true})}
+                                               {...register("abilities", {required: true})}
                                             // onChange={(e) => console.log(getValues("abilities"))}
                                                id="menores-cb"
                                                value={ids.abilities[2]}
@@ -381,13 +385,13 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                    setColorAb('mayores', ids.abilities[3])
 
                                                }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[3].toString())?
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[3].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.older')}
                                         </label>
                                         <input type="checkbox"
-                                               {...register("abilities", {required:true})}
+                                               {...register("abilities", {required: true})}
                                             // onChange={(e) => console.log(getValues("abilities"))}
                                                id="mayores-cb"
                                                value={ids.abilities[3]}
@@ -399,14 +403,14 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                onClick={() =>
                                                    setColorAb('especiales', ids.abilities[4])
                                                }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[4].toString())?
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[4].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.specialNeeds')}
                                         </label>
                                         <input type="checkbox"
-                                               {...register("abilities", {required:true})}
-                                                id="especiales-cb"
+                                               {...register("abilities", {required: true})}
+                                               id="especiales-cb"
                                                value={ids.abilities[4]}
                                                style={{visibility: "hidden"}}
                                         />
@@ -416,13 +420,13 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                onClick={() =>
                                                    setColorAb('mascotas', ids.abilities[5])
                                                }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[5].toString())?
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[5].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Abilities.pets')}
                                         </label>
                                         <input type="checkbox"
-                                               {...register("abilities", {required:true})}
+                                               {...register("abilities", {required: true})}
                                             // onChange={(e) => console.log(getValues("abilities"))}
                                                id="mascotas-cb"
                                                value={ids.abilities[5]}
@@ -446,13 +450,13 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                onClick={() => {
                                                    setColorAv('media', ids.availabilities[0])
                                                }}
-                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[0].toString())?
+                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[0].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Availabilities.half')}
                                         </label>
                                         <input type="checkbox"
-                                               {...register("availabilities", {required:true})}
+                                               {...register("availabilities", {required: true})}
                                                id="media-cb" value={ids.availabilities[0]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
@@ -461,13 +465,13 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                onClick={() => {
                                                    setColorAv('completa', ids.availabilities[1])
                                                }}
-                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[1].toString())?
+                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[1].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Availabilities.complete')}
                                         </label>
                                         <input type="checkbox"
-                                               {...register("availabilities", {required:true})}
+                                               {...register("availabilities", {required: true})}
                                                id="completa-cb" value={ids.availabilities[1]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
@@ -476,13 +480,13 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                                onClick={() => {
                                                    setColorAv('cama', ids.availabilities[2])
                                                }}
-                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[2].toString())?
+                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[2].toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
                                             {t('Availabilities.bed')}
                                         </label>
                                         <input type="checkbox"
-                                               {...register("availabilities", {required:true})}
+                                               {...register("availabilities", {required: true})}
                                                id="cama-cb" value={ids.availabilities[2]}
                                                style={{visibility: "hidden"}}/>
                                     </div>
@@ -494,7 +498,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                             <div className="mt-5 col-start-2 col-span-4 row-span-3">
                                 <button type="submit"
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                    {from == "create"? t('EmployeeForm.button_register') : t('EmployeeForm.button_edit')}
+                                    {from == "create" ? t('EmployeeForm.button_register') : t('EmployeeForm.button_edit')}
                                 </button>
                             </div>
                         </div>

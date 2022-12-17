@@ -65,14 +65,14 @@ const RegisterEmployer = () => {
     const imageUpload = (e: any) => {
         const file = e.target.files[0];
         getBase64(file).then(base64 => {
-            localStorage["img"] = base64;
+            localStorage["imgRegisterEmployer"] = base64;
             console.debug("file stored",base64);
         });
     };
 
     const imageDownload = async () => {
         if (localStorage.getItem("img") !== null) {
-            const img = await urltoFile(localStorage.getItem("img")!, "img")
+            const img = await urltoFile(localStorage.getItem("imgRegisterEmployer")!, "imgRegisterEmployer")
             setImage(img)
         }
     }
@@ -93,6 +93,8 @@ const RegisterEmployer = () => {
     const onSubmit = async (data:any, e: any) => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
         localStorage.removeItem("registerEmployerForm")
+        localStorage.removeItem("imgRegisterEmployer")
+
 
         if (post.status === 201) {
             const result = await UserService.getUser(e, data.mail, data.password)
@@ -194,7 +196,7 @@ const RegisterEmployer = () => {
                                 {errors.password && errors.password.type === "required" &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordError')}</p>
                                 }
-                                {errors.password && errors.password.type === "validate" &&
+                                {errors.password && errors.password.type !== "validate" &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordsError')}</p>
                                 }
                             </div>
@@ -209,7 +211,7 @@ const RegisterEmployer = () => {
                                 {errors.password && errors.password.type === "required" &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordError')}</p>
                                 }
-                                {errors.password && errors.password.type === "validate" &&
+                                {errors.password && errors.password.type !== "validate" &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordsError')}</p>
                                 }
                             </div>
