@@ -6,7 +6,7 @@ import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
 
-export const EmployeeForm = ({onSubmit, from, self}: { onSubmit: any, from: string, self: string }) => {
+export const EmployeeForm = ({onSubmit, from, self, onEdit}: { onSubmit: any, from: string, self: string, onEdit: boolean}) => {
 
     type FormData = {
         mail: string;
@@ -131,8 +131,8 @@ export const EmployeeForm = ({onSubmit, from, self}: { onSubmit: any, from: stri
     }, [])
 
     useEffect(() => {
-        if (self.length >= 0) {
-            EmployeeService.getEmployee(self, true).then((e: any) => {
+        if (self.length > 0) {
+            EmployeeService.getEmployee(self, onEdit).then((e: any) => {
                     setValue("name", e.name)
                     setValue("location", e.location)
                     setValue("experienceYears", e.experienceYears)

@@ -31,7 +31,7 @@ const RegisterEmployee = () => {
     }
 
     return(
-        <EmployeeForm onSubmit={onSubmit} from="create" self={""}/>
+        <EmployeeForm onSubmit={onSubmit} from="create" self={""} onEdit={false}/>
     )
 }
 
