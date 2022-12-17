@@ -27,7 +27,16 @@ export const ContactUs = () => {
         mail: string
     };
 
-    const { register, handleSubmit, watch, formState: { errors }, getValues, setValue, reset } = useForm<FormData>();
+    const { register, handleSubmit, watch, formState: { errors }, getValues, setValue, reset } = useForm<FormData>(
+        {
+            defaultValues: {
+                name: "",
+                content: "",
+                mail: ""
+            }
+        }
+
+    );
 
     watch("mail")
     watch("name")

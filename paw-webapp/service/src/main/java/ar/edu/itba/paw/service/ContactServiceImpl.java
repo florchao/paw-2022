@@ -20,8 +20,7 @@ public class ContactServiceImpl implements ContactService{
     private ContactDao contactDao;
     @Autowired
     private MailingService mailingService;
-    @Autowired
-    private UserService userService;
+
     @Autowired
     private EmployeeService employeeService;
 

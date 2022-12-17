@@ -4,11 +4,14 @@ export class ContactService {
 
     public static async contactUs (e: any, name: string, mail: string, content: string) {
         e.preventDefault();
-        const blog = {name, mail, content};
+        let formData = new FormData();
+        formData.append('name', name);
+        formData.append('mail', mail);
+        formData.append('content', content);
         return await fetch(CONTACT_URL + BACK_SLASH + 'us', {
         method: 'POST',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(blog)
+        headers: {},
+        body: formData
         }).then(() => {
         // history.go(-1);
         })
