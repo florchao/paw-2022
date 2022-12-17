@@ -1,5 +1,4 @@
 import {Rating} from "react-simple-star-rating";
-import {RatingService} from "../service/RatingService";
 
 const RatingModal = ({employee, handleRating}: {employee: any, handleRating: any}) => {
 

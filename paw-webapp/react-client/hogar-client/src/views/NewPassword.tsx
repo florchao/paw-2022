@@ -1,4 +1,3 @@
-import {EmployerService} from "../service/EmployerService";
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
 import {UserService} from "../service/UserService";
