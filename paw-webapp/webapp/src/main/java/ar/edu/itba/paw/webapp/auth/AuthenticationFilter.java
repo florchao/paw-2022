@@ -16,25 +16,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.security.Key;
 import java.sql.Date;
@@ -68,7 +56,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(credentials[0], credentials[1])
             );
         } catch (AuthenticationException e) {
-            throw new InsufficientAuthenticationException("Invalid credentials");
+            throw new InsufficientAuthenticationException("Invalid credentials", e);
         }
         UserDetails userDetails = pawUserDetailsService.loadUserByUsername(credentials[0]);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -79,10 +67,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String createJWT(String[] credentials) throws UserNotFoundException, IllegalArgumentException {
-        Optional<User> algo = userService.findByUsername(credentials[0]);
-        User user = algo.orElseThrow(() -> new UserNotFoundException("User not found"));
-
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(environment.getRequiredProperty("db.auth.secret")),
+        User algo = userService.findByUsername(credentials[0]);
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
                 SignatureAlgorithm.HS256.getJcaName());
         String jwtToken = null;
         try {
@@ -95,7 +81,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     .signWith(hmacKey)
                     .compact();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid username or password");
+            throw new IllegalArgumentException("Invalid username or password", e);
         }
         return jwtToken;
     }
@@ -119,7 +105,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         } catch (Exception e) {
-            throw new InsufficientAuthenticationException("Invalid token");
+            throw new InsufficientAuthenticationException("Invalid token", e);
         }
     }
 

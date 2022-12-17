@@ -32,7 +32,7 @@ export const Contacts = () => {
         changePage(0)
     }, [])
 
-    const changePage = async (page: number) => {
+    const changePage = (page: number) => {
         ContactService.contacts(id, page).then(
             (rsp) => {
                 rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)

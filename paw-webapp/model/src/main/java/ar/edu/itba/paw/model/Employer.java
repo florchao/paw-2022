@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity(name = "Employer")
 @Table(name = "employer")
@@ -64,4 +65,5 @@ public class Employer implements Serializable {
     public int hashCode() {
         return Objects.hash(name, id);
     }
+
 }

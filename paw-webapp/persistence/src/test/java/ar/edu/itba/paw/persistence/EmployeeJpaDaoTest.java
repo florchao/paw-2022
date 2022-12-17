@@ -35,7 +35,7 @@ public class EmployeeJpaDaoTest {
     private static final int ROLE = 1;
     private static final String NAME = "name";
     private static final String NAME2 = "d'nofrio";
-    private static final String LOCATION = "location";
+    private static final String LOCATION = "4";
     private static final String AVAILABILITY = "1";
     private static final long ID = 0;
     private static final long EXPERIENCE_YEARS = 10;
@@ -136,7 +136,7 @@ public class EmployeeJpaDaoTest {
 
         Employee employee3 = employeeJpaDao.create(user3, NAME2, "Almagro", AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
         //String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria
-        List<Employee> list = employeeJpaDao.getFilteredEmployees(NAME, EXPERIENCE_YEARS, LOCATION, new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
+        List<Employee> list = employeeJpaDao.getFilteredEmployees(NAME, EXPERIENCE_YEARS, new ArrayList<>(Arrays.asList(LOCATION.split(","))), new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
 
         List<Employee> list2 = employeeJpaDao.getFilteredEmployees(NAME2, EXPERIENCE_YEARS, null, new ArrayList<>(Arrays.asList(AVAILABILITY.split(","))), new ArrayList<>(Arrays.asList(ABILITIES.split(","))), 0L, 2, "experienceYears");
 

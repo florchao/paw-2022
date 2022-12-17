@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
@@ -58,7 +59,7 @@ public class EmployerController {
     @GET
     @Path(value = "/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response employerProfile(@PathParam("id") long id) throws UserNotFoundException {
+    public Response employerProfile(@PathParam("id") long id) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -68,14 +69,14 @@ public class EmployerController {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
         }
-
-        Optional<EmployerDto> employer = employerService.getEmployerById(id).map(e -> EmployerDto.fromEmployer(uriInfo, e));
-        if(employer.isPresent()){
-            GenericEntity<EmployerDto> genericEntity = new GenericEntity<EmployerDto>(employer.get()){};
+        try{
+            Employer employer = employerService.getEmployerById(id);
+            EmployerDto employerDto = EmployerDto.fromEmployer(uriInfo, employer);
+            GenericEntity<EmployerDto> genericEntity = new GenericEntity<EmployerDto>(employerDto){};
             return Response.ok(genericEntity).build();
+        }catch (UserNotFoundException u){
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-
-        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @GET
@@ -152,10 +153,16 @@ public class EmployerController {
                 || image==null){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-
-        final User u = userService.create(mail, password, confirmPassword, 2);
-        String fullName = name + " " + lastName;
-        employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
+        final User u;
+        try {
+            u = userService.create(mail, password, confirmPassword, 2);
+            String fullName = name + " " + lastName;
+            employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
+        } catch (Exception ex){
+            ex.printStackTrace();
+            //TODO CHECK CON LO QUE RESPONDE SOTUYO
+            return Response.status(Response.Status.CONFLICT).build();
+        }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
 
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(u.getId())).build()).build();

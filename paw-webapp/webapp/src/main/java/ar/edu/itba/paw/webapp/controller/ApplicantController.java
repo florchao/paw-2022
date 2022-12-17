@@ -72,6 +72,7 @@ public class ApplicantController {
             applicantService.apply(jobId, hogarUser.getUserID());
         } catch (AlreadyExistsException alreadyExistsException) {
             LOGGER.error(String.format("there has already been made a contact for %d by id %d", jobId, hogarUser.getUserID()));
+            //todo check con lo que responde sotuyo
             return Response.ok(-1).build();
         }
         return Response.status(Response.Status.CREATED).entity(0).build();
@@ -89,19 +90,25 @@ public class ApplicantController {
         if(Objects.isNull(status)){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
+        Job job;
+        Employee employee;
 
-        Job job = jobService.getJobByID(jobId);
+        try{
+            job = jobService.getJobByID(jobId);
+            employee = employeeService.getEmployeeById(employeeId);
+            HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
 
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
-            return Response.status(Response.Status.FORBIDDEN).build();
+            int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
+            contactService.changedStatus(status, job, employee);
+            return Response.ok(finalStatus).build();
+
+        }catch(Exception e){
+            //TODO: CHCK RESPUESTA
+            return Response.serverError().build();
         }
-
-        int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
-
-        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        employee.ifPresent(value -> contactService.changedStatus(status, job, value));
-        return Response.ok(finalStatus).build();
     }
 
     @DELETE

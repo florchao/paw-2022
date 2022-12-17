@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.EmployerDao;
 import ar.edu.itba.paw.persistence.ImagesDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class EmployerServiceImpl implements EmployerService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Employer> getEmployerById(long id) {
-        return employerDao.getEmployerById(id);
+    public Employer getEmployerById(long id) throws UserNotFoundException {
+        return employerDao.getEmployerById(id).orElseThrow(() -> new UserNotFoundException("employer with id:" + id + "not found"));
     }
 
 }

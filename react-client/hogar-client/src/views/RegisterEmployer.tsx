@@ -7,6 +7,7 @@ import useFormPersist from "react-hook-form-persist";
 import {UserService} from "../service/UserService";
 
 const RegisterEmployer = () => {
+    const [registerEmployerError, setRegisterEmployerError]: any = useState()
 
     type FormData = {
         mail: string;
@@ -65,14 +66,14 @@ const RegisterEmployer = () => {
     const imageUpload = (e: any) => {
         const file = e.target.files[0];
         getBase64(file).then(base64 => {
-            localStorage["img"] = base64;
+            localStorage["imgRegisterEmployer"] = base64;
             console.debug("file stored",base64);
         });
     };
 
     const imageDownload = async () => {
         if (localStorage.getItem("img") !== null) {
-            const img = await urltoFile(localStorage.getItem("img")!, "img")
+            const img = await urltoFile(localStorage.getItem("imgRegisterEmployer")!, "imgRegisterEmployer")
             setImage(img)
         }
     }
@@ -92,12 +93,17 @@ const RegisterEmployer = () => {
 
     const onSubmit = async (data:any, e: any) => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
-        localStorage.removeItem("registerEmployerForm")
+
+        if(post.status === 400 || post.status === 500){
+            setRegisterEmployerError(true)
+        }
 
         if (post.status === 201) {
-            const result = await UserService.getUser(e, data.mail, data.password)
+            setRegisterEmployerError(false)
 
-            console.log("status == 201")
+            const result = await UserService.getUser(e, data.mail, data.password)
+            localStorage.removeItem("registerEmployerForm")
+            localStorage.removeItem("imgRegisterEmployer")
 
             if (result.status === 200) {
                 let body = await result.json()
@@ -107,7 +113,6 @@ const RegisterEmployer = () => {
                 localStorage['hogar-jwt'] = authHeader?.slice(7)
             }
             let body = await post.json()
-            console.log("body", body)
             nav('/', {replace: true, state: {self: body.value, status: -1}})
             window.location.reload()
         }
@@ -143,7 +148,7 @@ const RegisterEmployer = () => {
                                            }
                                        }}
                                        style={{visibility: "hidden"}}/>
-                                {image?.size === 0 &&
+                                {!image &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.imageError')}</p>
                                 }
                             </div>
@@ -194,7 +199,7 @@ const RegisterEmployer = () => {
                                 {errors.password && errors.password.type === "required" &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordError')}</p>
                                 }
-                                {errors.password && errors.password.type === "validate" &&
+                                {errors.password && errors.password.type !== "validate" &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordsError')}</p>
                                 }
                             </div>
@@ -209,7 +214,7 @@ const RegisterEmployer = () => {
                                 {errors.password && errors.password.type === "required" &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordError')}</p>
                                 }
-                                {errors.password && errors.password.type === "validate" &&
+                                {errors.password && errors.password.type !== "validate" &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.passwordsError')}</p>
                                 }
                             </div>
@@ -218,6 +223,8 @@ const RegisterEmployer = () => {
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                                     {t('RegisterEmployer.button')}
                                 </button>
+                                {registerEmployerError &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.emailUsedError')}</p>}
                             </div>
                         </div>
                     </div>

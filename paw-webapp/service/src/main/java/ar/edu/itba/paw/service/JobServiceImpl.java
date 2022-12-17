@@ -68,7 +68,11 @@ public class JobServiceImpl implements JobService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return jobDao.getFilteredJobs(name, experienceYears, location, availabilityList, abilitiesList, page, pageSize);
+        List<String> locationList= new ArrayList<>();
+        if (location != null) {
+            locationList = Arrays.asList(location.split(","));
+        }
+        return jobDao.getFilteredJobs(name, experienceYears, locationList, availabilityList, abilitiesList, page, pageSize);
     }
 
     @Override
@@ -91,7 +95,11 @@ public class JobServiceImpl implements JobService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return jobDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize);
+        List<String> locationList= new ArrayList<>();
+        if (location != null) {
+            locationList = Arrays.asList(location.split(","));
+        }
+        return jobDao.getPageNumber(name, experienceYears, locationList, availabilityList, abilitiesList, pageSize);
     }
 
     @Transactional
@@ -103,21 +111,15 @@ public class JobServiceImpl implements JobService{
     @Transactional
     @Override
     public void closeJob(long jobId) {
-        jobDao.closeJob(jobId);
-        //TODO hay que pasarle la pagina
-        List<Applicant> applicants = applicantService.getApplicantsByJob(jobId, 0L, 0);
-        for(Applicant applicant : applicants){
-            applicantService.changeStatus(2, applicant.getEmployeeID().getId().getId(), jobId);
-        }
+        Optional<Job> job = jobDao.closeJob(jobId);
+        applicantService.rejectAppsfromJob(job);
     }
 
     @Transactional
     @Override
     public void openJob(long jobId) {
-        jobDao.openJob(jobId);
-        //TODO paginacion
-        List<Applicant> applicants = applicantService.getApplicantsByJob(jobId, 0L, 0);
-        applicantService.withdrawAppsFromJob(applicants);
+        Optional<Job> job = jobDao.openJob(jobId);
+        applicantService.withdrawAppsFromJob(job);
     }
 
     @Override

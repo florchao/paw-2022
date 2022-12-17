@@ -3,6 +3,7 @@ import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {Link, useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
+import {useState} from "react";
 
 export const LoginCard = () => {
     const {t} = useTranslation();
@@ -30,10 +31,12 @@ export const LoginCard = () => {
         timeout: 1000 * 60 * 2,
     })
 
+    const [loginError, setLoginError]: any = useState()
+
     const onSubmit = async (data: any, e: any) => {
         const result = await UserService.getUser(e, data.email, data.password)
-        console.log(result.status)
         if (result.status === 200) {
+            setLoginError(false)
             let body = await result.json()
             localStorage['hogar-role'] = body.role
             localStorage['hogar-uid'] = body.uid
@@ -46,6 +49,8 @@ export const LoginCard = () => {
                 nav("/explore")
             }
             window.location.reload()
+        } if (result.status === 401){
+            setLoginError(true)
         }
     }
 
@@ -62,8 +67,6 @@ export const LoginCard = () => {
                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                         />
                         {errors.email && <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.invalidEmail')}</p>}
-                        {/*<input id="username" name="j_username" type="text"*/}
-                        {/*       className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>*/}
                     </div>
                     <div className="form-group mb-6 grid grid-cols-6">
                         <label className="text-sm font-medium text-gray-900">{t('LogIn.password')}</label>
@@ -85,9 +88,7 @@ export const LoginCard = () => {
                                 className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                             {t('Home.login')}
                         </button>
-                        {/*<button type="submit"*/}
-                        {/*        className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">Login*/}
-                        {/*</button>*/}
+                        {loginError && <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.error')}</p>}
                     </div>
                     <div className="form-group mb-6 grid grid-cols-6">
                         <p className="text-xs text-gray-900 col-span-2">

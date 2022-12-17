@@ -20,8 +20,7 @@ public class ContactServiceImpl implements ContactService{
     private ContactDao contactDao;
     @Autowired
     private MailingService mailingService;
-    @Autowired
-    private UserService userService;
+
     @Autowired
     private EmployeeService employeeService;
 
@@ -32,8 +31,8 @@ public class ContactServiceImpl implements ContactService{
     @Transactional(readOnly = true)
     @Override
     public List<Contact> getAllContacts(long id, Long page, int pageSize) throws UserNotFoundException {
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
-        return employee.map(value -> contactDao.getAllContacts(value, page, pageSize)).orElse(null);
+        Employee employee = employeeService.getEmployeeById(id);
+        return contactDao.getAllContacts(employee, page, pageSize);
     }
 
 
@@ -46,17 +45,16 @@ public class ContactServiceImpl implements ContactService{
     @Transactional
     @Override
     public boolean create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
-        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        Optional<Employer> employer = employerService.getEmployerById(employerId);
+       Employee employee = employeeService.getEmployeeById(employeeId);
+       Employer employer = employerService.getEmployerById(employerId);
         boolean exists;
-        if(employee.isPresent() && employer.isPresent()) {
-            exists = !contactDao.existsContact(employee.get(), employer.get()).isEmpty();
-            if (exists) {
-                return true;
-            }
-            contactDao.create(employee.get(), employer.get(), created, contactMessage, phoneNumber);
+        exists = !contactDao.existsContact(employee, employer).isEmpty();
+        if (exists) {
+            return true;
         }
-        return false;
+        //TODO: CHECK
+        contactDao.create(employee, employer, created, contactMessage, phoneNumber);
+        return true;
     }
 
     @Transactional
@@ -84,11 +82,9 @@ public class ContactServiceImpl implements ContactService{
 
     @Override
     public List<Contact> existsContact(long employeeId, long employerId) throws UserNotFoundException {
-        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        Optional<Employer> employer = employerService.getEmployerById(employerId);
-        if(employee.isPresent() && employer.isPresent())
-            return contactDao.existsContact(employee.get(), employer.get());
-        return Collections.emptyList();
+        Employee employee = employeeService.getEmployeeById(employeeId);
+        Employer employer = employerService.getEmployerById(employerId);
+        return contactDao.existsContact(employee, employer);
     }
 
 

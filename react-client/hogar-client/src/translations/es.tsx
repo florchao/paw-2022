@@ -51,7 +51,8 @@ export const TRANSLATIONS_ES = {
         availabilityError: "Por favor selecciones al menos una disponibilidad",
         abilitiesError: "Por favor seleccione al menos una habilidad",
         expYearsError: "Por favor ingrese la cantidad de años de experiencia",
-        hourlyFeeError: "Por favor ingrese una tarifa por hora válida"
+        hourlyFeeError: "Por favor ingrese una tarifa por hora válida",
+        emailUsedError: " Un usuario ya se encuentra registrado bajo ese email"
 
     },
 
@@ -114,6 +115,7 @@ export const TRANSLATIONS_ES = {
         setP:"Setear contraseña",
         invalidEmail:"El mail ingresado no es válido",
         invalidPassword:"La contraseña ingresada no es válida",
+        error:"El mail y/o contraseña ingresada no es válida"
     },
     Navbar:{
         explore:"Explorar",

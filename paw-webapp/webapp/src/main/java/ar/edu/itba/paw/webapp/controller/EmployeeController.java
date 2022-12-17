@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Path("/api/employees")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 1;
+    private final int PAGE_SIZE = 3;
 
     private final int PAGE_SIZE_REVIEWS = 1;
 
@@ -96,9 +96,8 @@ public class EmployeeController {
                 return EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language"));
         }).collect(Collectors.toList());
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
-        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
-        };
-        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -117,27 +116,29 @@ public class EmployeeController {
             }
         }
 
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
-        Optional<EmployeeDto> dto;
-        if (edit != null && edit.equals("true"))
-            dto = employee.map(e -> EmployeeDto.fromEdit(uriInfo, e));
-        else if (user != null)
-            dto = employee.map(e -> EmployeeDto.fromMyProfile(uriInfo, e, request.getHeader("Accept-Language")));
-        else
-            dto = employee.map(e -> {
-                if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-                    HogarUser hogarUser = (HogarUser) auth.getPrincipal();
-                    Boolean hasContact = !contactService.existsContact(e.getId().getId(), hogarUser.getUserID()).isEmpty();
-                    return EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language"), false, hasContact);
-                }
-                return EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language"), true, false);
-            });
-        if (employee.isPresent()) {
-            GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto.get()) {
-            };
-            return Response.ok(genericEntity).build();
+        Employee employee;
+        try{
+            employee = employeeService.getEmployeeById(id);}
+        catch(UserNotFoundException e){
+            return Response.noContent().build();
         }
-        return Response.noContent().build();
+
+        EmployeeDto dto;
+        if (edit != null && edit.equals("true"))
+            dto = EmployeeDto.fromEdit(uriInfo, employee);
+        else if (user != null)
+            dto = EmployeeDto.fromMyProfile(uriInfo, employee, request.getHeader("Accept-Language"));
+        else if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+                HogarUser hogarUser = (HogarUser) auth.getPrincipal();
+                Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
+                dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), false, hasContact);
+        }else{
+            dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), true, false);
+        }
+
+        GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto){};
+        return Response.ok(genericEntity).build();
+
 //        mav.addObject("status", status);
 //        if (page == null)
 //            page = 0L;
@@ -261,8 +262,16 @@ public class EmployeeController {
                 image == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        User u = userService.create(mail, password, password, 1);
-        employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
+
+        User u;
+        try {
+            u = userService.create(mail, password, password, 1);
+            employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
+        } catch (Exception ex){
+            ex.printStackTrace();
+            //TODO CHECK CON LO QUE RESPONDE SOTUYO
+            return Response.status(Response.Status.CONFLICT).build();
+        }
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(u.getId())).build()).build();
     }
 

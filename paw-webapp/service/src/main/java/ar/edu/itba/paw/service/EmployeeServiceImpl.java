@@ -25,9 +25,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Employee> getEmployeeById(long id) {
-        Optional<Employee> employee = (employeeDao.getEmployeeById(id));
-        return employee;
+    public Employee getEmployeeById(long id) {
+        return employeeDao.getEmployeeById(id).orElseThrow(() -> new UserNotFoundException("employee with id" + id + "not found"));
     }
 
     @Transactional
@@ -92,7 +91,11 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize, orderCriteria);
+        List<String> locationList = new ArrayList<>();
+        if (location != null) {
+            locationList = Arrays.asList(location.split(","));
+        }
+        return employeeDao.getPageNumber(name, experienceYears, locationList, availabilityList, abilitiesList, pageSize, orderCriteria);
     }
 
     @Transactional
@@ -118,7 +121,11 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(name,experienceYears,location, availabilityList,abilitiesList,page,pageSize, orderCriteria);
+        List<String> locationList= new ArrayList<>();
+        if (location != null) {
+            locationList = Arrays.asList(location.split(","));
+        }
+        return employeeDao.getFilteredEmployees(name,experienceYears, locationList, availabilityList,abilitiesList,page,pageSize, orderCriteria);
     }
 
     @Override
