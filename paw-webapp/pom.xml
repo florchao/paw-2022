@@ -300,6 +300,7 @@
     <module>interfaces</module>
     <module>persistence</module>
     <module>model</module>
+    <module>hogar-client</module>
   </modules>
   <build>
     <plugins>
@@ -309,6 +310,11 @@
         <version>${maven-war-plugin.version}</version>
         <configuration>
           <packagingExcludes>**/logback-test.xml</packagingExcludes>
+          <webResources>
+            <resource>
+              <directory>../hogar-client/build</directory>
+            </resource>
+          </webResources>
         </configuration>
       </plugin>
     </plugins>
