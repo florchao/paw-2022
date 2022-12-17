@@ -1,10 +1,12 @@
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 
-const PaginationButtons = ({changePages, pages}: {changePages: any ,pages: number}) => {
-    const [page, setPage] = useState(0);
+const PaginationButtons = ({changePages, pages, current}: {changePages: any ,pages: number, current?: any}) => {
+    const [page, setPage] = useState(current? current : 0)
 
     const { t } = useTranslation();
+
+    console.log(current)
 
     return (
         <div className="flex justify-center items-center">

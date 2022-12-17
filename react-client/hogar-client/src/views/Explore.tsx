@@ -134,7 +134,7 @@ export const Explore = () => {
                 {employees &&
                     <div>
                         {employees.map((employee: any) => (<EmployeeCard key={employee.id} employee={employee}/>))}
-                        <PaginationButtons changePages={changePage} pages={pages}/>
+                        <PaginationButtons changePages={changePage} pages={pages} current={getValues("page")}/>
                     </div>
                 }
                 {employees == 0 && (

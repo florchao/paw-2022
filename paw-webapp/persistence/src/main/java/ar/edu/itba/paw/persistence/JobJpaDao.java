@@ -70,7 +70,7 @@ public class JobJpaDao implements  JobDao{
             }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
-            stringBuilder.append("e.experienceYears >= :experienceYears ");
+            stringBuilder.append("e.experienceYears <= :experienceYears ");
             paramMap.put("experienceYears", experienceYears);
             stringBuilder.append(" and ");
         }
@@ -118,7 +118,7 @@ public class JobJpaDao implements  JobDao{
             }
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
-            stringBuilder.append("e.experienceYears >= :experienceYears ");
+            stringBuilder.append("e.experienceYears <= :experienceYears ");
             paramMap.put("experienceYears", experienceYears);
             stringBuilder.append(" and ");
         }

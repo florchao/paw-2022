@@ -49,10 +49,8 @@ public class JobController {
     @Context
     UriInfo uriInfo;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
-    private final static long PAGE_SIZE_JOBS = 9;
-    private static final int PAGE_SIZE = 1;
+    private static final int PAGE_SIZE = 9;
 
-    private final static int PAGE_SIZE_REVIEWS = 2;
 
     @GET
     @Path("")
@@ -63,12 +61,9 @@ public class JobController {
             @QueryParam("location") String location,
             @QueryParam("availability") String availability,
             @QueryParam("abilities") String abilities,
-            @QueryParam("page") Long page,
+            @QueryParam("page") @DefaultValue("0") Long page,
             @Context HttpServletRequest request
     ) {
-
-        if (page == null)
-            page = 0L;
 
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -76,8 +71,10 @@ public class JobController {
             int status = applicantService.getStatus(principal.getUserID(), j.getJobId());
             return JobDto.fromExplore(uriInfo, j, status, request.getHeader("Accept-Language"));
         }).collect(Collectors.toList());
+
+        int pages = jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE);
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
-        return Response.ok(genericEntity).build();
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count") .header("X-Total-Count", pages).build();
     }
 
     @GET

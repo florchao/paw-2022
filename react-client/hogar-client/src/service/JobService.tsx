@@ -2,9 +2,6 @@ import {BACK_SLASH, JOB_URL, QUERY_PARAM} from "../utils/utils";
 
 export class JobService {
     public static async getJobs() {
-        if(localStorage.getItem('hogar-jwt') === null){
-            return
-        }
         return await fetch(JOB_URL, {
             method: 'GET',
             headers: {
@@ -12,7 +9,7 @@ export class JobService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     throw error
@@ -21,19 +18,22 @@ export class JobService {
 
     public static async getFilteredJobs(
         minimumYears: number,
+        page: number,
         name?: string,
         location?: string,
-        abilitites?: string,
+        abilities?: string,
         availability?: string
     ) {
 
-        let url = JOB_URL + '?'
+        let url = JOB_URL + QUERY_PARAM
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
+        if(page > 0)
+            url = this.concatStringQueries(url, 'page', String(page))
         url = this.concatStringQueries(url, 'name', name)
         url = this.concatStringQueries(url, 'location', location)
-        url = this.concatStringQueries(url, 'abilities', abilitites)
+        url = this.concatStringQueries(url, 'abilities', abilities)
         url = this.concatStringQueries(url, 'availability', availability)
 
         return await fetch(url, {
@@ -43,7 +43,7 @@ export class JobService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     throw error
