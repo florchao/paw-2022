@@ -76,14 +76,20 @@ export class JobService {
 
     public static async postJob(e: any, title: string, location: string, experienceYears: number, availability: string, abilities: string[], description: string) {
         e.preventDefault();
-        const jobForm = {title, location, experienceYears, availability, abilities, description};
+        let formData = new FormData();
+        formData.append("title", title);
+        formData.append("location", location);
+        formData.append("experienceYears", experienceYears.toString());
+        formData.append("availability", availability);
+        abilities.forEach(a => formData.append("abilities[]", a))
+        formData.append("description", description);
+
         return await fetch(JOB_URL, {
             method: 'POST',
             headers: {
-                "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: JSON.stringify(jobForm)
+            body: formData
         }).then((r) => r.json())
     }
 

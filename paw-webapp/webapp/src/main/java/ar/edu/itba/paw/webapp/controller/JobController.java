@@ -110,11 +110,16 @@ public class JobController {
 
     @POST
     @Path("")
-    @Consumes(value = {MediaType.APPLICATION_JSON,})
-    public Response postJob(@Valid final JobForm form) {
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
+    public Response postJob(@FormDataParam("title") String title,
+                            @FormDataParam("description") String description,
+                            @FormDataParam("location") String location,
+                            @FormDataParam("abilities[]") List<String> abilities,
+                            @FormDataParam("availability") String availability,
+                            @FormDataParam("experienceYears") Long experienceYears) {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Job job = jobService.create(form.getTitle(), form.getLocation(), hogarUser.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
+        System.out.println("DATA: " + title + " " + description + " " + location + " " + abilities + " " + availability + " " + experienceYears);
+        Job job = jobService.create(title, location, hogarUser.getUserID(), availability, experienceYears, fromListToString(abilities), description);
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId())).build()).build();
     }
@@ -168,90 +173,21 @@ public class JobController {
         }
         return Response.ok(status).build();
     }
-//    @RequestMapping(value = "/crearTrabajo", method = {RequestMethod.GET})
-//    public ModelAndView crearTrabajo(@ModelAttribute("jobForm")final JobForm form){
-//        ModelAndView mav = new ModelAndView("createJob");
-//        mav.addObject("abilities", Abilities.getIds());
-//        mav.addObject("availability", Availability.getIds());
-//        return mav;
-//    }
-//
-//    @RequestMapping(value = "/createJob", method = RequestMethod.POST)
-//    public ModelAndView create(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
-//        if(!errors.hasErrors()) {
-//            HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//                Job job = jobService.create(form.getTitle(), form.getLocation(), principal.getUserID(), form.getAvailability(), form.getExperienceYears(), form.fromArrtoString(form.getAbilities()), form.getDescription());
-//                LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
-//                return new ModelAndView("redirect:/trabajo/" + job.getJobId());
-//        }
-//        LOGGER.debug("couldn't create job");
-//        return crearTrabajo(form);
-//    }
-//
 
-//    @RequestMapping(value = "addReviewEmployer/{jobId}/{employerId}", method = {RequestMethod.POST})
-//    public ModelAndView addReview(@ModelAttribute("reviewForm") final ReviewForm reviewForm, @RequestParam(value = "status", required = false) String status, final BindingResult errors, @PathVariable final long jobId, @PathVariable final long employerId) throws JobNotFoundException {
-//        if(errors.hasErrors())
-//            return verTrabajo(jobId,status, reviewForm, null);
-//        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        reviewService.create(principal.getUserID(), employerId, reviewForm.getContent(), new Date(System.currentTimeMillis()), false);
-//        return new ModelAndView("redirect:/trabajo/" + jobId);
-//    }
+    private String fromListToString(List<String> arr) {
+        StringBuilder ret = new StringBuilder();
+        for (String str : arr) {
+            ret.append(str).append(",");
+        }
+        return ret.substring(0, ret.length() - 1);
+    }
 
-//    @RequestMapping(value = "/trabajos", method = {RequestMethod.GET})
-//    public ModelAndView searchJobs(
-//            @ModelAttribute("filterJobsBy") FilterForm jobForm,
-//            @RequestParam(value = "name", required = false) String name,
-//            @RequestParam(value = "experienceYears", required = false) Long experienceYears,
-//            @RequestParam(value = "location", required = false) String location,
-//            @RequestParam(value = "availability", required = false) String availability,
-//            @RequestParam(value = "abilities", required = false) String abilities,
-//            @RequestParam(value = "page", required = false) Long page) {
-//        Authentication authority = SecurityContextHolder.getContext().getAuthentication();
-//        HogarUser user = (HogarUser) authority.getPrincipal();
-//        if (page == null)
-//            page = 0L;
-//        Map<Job, Integer> jobList = new LinkedHashMap<>();
-//        List<Job> opJob = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE_JOBS);
-//        for (Job job : opJob) {
-//            Boolean applied = jobService.alreadyApplied(job.getJobId(), user.getUserID());
-//            job.firstWordsToUpper();
-//            job.locationNameToUpper();
-//            if(applied) {
-//                int status = applicantService.getStatus(user.getUserID(), job.getJobId());
-//                jobList.put(job, status);
-//            }
-//            else {
-//                jobList.put(job, -1);
-//            }
-//        }
-//        final ModelAndView mav = new ModelAndView("searchJobs");
-//        mav.addObject("jobList", jobList);
-//        mav.addObject("page", page);
-//        mav.addObject("maxPage", jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE_JOBS));
-//        mav.addObject("abilities", Abilities.getIds());
-//        mav.addObject("availability", Availability.getIds());
-//        return mav;
-//    }
-//
-//    @RequestMapping(value = "/filterJobs", method = {RequestMethod.GET})
-//    public ModelAndView filterEmployees(@Valid @ModelAttribute("filterJobsBy") FilterForm form, final BindingResult errors, RedirectAttributes redirectAttributes) {
-//        if (errors.hasErrors()) {
-//            return searchJobs(null, null,null,null,null,null,null);
-//        }
-//        if (!Objects.equals(form.getName(),""))
-//            redirectAttributes.addAttribute("name",form.getName());
-//        if (form.getExperienceYears() > 0)
-//            redirectAttributes.addAttribute("experienceYears", form.getExperienceYears());
-//        if (!Objects.equals(form.getLocation(), ""))
-//            redirectAttributes.addAttribute("location", form.getLocation());
-//        if (form.getAvailability() != null && form.getAvailability().length > 0)
-//            redirectAttributes.addAttribute("availability", form.getAvailability());
-//        if (form.getAbilities() != null && form.getAbilities().length > 0)
-//            redirectAttributes.addAttribute("abilities", form.getAbilities());
-//        if (form.getPageNumber() > 0)
-//            redirectAttributes.addAttribute("page", form.getPageNumber());
-//
-//        return new ModelAndView("redirect:/trabajos");
-//    }
+    private String[] fromListToArray(List<String> arr) {
+        String[] str = new String[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            str[i] = arr.get(i);
+        }
+        return str;
+    }
+
 }
