@@ -11,7 +11,7 @@ application.properties
 /coverage
 
 # production
-/react-client/hogar-client/build
+/hogar-client/build
 
 # misc
 .DS_Store
