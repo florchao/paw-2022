@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -252,14 +253,13 @@ public class EmployeeController {
         if(!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
                 password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
                 name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
-                experienceYears < 0 || experienceYears > 100 ||
-                location.length() > 100 || !location.matches("[a-z A-z\\s0-9,]+") ||
+                experienceYears < 0 || experienceYears > 100 || hourlyFee == 0 || hourlyFee < 0 ||
+                location.length() > 1 || !location.matches("[1-4]")  ||
                 availabilities.isEmpty() || abilities.isEmpty() ||
                 image== null){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         User u = userService.create(mail, password, password, 1);
-
         employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(u.getId())).build()).build();
     }
@@ -276,8 +276,8 @@ public class EmployeeController {
                                  @FormDataParam("image") InputStream image,
                                  @PathParam("id") long id) throws IOException, UserFoundException, PassMatchException {
         if(name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
-                experienceYears < 0 || experienceYears > 100 ||
-                location.length() > 100 || !location.matches("[a-z A-z\\s0-9,]+") ||
+                experienceYears < 0 || experienceYears > 100 || hourlyFee == 0 || hourlyFee < 0 ||
+                location.length() > 1 || !location.matches("[1-4]") ||
                 availabilities.isEmpty() || abilities.isEmpty() ||
                 image== null){
             return Response.status(Response.Status.BAD_REQUEST).build();

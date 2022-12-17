@@ -51,6 +51,7 @@ export const TRANSLATIONS_ES = {
         availabilityError: "Por favor selecciones al menos una disponibilidad",
         abilitiesError: "Por favor seleccione al menos una habilidad",
         expYearsError: "Por favor ingrese la cantidad de años de experiencia",
+        hourlyFeeError: "Por favor ingrese una tarifa por hora válida"
 
     },
 

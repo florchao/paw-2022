@@ -309,7 +309,7 @@ export const EmployeeForm = ({onSubmit, from, self}: {onSubmit: any ,from: strin
                                            {...register("hourlyFee", {required: true})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                     {errors.hourlyFee &&
-                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.expYearsError')}</p>
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.hourlyFeeError')}</p>
                                     }
                                 </div>
                             </div>

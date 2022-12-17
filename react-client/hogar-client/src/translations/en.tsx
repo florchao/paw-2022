@@ -49,6 +49,7 @@ export const TRANSLATIONS_EN = {
     passwordError: "Please enter a password",
     passwordsError: "Passwords do not match",
     expYearsError: 'Please enter a valid experience year',
+    hourlyFeeError: 'Please enter a valid hourly fee',
     availabilityError: 'Please select at least one availability',
     abilitiesError: 'Please select at least one ability',
   },
