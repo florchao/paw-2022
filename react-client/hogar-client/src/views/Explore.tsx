@@ -4,15 +4,15 @@ import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
-import PaginationButtons from "../components/PaginationButtons";
 import useFormPersist from "react-hook-form-persist";
+import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
 
 
 export const Explore = () => {
 
     const [employees, setEmployees]: any = useState()
     const [pages, setPages] :any = useState(0)
-    const [currentPage, setCurrentPage] = useState(0)
+
 
     const { t } = useTranslation();
 
@@ -54,6 +54,7 @@ export const Explore = () => {
         timeout: 1000 * 60 * 2,
     })
 
+
     const onSubmit = (data: any) => {
         setValue("isActive", true)
         EmployeeService.getFilteredEmployees(
@@ -72,16 +73,14 @@ export const Explore = () => {
         })
     }
 
-    const changePage = (page: number) => {
+    const changePage = async (page: number) => {
         setValue("page", page)
-        setCurrentPage(page)
         onSubmit(getValues())
     }
 
     const changeOrder = (order: string) => {
         setValue("orderBy", order)
         setValue("page", 0)
-        setCurrentPage(0)
         onSubmit(getValues())
     }
 
@@ -103,7 +102,7 @@ export const Explore = () => {
     return (
         <div className="grid grid-cols-12 content-start h-screen overflow-auto pl-5 pr-5 pt-20 pb-5">
             <div className="col-span-3 mr-4 flex flex-col items-center">
-                <FilterForm handleSubmit={handleSubmit} register={register} errors={errors} onSubmit={onSubmit} reset={reset}/>
+                <FilterForm handleSubmit={handleSubmit} register={register} errors={errors} onSubmit={onSubmit} reset={reset} setValue={setValue}/>
             </div>
             <div className="col-span-9 mr-5">
                 <h1 className={'text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8'}>{t('Explore.employees')}</h1>
@@ -138,7 +137,7 @@ export const Explore = () => {
                 {employees &&
                     <div>
                         {employees.map((employee: any) => (<EmployeeCard key={employee.id} employee={employee}/>))}
-                        <PaginationButtons changePages={changePage} pages={pages} current={currentPage}/>
+                        <PaginationButtonsExplore changePages={changePage} pages={pages} page={getValues("page")}/>
                     </div>
                 }
                 {employees == 0 && (

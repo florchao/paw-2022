@@ -86,11 +86,17 @@ public class EmployeeJpaDao implements EmployeeDao{
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
+        if(!location.isEmpty())
+            stringBuilder.append(" ( ");
         for (String l : location) {
             stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
             paramMap.put("location" + variableCount, '%' + l + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" or   ");
+        }
+        if(!location.isEmpty()) {
+            stringBuilder.setLength(stringBuilder.length() - 7);
+            stringBuilder.append(" ) and   ");
         }
         for (String ability : abilities) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
@@ -137,11 +143,17 @@ public class EmployeeJpaDao implements EmployeeDao{
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
+        if(!location.isEmpty())
+            stringBuilder.append(" ( ");
         for (String l : location) {
             stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
             paramMap.put("location" + variableCount, '%' + l + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" or   ");
+        }
+        if(!location.isEmpty()) {
+            stringBuilder.setLength(stringBuilder.length() - 7);
+            stringBuilder.append(" ) and   ");
         }
         for (String ability : abilities) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");

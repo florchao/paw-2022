@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import PaginationButtons from "../components/PaginationButtons";
+import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
 
 export const ExploreJobs = () => {
 
@@ -90,7 +91,7 @@ export const ExploreJobs = () => {
         <div className="grid content-start h-screen overflow-auto pl-5 pr-5 pb-5">
             <div className="my-10 w-full"></div>
             <div className="grid grid-cols-4">
-                <FilterForm handleSubmit={handleSubmit} register={register} errors={errors} onSubmit={onSubmit} reset={reset}/>
+                <FilterForm handleSubmit={handleSubmit} register={register} errors={errors} onSubmit={onSubmit} reset={reset} setValue={setValue}/>
                 <div className="col-span-3 col-start-2">
                     <h1 className="text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8">{t('Explore.jobs')}</h1>
                     <div className="col-span-3 col-start-2">
@@ -115,7 +116,7 @@ export const ExploreJobs = () => {
                             )}
                         </div>
                         {jobs &&
-                            <PaginationButtons changePages={changePage} pages={pages} current={getValues("page")}/>
+                            <PaginationButtonsExplore changePages={changePage} pages={pages} page={getValues("page")}/>
                         }
                     </div>
                 </div>

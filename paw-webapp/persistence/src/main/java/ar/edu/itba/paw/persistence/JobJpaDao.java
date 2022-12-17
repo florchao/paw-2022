@@ -73,13 +73,19 @@ public class JobJpaDao implements  JobDao{
             stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
             paramMap.put("availability" + variableCount, '%' + av + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
-            stringBuilder.append(" and ");
+            stringBuilder.append(" and  ");
         }
+        if(!location.isEmpty())
+            stringBuilder.append(" ( ");
         for (String l : location) {
             stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
             paramMap.put("location" + variableCount, '%' + l + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" or   ");
+        }
+        if(!location.isEmpty()) {
+            stringBuilder.setLength(stringBuilder.length() - 7);
+            stringBuilder.append(" ) and ");
         }
         for (String ability : abilitiesList) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
@@ -117,11 +123,17 @@ public class JobJpaDao implements  JobDao{
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and ");
         }
+        if(!location.isEmpty())
+            stringBuilder.append(" ( ");
         for (String l : location) {
             stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
             paramMap.put("location" + variableCount, '%' + l + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
-            stringBuilder.append(" or   ");
+            stringBuilder.append(" or ");
+        }
+        if(!location.isEmpty()) {
+            stringBuilder.setLength(stringBuilder.length() - 4);
+            stringBuilder.append(" ) and ");
         }
         for (String ability : abilities) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");

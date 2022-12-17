@@ -1,7 +1,7 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 
-export const FilterForm = ({handleSubmit, register, errors, onSubmit, reset}: { handleSubmit: any, register: any, errors: any, onSubmit: any, reset: any}) => {
+export const FilterForm = ({handleSubmit, register, errors, onSubmit, reset, setValue}: { handleSubmit: any, register: any, errors: any, onSubmit: any, reset: any, setValue: any}) => {
 
     const {t} = useTranslation();
 
@@ -10,11 +10,16 @@ export const FilterForm = ({handleSubmit, register, errors, onSubmit, reset}: { 
         handleSubmit(onSubmit)()
     }
 
+    const submit = () => {
+        setValue("page", 0)
+        handleSubmit(onSubmit)()
+    }
+
     return (
         <div>
             <form
                 className="bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-full"
-                onSubmit={handleSubmit(onSubmit)}>
+                onSubmit={submit}>
                 <h1 className="font-semibold text-violet-900 hover:cursor-pointer" onClick={resetFilter}>{t('FilterForm.reset')}</h1>
                 <div className={'flex flex-col items-center'}>
                     <h1 className="font-semibold mt-2">{t('FilterForm.expYears')}</h1>
