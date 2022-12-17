@@ -6,7 +6,7 @@ import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
 
-export const EmployeeForm = ({onSubmit, from, self, onEdit}: { onSubmit: any, from: string, self: string, onEdit: boolean}) => {
+export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: { onSubmit: any, from: string, self: string, onEdit: boolean, errorFromRequest: boolean}) => {
 
     type FormData = {
         mail: string;
@@ -500,6 +500,8 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit}: { onSubmit: any, fr
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                                     {from == "create" ? t('EmployeeForm.button_register') : t('EmployeeForm.button_edit')}
                                 </button>
+                                {errorFromRequest &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.emailUsedError')}</p>}
                             </div>
                         </div>
                     </div>

@@ -52,6 +52,7 @@ export const TRANSLATIONS_EN = {
     hourlyFeeError: 'Please enter a valid hourly fee',
     availabilityError: 'Please select at least one availability',
     abilitiesError: 'Please select at least one ability',
+    emailUsedError: 'A user with that email already exists'
   },
 
   Feedback: {

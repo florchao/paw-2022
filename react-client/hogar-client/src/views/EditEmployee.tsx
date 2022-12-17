@@ -17,7 +17,7 @@ const EditEmployee = () => {
     }
 
     return(
-        <EmployeeForm onSubmit={handleSubmit} from="edit" self={self} onEdit={true}/>
+        <EmployeeForm onSubmit={handleSubmit} from="edit" self={self} onEdit={true} errorFromRequest={false}/>
     )
 
 }
