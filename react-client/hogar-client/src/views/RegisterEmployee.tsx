@@ -10,6 +10,7 @@ const RegisterEmployee = () => {
         const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.hourlyFee, data.availabilities, data.abilities, image!)
 
         localStorage.removeItem("employeeForm")
+        localStorage.removeItem("imgEmployeeForm")
 
         if (post.status == 201) {
             const result = await UserService.getUser(e, data.mail, data.password)
