@@ -152,10 +152,6 @@ export const ProfileEmployee = () => {
         closeModal()
     }
 
-    function algo() {
-        console.log("algo")
-    }
-
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
             {employee &&
