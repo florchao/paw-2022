@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.exception.ContactException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -97,7 +98,7 @@ public class MailingServiceImpl implements MailingService{
             mimeMessage.setContent(message, "text/html");
             Transport.send(mimeMessage);
         } catch (MessagingException mex) {
-            throw new RuntimeException(mex.getMessage());
+            throw new ContactException("couldn't make contact from" + from + "caused by" + mex.getMessage(), mex);
         }
     }
 
