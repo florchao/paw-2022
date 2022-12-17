@@ -53,30 +53,19 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public List<Job> getFilteredJobs(String name, Long experienceYears, String location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
+    public List<Job> getFilteredJobs(String name, Long experienceYears, List<String> location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, Object> paramMap = new HashMap<>();
         stringBuilder.append("SELECT e FROM Job e where e.opened=TRUE and ");
         if (name != null) {
-            if (location == null) {
-                stringBuilder.append("(lower(e.title) like :title or lower(e.location) like :titleLocation)");
-                paramMap.put("title", '%' + name.toLowerCase() + '%');
-                paramMap.put("titleLocation", '%' + name.toLowerCase() + '%');
-                stringBuilder.append(" and ");
-            } else {
-                stringBuilder.append("lower(e.title) like :title ");
-                paramMap.put("title", '%' + name.toLowerCase() + '%');
-                stringBuilder.append(" and ");
-            }
+            stringBuilder.append("lower(e.title) like :title ");
+            paramMap.put("title", '%' + name.toLowerCase() + '%');
+            stringBuilder.append(" and ");
+
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
             stringBuilder.append("e.experienceYears <= :experienceYears ");
             paramMap.put("experienceYears", experienceYears);
-            stringBuilder.append(" and ");
-        }
-        if (location != null) {
-            stringBuilder.append("lower(e.location) like :location ");
-            paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and ");
         }
         String variableCount = "a";
@@ -85,6 +74,12 @@ public class JobJpaDao implements  JobDao{
             paramMap.put("availability" + variableCount, '%' + av + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and ");
+        }
+        for (String l : location) {
+            stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
+            paramMap.put("location" + variableCount, '%' + l + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            stringBuilder.append(" or   ");
         }
         for (String ability : abilitiesList) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
@@ -101,30 +96,18 @@ public class JobJpaDao implements  JobDao{
     }
 
     @Override
-    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize) {
+    public int getPageNumber(String name, Long experienceYears, List<String> location, List<String> availability, List<String> abilities, Long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, Object> paramMap = new HashMap<>();
         stringBuilder.append("SELECT count(e) FROM Job e where e.opened=TRUE and ");
         if (name != null) {
-            if (location == null) {
-                stringBuilder.append("(lower(e.title) like :title or lower(e.location) like :titleLocation)");
-                paramMap.put("title", '%' + name.toLowerCase() + '%');
-                paramMap.put("titleLocation", '%' + name.toLowerCase() + '%');
-                stringBuilder.append(" and ");
-            } else {
-                stringBuilder.append("lower(e.title) like :title ");
-                paramMap.put("title", '%' + name.toLowerCase() + '%');
-                stringBuilder.append(" and ");
-            }
+            stringBuilder.append("lower(e.title) like :title ");
+            paramMap.put("title", '%' + name.toLowerCase() + '%');
+            stringBuilder.append(" and ");
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
             stringBuilder.append("e.experienceYears <= :experienceYears ");
             paramMap.put("experienceYears", experienceYears);
-            stringBuilder.append(" and ");
-        }
-        if (location != null) {
-            stringBuilder.append("lower(e.location) like :location ");
-            paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and ");
         }
         String variableCount = "a";
@@ -133,6 +116,12 @@ public class JobJpaDao implements  JobDao{
             paramMap.put("availability" + variableCount, '%' + av + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and ");
+        }
+        for (String l : location) {
+            stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
+            paramMap.put("location" + variableCount, '%' + l + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            stringBuilder.append(" or   ");
         }
         for (String ability : abilities) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");

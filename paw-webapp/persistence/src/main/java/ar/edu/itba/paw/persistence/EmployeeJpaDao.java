@@ -53,7 +53,7 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria) {
+    public List<Employee> getFilteredEmployees(String name, Long experienceYears, List<String> location, List<String> availability, List<String> abilities, Long page, long pageSize, String orderCriteria) {
 
         // Para el parametro de ordernamiento implementamos un White List en vez de usar setParameter ya que no nos estaba funcionando como esperado la query,
         // por mas de estar bien formada. Seguimos los lineamientos encontrados en el link pasado por la catedra, espeficicamente el punto 3.3
@@ -67,33 +67,30 @@ public class EmployeeJpaDao implements EmployeeDao{
         stringBuilder.append("SELECT e FROM Employee e where ");
 
         if (name != null) {
-            if (location == null) {
-                stringBuilder.append("(lower(e.name) like :name or lower(e.location) like :nameLocation )");
-                paramMap.put("name", '%' + name.toLowerCase() + '%');
-                paramMap.put("nameLocation", '%' + name.toLowerCase() + '%');
-                stringBuilder.append(" and   ");
-            } else {
-                stringBuilder.append("lower(e.name) like :name ");
-                paramMap.put("name", '%' + name.toLowerCase() + '%');
-                stringBuilder.append(" and   ");
-            }
+            //TODO: cambie lago aca porque location ya no se guarda igual
+            stringBuilder.append("lower(e.name) like :name ");
+            paramMap.put("name", '%' + name.toLowerCase() + '%');
+            stringBuilder.append(" and   ");
+
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
             stringBuilder.append("e.experienceYears >= :experienceYears ");
             paramMap.put("experienceYears", experienceYears);
             stringBuilder.append(" and   ");
         }
-        if (location != null) {
-            stringBuilder.append("lower(e.location) like :location ");
-            paramMap.put("location", '%' + location.toLowerCase() + '%');
-            stringBuilder.append(" and   ");
-        }
+
         String variableCount = "a";
         for (String av : availability) {
             stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
             paramMap.put("availability" + variableCount, '%' + av + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
+        }
+        for (String l : location) {
+            stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
+            paramMap.put("location" + variableCount, '%' + l + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            stringBuilder.append(" or   ");
         }
         for (String ability : abilities) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
@@ -118,31 +115,19 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize, String orderCriteria) {
+    public int getPageNumber(String name, Long experienceYears, List<String> location, List<String> availability, List<String> abilities, Long pageSize, String orderCriteria) {
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, Object> paramMap = new HashMap<>();
         stringBuilder.append("SELECT count(e) FROM Employee e where ");
 
         if (name != null) {
-            if (location == null) {
-                stringBuilder.append("(lower(e.name) like :name or lower(e.location) like :nameLocation )");
-                paramMap.put("name", '%' + name.toLowerCase() + '%');
-                paramMap.put("nameLocation", '%' + name.toLowerCase() + '%');
-                stringBuilder.append(" and   ");
-            } else {
-                stringBuilder.append("lower(e.name) like :name ");
-                paramMap.put("name", '%' + name.toLowerCase() + '%');
-                stringBuilder.append(" and   ");
-            }
+            stringBuilder.append("lower(e.name) like :name ");
+            paramMap.put("name", '%' + name.toLowerCase() + '%');
+            stringBuilder.append(" and   ");
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
             stringBuilder.append("e.experienceYears >= :experienceYears ");
             paramMap.put("experienceYears", experienceYears);
-            stringBuilder.append(" and   ");
-        }
-        if (location != null) {
-            stringBuilder.append("lower(e.location) like :location ");
-            paramMap.put("location", '%' + location.toLowerCase() + '%');
             stringBuilder.append(" and   ");
         }
         String variableCount = "a";
@@ -151,6 +136,12 @@ public class EmployeeJpaDao implements EmployeeDao{
             paramMap.put("availability" + variableCount, '%' + av + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
+        }
+        for (String l : location) {
+            stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
+            paramMap.put("location" + variableCount, '%' + l + '%');
+            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            stringBuilder.append(" or   ");
         }
         for (String ability : abilities) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");

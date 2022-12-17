@@ -33,14 +33,48 @@ export const FilterForm = ({handleSubmit, register, errors, onSubmit, reset}: { 
                         className={'rounded-md'}
                         />
                     <h1 className="font-semibold mt-2">{t('FilterForm.location')}</h1>
-                    {/*<input*/}
-                    {/*    className={'rounded-md'}*/}
-                    {/*    value={location}*/}
-                    {/*    type={"text"}*/}
-                    {/*    maxLength={100}*/}
-                    {/*    onInput={e => (e.target as HTMLInputElement).setCustomValidity("")}*/}
-                    {/*    onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(t('FilterForm.locationError'))}*/}
-                    {/*    onChange={(e: any) => setLocation(e.target.value)}/>*/}
+                    <div className={'grid grid-cols-12 w-3/4 gap-x-1 items-center'}>
+                        <div className={'col-span-10 col-start-1]'}>
+                            <label htmlFor={"loc-1"}>{t('Locations.west')}</label>
+                        </div>
+                        <div className={'col-start-11'}>
+                            <input type={'checkbox'}
+                                   value={1}
+                                   id={"loc-1"}
+                                   {...register("location")}
+                            />
+                        </div>
+                        <div className={'col-span-10 col-start-1]'}>
+                            <label htmlFor={"loc-2"}>{t('Locations.north')}</label>
+                        </div>
+                        <div className={'col-start-11'}>
+                            <input type={'checkbox'}
+                                   value={2}
+                                   id={"loc-2"}
+                                   {...register("location")}
+                            />
+                        </div>
+                        <div className={'col-span-10 col-start-1]'}>
+                            <label htmlFor={"loc-3"}>{t('Locations.south')}</label>
+                        </div>
+                        <div className={'col-start-11'}>
+                            <input type={'checkbox'}
+                                   value={3}
+                                   id={"loc-3"}
+                                   {...register("location")}
+                            />
+                        </div>
+                        <div className={'col-span-10 col-start-1'}>
+                            <label htmlFor={"loc-4"}>{t('Locations.caba')}</label>
+                        </div>
+                        <div className={'col-start-11'}>
+                            <input type={'checkbox'}
+                                   value={4}
+                                   id={"loc-4"}
+                                   {...register("location")}
+                            />
+                        </div>
+                    </div>
                     <h1 className="font-semibold mt-2">{t('FilterForm.abilities')}</h1>
                     <div className={'grid grid-cols-12 w-3/4 gap-x-1 items-center'}>
                         <div className={'col-span-10 col-start-1]'}>

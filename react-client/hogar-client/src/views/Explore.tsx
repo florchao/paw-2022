@@ -12,6 +12,7 @@ export const Explore = () => {
 
     const [employees, setEmployees]: any = useState()
     const [pages, setPages] :any = useState(0)
+    const [currentPage, setCurrentPage] = useState(0)
 
     const { t } = useTranslation();
 
@@ -59,7 +60,7 @@ export const Explore = () => {
             data.experienceYears,
             data.page,
             data.name,
-            data.location,
+            (data.location.toString() === "") ? undefined : data.location.toString().toString(),
             (data.abilities.toString() === "") ? undefined : data.abilities.toString().toString(),
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
             data.orderBy
@@ -73,11 +74,14 @@ export const Explore = () => {
 
     const changePage = (page: number) => {
         setValue("page", page)
+        setCurrentPage(page)
         onSubmit(getValues())
     }
 
     const changeOrder = (order: string) => {
         setValue("orderBy", order)
+        setValue("page", 0)
+        setCurrentPage(0)
         onSubmit(getValues())
     }
 
@@ -134,7 +138,7 @@ export const Explore = () => {
                 {employees &&
                     <div>
                         {employees.map((employee: any) => (<EmployeeCard key={employee.id} employee={employee}/>))}
-                        <PaginationButtons changePages={changePage} pages={pages} current={getValues("page")}/>
+                        <PaginationButtons changePages={changePage} pages={pages} current={currentPage}/>
                     </div>
                 }
                 {employees == 0 && (

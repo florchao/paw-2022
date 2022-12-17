@@ -68,7 +68,11 @@ public class JobServiceImpl implements JobService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return jobDao.getFilteredJobs(name, experienceYears, location, availabilityList, abilitiesList, page, pageSize);
+        List<String> locationList= new ArrayList<>();
+        if (location != null) {
+            locationList = Arrays.asList(location.split(","));
+        }
+        return jobDao.getFilteredJobs(name, experienceYears, locationList, availabilityList, abilitiesList, page, pageSize);
     }
 
     @Override
@@ -91,7 +95,11 @@ public class JobServiceImpl implements JobService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return jobDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize);
+        List<String> locationList= new ArrayList<>();
+        if (location != null) {
+            locationList = Arrays.asList(location.split(","));
+        }
+        return jobDao.getPageNumber(name, experienceYears, locationList, availabilityList, abilitiesList, pageSize);
     }
 
     @Transactional

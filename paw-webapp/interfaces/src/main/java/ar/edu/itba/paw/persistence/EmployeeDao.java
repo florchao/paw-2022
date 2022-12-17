@@ -17,9 +17,9 @@ public interface EmployeeDao {
 
    Boolean isEmployee(Employee id);
 
-   List<Employee> getFilteredEmployees(String name, Long experienceYears, String location, List<String> availability, List<String> abilities,Long page, long pageSize, String orderCriteria);
+   List<Employee> getFilteredEmployees(String name, Long experienceYears, List<String> location, List<String> availability, List<String> abilities,Long page, long pageSize, String orderCriteria);
 
-    int getPageNumber(String name, Long experienceYears, String location, List<String> availability, List<String> abilities, Long pageSize, String orderCriteria);
+    int getPageNumber(String name, Long experienceYears, List<String> location, List<String> availability, List<String> abilities, Long pageSize, String orderCriteria);
 
     void updateRating(Employee employeeId, float rating);
 

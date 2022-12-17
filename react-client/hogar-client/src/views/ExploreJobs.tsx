@@ -56,7 +56,7 @@ export const ExploreJobs = () => {
             data.experienceYears,
             data.page,
             data.name,
-            data.location,
+            (data.location.toString() === "") ? undefined : data.location.toString().toString(),
             (data.abilities.toString() === "") ? undefined : data.abilities.toString().toString(),
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
         ).then((rsp) => {

@@ -92,7 +92,11 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getPageNumber(name, experienceYears, location, availabilityList, abilitiesList, pageSize, orderCriteria);
+        List<String> locationList = new ArrayList<>();
+        if (location != null) {
+            locationList = Arrays.asList(location.split(","));
+        }
+        return employeeDao.getPageNumber(name, experienceYears, locationList, availabilityList, abilitiesList, pageSize, orderCriteria);
     }
 
     @Transactional
@@ -118,7 +122,11 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        return employeeDao.getFilteredEmployees(name,experienceYears,location, availabilityList,abilitiesList,page,pageSize, orderCriteria);
+        List<String> locationList= new ArrayList<>();
+        if (location != null) {
+            locationList = Arrays.asList(location.split(","));
+        }
+        return employeeDao.getFilteredEmployees(name,experienceYears, locationList, availabilityList,abilitiesList,page,pageSize, orderCriteria);
     }
 
     @Override
