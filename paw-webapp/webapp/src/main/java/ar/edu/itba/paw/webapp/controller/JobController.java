@@ -154,7 +154,6 @@ public class JobController {
         if (status) {
             jobService.openJob(id);
         } else {
-            //TODO: rechazar todos los postulantes del trabajo si se esta cerrando (correción del profe)
             jobService.closeJob(id);
         }
         return Response.ok(status).build();

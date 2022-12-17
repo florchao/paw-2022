@@ -103,21 +103,15 @@ public class JobServiceImpl implements JobService{
     @Transactional
     @Override
     public void closeJob(long jobId) {
-        jobDao.closeJob(jobId);
-        //TODO hay que pasarle la pagina
-        List<Applicant> applicants = applicantService.getApplicantsByJob(jobId, 0L, 0);
-        for(Applicant applicant : applicants){
-            applicantService.changeStatus(2, applicant.getEmployeeID().getId().getId(), jobId);
-        }
+        Optional<Job> job = jobDao.closeJob(jobId);
+        applicantService.rejectAppsfromJob(job);
     }
 
     @Transactional
     @Override
     public void openJob(long jobId) {
-        jobDao.openJob(jobId);
-        //TODO paginacion
-        List<Applicant> applicants = applicantService.getApplicantsByJob(jobId, 0L, 0);
-        applicantService.withdrawAppsFromJob(applicants);
+        Optional<Job> job = jobDao.openJob(jobId);
+        applicantService.withdrawAppsFromJob(job);
     }
 
     @Override
