@@ -111,6 +111,7 @@ export const TRANSLATIONS_EN = {
     setP:"Set it",
     invalidEmail: "Please enter a valid email",
     invalidPassword: "Please enter a password",
+    error: "The email and/or password are incorrect"
   },
   Navbar:{
     explore:"Explore",

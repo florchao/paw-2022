@@ -114,6 +114,7 @@ export const TRANSLATIONS_ES = {
         setP:"Setear contraseña",
         invalidEmail:"El mail ingresado no es válido",
         invalidPassword:"La contraseña ingresada no es válida",
+        error:"El mail y/o contraseña ingresada no es válida"
     },
     Navbar:{
         explore:"Explorar",
