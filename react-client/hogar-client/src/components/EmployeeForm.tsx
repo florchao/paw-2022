@@ -147,8 +147,6 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
 
     useEffect(() => {
         if (imageURL) {
-            console.log("self")
-            console.log(self)
             UserService.loadImage(imageURL).then(
                 (img) => {
                     if (img.size > 0) {
