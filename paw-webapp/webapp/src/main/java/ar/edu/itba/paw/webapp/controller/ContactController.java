@@ -116,6 +116,7 @@ public class ContactController {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
 //        }
+        //todo check que pasa el post con error con sotuyo
         contactService.contactUS(form.getContent(), form.getMail(), form.getName());
         return Response.status(Response.Status.CREATED).build();
     }
@@ -151,8 +152,9 @@ public class ContactController {
                 return Response.ok(1).build();
             }
             return Response.status(Response.Status.CREATED).entity(0).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.serverError().build();
     }
 
 
@@ -161,7 +163,13 @@ public class ContactController {
     @Path("/{employeeId}/{employerId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response existsContact(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) throws UserNotFoundException {
-        List<ContactDto> exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        List<ContactDto> exists;
+        try {
+            exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(exists) {
         };
         return Response.ok(genericEntity).build();

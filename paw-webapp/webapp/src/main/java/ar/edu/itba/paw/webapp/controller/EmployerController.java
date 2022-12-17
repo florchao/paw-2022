@@ -152,10 +152,16 @@ public class EmployerController {
                 || image==null){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-
-        final User u = userService.create(mail, password, confirmPassword, 2);
-        String fullName = name + " " + lastName;
-        employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
+        final User u;
+        try {
+            u = userService.create(mail, password, confirmPassword, 2);
+            String fullName = name + " " + lastName;
+            employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
+        } catch (Exception ex){
+            ex.printStackTrace();
+            //TODO CHECK CON LO QUE RESPONDE SOTUYO
+            return Response.status(Response.Status.CONFLICT).build();
+        }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
 
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(u.getId())).build()).build();

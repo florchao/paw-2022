@@ -33,7 +33,6 @@ public class ReviewController {
                                   @FormDataParam("employeeId") Long employeeId,
                                   @FormDataParam("employerId") Long employerId,
                                   @FormDataParam("forEmployee") Boolean forEmployee) {
-        //TODO: poner el id del empleado que esta iniciado sesión
         if (message.length() < 10 || message.length() > 100 ||
                 Objects.equals(employeeId, employerId) || Objects.isNull(employeeId) || Objects.isNull(employerId)
                 || Objects.isNull(forEmployee)) {
@@ -41,6 +40,7 @@ public class ReviewController {
         }
         Review review = reviewService.create(employeeId, employerId, message, new Date(), forEmployee);
         if (review == null) {
+            //todo check con respuesta sotuyo
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         ReviewDto reviewDto;

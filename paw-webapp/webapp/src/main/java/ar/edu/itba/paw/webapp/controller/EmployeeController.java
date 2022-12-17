@@ -261,8 +261,16 @@ public class EmployeeController {
                 image == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        User u = userService.create(mail, password, password, 1);
-        employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
+
+        User u;
+        try {
+            u = userService.create(mail, password, password, 1);
+            employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
+        } catch (Exception ex){
+            ex.printStackTrace();
+            //TODO CHECK CON LO QUE RESPONDE SOTUYO
+            return Response.status(Response.Status.CONFLICT).build();
+        }
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(u.getId())).build()).build();
     }
 

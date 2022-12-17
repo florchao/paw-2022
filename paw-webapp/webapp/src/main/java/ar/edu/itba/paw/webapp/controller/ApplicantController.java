@@ -72,6 +72,7 @@ public class ApplicantController {
             applicantService.apply(jobId, hogarUser.getUserID());
         } catch (AlreadyExistsException alreadyExistsException) {
             LOGGER.error(String.format("there has already been made a contact for %d by id %d", jobId, hogarUser.getUserID()));
+            //todo check con lo que responde sotuyo
             return Response.ok(-1).build();
         }
         return Response.status(Response.Status.CREATED).entity(0).build();
@@ -89,8 +90,13 @@ public class ApplicantController {
         if(Objects.isNull(status)){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-
-        Job job = jobService.getJobByID(jobId);
+        Job job;
+        try {
+            job = jobService.getJobByID(jobId);
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
@@ -100,7 +106,12 @@ public class ApplicantController {
         int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
 
         Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        employee.ifPresent(value -> contactService.changedStatus(status, job, value));
+        if( employee.isPresent()) {
+            contactService.changedStatus(status, job, employee.get());
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        }
         return Response.ok(finalStatus).build();
     }
 

@@ -21,7 +21,6 @@ public class RatingController {
 
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private RaitingService ratingService;
 

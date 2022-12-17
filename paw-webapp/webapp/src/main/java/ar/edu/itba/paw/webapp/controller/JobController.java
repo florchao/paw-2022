@@ -36,7 +36,6 @@ public class JobController {
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
     private final static long PAGE_SIZE_JOBS = 9;
     private static final int PAGE_SIZE = 1;
-
     private final static int PAGE_SIZE_REVIEWS = 2;
 
     @GET
@@ -69,14 +68,11 @@ public class JobController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response verTrabajo(@PathParam("id") long id, @Context HttpServletRequest request) throws JobNotFoundException {
-        Job job = null;
+        Job job;
         try {
             job = jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
-            exception.getMessage();
-            exception.getCause();
-        }
-        if (job == null) {
+            exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         JobDto jobDto = JobDto.fromJob(uriInfo, job, request.getHeader("Accept-Language"));
@@ -91,7 +87,13 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page) {
 
-        Job job = jobService.getJobByID(jobId);
+        Job job;
+        try {
+            job = jobService.getJobByID(jobId);
+        } catch (JobNotFoundException exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
@@ -125,7 +127,13 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response deleteJob(@PathParam("id") long id) {
 
-        Job job = jobService.getJobByID(id);
+        Job job;
+        try {
+            job = jobService.getJobByID(id);
+        } catch (JobNotFoundException exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
@@ -145,8 +153,13 @@ public class JobController {
         if(Objects.isNull(status))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
-        Job job = jobService.getJobByID(id);
-
+        Job job;
+        try {
+            job = jobService.getJobByID(id);
+        } catch (JobNotFoundException exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
             return Response.status(Response.Status.FORBIDDEN).build();
