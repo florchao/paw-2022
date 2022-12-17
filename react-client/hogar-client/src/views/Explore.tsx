@@ -109,24 +109,24 @@ export const Explore = () => {
                 <div className={'flex flex-row-reverse'}>
                     <form className={'flex flex-row'} onSubmit={handleSubmit(onSubmit)}>
                         <h1 className={'font-semibold mr-3'}>{t('Explore.orderBy')}</h1>
-                        <label htmlFor={"pop"} className={getValues("orderBy") == "popularity"? 'text-yellow-300 underline' : 'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.popularity')}</label>
+                        <label htmlFor={"pop"} className={getValues("orderBy") === "popularity"? 'text-yellow-300 underline' : 'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.popularity')}</label>
                         <input type='radio'
                                value="popularity"
                                id={'pop'}
                                onClick={() => {
-                                   if(getValues("orderBy") != "popularity") {
+                                   if(getValues("orderBy") !== "popularity") {
                                        changeOrder("popularity")
                                    }
                                }}
                                style={{visibility: "hidden"}}
                         />
-                        <label htmlFor={"exp"} className={getValues("orderBy") == "experienceYears"? 'text-yellow-300 underline' : 'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.experience')}</label>
+                        <label htmlFor={"exp"} className={getValues("orderBy") === "experienceYears"? 'text-yellow-300 underline' : 'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.experience')}</label>
                         <input type='radio'
                             {...register("orderBy")}
                                value="experienceYears"
                                id={'exp'}
                                onClick={() => {
-                                   if(getValues("orderBy") != "experienceYears") {
+                                   if(getValues("orderBy") !== "experienceYears") {
                                        changeOrder("experienceYears")
                                    }
                                }}
@@ -140,7 +140,7 @@ export const Explore = () => {
                         <PaginationButtonsExplore changePages={changePage} pages={pages} page={getValues("page")}/>
                     </div>
                 }
-                {employees == 0 && (
+                {employees === 0 && (
                     <div className="grid content-center justify-center h-5/6 mt-16">
                         <div className="grid justify-items-center">
                             <img src={ '../images/sinEmpleadas.png'} alt="noJobs"

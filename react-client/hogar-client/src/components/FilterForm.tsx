@@ -22,7 +22,7 @@ export const FilterForm = ({handleSubmit, register, errors, onSubmit, reset, set
                 onSubmit={submit}>
                 <h1 className="font-semibold text-violet-900 hover:cursor-pointer" onClick={resetFilter}>{t('FilterForm.reset')}</h1>
                 <div className={'flex flex-col items-center'}>
-                    {(localStorage.getItem('hogar-role') === "EMPLOYER" || localStorage.getItem('hogar-role') == undefined ) && <h1 className="font-semibold mt-2">{t('FilterForm.minExpYears')}</h1>}
+                    {(localStorage.getItem('hogar-role') === "EMPLOYER" || localStorage.getItem('hogar-role') === undefined ) && <h1 className="font-semibold mt-2">{t('FilterForm.minExpYears')}</h1>}
                     {localStorage.getItem('hogar-role') === "EMPLOYEE" && <h1 className="font-semibold mt-2">{t('FilterForm.maxExpYears')}</h1>}
                     <input
                         {...register("experienceYears", {max: 100, min: 0})}

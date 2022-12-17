@@ -5,7 +5,6 @@ import JobCard from "../components/JobCard";
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
-import PaginationButtons from "../components/PaginationButtons";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
 
 export const ExploreJobs = () => {
@@ -103,7 +102,7 @@ export const ExploreJobs = () => {
                                                 <JobCard job={job}/>
                                             </div>
                                         ))}
-                            {jobs == 0 && (
+                            {jobs === 0 && (
                                 <div className="grid content-center justify-center h-5/6 mt-16">
                                     <div className="grid justify-items-center">
                                         <img src={ '../images/sinTrabajos.png'} alt="noJobs"
