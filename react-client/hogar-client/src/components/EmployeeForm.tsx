@@ -192,7 +192,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                                }
                                            }}
                                            style={{visibility: "hidden"}}/>
-                                    {image?.size == 0 &&
+                                    {!image &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.imageError')}</p>
                                     }
                                 </div>

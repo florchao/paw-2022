@@ -148,7 +148,7 @@ const RegisterEmployer = () => {
                                            }
                                        }}
                                        style={{visibility: "hidden"}}/>
-                                {image?.size === 0 &&
+                                {!image &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('RegisterEmployer.imageError')}</p>
                                 }
                             </div>
