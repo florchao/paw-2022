@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,7 +45,8 @@ import java.util.*;
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-    String secret = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private UserService userService;
@@ -54,45 +56,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    private final List<Pair> blackList = new ArrayList<>();
-
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-//        Pair requestPair = new Pair(request.getMethod(), request.getRequestURI());
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employees"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/applicants/{employeeId}/{jobId}"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/applicants/{employeeId}/{jobId}"));
-//        blackList.add(new Pair(HttpMethod.POST, "/api/applicants"));
-//        blackList.add(new Pair(HttpMethod.PUT, "/api/applicants/{employeeId}/{jobId}"));
-//        blackList.add(new Pair(HttpMethod.DELETE, "/api/applicants/{employeeId}/{jobId}"));
-//        blackList.add(new Pair(HttpMethod.POST, "/api/contacts/us"));
-//        blackList.add(new Pair(HttpMethod.POST, "/api/contacts"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/contacts/{employeeId}/{employerId}"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{id}"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{id}/jobs"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{id}/contacts"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{id}/reviews"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employees/{employeeId}/reviews/{employerId}"));
-//        blackList.add(new Pair(HttpMethod.POST, "/api/employees"));
-//        blackList.add(new Pair(HttpMethod.PUT, "/api/employees/{id}"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employers/{id}"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employers/{id}/jobs"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employers/{id}/reviews"));
-//        blackList.add(new Pair(HttpMethod.GET, "/api/employers/{employerId}/reviews/{employeeId}"));
-//        blackList.add(new Pair(HttpMethod.POST, "/api/employers"));
-//        blackList.add(new Pair(HttpMethod.GET, "api/images/{id}"));
-//        blackList.add(new Pair(HttpMethod.GET, "api/jobs"));
-//        blackList.add(new Pair(HttpMethod.GET, "api/jobs/{id}"));
-//        blackList.add(new Pair(HttpMethod.GET, "api/jobs/{id}/applicants"));
-//        blackList.add(new Pair(HttpMethod.POST, "api/jobs"));
-//        blackList.add(new Pair(HttpMethod.DELETE, "api/jobs/{id}"));
-//        blackList.add(new Pair(HttpMethod.GET, "api/ratings/{employeeId}/{employerId}"));
-//        blackList.add(new Pair(HttpMethod.POST, "api/ratings"));
-//        blackList.add(new Pair(HttpMethod.POST, "api/reviews"));
-//        blackList.add(new Pair(HttpMethod.PUT, "api/users"));
-//        blackList.add(new Pair(HttpMethod.DELETE, "api/users/{id}"));
-//        return blackList.contains(requestPair);
-//    }
 
     private String basicAuthentication(String basicAuth) throws UserNotFoundException, IllegalArgumentException, InsufficientAuthenticationException {
         int BASIC_TOKEN_LENGTH = 6;
@@ -112,7 +75,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 userDetails, null, userDetails == null ? Collections.emptyList() : userDetails.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-//        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) RequestContextHolder.getRequestAttributes()));
         return createJWT(credentials);
     }
 
@@ -120,8 +82,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         Optional<User> algo = userService.findByUsername(credentials[0]);
         User user = algo.orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        //TODO save secret key as env variable
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(environment.getRequiredProperty("db.auth.secret")),
                 SignatureAlgorithm.HS256.getJcaName());
         String jwtToken = null;
         try {
@@ -142,7 +103,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     private void bearerAuthentication(String bearerAuth) throws InsufficientAuthenticationException {
         int BEARER_TOKEN_LENGTH = 7;
 
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(environment.getRequiredProperty("db.auth.secret")),
                 SignatureAlgorithm.HS256.getJcaName());
 
         String jwt = bearerAuth.substring(BEARER_TOKEN_LENGTH);
