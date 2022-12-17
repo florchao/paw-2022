@@ -7,6 +7,7 @@ import useFormPersist from "react-hook-form-persist";
 import {UserService} from "../service/UserService";
 
 const RegisterEmployer = () => {
+    const [registerEmployerError, setRegisterEmployerError]: any = useState()
 
     type FormData = {
         mail: string;
@@ -92,14 +93,18 @@ const RegisterEmployer = () => {
 
     const onSubmit = async (data:any, e: any) => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
-        localStorage.removeItem("registerEmployerForm")
-        localStorage.removeItem("imgRegisterEmployer")
 
+        if(post.status === 400 || post.status === 500){
+            console.log("entre")
+            setRegisterEmployerError(true)
+        }
 
         if (post.status === 201) {
-            const result = await UserService.getUser(e, data.mail, data.password)
+            setRegisterEmployerError(false)
 
-            console.log("status == 201")
+            const result = await UserService.getUser(e, data.mail, data.password)
+            localStorage.removeItem("registerEmployerForm")
+            localStorage.removeItem("imgRegisterEmployer")
 
             if (result.status === 200) {
                 let body = await result.json()
@@ -220,6 +225,8 @@ const RegisterEmployer = () => {
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                                     {t('RegisterEmployer.button')}
                                 </button>
+                                {registerEmployerError &&
+                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.emailUsedError')}</p>}
                             </div>
                         </div>
                     </div>
