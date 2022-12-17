@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Path("/api/employees")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 1;
+    private final int PAGE_SIZE = 3;
 
     private final int PAGE_SIZE_REVIEWS = 1;
 
@@ -97,7 +97,7 @@ public class EmployeeController {
         }).collect(Collectors.toList());
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
-        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET

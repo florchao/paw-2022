@@ -1,4 +1,4 @@
-import {EMPLOYEE_URL} from "../utils/utils";
+import {EMPLOYEE_URL, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees() {
@@ -12,7 +12,7 @@ export class EmployeeService {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     throw error
@@ -21,20 +21,25 @@ export class EmployeeService {
 
     public static async getFilteredEmployees(
         minimumYears: number,
+        page: number,
         name?: string,
         location?: string,
-        abilitites?: string,
-        availability?: string
+        abilities?: string,
+        availability?: string,
+        order?: string
     ) {
 
-        let url = EMPLOYEE_URL + '?'
+        let url = EMPLOYEE_URL + QUERY_PARAM
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
+        if(page > 0)
+            url = this.concatStringQueries(url, 'page', String(page))
         url = this.concatStringQueries(url, 'name', name)
         url = this.concatStringQueries(url, 'location', location)
-        url = this.concatStringQueries(url, 'abilities', abilitites)
+        url = this.concatStringQueries(url, 'abilities', abilities)
         url = this.concatStringQueries(url, 'availability', availability)
+        url = this.concatStringQueries(url, 'order', order)
 
         return await fetch(url, {
             method: 'GET',
@@ -46,7 +51,7 @@ export class EmployeeService {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
-        }).then((resp) => resp.json())
+        })
             .catch(
                 (error) => {
                     throw error
