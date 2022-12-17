@@ -23,8 +23,6 @@ export class ContactService {
         formData.append('employee_id', employee_id);
         formData.append('employer_id', employer_id);
 
-        console.log("HOLA")
-
         return await fetch(CONTACT_URL, {
             method: 'POST',
             headers: {

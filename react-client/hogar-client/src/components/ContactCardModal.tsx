@@ -6,8 +6,6 @@ const ContactCardModal = (contact: any) => {
 
     const [image, setImage]: any = useState()
 
-    console.log(contact.contact)
-
     const { t } = useTranslation();
 
     contact = contact.contact

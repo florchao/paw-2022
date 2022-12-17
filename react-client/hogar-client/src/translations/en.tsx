@@ -49,8 +49,10 @@ export const TRANSLATIONS_EN = {
     passwordError: "Please enter a password",
     passwordsError: "Passwords do not match",
     expYearsError: 'Please enter a valid experience year',
+    hourlyFeeError: 'Please enter a valid hourly fee',
     availabilityError: 'Please select at least one availability',
     abilitiesError: 'Please select at least one ability',
+    emailUsedError: 'A user with that email already exists'
   },
 
   Feedback: {
@@ -110,6 +112,7 @@ export const TRANSLATIONS_EN = {
     setP:"Set it",
     invalidEmail: "Please enter a valid email",
     invalidPassword: "Please enter a password",
+    error: "The email and/or password are incorrect"
   },
   Navbar:{
     explore:"Explore",
@@ -228,7 +231,8 @@ export const TRANSLATIONS_EN = {
   },
 
   FilterForm:{
-    expYears: 'Minimum years of experience',
+    minExpYears: 'Minimum years of experience',
+    maxExpYears: 'Maximum years of experience',
     expYearsError: ' Please enter a valid year of experience',
     name: 'Name',
     nameError: 'Please enter a valid name',

@@ -8,4 +8,7 @@ public class JobNotFoundException extends RuntimeException {
         super(message);
     }
 
+    public JobNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

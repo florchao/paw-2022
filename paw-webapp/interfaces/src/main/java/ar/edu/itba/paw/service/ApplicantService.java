@@ -2,7 +2,6 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Applicant;
 import ar.edu.itba.paw.model.Job;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 
 import java.util.List;
@@ -22,6 +21,7 @@ public interface ApplicantService {
 
     void withdrawApplication(long employeeId, long jobId);
 
-    void withdrawAppsFromJob(List<Applicant> applicants);
+    void withdrawAppsFromJob(Optional<Job> job);
 
+    void rejectAppsfromJob(Optional<Job> job);
 }

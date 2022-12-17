@@ -60,14 +60,19 @@ public class ApplicantController {
     @POST
     @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
-    public Response createApplicant(@FormDataParam("jobId") long jobId) throws UserNotFoundException{
+    public Response createApplicant(@FormDataParam("jobId") Long jobId) throws UserNotFoundException{
 
+        if(Objects.isNull(jobId))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        //todo creo que esto hay que chequearle los permisos
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
             applicantService.apply(jobId, hogarUser.getUserID());
         } catch (AlreadyExistsException alreadyExistsException) {
             LOGGER.error(String.format("there has already been made a contact for %d by id %d", jobId, hogarUser.getUserID()));
+            //todo check con lo que responde sotuyo
             return Response.ok(-1).build();
         }
         return Response.status(Response.Status.CREATED).entity(0).build();
@@ -80,20 +85,30 @@ public class ApplicantController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
     public Response changeStatus(@PathParam("employeeId") long employeeId,
                                  @PathParam("jobId") long jobId,
-                                 @FormDataParam("status") int status) throws JobNotFoundException, UserNotFoundException{
+                                 @FormDataParam("status") Integer status) throws JobNotFoundException, UserNotFoundException{
 
-        Job job = jobService.getJobByID(jobId);
-
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
-            return Response.status(Response.Status.FORBIDDEN).build();
+        if(Objects.isNull(status)){
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
+        Job job;
+        Employee employee;
 
-        int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
+        try{
+            job = jobService.getJobByID(jobId);
+            employee = employeeService.getEmployeeById(employeeId);
+            HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
 
-        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        employee.ifPresent(value -> contactService.changedStatus(status, job, value));
-        return Response.ok(finalStatus).build();
+            int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
+            contactService.changedStatus(status, job, employee);
+            return Response.ok(finalStatus).build();
+
+        }catch(Exception e){
+            //TODO: CHCK RESPUESTA
+            return Response.serverError().build();
+        }
     }
 
     @DELETE

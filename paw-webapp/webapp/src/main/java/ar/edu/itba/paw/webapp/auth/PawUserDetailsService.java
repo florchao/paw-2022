@@ -32,34 +32,25 @@ public class PawUserDetailsService implements UserDetailsService {
     private final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
     @Override
-    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final Optional<User> user = userService.findByUsername(username);
-        if (!user.isPresent()) {
-            throw new UsernameNotFoundException("No user by the name " + username);
-        }
-        String password = user.get().getPassword();
-        if(Objects.equals(user.get().getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.get().getPassword()).matches()){
-            userService.update(username, user.get().getPassword());
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException, UserNotFoundException {
+        final User user = userService.findByUsername(username);
+        String password = user.getPassword();
+        if(Objects.equals(user.getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.getPassword()).matches()){
+            userService.update(username, user.getPassword());
         }
         final Collection<GrantedAuthority> authorities = new ArrayList<>();
         String name = "";
-        if(user.get().getRole() == 1) {
+        if(user.getRole() == 1) {
             authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
-            final Optional<Employee> employee;
-            try {
-                employee = Optional.ofNullable(employeeService.getEmployeeById(user.get().getId()).orElseThrow(() -> new UsernameNotFoundException("Employee not found")));
-            } catch (UserNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            if(employee.isPresent())
-                name = employee.get().getName();
+            final Employee employee;
+            employee = employeeService.getEmployeeById(user.getId());
+            name = employee.getName();
         }
         else {
             authorities.add(new SimpleGrantedAuthority("EMPLOYER"));
-            final Optional<Employer> employer = employerService.getEmployerById(user.get().getId());
-            if(employer.isPresent())
-                name = employer.get().getName();
+            final Employer employer = employerService.getEmployerById(user.getId());
+            name = employer.getName();
         }
-        return new HogarUser(username, password, authorities, name, user.get().getId());
+        return new HogarUser(username, password, authorities, name, user.getId());
     }
 }

@@ -34,8 +34,10 @@ export const ContactEmployee = () => {
             return false
     };
 
+    const employerId = localStorage.getItem("hogar-uid") as unknown as number
+
     const onSubmit = async (data: any, e: any) => {
-        const contact = await ContactService.contactEmployee(e, data.phone, data.content, id, 2)
+        const contact = await ContactService.contactEmployee(e, data.phone, data.content, id, employerId)
         localStorage.removeItem("contactForm")
         nav("/employee", {replace: true, state: {id: id, status: contact}})
     }

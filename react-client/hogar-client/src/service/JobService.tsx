@@ -111,7 +111,6 @@ export class JobService {
         if (page > 0) {
             url = url + QUERY_PARAM + "page=" + page.toString()
         }
-        console.log(url)
         return await fetch(url, {
             method: 'GET',
             headers: {

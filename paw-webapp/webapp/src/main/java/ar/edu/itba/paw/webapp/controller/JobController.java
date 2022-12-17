@@ -1,39 +1,26 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
-import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto;
-import ar.edu.itba.paw.webapp.dto.IdsDto;
 import ar.edu.itba.paw.webapp.dto.JobDto;
-import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
-import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.HttpRequestHandler;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.sql.Date;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Path("/api/jobs")
@@ -43,8 +30,6 @@ public class JobController {
     private JobService jobService;
     @Autowired
     private ApplicantService applicantService;
-    @Autowired
-    private ReviewService reviewService;
 
     @Context
     UriInfo uriInfo;
@@ -54,7 +39,7 @@ public class JobController {
 
     @GET
     @Path("")
-    @Produces(value = { MediaType.APPLICATION_JSON })
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response filterJobs(
             @QueryParam("name") String name,
             @QueryParam("experience") Long experienceYears,
@@ -79,33 +64,37 @@ public class JobController {
 
     @GET
     @Path("/{id}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response verTrabajo(@PathParam("id") long id, @Context HttpServletRequest request) throws JobNotFoundException{
-        Job job = null;
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response verTrabajo(@PathParam("id") long id, @Context HttpServletRequest request) throws JobNotFoundException {
+        Job job;
         try {
             job = jobService.getJobByID(id);
-        } catch (JobNotFoundException exception){
-            exception.getMessage();
-            exception.getCause();
-        }
-        if (job == null ){
+        } catch (JobNotFoundException exception) {
+            exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         JobDto jobDto = JobDto.fromJob(uriInfo, job, request.getHeader("Accept-Language"));
 
-        GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto){};
+        GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto) {
+        };
         return Response.ok(genericEntity).build();
     }
 
     @GET
     @Path("/{jobId}/applicants")
-    @Produces(value = { MediaType.APPLICATION_JSON })
-    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page){
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page) {
 
-        Job job = jobService.getJobByID(jobId);
+        Job job;
+        try {
+            job = jobService.getJobByID(jobId);
+        } catch (JobNotFoundException exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
@@ -114,14 +103,14 @@ public class JobController {
                 .map(a -> ApplicantDto.fromJob(uriInfo, a))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
-        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list){};
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count") .header("X-Total-Count", pages).build();
+        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list) {};
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
 
     @POST
     @Path("")
-    @Consumes(value = { MediaType.APPLICATION_JSON, })
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response postJob(@Valid final JobForm form) {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -132,13 +121,19 @@ public class JobController {
 
     @DELETE
     @Path("/{id}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response deleteJob(@PathParam("id") long id) {
 
-        Job job = jobService.getJobByID(id);
+        Job job;
+        try {
+            job = jobService.getJobByID(id);
+        } catch (JobNotFoundException exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
@@ -148,19 +143,27 @@ public class JobController {
 
     @PUT
     @Path("/{id}")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response updateJobStatus(@PathParam("id") long id,
-                                    @FormDataParam("status") boolean status) throws JobNotFoundException{
-        Job job = jobService.getJobByID(id);
+                                    @FormDataParam("status") Boolean status) throws JobNotFoundException {
 
+        if(Objects.isNull(status))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        Job job;
+        try {
+            job = jobService.getJobByID(id);
+        } catch (JobNotFoundException exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        if(status){
+        if (status) {
             jobService.openJob(id);
-        }else{
-            //TODO: rechazar todos los postulantes del trabajo si se esta cerrando (correción del profe)
+        } else {
             jobService.closeJob(id);
         }
         return Response.ok(status).build();

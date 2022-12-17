@@ -13,6 +13,8 @@ import java.util.Collection;
 @Controller
 public class InitController {
 
+    //todo creo que hay que eliminarlo
+
     @RequestMapping(value = "/", method = {RequestMethod.GET})
     public ModelAndView helloWorld() {
         Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();

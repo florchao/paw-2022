@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -114,6 +115,7 @@ public class ContactController {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
 //        }
+        //todo check que pasa el post con error con sotuyo
         contactService.contactUS(form.getContent(), form.getMail(), form.getName());
         return Response.status(Response.Status.CREATED).build();
     }
@@ -124,29 +126,31 @@ public class ContactController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response contactEmployee(@FormDataParam("content") String content,
                                     @FormDataParam("phone") String phone,
-                                    @FormDataParam("employee_id") long employeeId,
-                                    @FormDataParam("employer_id") long employerId) throws UserNotFoundException, AlreadyExistsException {
+                                    @FormDataParam("employee_id") Long employeeId,
+                                    @FormDataParam("employer_id") Long employerId) throws AlreadyExistsException {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
 //        }
-        try {
-            userService.getUserById(employeeId);
-        } catch (ar.edu.itba.paw.model.exception.UserNotFoundException e) {
-            throw new RuntimeException(e);
+        if(content.isEmpty() || !phone.matches("[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
+        || Objects.isNull(employeeId) || Objects.isNull(employerId) || employeeId.equals(employerId)){
+            Response.status(Response.Status.BAD_REQUEST).build();
         }
-        employeeService.isEmployee(employeeId);
-        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        Optional<Employer> employer = employerService.getEmployerById(employerId);
-        if (employee.isPresent() && employer.isPresent()) {
-            String name = employee.get().firstWordsToUpper();
-            boolean exists = contactService.contact(employee.get().getId(), employer.get().getId(), content, name, phone);
-            if (exists) {
-                return Response.ok(1).build();
-            }
-            return Response.status(Response.Status.CREATED).entity(0).build();
+
+        Employee employee;
+        Employer employer;
+        try{
+           employee = employeeService.getEmployeeById(employeeId);
+           employer = employerService.getEmployerById(employerId);
+        }catch (UserNotFoundException u){
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.serverError().build();
+        String name = employee.firstWordsToUpper();
+        boolean exists = contactService.contact(employee.getId(), employer.getId(), content, name, phone);
+        if (exists) {
+            return Response.ok(1).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(0).build();
     }
 
 
@@ -155,7 +159,13 @@ public class ContactController {
     @Path("/{employeeId}/{employerId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response existsContact(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) throws UserNotFoundException {
-        List<ContactDto> exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        List<ContactDto> exists;
+        try {
+            exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(exists) {
         };
         return Response.ok(genericEntity).build();

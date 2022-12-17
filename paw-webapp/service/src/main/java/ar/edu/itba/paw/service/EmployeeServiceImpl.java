@@ -25,9 +25,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Employee> getEmployeeById(long id) {
-        Optional<Employee> employee = (employeeDao.getEmployeeById(id));
-        return employee;
+    public Employee getEmployeeById(long id) {
+        return employeeDao.getEmployeeById(id).orElseThrow(() -> new UserNotFoundException("employee with id" + id + "not found"));
     }
 
     @Transactional
