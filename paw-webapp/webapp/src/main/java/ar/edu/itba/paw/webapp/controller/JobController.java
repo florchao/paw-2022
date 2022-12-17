@@ -63,13 +63,9 @@ public class JobController {
             @QueryParam("location") String location,
             @QueryParam("availability") String availability,
             @QueryParam("abilities") String abilities,
-            @QueryParam("page") Long page,
+            @QueryParam("page") @DefaultValue("0") Long page,
             @Context HttpServletRequest request
     ) {
-
-        if (page == null)
-            page = 0L;
-
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> {

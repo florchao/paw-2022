@@ -75,7 +75,8 @@ export const FilterForm = ({setList, type}: { setList: React.Dispatch<React.SetS
                 className="bg-purple-300 mr-8 p-6 rounded-2xl mt-2 shadow-xl border-solid border-violet-500 border-2 h-fit w-full">
                 <h1 className="font-semibold text-violet-900 hover:cursor-pointer" onClick={resetHandler}>{t('FilterForm.reset')}</h1>
                 <div className={'flex flex-col items-center'}>
-                    <h1 className="font-semibold mt-2">{t('FilterForm.expYears')}</h1>
+                    {(localStorage.getItem('hogar-role') === "EMPLOYER" || localStorage.getItem('hogar-role') == undefined ) && <h1 className="font-semibold mt-2">{t('FilterForm.minExpYears')}</h1>}
+                    {localStorage.getItem('hogar-role') === "EMPLOYEE" && <h1 className="font-semibold mt-2">{t('FilterForm.maxExpYears')}</h1>}
                     <input
                         value={minimumYears}
                         onChange={(e: any) => setMinimumYears(e.target.value)}

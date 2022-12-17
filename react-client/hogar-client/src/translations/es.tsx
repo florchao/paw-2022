@@ -239,7 +239,8 @@ export const TRANSLATIONS_ES = {
     },
 
     FilterForm:{
-        expYears: 'Años de experiencia mínimos',
+        minExpYears: 'Años de experiencia mínimos',
+        maxExpYears: 'Años de experiencia máximos',
         expYearsError: 'Por favor ingrese un año de experiencia válido',
         name: 'Nombre',
         nameError: 'Por favor ingrese un nombre válido',
