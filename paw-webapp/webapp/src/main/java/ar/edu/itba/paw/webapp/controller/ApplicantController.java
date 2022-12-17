@@ -60,8 +60,12 @@ public class ApplicantController {
     @POST
     @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
-    public Response createApplicant(@FormDataParam("jobId") long jobId) throws UserNotFoundException{
+    public Response createApplicant(@FormDataParam("jobId") Long jobId) throws UserNotFoundException{
 
+        if(Objects.isNull(jobId))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        //todo creo que esto hay que chequearle los permisos
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
@@ -80,7 +84,11 @@ public class ApplicantController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
     public Response changeStatus(@PathParam("employeeId") long employeeId,
                                  @PathParam("jobId") long jobId,
-                                 @FormDataParam("status") int status) throws JobNotFoundException, UserNotFoundException{
+                                 @FormDataParam("status") Integer status) throws JobNotFoundException, UserNotFoundException{
+
+        if(Objects.isNull(status)){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
         Job job = jobService.getJobByID(jobId);
 

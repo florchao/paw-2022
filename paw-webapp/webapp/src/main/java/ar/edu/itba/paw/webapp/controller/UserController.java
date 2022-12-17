@@ -33,6 +33,7 @@ public class UserController {
         return Response.ok(genericEntity).build();
     }
 
+    //todo check passwords
     @PUT
     @Path("/users")
     @Consumes(value = {MediaType.APPLICATION_JSON})

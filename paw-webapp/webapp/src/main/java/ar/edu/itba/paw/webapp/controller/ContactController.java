@@ -9,9 +9,7 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.dto.ContactDto;
-import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ContactUsForm;
-import ch.qos.logback.core.status.Status;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +19,8 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -128,12 +126,16 @@ public class ContactController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response contactEmployee(@FormDataParam("content") String content,
                                     @FormDataParam("phone") String phone,
-                                    @FormDataParam("employee_id") long employeeId,
-                                    @FormDataParam("employer_id") long employerId) throws UserNotFoundException, AlreadyExistsException {
+                                    @FormDataParam("employee_id") Long employeeId,
+                                    @FormDataParam("employer_id") Long employerId) throws UserNotFoundException, AlreadyExistsException {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
 //        }
+        if(content.isEmpty() || !phone.matches("[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
+        || Objects.isNull(employeeId) || Objects.isNull(employerId) || employeeId.equals(employerId)){
+            Response.status(Response.Status.BAD_REQUEST).build();
+        }
         try {
             userService.getUserById(employeeId);
         } catch (ar.edu.itba.paw.model.exception.UserNotFoundException e) {

@@ -16,10 +16,8 @@ public class RaitingServiceImpl implements RaitingService {
 
     @Autowired
     private EmployerDao employerDao;
-
     @Autowired
     private RaitingDao raitingDao;
-
     @Autowired
     private EmployeeDao employeeDao;
 

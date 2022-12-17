@@ -13,6 +13,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.Objects;
 
 @Path("/api/ratings")
 @Component
@@ -41,11 +42,16 @@ public class RatingController {
     @POST
     @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response postRating(@FormDataParam("rating") Long rating, @FormDataParam("employeeId") long employeeId, @FormDataParam("employerId") long employerId) {
+    public Response postRating(@FormDataParam("rating") Long rating, @FormDataParam("employeeId") Long employeeId, @FormDataParam("employerId") Long employerId) {
         if (rating == null)
             rating = 0L;
+
+        if(Objects.isNull(employeeId) || Objects.isNull(employerId) || Objects.equals(employeeId, employerId) )
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
         if(ratingService.hasAlreadyRated(employeeId, employerId))
-            return Response.serverError().build();
+            return Response.status(Response.Status.FORBIDDEN).build();
+
         float newRating = ratingService.updateRating(employeeId, rating, employerId);
         Rating r = new Rating(newRating, employeeService.getRatingVoteCount(employeeId), ratingService.hasAlreadyRated(employeeId, employerId));
         GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(r) {};

@@ -12,7 +12,6 @@ import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.EmployerDto;
 import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto;
-import ar.edu.itba.paw.webapp.form.EmployerForm;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -24,13 +23,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,13 +37,10 @@ public class EmployerController {
 
     @Autowired
     private EmployerService employerService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private JobService jobService;
-
     @Autowired
     private ReviewService reviewService;
 

@@ -7,12 +7,12 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Path("/api/reviews")
 @Component
@@ -30,16 +30,24 @@ public class ReviewController {
     @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response postJobReview(@FormDataParam("content") String message,
-                                  @FormDataParam("employeeId") long employeeId,
-                                  @FormDataParam("employerId") long employerId,
-                                  @FormDataParam("forEmployee") boolean forEmployee) {
+                                  @FormDataParam("employeeId") Long employeeId,
+                                  @FormDataParam("employerId") Long employerId,
+                                  @FormDataParam("forEmployee") Boolean forEmployee) {
         //TODO: poner el id del empleado que esta iniciado sesión
+        if (message.length() < 10 || message.length() > 100 ||
+                Objects.equals(employeeId, employerId) || Objects.isNull(employeeId) || Objects.isNull(employerId)
+                || Objects.isNull(forEmployee)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         Review review = reviewService.create(employeeId, employerId, message, new Date(), forEmployee);
+        if (review == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         ReviewDto reviewDto;
-        if(forEmployee)
-         reviewDto= ReviewDto.fromEmployeeReview(uriInfo, review);
+        if (forEmployee)
+            reviewDto = ReviewDto.fromEmployeeReview(uriInfo, review);
         else
-            reviewDto= ReviewDto.fromEmployerReview(uriInfo, review);
+            reviewDto = ReviewDto.fromEmployerReview(uriInfo, review);
         GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(reviewDto) {
         };
 
