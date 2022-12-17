@@ -128,7 +128,7 @@ public class ContactController {
     public Response contactEmployee(@FormDataParam("content") String content,
                                     @FormDataParam("phone") String phone,
                                     @FormDataParam("employee_id") Long employeeId,
-                                    @FormDataParam("employer_id") Long employerId) throws UserNotFoundException, AlreadyExistsException {
+                                    @FormDataParam("employer_id") Long employerId) throws AlreadyExistsException {
 //        if(error.hasErrors()) {
 //            LOGGER.debug("Couldn't contact Hogar");
 //            //return contactPage(form, "error");
@@ -137,24 +137,21 @@ public class ContactController {
         || Objects.isNull(employeeId) || Objects.isNull(employerId) || employeeId.equals(employerId)){
             Response.status(Response.Status.BAD_REQUEST).build();
         }
-        try {
-            userService.getUserById(employeeId);
-        } catch (ar.edu.itba.paw.model.exception.UserNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        employeeService.isEmployee(employeeId);
-        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        Optional<Employer> employer = employerService.getEmployerById(employerId);
-        if (employee.isPresent() && employer.isPresent()) {
-            String name = employee.get().firstWordsToUpper();
-            boolean exists = contactService.contact(employee.get().getId(), employer.get().getId(), content, name, phone);
-            if (exists) {
-                return Response.ok(1).build();
-            }
-            return Response.status(Response.Status.CREATED).entity(0).build();
-        } else {
+
+        Employee employee;
+        Employer employer;
+        try{
+           employee = employeeService.getEmployeeById(employeeId);
+           employer = employerService.getEmployerById(employerId);
+        }catch (UserNotFoundException u){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        String name = employee.firstWordsToUpper();
+        boolean exists = contactService.contact(employee.getId(), employer.getId(), content, name, phone);
+        if (exists) {
+            return Response.ok(1).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(0).build();
     }
 
 

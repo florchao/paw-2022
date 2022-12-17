@@ -117,27 +117,29 @@ public class EmployeeController {
             }
         }
 
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
-        Optional<EmployeeDto> dto;
-        if (edit != null && edit.equals("true"))
-            dto = employee.map(e -> EmployeeDto.fromEdit(uriInfo, e));
-        else if (user != null)
-            dto = employee.map(e -> EmployeeDto.fromMyProfile(uriInfo, e, request.getHeader("Accept-Language")));
-        else
-            dto = employee.map(e -> {
-                if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-                    HogarUser hogarUser = (HogarUser) auth.getPrincipal();
-                    Boolean hasContact = !contactService.existsContact(e.getId().getId(), hogarUser.getUserID()).isEmpty();
-                    return EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language"), false, hasContact);
-                }
-                return EmployeeDto.fromProfile(uriInfo, e, request.getHeader("Accept-Language"), true, false);
-            });
-        if (employee.isPresent()) {
-            GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto.get()) {
-            };
-            return Response.ok(genericEntity).build();
+        Employee employee;
+        try{
+            employee = employeeService.getEmployeeById(id);}
+        catch(UserNotFoundException e){
+            return Response.noContent().build();
         }
-        return Response.noContent().build();
+
+        EmployeeDto dto;
+        if (edit != null && edit.equals("true"))
+            dto = EmployeeDto.fromEdit(uriInfo, employee);
+        else if (user != null)
+            dto = EmployeeDto.fromMyProfile(uriInfo, employee, request.getHeader("Accept-Language"));
+        else if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+                HogarUser hogarUser = (HogarUser) auth.getPrincipal();
+                Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
+                dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), false, hasContact);
+        }else{
+            dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), true, false);
+        }
+
+        GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto){};
+        return Response.ok(genericEntity).build();
+
 //        mav.addObject("status", status);
 //        if (page == null)
 //            page = 0L;

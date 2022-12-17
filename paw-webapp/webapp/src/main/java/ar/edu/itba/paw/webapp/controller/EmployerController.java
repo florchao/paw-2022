@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
@@ -58,7 +59,7 @@ public class EmployerController {
     @GET
     @Path(value = "/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response employerProfile(@PathParam("id") long id) throws UserNotFoundException {
+    public Response employerProfile(@PathParam("id") long id) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -68,14 +69,14 @@ public class EmployerController {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
         }
-
-        Optional<EmployerDto> employer = employerService.getEmployerById(id).map(e -> EmployerDto.fromEmployer(uriInfo, e));
-        if(employer.isPresent()){
-            GenericEntity<EmployerDto> genericEntity = new GenericEntity<EmployerDto>(employer.get()){};
+        try{
+            Employer employer = employerService.getEmployerById(id);
+            EmployerDto employerDto = EmployerDto.fromEmployer(uriInfo, employer);
+            GenericEntity<EmployerDto> genericEntity = new GenericEntity<EmployerDto>(employerDto){};
             return Response.ok(genericEntity).build();
+        }catch (UserNotFoundException u){
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-
-        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @GET

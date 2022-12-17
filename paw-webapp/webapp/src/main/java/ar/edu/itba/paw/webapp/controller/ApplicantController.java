@@ -91,28 +91,24 @@ public class ApplicantController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         Job job;
-        try {
+        Employee employee;
+
+        try{
             job = jobService.getJobByID(jobId);
-        } catch (Exception ex){
-            ex.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).build();
+            employee = employeeService.getEmployeeById(employeeId);
+            HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+
+            int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
+            contactService.changedStatus(status, job, employee);
+            return Response.ok(finalStatus).build();
+
+        }catch(Exception e){
+            //TODO: CHCK RESPUESTA
+            return Response.serverError().build();
         }
-
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-
-        int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
-
-        Optional<Employee> employee = employeeService.getEmployeeById(employeeId);
-        if( employee.isPresent()) {
-            contactService.changedStatus(status, job, employee.get());
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-
-        }
-        return Response.ok(finalStatus).build();
     }
 
     @DELETE

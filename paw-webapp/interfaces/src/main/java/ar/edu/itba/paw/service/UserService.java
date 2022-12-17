@@ -12,7 +12,7 @@ public interface UserService {
 
     User create(String username, String password, String confirmPassword, int role) throws UserFoundException, PassMatchException;
 
-    Optional<User> findByUsername(String username);
+    User findByUsername(String username);
 
     boolean update(String username, String password);
 

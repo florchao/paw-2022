@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public User create(String username, String password, String confPassword, int role) throws UserFoundException, PassMatchException {
-        if (findByUsername(username).isPresent()) {
+        if (userDao.getUserByUsername(username).isPresent()) {
             throw new UserFoundException("There is an account with that email address: "
                     + username);
         }
@@ -40,8 +41,8 @@ public class UserServiceImpl implements UserService{
     }
     @Transactional(readOnly = true)
     @Override
-    public Optional<User> findByUsername(String username) {
-        return userDao.getUserByUsername(username);
+    public User findByUsername(String username) throws UsernameNotFoundException{
+        return userDao.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("There is no user with username:" + username));
     }
 
     @Transactional
