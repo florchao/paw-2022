@@ -28,4 +28,7 @@ public interface ApplicantDao {
 
     Optional<Applicant> getApplicant(Employee employeeId, Job jobId);
 
+    void rejectApplications(Job jobId);
+
+    void deleteApplicationsFromJob(Job jobId);
 }

@@ -85,6 +85,21 @@ public class ApplicantJpaDao implements ApplicantDao{
     }
 
     @Override
+    public void rejectApplications(Job jobId) {
+        Query contactQuery = em.createQuery("UPDATE Applicant a SET a.status =:newStatus WHERE a.jobID = :job");
+        contactQuery.setParameter("job", jobId);
+        contactQuery.setParameter("newStatus", 2);
+        contactQuery.executeUpdate();
+    }
+
+    @Override
+    public void deleteApplicationsFromJob(Job jobId) {
+        Query contactQuery = em.createQuery("DELETE FROM Applicant a WHERE a.jobID = :job");
+        contactQuery.setParameter("job", jobId);
+        contactQuery.executeUpdate();
+    }
+
+    @Override
     public int changeStatus(int status, Employee employee, Job job) {
         Query contactQuery = em.createQuery("UPDATE Applicant a SET a.status =:newStatus WHERE a.employeeID =:employee AND a.jobID = :job");
         contactQuery.setParameter("job", job);
