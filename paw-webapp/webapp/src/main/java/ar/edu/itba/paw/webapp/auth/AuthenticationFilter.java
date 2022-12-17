@@ -67,8 +67,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String createJWT(String[] credentials) throws UserNotFoundException, IllegalArgumentException {
-        User algo = userService.findByUsername(credentials[0]);
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
+        User user = userService.findByUsername(credentials[0]);
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(environment.getRequiredProperty("db.auth.secret")),
                 SignatureAlgorithm.HS256.getJcaName());
         String jwtToken = null;
         try {
