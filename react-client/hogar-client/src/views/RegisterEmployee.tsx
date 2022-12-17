@@ -13,9 +13,7 @@ const RegisterEmployee = () => {
 
     const onSubmit = async (data: any, e: any, image: File) => {
         const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.hourlyFee, data.availabilities, data.abilities, image!)
-        console.log(post)
         if (post.status == 500 || post.status == 400) {
-            console.log("entre")
             setRegisterEmployeeError(true)
         }
 

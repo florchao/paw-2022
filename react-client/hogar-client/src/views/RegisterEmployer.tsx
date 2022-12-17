@@ -95,7 +95,6 @@ const RegisterEmployer = () => {
         const post = await EmployerService.registerEmployer(e, data.name, data.lastName, data.mail, data.password, data.confirmPassword, image!)
 
         if(post.status === 400 || post.status === 500){
-            console.log("entre")
             setRegisterEmployerError(true)
         }
 
@@ -114,7 +113,6 @@ const RegisterEmployer = () => {
                 localStorage['hogar-jwt'] = authHeader?.slice(7)
             }
             let body = await post.json()
-            console.log("body", body)
             nav('/', {replace: true, state: {self: body.value, status: -1}})
             window.location.reload()
         }
