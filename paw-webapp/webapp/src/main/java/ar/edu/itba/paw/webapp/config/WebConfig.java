@@ -15,6 +15,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -36,6 +37,7 @@ import java.util.Properties;
 @EnableAsync
 @PropertySource(value = {"classpath:application.properties"})
 @EnableTransactionManagement
+@EnableScheduling
 
 public class WebConfig extends WebMvcConfigurerAdapter {
 
@@ -45,16 +47,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return DEV_BUILD;
     }
 
-    @Bean
-    public ViewResolver viewResolver() {
-        final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/jsp/");
-        viewResolver.setSuffix(".jsp");
-
-        return viewResolver;
-    }
+//    @Bean
+//    public ViewResolver viewResolver() {
+//        final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+//
+//        viewResolver.setViewClass(JstlView.class);
+//        viewResolver.setPrefix("/WEB-INF/jsp/");
+//        viewResolver.setSuffix(".jsp");
+//
+//        return viewResolver;
+//    }
 
     @Autowired
     private Environment environment;
