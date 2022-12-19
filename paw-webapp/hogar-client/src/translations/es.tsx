@@ -64,6 +64,7 @@ export const TRANSLATIONS_ES = {
         errorContact: "Usted ya tiene una conexi\u00f3n con este empleado",
         sentContact: "El mensaje fue enviado con \u00e9xito",
         errorReview: "La rese\u00f1a no pudo ser enviada. Por favor intente nuevamente m\u00e1s tarde",
+        genericError: "Hubo un error, por favor intente nuevamente"
     },
 
 
