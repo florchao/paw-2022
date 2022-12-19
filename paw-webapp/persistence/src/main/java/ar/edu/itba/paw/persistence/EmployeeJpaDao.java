@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class EmployeeJpaDao implements EmployeeDao{
@@ -62,12 +63,19 @@ public class EmployeeJpaDao implements EmployeeDao{
         orderCriteriaWhiteList.add("rating");
         orderCriteriaWhiteList.add("experienceYears");
 
+        final Query idQuery = em.createNativeQuery("SELECT employeeid FROM employee LIMIT :pageSize OFFSET :offset");
+        idQuery.setParameter("pageSize", pageSize);
+        idQuery.setParameter("offset", page * pageSize);
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+
         Map<String, Object> paramMap = new HashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("SELECT e FROM Employee e where ");
+        stringBuilder.append("SELECT e FROM Employee e where");
+        stringBuilder.append(" employeeid IN :ids and   ");
 
         if (name != null) {
-            //TODO: cambie lago aca porque location ya no se guarda igual
             stringBuilder.append("lower(e.name) like :name ");
             paramMap.put("name", '%' + name.toLowerCase() + '%');
             stringBuilder.append(" and   ");
@@ -113,7 +121,8 @@ public class EmployeeJpaDao implements EmployeeDao{
         } else {
             stringBuilder.append(" order by e.rating desc");
         }
-        TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
+        TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class);
+        filteredQuery.setParameter("ids", ids);
         for (String key : paramMap.keySet()) {
             filteredQuery.setParameter(key, paramMap.get(key));
         }
