@@ -144,7 +144,7 @@ public class EmployerController {
                                    @FormDataParam("name") String name,
                                    @FormDataParam("last") String lastName,
                                    @FormDataParam("image") InputStream image
-                                   ) throws UserFoundException, PassMatchException, IOException {
+                                   ) throws UserFoundException, PassMatchException {
 
         if(!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
                 password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
@@ -160,7 +160,6 @@ public class EmployerController {
             employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
         } catch (Exception ex){
             ex.printStackTrace();
-            //TODO CHECK CON LO QUE RESPONDE SOTUYO
             return Response.status(Response.Status.CONFLICT).build();
         }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));

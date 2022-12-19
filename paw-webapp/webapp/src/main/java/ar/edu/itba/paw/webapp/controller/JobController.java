@@ -81,6 +81,9 @@ public class JobController {
         } catch (JobNotFoundException exception) {
             exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
         }
         JobDto jobDto = JobDto.fromJob(uriInfo, job, request.getHeader("Accept-Language"));
 
@@ -100,6 +103,9 @@ public class JobController {
         } catch (JobNotFoundException exception) {
             exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception exception){
+            exception.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
         }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
