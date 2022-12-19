@@ -33,7 +33,7 @@
     <commons-io.version>2.4</commons-io.version>
     <org.hibernate.version>5.1.0.Final</org.hibernate.version>
     <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
-    <org.hibernate.validator>6.2.4.Final</org.hibernate.validator>
+    <org.hibernate.validator>5.4.3.Final</org.hibernate.validator>
     <jersey.version>3.0-SNAPSHOT</jersey.version>
 
   </properties>
@@ -230,7 +230,13 @@
       <dependency>
         <groupId>org.glassfish.hk2</groupId>
         <artifactId>hk2</artifactId>
-        <version>2.5.0-b05</version> <!-- última versión compatible con Java 8 -->
+        <version>2.5.0-b05</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.glassfish.hk2.external</groupId>
+            <artifactId>bean-validator</artifactId>
+          </exclusion>
+        </exclusions><!-- última versión compatible con Java 8 -->
       </dependency>
       <dependency>
         <groupId>org.glassfish.jersey.core</groupId>
