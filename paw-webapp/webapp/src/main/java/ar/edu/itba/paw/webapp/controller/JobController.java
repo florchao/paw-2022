@@ -118,8 +118,10 @@ public class JobController {
                             @FormDataParam("availability") String availability,
                             @FormDataParam("experienceYears") Long experienceYears) {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("DATA: " + title + " " + description + " " + location + " " + abilities + " " + availability + " " + experienceYears);
         Job job = jobService.create(title, location, hogarUser.getUserID(), availability, experienceYears, fromListToString(abilities), description);
+        if(job == null) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId())).build()).build();
     }

@@ -90,7 +90,7 @@ export class JobService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: formData
-        }).then((r) => r.json())
+        })
     }
 
     public static async getCreatedJobs(url: string, profile: boolean, page: number) {

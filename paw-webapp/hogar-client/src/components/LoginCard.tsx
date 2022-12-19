@@ -8,8 +8,6 @@ import {useState} from "react";
 export const LoginCard = () => {
     const {t} = useTranslation();
 
-    const [genericError, setGenericError] = useState("")
-
     type FormData = {
         email: string;
         password: string;
@@ -57,6 +55,8 @@ export const LoginCard = () => {
             window.location.reload()
         } else if (result?.status === 401) {
             setLoginError(t("LogIn.error"))
+        } else {
+            setLoginError(t("Feedback.genericError"))
         }
     }
 
@@ -98,7 +98,6 @@ export const LoginCard = () => {
                         </button>
                             <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{loginError}</p>
                     </div>
-                    <h1 className={'text-red-500'}>{genericError}</h1>
                     <div className="form-group mb-6 grid grid-cols-6">
                         <p className="text-xs text-gray-900 col-span-2">
                             {t('LogIn.account')}

@@ -35,6 +35,7 @@ export const CreateJob = () => {
     })
 
     const [ids, setIds] = useState<any>();
+    const [jobError, setJobError] = useState(false);
 
     const {t} = useTranslation();
 
@@ -61,7 +62,10 @@ export const CreateJob = () => {
     const onSubmit = async (data:any, e: any) => {
         const post = await JobService.postJob(e, data.title, data.location, data.experienceYears, data.availability, data.abilities, data.description)
         localStorage.removeItem("jobForm")
-        nav('/job', {replace: true, state: {self: post.value}})
+        if (post.status !== 201) {
+            setJobError(true)
+        } else
+         post.json().then(j => nav('/job', {replace: true, state: {self: j.value}}))
     }
 
     return (
@@ -275,6 +279,7 @@ export const CreateJob = () => {
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                                     {t('CreateJob.button')}
                                 </button>
+                                {jobError && <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('Feedback.jobError')}</p>}
                             </div>
                         </div>
                     </div>
