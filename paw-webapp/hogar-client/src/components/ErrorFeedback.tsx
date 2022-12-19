@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next";
 
-const ErrorFeedback = (type: any) => {
+const ErrorFeedback = ({message}: {message: string}) => {
 
     const {t} = useTranslation();
 
@@ -11,7 +11,7 @@ const ErrorFeedback = (type: any) => {
                     {t('Feedback.error')}
                 </h1>
                 <p className="font-light text-red-700">
-                    {type === "job"? t('Feedback.errorJob') : t('Feedback.errorContact')}
+                    {message}
                 </p>
             </div>
         </div>

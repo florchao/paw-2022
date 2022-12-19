@@ -47,6 +47,12 @@ public class JobController {
             @QueryParam("page") @DefaultValue("0") Long page,
             @Context HttpServletRequest request
     ) {
+        //todo analizar las availability y abilities con postman
+        if( name.isEmpty() || name.length() > 25 ||
+        location.length() > 1 || !location.matches("[1-4]") ||
+        Objects.isNull(experienceYears) || experienceYears < 0 || experienceYears > 100 ||
+        availability.isEmpty() || abilities.isEmpty())
+            return Response.status(Response.Status.BAD_REQUEST).build();
 
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -117,6 +123,9 @@ public class JobController {
                             @FormDataParam("experienceYears") Long experienceYears) {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Job job = jobService.create(title, location, hogarUser.getUserID(), availability, experienceYears, fromListToString(abilities), description);
+        if(job == null) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId())).build()).build();
     }

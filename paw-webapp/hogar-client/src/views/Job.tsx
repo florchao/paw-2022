@@ -9,6 +9,7 @@ import {ApplicantService} from "../service/ApplicantService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import PaginationButtons from "../components/PaginationButtons";
+import ErrorFeedback from "../components/ErrorFeedback";
 
 export const Job = () => {
 
@@ -18,6 +19,7 @@ export const Job = () => {
     const [pages, setPages]: any = useState(0)
     const [status, setStatus] = useState<string>()
     const [opened, setOpened] = useState<boolean>()
+    const [showError, setShowError] = useState<boolean>(false)
 
     let employeeId: number;
     employeeId = localStorage.getItem('hogar-uid')? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
@@ -46,7 +48,10 @@ export const Job = () => {
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployerReview(e, job.employerId.id, data.content)
         localStorage.removeItem("reviewEmployerForm")
-        setMyReview(post)
+        if (post.status != 201)
+            setShowError(true)
+        else
+            post.json().then((r) => setMyReview(r))
     }
 
     useEffect(() => {
@@ -288,6 +293,9 @@ export const Job = () => {
                         }
                     </div>
                 </div>}
+            {showError &&
+                <ErrorFeedback message={t('Feedback.errorReview')}/>
+            }
         </div>
     )
 

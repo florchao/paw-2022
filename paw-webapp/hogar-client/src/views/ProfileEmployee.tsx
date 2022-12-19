@@ -54,7 +54,10 @@ export const ProfileEmployee = () => {
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployeeReview(e, employee.id, data.content)
         localStorage.removeItem("reviewEmployeeForm")
-        setMyReview(post)
+        if( post.status != 201)
+            setShowMessage(true)
+        else
+            post.json().then((r) => setMyReview(r))
     }
 
     function delEmployee() {
@@ -346,7 +349,7 @@ export const ProfileEmployee = () => {
                 <OkFeedback type="profile"/>
             }
             {status == '1' && showMessage &&
-                <ErrorFeedback type="profile"/>
+                <ErrorFeedback message={t('Feedback.errorContact')}/>
             }
             <div>
                 <Modal

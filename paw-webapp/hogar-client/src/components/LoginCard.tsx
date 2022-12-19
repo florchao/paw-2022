@@ -31,26 +31,32 @@ export const LoginCard = () => {
         timeout: 1000 * 60 * 2,
     })
 
-    const [loginError, setLoginError]: any = useState()
+    const [loginError, setLoginError]: any = useState("")
 
     const onSubmit = async (data: any, e: any) => {
-        const result = await UserService.getUser(e, data.email, data.password)
-        if (result.status === 200) {
-            setLoginError(false)
-            let body = await result.json()
+        let result = undefined
+        try {
+            result = await UserService.getUser(e, data.email, data.password)
+        } catch (error: any) {
+            setLoginError(t("Feedback.genericError"))
+        }
+        if (result?.status === 200) {
+            let body = await result?.json()
             localStorage['hogar-role'] = body.role
             localStorage['hogar-uid'] = body.uid
-            let authHeader = result.headers.get('Authorization')
+            let authHeader = result?.headers.get('Authorization')
             localStorage['hogar-jwt'] = authHeader?.slice(7)
             localStorage.removeItem("loginForm")
-            if(body.role === "EMPLOYER") {
+            if (body.role === "EMPLOYER") {
                 nav("/", {replace: true})
             } else {
                 nav("/explore")
             }
             window.location.reload()
-        } if (result.status === 401){
-            setLoginError(true)
+        } else if (result?.status === 401) {
+            setLoginError(t("LogIn.error"))
+        } else {
+            setLoginError(t("Feedback.genericError"))
         }
     }
 
@@ -66,7 +72,8 @@ export const LoginCard = () => {
                                {...register("email", {required: true, validate: {invalidEmail}})}
                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                         />
-                        {errors.email && <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.invalidEmail')}</p>}
+                        {errors.email &&
+                            <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.invalidEmail')}</p>}
                     </div>
                     <div className="form-group mb-6 grid grid-cols-6">
                         <label className="text-sm font-medium text-gray-900">{t('LogIn.password')}</label>
@@ -75,7 +82,8 @@ export const LoginCard = () => {
                                {...register("password", {required: true})}
                                className=" col-span-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                         />
-                        {errors.password && <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.invalidPassword')}</p>}
+                        {errors.password &&
+                            <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.invalidPassword')}</p>}
                     </div>
                     <div className="form-group mb-6">
                     </div>
@@ -88,7 +96,7 @@ export const LoginCard = () => {
                                 className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                             {t('Home.login')}
                         </button>
-                        {loginError && <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{t('LogIn.error')}</p>}
+                            <p className="text-red-500 text-xs col-span-5 col-start-2 mt-2">{loginError}</p>
                     </div>
                     <div className="form-group mb-6 grid grid-cols-6">
                         <p className="text-xs text-gray-900 col-span-2">

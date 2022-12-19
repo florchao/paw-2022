@@ -41,6 +41,9 @@ public class ContactController {
     public Response contactUs(@FormDataParam("name") String name,
                               @FormDataParam("mail") String mail,
                               @FormDataParam("content") String content) {
+        if( name.isEmpty() || !name.matches("[a-zA-z\\s]+|^$") || name.length() > 100
+        || mail.isEmpty() || !mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || content.isEmpty())
+            Response.status(Response.Status.BAD_REQUEST).build();
         //todo check que pasa el post con error con sotuyo
         contactService.contactUS(content, mail, name);
         return Response.status(Response.Status.CREATED).build();
@@ -74,9 +77,9 @@ public class ContactController {
         String name = employee.firstWordsToUpper();
         boolean exists = contactService.contact(employee.getId(), employer.getId(), content, name, phone);
         if (exists) {
-            return Response.ok(1).build();
+            return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.status(Response.Status.CREATED).entity(0).build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
 

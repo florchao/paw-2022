@@ -39,7 +39,12 @@ export const ContactEmployee = () => {
     const onSubmit = async (data: any, e: any) => {
         const contact = await ContactService.contactEmployee(e, data.phone, data.content, id, employerId)
         localStorage.removeItem("contactForm")
-        nav("/employee", {replace: true, state: {id: id, status: contact}})
+        let status;
+        if (contact.status === 201)
+            status = "0"
+        else
+            status = "1"
+        nav("/employee", {replace: true, state: {id: id, status: status}})
     }
 
     return (
