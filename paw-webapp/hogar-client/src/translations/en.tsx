@@ -61,7 +61,8 @@ export const TRANSLATIONS_EN = {
     errorJob: "You've already applied to this job",
     sentJob: "The application was sent with success",
     errorContact: "You already have a connection with this employee",
-    sentContact: "The message was sent with success"
+    sentContact: "The message was sent with success",
+    genericError: "An error occurred, please try again later",
   },
 
   NotFound:{
