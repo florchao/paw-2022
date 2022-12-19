@@ -46,16 +46,4 @@ export class UserService {
                     throw error
                 })
     }
-
-    public static async newPassword(e: any, mail: string, password: string, confirmPassword: string){
-        e.preventDefault();
-        const form = {mail, password, confirmPassword};
-        return await fetch(USERS_URL,{
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(form)
-        })
-    }
 }

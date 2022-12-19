@@ -106,14 +106,6 @@ export const LoginCard = () => {
                             <p className="text-xs text-violet-900">{t('LogIn.register')}</p>
                         </Link>
                     </div>
-                    <div className="form-group grid grid-cols-6">
-                        <p className="text-xs text-gray-900 col-span-2">
-                            {t('LogIn.forgot')}
-                        </p>
-                        <Link to={"/password"}>
-                            <p className="text-xs text-violet-900">{t('LogIn.setP')}</p>
-                        </Link>
-                    </div>
                 </div>
             </form>
         </div>
