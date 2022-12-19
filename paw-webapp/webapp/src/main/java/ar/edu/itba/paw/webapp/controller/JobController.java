@@ -50,7 +50,6 @@ public class JobController {
         if (experienceYears != null && (experienceYears < 0 || experienceYears > 100)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        //todo check este regex
         if (location != null && (!location.matches("[1-4][,[1-4]]+") || location.length() > 7)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
