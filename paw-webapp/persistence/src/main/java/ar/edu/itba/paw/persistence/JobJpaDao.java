@@ -8,11 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class JobJpaDao implements  JobDao{
@@ -56,7 +58,15 @@ public class JobJpaDao implements  JobDao{
     public List<Job> getFilteredJobs(String name, Long experienceYears, List<String> location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize) {
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, Object> paramMap = new HashMap<>();
+
+        final Query idQuery = em.createNativeQuery("SELECT jobid FROM jobs LIMIT :pageSize OFFSET :offset");
+        idQuery.setParameter("pageSize", pageSize);
+        idQuery.setParameter("offset", page * pageSize);
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
         stringBuilder.append("SELECT e FROM Job e where e.opened=TRUE and ");
+        stringBuilder.append(" jobid IN :ids and   ");
         if (name != null) {
             stringBuilder.append("lower(e.title) like :title ");
             paramMap.put("title", '%' + name.toLowerCase() + '%');
@@ -95,6 +105,7 @@ public class JobJpaDao implements  JobDao{
         }
         stringBuilder.setLength(stringBuilder.length() - 4);
         TypedQuery<Job> filteredQuery = em.createQuery(stringBuilder.toString(), Job.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
+        filteredQuery.setParameter("ids", ids);
         for (String key : paramMap.keySet()) {
             filteredQuery.setParameter(key, paramMap.get(key));
         }
