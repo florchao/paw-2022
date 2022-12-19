@@ -212,7 +212,7 @@ export const Job = () => {
                             <div className="col-start-2 row-start-3">
                                 <button type="submit" onClick={delJob} className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
                                     <div className="grid grid-rows-1 grid-cols-3">
-                                        <img src="/images/bin.png" alt="bin" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                        <img src="../assets/bin.png" alt="bin" className="mr-3 h-6 sm:h-5 col-start-1"/>
                                             <p className="col-span-2">{t('Job.deleteJob')}</p>
                                     </div>
                                 </button>
@@ -221,14 +221,14 @@ export const Job = () => {
                                 {opened ?
                                     <button type="submit" onClick={closeJob} className="text-sm focus:outline-none text-purple-700 bg-yellow-300 border-violet-700 hover:bg-yellow-200 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src="/images/editing_purple.png" alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                            <img src="../assets/editing_purple.png" alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
                                                 <p className="col-span-2">{t('Job.closeJob')}</p>
                                         </div>
                                     </button>
                                     :
                                     <button type="submit" onClick={openJob} className="text-sm focus:outline-none text-white bg-green-500 hover:bg-green-700 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src="/images/editing.png" alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                            <img src="../assets/editing.png" alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
                                                 <p className="col-span-2">{t('Job.openJob')}</p>
                                         </div>
                                     </button>}
@@ -271,7 +271,7 @@ export const Job = () => {
                                 {reviews === 0 && !myReview &&
                                     (<div className="grid content-center justify-center h-5/6 mt-16">
                                             <div className="grid justify-items-center">
-                                                <img src={'./images/sinEmpleadas.png'} alt="sinEmpleadas"
+                                                <img src={'./assets/sinEmpleadas.png'} alt="sinEmpleadas"
                                                      className="mr-3 h-6 sm:h-52"/>
                                                 <p className="text-3xl font-semibold text-purple-700">
                                                     {t('Job.noReviews')}

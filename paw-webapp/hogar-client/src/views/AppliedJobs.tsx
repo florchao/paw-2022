@@ -40,7 +40,7 @@ export const AppliedJobs = () => {
             {appliedJobs && appliedJobs.length == 0 && <div
                 className="grid content-center justify-center h-5/6 mt-16">
                 <div className="grid justify-items-center">
-                    <img src='/images/sinTrabajos.png' alt="sinTrabajos"
+                    <img src='../assets/sinTrabajos.png' alt="sinTrabajos"
                          className="mr-3 h-6 sm:h-52"/>
                     <p className="text-3xl font-semibold text-purple-700">
                         {t('AppliedJobs.noJobs')}

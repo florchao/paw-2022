@@ -165,6 +165,6 @@ public class EmployerController {
         }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
 
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employers").path(String.valueOf(u.getId())).build()).build();
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(u.getId())).build()).build();
     }
 }

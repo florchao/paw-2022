@@ -23,7 +23,7 @@ const ApplicantCard = (applicant: any) =>{
         UserService.loadImage(a.employee.image).then(
             (img) => {
                 if (img.size == 0)
-                    setImage("../images/user.png")
+                    setImage("../assets/user.png")
                 else
                     setImage(URL.createObjectURL(img))
             }

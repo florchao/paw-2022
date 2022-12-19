@@ -127,7 +127,7 @@ public class JobController {
             return Response.status(Response.Status.CONFLICT).build();
         }
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/jobs").path(String.valueOf(job.getJobId())).build()).build();
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/jobs").path(String.valueOf(job.getJobId())).build()).build();
     }
 
     @DELETE

@@ -11,7 +11,7 @@ export const EmployerLanding = () => {
             <div id="roles" className="grid grid-cols-2 items-start p-10 gap-y-7 mt-9 content-center">
                 <div className="grid grid-cols-3">
                     <div className="h-48 w-48">
-                        <img className="object-cover w-full h-full rounded-full" src={ './images/searchJob.jpeg'} alt="employer"/>
+                        <img className="object-cover w-full h-full rounded-full" src={ './assets/searchJob.jpeg'} alt="employer"/>
                     </div>
                     <div className="col-span-2 ">
                         <h3 className="text-2xl text-purple-700 justify-self-center">
@@ -28,7 +28,7 @@ export const EmployerLanding = () => {
                 </div>
                 <div className="col-start-2 grid grid-cols-3">
                     <div className="h-48 w-48">
-                        <img className="object-cover w-full h-full rounded-full" src={ './images/joboffer.jpeg' } alt="job offer picture"/>
+                        <img className="object-cover w-full h-full rounded-full" src={ './assets/joboffer.jpeg' } alt="job offer picture"/>
                     </div>
                     <div className="col-span-2">
                         <h3 className="text-2xl text-purple-700 justify-self-center">

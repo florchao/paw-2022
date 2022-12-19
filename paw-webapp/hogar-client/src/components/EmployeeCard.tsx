@@ -14,7 +14,7 @@ const EmployeeCard = (employee: any) => {
         UserService.loadImage(e.image).then(
             (img) => {
                 if (img.size == 0)
-                    setImage("./images/user.png")
+                    setImage("./assets/user.png")
                 else
                     setImage(URL.createObjectURL(img))
             }

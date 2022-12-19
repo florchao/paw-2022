@@ -175,7 +175,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                 <div className="row-span-4 col-span-2 m-6">
                                     <div className="overflow-hidden bg-gray-100 rounded-full">
                                         <img id="picture"
-                                             src={image ? URL.createObjectURL(image) : '/images/user.png'}
+                                             src={image ? URL.createObjectURL(image) : '/assets/user.png'}
                                              alt="user pic"/>
                                     </div>
                                     <label htmlFor="image-input" id="image-label"

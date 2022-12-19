@@ -43,7 +43,7 @@ export const ProfileEmployer = () => {
             UserService.loadImage(employer.image).then(
                 (img) => {
                     if (img.size === 0)
-                        setImage("./images/user.png")
+                        setImage("./assets/user.png")
                     else
                         setImage(URL.createObjectURL(img))
                 });
@@ -104,7 +104,7 @@ export const ProfileEmployer = () => {
                                 <button type="submit" onClick={delEmployer}
                                         className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
                                     <div className="grid grid-rows-1 grid-cols-3">
-                                        <img src={'./images/bin.png'} alt="bin"
+                                        <img src={'./assets/bin.png'} alt="bin"
                                              className="mr-3 h-6 sm:h-5 col-start-1"/>
                                         <p className="col-span-2">
                                             {t('EmployerProfile.delete')}
@@ -120,7 +120,7 @@ export const ProfileEmployer = () => {
                         }
                         {jobs && jobs.length === 0 &&
                                 <div className="grid justify-items-center">
-                                    <img src="/images/sinTrabajos.png" alt="sinTrabajos"
+                                    <img src="../assets/sinTrabajos.png" alt="sinTrabajos"
                                          className="mr-3 h-6 sm:h-52"/>
                                     <p className="text-3xl font-semibold text-purple-700">
                                         {t('CreatedJobs.noJobs')}
@@ -158,7 +158,7 @@ export const ProfileEmployer = () => {
                                     {reviews.length === 0 &&
                                         <div className="grid content-center justify-center h-5/6 mt-16">
                                             <div className="grid justify-items-center">
-                                                <img src={'./images/sinEmpleadas.png'} alt="sinEmpleadas"
+                                                <img src={'./assets/sinEmpleadas.png'} alt="sinEmpleadas"
                                                      className="mr-3 h-6 sm:h-52"/>
                                                 <p className="text-3xl font-semibold text-purple-700">
                                                     {t('EmployerProfile.noReviews')}

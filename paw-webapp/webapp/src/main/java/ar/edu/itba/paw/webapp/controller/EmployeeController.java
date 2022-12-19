@@ -272,7 +272,7 @@ public class EmployeeController {
             //TODO CHECK CON LO QUE RESPONDE SOTUYO
             return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(u.getId())).build()).build();
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).build();
     }
 
     @PUT
