@@ -33,7 +33,7 @@ export const Job = () => {
         content: string;
     };
 
-    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue, reset} = useForm<FormData>();
 
 
     watch("content")
@@ -47,11 +47,13 @@ export const Job = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployerReview(e, job.employerId.id, data.content)
-        localStorage.removeItem("reviewEmployerForm")
         if (post.status != 201)
             setShowError(true)
-        else
+        else {
+            localStorage.removeItem("reviewEmployerForm")
+            reset()
             post.json().then((r) => setMyReview(r))
+        }
     }
 
     useEffect(() => {

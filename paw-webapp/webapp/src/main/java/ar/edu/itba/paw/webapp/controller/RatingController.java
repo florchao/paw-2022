@@ -32,8 +32,8 @@ public class RatingController {
             return Response.ok(genericEntity).build();
         } catch (Exception e) {
             e.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.noContent().build();
     }
 
     @POST

@@ -263,7 +263,7 @@ public class EmployeeController {
                                    @FormDataParam("hourlyFee") long hourlyFee,
                                    @FormDataParam("availabilities[]") List<String> availabilities,
                                    @FormDataParam("abilities[]") List<String> abilities,
-                                   @FormDataParam("image") InputStream image) throws IOException, UserFoundException, PassMatchException {
+                                   @FormDataParam("image") InputStream image) throws UserFoundException, PassMatchException {
         if (!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
                 password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
                 name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
@@ -280,7 +280,6 @@ public class EmployeeController {
             employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
         } catch (Exception ex){
             ex.printStackTrace();
-            //TODO CHECK CON LO QUE RESPONDE SOTUYO
             return Response.status(Response.Status.CONFLICT).build();
         }
         return Response.status(Response.Status.CREATED).entity(uriInfo.getAbsolutePathBuilder().replacePath("/api/employees").path(String.valueOf(u.getId())).build()).build();
