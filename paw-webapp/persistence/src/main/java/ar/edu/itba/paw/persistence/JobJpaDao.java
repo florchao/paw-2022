@@ -59,28 +59,28 @@ public class JobJpaDao implements  JobDao{
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, Object> paramMap = new HashMap<>();
 
-        final Query idQuery = em.createNativeQuery("SELECT jobid FROM jobs LIMIT :pageSize OFFSET :offset");
-        idQuery.setParameter("pageSize", pageSize);
-        idQuery.setParameter("offset", page * pageSize);
-        @SuppressWarnings("unchecked")
-        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+//        final Query idQuery = em.createNativeQuery("SELECT jobid FROM jobs LIMIT :pageSize OFFSET :offset");
+//        idQuery.setParameter("pageSize", pageSize);
+//        idQuery.setParameter("offset", page * pageSize);
+//        @SuppressWarnings("unchecked")
+//        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
-        stringBuilder.append("SELECT e FROM Job e where e.opened=TRUE and ");
-        stringBuilder.append(" jobid IN :ids and   ");
+        stringBuilder.append("SELECT jobid FROM jobs where opened=TRUE and ");
+//        stringBuilder.append(" jobid IN :ids and   ");
         if (name != null) {
-            stringBuilder.append("lower(e.title) like :title ");
+            stringBuilder.append("lower(title) like :title ");
             paramMap.put("title", '%' + name.toLowerCase() + '%');
             stringBuilder.append(" and ");
 
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
-            stringBuilder.append("e.experienceYears <= :experienceYears ");
+            stringBuilder.append("experienceYears <= :experienceYears ");
             paramMap.put("experienceYears", experienceYears);
             stringBuilder.append(" and ");
         }
         String variableCount = "a";
         for (String av : availabilityList) {
-            stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
+            stringBuilder.append("availability like ").append(":availability").append(variableCount).append(" ");
             paramMap.put("availability" + variableCount, '%' + av + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and  ");
@@ -88,7 +88,7 @@ public class JobJpaDao implements  JobDao{
         if(!location.isEmpty())
             stringBuilder.append(" ( ");
         for (String l : location) {
-            stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
+            stringBuilder.append("location like ").append(":location").append(variableCount).append(" ");
             paramMap.put("location" + variableCount, '%' + l + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" or   ");
@@ -98,17 +98,25 @@ public class JobJpaDao implements  JobDao{
             stringBuilder.append(" ) and ");
         }
         for (String ability : abilitiesList) {
-            stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
+            stringBuilder.append("abilities like ").append(":abilities").append(variableCount).append(" ");
             paramMap.put("abilities" + variableCount, '%' + ability + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and ");
         }
         stringBuilder.setLength(stringBuilder.length() - 4);
-        TypedQuery<Job> filteredQuery = em.createQuery(stringBuilder.toString(), Job.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
-        filteredQuery.setParameter("ids", ids);
+        stringBuilder.append(" LIMIT :pageSize OFFSET :offset");
+
+        final Query idQuery = em.createNativeQuery(stringBuilder.toString());
         for (String key : paramMap.keySet()) {
-            filteredQuery.setParameter(key, paramMap.get(key));
+            idQuery.setParameter(key, paramMap.get(key));
         }
+        idQuery.setParameter("pageSize", pageSize);
+        idQuery.setParameter("offset", page * pageSize);
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        TypedQuery<Job> filteredQuery = em.createQuery("select j from Job j where jobid in :ids", Job.class);
+        filteredQuery.setParameter("ids", ids);
         return filteredQuery.getResultList();
     }
 

@@ -32,7 +32,7 @@ public class JobController {
     @Context
     UriInfo uriInfo;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
-    private static final int PAGE_SIZE = 9;
+    private static final int PAGE_SIZE = 1;
 
 
     @GET
