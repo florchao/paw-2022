@@ -33,7 +33,6 @@ public class JobDto {
 
     private Integer status;
 
-    //TODO: faltaría el status cuando lo llamo del explore, sabiendo quien es la empleada que lo ve
     public static JobDto fromExplore(final UriInfo uriInfo, final Job job, int status, String language) {
         final JobDto dto = new JobDto();
 

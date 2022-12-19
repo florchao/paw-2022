@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
+import {MagnifyingGlass} from "react-loader-spinner";
 
 
 export const Explore = () => {
@@ -134,6 +135,20 @@ export const Explore = () => {
                         />
                     </form>
                 </div>
+                {!employees &&
+                    <div className={'flex items-center justify-center h-3/4'}>
+                        <MagnifyingGlass
+                            visible={true}
+                            height="160"
+                            width="160"
+                            ariaLabel="MagnifyingGlass-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="MagnifyingGlass-wrapper"
+                            glassColor = '#c0efff'
+                            color = '#e5de00'
+                        />
+                    </div>
+                }
                 {employees &&
                     <div>
                         {employees.map((employee: any) => (<EmployeeCard key={employee.id} employee={employee}/>))}
