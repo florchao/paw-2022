@@ -17,7 +17,7 @@ export const CreateJob = () => {
         abilities: string[];
     };
 
-    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue, reset} = useForm<FormData>();
 
     watch("title")
     watch("description")
@@ -61,11 +61,13 @@ export const CreateJob = () => {
 
     const onSubmit = async (data:any, e: any) => {
         const post = await JobService.postJob(e, data.title, data.location, data.experienceYears, data.availability, data.abilities, data.description)
-        localStorage.removeItem("jobForm")
         if (post.status !== 201) {
             setJobError(true)
-        } else
-         post.json().then(j => nav('/job', {replace: true, state: {self: j.value}}))
+        } else {
+            localStorage.removeItem("jobForm")
+            reset()
+            post.json().then(j => nav('/job', {replace: true, state: {self: j.value}}))
+        }
     }
 
     return (
