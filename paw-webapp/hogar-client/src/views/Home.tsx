@@ -1,6 +1,7 @@
 import './style.css'
 import Button from "../components/Button";
 import { useTranslation } from 'react-i18next';
+import index from '../assets/indexImage.jpg';
 
 export const Home = () => {
     const { t } = useTranslation();
@@ -31,7 +32,7 @@ export const Home = () => {
 
                 </div>
                 <div className="pt-8">
-                    <img src={ './assets/indexImage.jpg' } alt="primera foto" className={"rounded-full"}/>
+                    <img src={index} alt="primera foto" className={"rounded-full"}/>
                 </div>
             </div>
     )

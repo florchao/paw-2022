@@ -3,6 +3,7 @@ import {UserService} from "../service/UserService";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {ApplicantService} from "../service/ApplicantService";
+import user from "../assets/user.png";
 
 const ApplicantCard = (applicant: any) =>{
     const a = applicant.applicant
@@ -23,7 +24,7 @@ const ApplicantCard = (applicant: any) =>{
         UserService.loadImage(a.employee.image).then(
             (img) => {
                 if (img.size == 0)
-                    setImage("../assets/user.png")
+                    setImage(user)
                 else
                     setImage(URL.createObjectURL(img))
             }

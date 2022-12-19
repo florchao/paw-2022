@@ -6,6 +6,7 @@ import ContactCard from "../components/ContactCard";
 import ContactCardModal from "../components/ContactCardModal";
 import Modal from "react-modal";
 import PaginationButtons from "../components/PaginationButtons";
+import noEmployees from "../assets/sinEmpleadas.png";
 
 export const Contacts = () => {
 
@@ -52,7 +53,7 @@ export const Contacts = () => {
             {contacts && contacts.length === 0 &&
                 <div className="grid content-center justify-center h-5/6 mt-16">
                     <div className="grid justify-items-center">
-                        <img src="../assets/sinEmpleadas.png" alt="sinEmpleadas" className="mr-3 h-6 sm:h-52"/>
+                        <img src={noEmployees} alt="sinEmpleadas" className="mr-3 h-6 sm:h-52"/>
                         <p className="text-3xl font-semibold text-purple-700">
                             {t('Contacts.noContacts')}
                         </p>

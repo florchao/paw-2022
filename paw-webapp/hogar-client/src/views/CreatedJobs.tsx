@@ -5,6 +5,7 @@ import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
 import {BACK_SLASH, EMPLOYER_URL, JOBS} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
+import noJobs from "../assets/sinTrabajos.png";
 
 export const CreatedJobs = () => {
     const [createdJobs, setCreatedJobs]: any = useState()
@@ -35,7 +36,7 @@ export const CreatedJobs = () => {
             {createdJobs && createdJobs.length === 0 &&
                 <div className="grid content-center justify-center h-5/6 mt-16">
                     <div className="grid justify-items-center">
-                        <img src="../assets/sinTrabajos.png" alt="sinTrabajos"
+                        <img src={noJobs} alt="sinTrabajos"
                              className="mr-3 h-6 sm:h-52"/>
                             <p className="text-3xl font-semibold text-purple-700">
                                 {t('CreatedJobs.noJobs')}

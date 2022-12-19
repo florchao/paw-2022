@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {UserService} from "../service/UserService";
 import {useTranslation} from "react-i18next";
 import {Rating} from "react-simple-star-rating";
+import user from "../assets/user.png";
 
 const EmployeeCard = (employee: any) => {
     const e = employee.employee
@@ -14,7 +15,7 @@ const EmployeeCard = (employee: any) => {
         UserService.loadImage(e.image).then(
             (img) => {
                 if (img.size == 0)
-                    setImage("./assets/user.png")
+                    setImage(user)
                 else
                     setImage(URL.createObjectURL(img))
             }

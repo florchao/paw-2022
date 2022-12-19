@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import ApplicantCard from "../components/ApplicantCard";
 import {JobService} from "../service/JobService";
 import PaginationButtons from "../components/PaginationButtons";
+import noEmployees from "../assets/sinEmpleadas.png";
 
 export const Applicants = () => {
 
@@ -40,7 +41,7 @@ export const Applicants = () => {
                         {applicantList && applicantList.length == 0 ?
                             <div className="grid content-center justify-center h-5/6 mt-16">
                                 <div className="grid justify-items-center">
-                                    <img src={'/assets/sinEmpleadas.png'} alt="sinEmpleadas"
+                                    <img src={noEmployees} alt="sinEmpleadas"
                                          className="mr-3 h-6 sm:h-52"/>
                                     <p className="text-3xl font-semibold text-purple-700"> {t('Applicants.noApplicants')}</p>
                                 </div>

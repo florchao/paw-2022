@@ -1,6 +1,8 @@
 import './style.css'
 import Button from "../components/Button";
 import { useTranslation } from 'react-i18next';
+import empl from "../assets/empl.jpg";
+import empleador from '../assets/empleador.jpg'
 
 const Register = () => {
     const {t} = useTranslation();
@@ -9,7 +11,7 @@ const Register = () => {
             <div id="roles" className="grid grid-cols-3 items-start p-10 gap-y-7 mt-14">
                 <div className="h-96 w-96">
                     <img className="object-cover w-full h-full rounded-full"
-                         src={'./assets/empleador.jpg'} alt="employer"/>
+                         src={empleador} alt="employer"/>
                 </div>
                 <div className="col-span-2 ">
                     <h3 className="text-2xl text-purple-700 justify-self-center">
@@ -20,12 +22,11 @@ const Register = () => {
                         <br/>{t('Register.employerDesc3')}
                     </p>
                     <div className="pb-4 grid col-start-2 col-span-2 mt-7">
-                        {/*TODO pagina registerEmployer*/}
                         <Button link="/register/employer" name={t('Register.createEmployer')}/>
                     </div>
                 </div>
                 <div className="row-start-2 h-96 w-96">
-                    <img className="object-cover w-full h-full rounded-full" src={'./assets/empl.jpg'}
+                    <img className="object-cover w-full h-full rounded-full" src={empl}
                          alt="employee"/>
                 </div>
                 <div className="row-start-2 col-span-2">
@@ -37,7 +38,6 @@ const Register = () => {
                         <br/> {t('Register.employerDesc3')}
                     </p>
                     <div className="pb-4 grid col-start-2 col-span-2 mt-7">
-                        {/*TODO pagina registerEmployee*/}
                         <Button link="/register/employee" name={t('Register.createEmployee')}/>
                     </div>
                 </div>

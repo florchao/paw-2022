@@ -16,6 +16,9 @@ import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
 import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
+import bin from "../assets/bin.png";
+import noEmployees from "../assets/sinEmpleadas.png";
+import user from "../assets/user.png";
 
 export const ProfileEmployee = () => {
 
@@ -85,7 +88,7 @@ export const ProfileEmployee = () => {
             UserService.loadImage(employee.image).then(
                 (img) => {
                     if (img.size == 0)
-                        setImg("./assets/user.png")
+                        setImg(user)
                     else
                         setImg(URL.createObjectURL(img))
                 })
@@ -250,7 +253,7 @@ export const ProfileEmployee = () => {
                                     <button type="submit" onClick={delEmployee}
                                             className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src={'./assets/bin.png'} alt="bin"
+                                            <img src={bin} alt="bin"
                                                  className="mr-3 h-6 sm:h-5 col-start-1"/>
                                             <p className="col-span-2">
                                                 {t('EmployerProfile.delete')}
@@ -333,7 +336,7 @@ export const ProfileEmployee = () => {
                                 {review.length === 0 && !myReview &&
                                     <div className="grid content-center justify-center h-5/6 mt-16">
                                         <div className="grid justify-items-center">
-                                            <img src='../assets/sinEmpleadas.png' alt="sinEmpleadas"
+                                            <img src={noEmployees} alt="sinEmpleadas"
                                                  className="mr-3 h-6 sm:h-52"/>
                                             <p className="text-3xl font-semibold text-purple-700">
                                                 {t('Profile.noReviews')}

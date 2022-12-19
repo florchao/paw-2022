@@ -5,6 +5,7 @@ import {UserService} from "../service/UserService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
+import user from "../assets/user.png";
 
 export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: { onSubmit: any, from: string, self: string, onEdit: boolean, errorFromRequest: boolean}) => {
 
@@ -175,7 +176,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                 <div className="row-span-4 col-span-2 m-6">
                                     <div className="overflow-hidden bg-gray-100 rounded-full">
                                         <img id="picture"
-                                             src={image ? URL.createObjectURL(image) : '/assets/user.png'}
+                                             src={image ? URL.createObjectURL(image) : user}
                                              alt="user pic"/>
                                     </div>
                                     <label htmlFor="image-input" id="image-label"

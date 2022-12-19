@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {ApplicantService} from "../service/ApplicantService";
 import JobCard from "../components/JobCard";
 import PaginationButtons from "../components/PaginationButtons";
+import noJobs from "../assets/sinTrabajos.png";
 
 export const AppliedJobs = () => {
 
@@ -40,7 +41,7 @@ export const AppliedJobs = () => {
             {appliedJobs && appliedJobs.length == 0 && <div
                 className="grid content-center justify-center h-5/6 mt-16">
                 <div className="grid justify-items-center">
-                    <img src='../assets/sinTrabajos.png' alt="sinTrabajos"
+                    <img src={noJobs} alt="sinTrabajos"
                          className="mr-3 h-6 sm:h-52"/>
                     <p className="text-3xl font-semibold text-purple-700">
                         {t('AppliedJobs.noJobs')}

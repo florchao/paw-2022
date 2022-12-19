@@ -10,6 +10,10 @@ import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import PaginationButtons from "../components/PaginationButtons";
 import ErrorFeedback from "../components/ErrorFeedback";
+import bin from "../assets/bin.png";
+import editing from "../assets/editing.png";
+import editingPurple from "../assets/editing_purple.png";
+import noEmployees from "../assets/sinEmpleadas.png";
 
 export const Job = () => {
 
@@ -212,7 +216,7 @@ export const Job = () => {
                             <div className="col-start-2 row-start-3">
                                 <button type="submit" onClick={delJob} className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
                                     <div className="grid grid-rows-1 grid-cols-3">
-                                        <img src="../assets/bin.png" alt="bin" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                        <img src={bin} alt="bin" className="mr-3 h-6 sm:h-5 col-start-1"/>
                                             <p className="col-span-2">{t('Job.deleteJob')}</p>
                                     </div>
                                 </button>
@@ -221,14 +225,14 @@ export const Job = () => {
                                 {opened ?
                                     <button type="submit" onClick={closeJob} className="text-sm focus:outline-none text-purple-700 bg-yellow-300 border-violet-700 hover:bg-yellow-200 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src="../assets/editing_purple.png" alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                            <img src={editingPurple} alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
                                                 <p className="col-span-2">{t('Job.closeJob')}</p>
                                         </div>
                                     </button>
                                     :
                                     <button type="submit" onClick={openJob} className="text-sm focus:outline-none text-white bg-green-500 hover:bg-green-700 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src="../assets/editing.png" alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                            <img src={editing} alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
                                                 <p className="col-span-2">{t('Job.openJob')}</p>
                                         </div>
                                     </button>}
@@ -271,7 +275,7 @@ export const Job = () => {
                                 {reviews === 0 && !myReview &&
                                     (<div className="grid content-center justify-center h-5/6 mt-16">
                                             <div className="grid justify-items-center">
-                                                <img src={'./assets/sinEmpleadas.png'} alt="sinEmpleadas"
+                                                <img src={noEmployees} alt="sinEmpleadas"
                                                      className="mr-3 h-6 sm:h-52"/>
                                                 <p className="text-3xl font-semibold text-purple-700">
                                                     {t('Job.noReviews')}

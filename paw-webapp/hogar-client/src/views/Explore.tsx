@@ -6,7 +6,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
-
+import noEmployees from "../assets/sinEmpleadas.png";
 
 export const Explore = () => {
 
@@ -143,7 +143,7 @@ export const Explore = () => {
                 {employees === 0 && (
                     <div className="grid content-center justify-center h-5/6 mt-16">
                         <div className="grid justify-items-center">
-                            <img src={ '../assets/sinEmpleadas.png'} alt="noJobs"
+                            <img src={noEmployees} alt="noEmployees"
                                  className="mr-3 h-6 sm:h-52"/>
                             <p className="text-3xl font-semibold text-purple-700">
                                 {t("Explore.noEmployees")}

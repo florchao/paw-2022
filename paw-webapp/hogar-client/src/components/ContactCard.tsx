@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {UserService} from "../service/UserService";
+import user from "../assets/user.png";
 
 const ContactCard = (contact: any) => {
 
@@ -12,7 +13,7 @@ const ContactCard = (contact: any) => {
         UserService.loadImage(contact.employer.image).then(
             (img) => {
                 if (img.size == 0)
-                    setImage("../assets/user.png")
+                    setImage(user)
                 else
                     setImage(URL.createObjectURL(img))
             }
@@ -29,7 +30,7 @@ const ContactCard = (contact: any) => {
             </div>
             <div className="flex flex-col items-center pb-6 ">
                 <img className="object-cover mb-3 w-24 h-24 rounded-full shadow-lg"
-                     src={image? image : "../assets/user.png"} alt="Employer Image"/>
+                     src={image? image : user} alt="Employer Image"/>
                 <h5 className="mb-1 text-xl font-medium text-gray-900">
                     {contact.employer.name}
                 </h5>
