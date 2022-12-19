@@ -13,11 +13,11 @@ const RegisterEmployee = () => {
 
     const onSubmit = async (data: any, e: any, image: File) => {
         const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.hourlyFee, data.availabilities, data.abilities, image!)
-        if (post.status == 500 || post.status == 400) {
+        if (post.status === 500 || post.status === 400) {
             setRegisterEmployeeError(true)
         }
 
-        if (post.status == 201) {
+        if (post.status === 201) {
             setRegisterEmployeeError(false)
             localStorage.removeItem("employeeForm")
             localStorage.removeItem("imgEmployeeForm")
