@@ -78,9 +78,9 @@ public class ContactController {
         String name = employee.firstWordsToUpper();
         boolean exists = contactService.contact(employee.getId(), employer.getId(), content, name, phone);
         if (exists) {
-            return Response.ok(1).build();
+            return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.status(Response.Status.CREATED).entity(0).build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
 

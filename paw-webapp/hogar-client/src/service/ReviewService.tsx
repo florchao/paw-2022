@@ -98,7 +98,7 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: formData
-        }).then((r) => r.json())
+        })
     }
 
     public static async postEmployeeReview(e: any, employeeId: number, message: string) {
@@ -115,6 +115,6 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: formData
-        }).then((r) => r.json())
+        })
     }
 }

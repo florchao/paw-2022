@@ -51,7 +51,7 @@ public class ReviewController {
         GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(reviewDto) {
         };
 
-        return Response.ok(genericEntity).build();
+        return Response.status(Response.Status.CREATED).entity(genericEntity).build();
     }
 
 }

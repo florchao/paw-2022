@@ -52,9 +52,8 @@ public class ContactServiceImpl implements ContactService{
         if (exists) {
             return true;
         }
-        //TODO: CHECK
         contactDao.create(employee, employer, created, contactMessage, phoneNumber);
-        return true;
+        return false;
     }
 
     @Transactional

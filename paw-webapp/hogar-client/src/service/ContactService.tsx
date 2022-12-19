@@ -32,7 +32,7 @@ export class ContactService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: formData
-        }).then((r) => r.text())
+        })
     }
 
     public static async contacts(id: number, page: number) {

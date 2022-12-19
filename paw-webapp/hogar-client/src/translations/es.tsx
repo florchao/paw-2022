@@ -62,7 +62,8 @@ export const TRANSLATIONS_ES = {
         errorJob: "Usted ya aplic\u00f3 para este trabajo",
         sentJob: "La aplicaci\u00f3n fue enviada con \u00e9xito",
         errorContact: "Usted ya tiene una conexi\u00f3n con este empleado",
-        sentContact: "El mensaje fue enviado con \u00e9xito"
+        sentContact: "El mensaje fue enviado con \u00e9xito",
+        errorReview: "La rese\u00f1a no pudo ser enviada. Por favor intente nuevamente m\u00e1s tarde",
     },
 
 
