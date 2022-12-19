@@ -7,21 +7,17 @@ import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.EmployerService;
-import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.dto.ContactDto;
-import ar.edu.itba.paw.webapp.form.ContactUsForm;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Path("/api/contacts")
@@ -45,6 +41,9 @@ public class ContactController {
     public Response contactUs(@FormDataParam("name") String name,
                               @FormDataParam("mail") String mail,
                               @FormDataParam("content") String content) {
+        if( name.isEmpty() || !name.matches("[a-zA-z\\s]+|^$") || name.length() > 100
+        || mail.isEmpty() || !mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || content.isEmpty())
+            Response.status(Response.Status.BAD_REQUEST).build();
         //todo check que pasa el post con error con sotuyo
         contactService.contactUS(content, mail, name);
         return Response.status(Response.Status.CREATED).build();
