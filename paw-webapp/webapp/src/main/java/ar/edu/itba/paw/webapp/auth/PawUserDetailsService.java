@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Component
@@ -35,18 +34,17 @@ public class PawUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException, UserNotFoundException {
         final User user = userService.findByUsername(username);
         String password = user.getPassword();
-        if(Objects.equals(user.getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.getPassword()).matches()){
+        if (Objects.equals(user.getPassword(), "pepe") || !BCRYPT_PATTERN.matcher(user.getPassword()).matches()) {
             userService.update(username, user.getPassword());
         }
         final Collection<GrantedAuthority> authorities = new ArrayList<>();
         String name = "";
-        if(user.getRole() == 1) {
+        if (user.getRole() == 1) {
             authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
             final Employee employee;
             employee = employeeService.getEmployeeById(user.getId());
             name = employee.getName();
-        }
-        else {
+        } else {
             authorities.add(new SimpleGrantedAuthority("EMPLOYER"));
             final Employer employer = employerService.getEmployerById(user.getId());
             name = employer.getName();

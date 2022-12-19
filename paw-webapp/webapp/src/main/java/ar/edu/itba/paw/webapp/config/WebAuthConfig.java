@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,22 +17,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
-import javax.servlet.Filter;
 import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan({"ar.edu.itba.paw.webapp.auth", "ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
-@EnableAsync
-@EnableTransactionManagement
-@EnableScheduling
+@ComponentScan("ar.edu.itba.paw.webapp.auth")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -74,19 +66,19 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/contacts/us").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/contacts").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.GET, "/api/contacts/{employeeId}/{employerId}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET,"/api/employees").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/employees/{id}").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/employees/{id}/jobs").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET,"/api/employees/{id}/contacts").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET,"/api/employees/{id}/reviews").authenticated()
-                .antMatchers(HttpMethod.GET,"/api/employees/{employeeId}/reviews/{employerId}").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.POST,"/api/employees").anonymous()
-                .antMatchers(HttpMethod.PUT,"/api/employees/{id}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET,"/api/employers/{id}").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.GET,"/api/employers/{id}/jobs").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.GET,"/api/employers/{id}/reviews").authenticated()
-                .antMatchers(HttpMethod.GET,"/api/employers/{employerId}/reviews/{employeeId}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.POST,"/api/employers").anonymous()
+                .antMatchers(HttpMethod.GET, "/api/employees").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/employees/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/employees/{id}/jobs").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.GET, "/api/employees/{id}/contacts").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.GET, "/api/employees/{id}/reviews").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/employees/{employeeId}/reviews/{employerId}").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.POST, "/api/employees").anonymous()
+                .antMatchers(HttpMethod.PUT, "/api/employees/{id}").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.GET, "/api/employers/{id}").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.GET, "/api/employers/{id}/jobs").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.GET, "/api/employers/{id}/reviews").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/employers/{employerId}/reviews/{employeeId}").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.POST, "/api/employers").anonymous()
                 .antMatchers(HttpMethod.GET, "/api/images/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/jobs").hasAuthority("EMPLOYEE")
                 .antMatchers(HttpMethod.GET, "/api/jobs/{id}").authenticated()
@@ -104,7 +96,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
 //                .and().csrf().disable();
     }
-
 
 
     @Override

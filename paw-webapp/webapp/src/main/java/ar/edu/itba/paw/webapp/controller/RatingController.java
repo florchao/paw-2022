@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.RaitingService;
-import ar.edu.itba.paw.webapp.dto.ReviewDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
 import java.util.Objects;
 
 @Path("/api/ratings")

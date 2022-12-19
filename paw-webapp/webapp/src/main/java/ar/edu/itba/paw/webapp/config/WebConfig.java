@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.webapp.auth.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -19,10 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -38,7 +34,6 @@ import java.util.Properties;
 @PropertySource(value = {"classpath:application.properties"})
 @EnableTransactionManagement
 @EnableScheduling
-
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final boolean DEV_BUILD = false; // Change this to a config/profile in the future
@@ -113,8 +108,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setDefaultEncoding("utf-8");
         return resolver;
     }
-
-    @Autowired AuthenticationFilter authenticationFilter;
 
 //    @Bean
 //    @Override
