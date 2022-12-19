@@ -47,12 +47,6 @@ public class JobController {
             @QueryParam("page") @DefaultValue("0") Long page,
             @Context HttpServletRequest request
     ) {
-        //todo analizar las availability y abilities con postman
-        if( name.isEmpty() || name.length() > 25 ||
-        location.length() > 1 || !location.matches("[1-4]") ||
-        Objects.isNull(experienceYears) || experienceYears < 0 || experienceYears > 100 ||
-        availability.isEmpty() || abilities.isEmpty())
-            return Response.status(Response.Status.BAD_REQUEST).build();
 
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -121,6 +115,18 @@ public class JobController {
                             @FormDataParam("abilities[]") List<String> abilities,
                             @FormDataParam("availability") String availability,
                             @FormDataParam("experienceYears") Long experienceYears) {
+        if( title.isEmpty() || (title.length() > 25) ||
+                (location.length() > 1) || !location.matches("[1-4]") ||
+                Objects.isNull(experienceYears) || (experienceYears < 0) || (experienceYears > 100) ||
+                availability.isEmpty() || !availability.matches("[1-4]") || abilities.isEmpty()
+                || (abilities.size() > 6))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        for (int i = 0; i < abilities.toArray().length; i++) {
+            if(!abilities.get(i).matches("[1-6]"))
+                return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Job job = jobService.create(title, location, hogarUser.getUserID(), availability, experienceYears, fromListToString(abilities), description);
         if(job == null) {
