@@ -4,6 +4,8 @@ import useFormPersist from "react-hook-form-persist";
 import {Link, useNavigate} from "react-router-dom";
 import {UserService} from "../service/UserService";
 import {useState} from "react";
+import {ApplicantService} from "../service/ApplicantService";
+import {EmployeeService} from "../service/EmployeeService";
 
 export const LoginCard = () => {
     const {t} = useTranslation();
@@ -36,18 +38,23 @@ export const LoginCard = () => {
     const onSubmit = async (data: any, e: any) => {
         let result = undefined
         try {
-            result = await UserService.getUser(e, data.email, data.password)
+            // It could be any endpoint with authentication
+            result = await EmployeeService.getEmployees(btoa(data.email + ":" + data.password));
         } catch (error: any) {
             setLoginError(t("Feedback.genericError"))
         }
         if (result?.status === 200) {
             let body = await result?.json()
-            localStorage['hogar-role'] = body.role
-            localStorage['hogar-uid'] = body.uid
             let authHeader = result?.headers.get('Authorization')
-            localStorage['hogar-jwt'] = authHeader?.slice(7)
+            let jwt = authHeader?.slice(7)
+            if (jwt === undefined)
+                return
+            let payload = JSON.parse(atob(jwt.split('.')[1]))
+            localStorage['hogar-jwt'] = jwt
+            localStorage['hogar-role'] = payload.role
+            localStorage['hogar-uid'] = payload.uid
             localStorage.removeItem("loginForm")
-            if (body.role === "EMPLOYER") {
+            if (payload.role === "EMPLOYER") {
                 nav("/", {replace: true})
             } else {
                 nav("/explore")
@@ -88,8 +95,6 @@ export const LoginCard = () => {
                     <div className="form-group mb-6">
                     </div>
                     <div className="form-group mb-6">
-                        {/*<input name="j_rememberme" type="checkbox"/>*/}
-                        {/*{t('LogIn.remember')}*/}
                     </div>
                     <div className="form-group mb-6">
                         <button type="submit"

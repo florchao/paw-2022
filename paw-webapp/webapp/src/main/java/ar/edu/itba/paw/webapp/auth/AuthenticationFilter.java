@@ -123,6 +123,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             try {
                 String jwt = basicAuthentication(authHeaderContent);
                 httpServletResponse.addHeader("Access-Control-Expose-Headers", "Authorization");
+//                httpServletResponse.addHeader("Access-Control-Expose-Headers", "X-Total-Count");
                 httpServletResponse.addHeader("Authorization", "Bearer " + jwt);
             } catch (Exception e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid username or password");
@@ -139,6 +140,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication error");
             return;
         }
+        httpServletResponse.addHeader("Access-Control-Expose-Headers", "X-Total-Count");
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
