@@ -40,7 +40,7 @@ export const ProfileEmployee = () => {
 
     const employerId = localStorage.getItem("hogar-uid") as unknown as number
 
-    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue, reset} = useForm<FormData>();
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
 
     watch("content")
 
@@ -57,9 +57,11 @@ export const ProfileEmployee = () => {
             setShowMessage(true)
         else {
             setShowMessage(false)
-            localStorage.removeItem("reviewEmployeeForm")
-            reset()
-            post.json().then((r) => setMyReview(r))
+            post.json().then(
+                (r) => {
+                    setMyReview(r)
+                }
+            )
         }
     }
 

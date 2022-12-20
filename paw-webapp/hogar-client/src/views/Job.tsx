@@ -77,6 +77,9 @@ export const Job = () => {
                 ReviewService.getMyEmployerReview(job.employerId.reviews).then(
                     (rsp) => {
                         setMyReview(rsp)
+                        if (rsp != undefined) {
+                            localStorage.removeItem("reviewEmployerForm")
+                        }
                     }
                 )
             }
@@ -236,7 +239,7 @@ export const Job = () => {
                                     </button>}
                             </div>
                         </div>}
-                        {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                        {reviews && localStorage.getItem("hogar-role") == "EMPLOYEE" &&
                             <div className="flow-root">
                                 <h1 className="pb-3 pt-3 font-semibold text-purple-900">
                                     {t('Job.reviewsFor')} {job.employerId.name}
