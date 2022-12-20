@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,9 @@ public class ReviewJpaDao implements ReviewDao{
             idQuery.setParameter("offset", page * pageSize);
             @SuppressWarnings("unchecked")
             List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+            if (ids.isEmpty()) {
+                return new ArrayList<>();
+            }
 
 //            noinspection JpaQlInspection
             query = em.createQuery("select u from Review u where reviewid in :ids", Review.class);
@@ -49,6 +53,9 @@ public class ReviewJpaDao implements ReviewDao{
             idQuery.setParameter("offset", page * pageSize);
             @SuppressWarnings("unchecked")
             List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+            if (ids.isEmpty()) {
+                return new ArrayList<>();
+            }
 
 //            noinspection JpaQlInspection
             query = em.createQuery("select u from Review u where reviewid in :ids", Review.class);
