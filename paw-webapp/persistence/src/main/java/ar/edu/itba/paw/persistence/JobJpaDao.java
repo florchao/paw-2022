@@ -119,7 +119,9 @@ public class JobJpaDao implements JobDao {
         idQuery.setParameter("offset", page * pageSize);
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
-
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
 //        noinspection JpaQlInspection
         TypedQuery<Job> filteredQuery = em.createQuery("select j from Job j where jobid in :ids", Job.class);
         filteredQuery.setParameter("ids", ids);

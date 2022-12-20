@@ -9,8 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class ApplicantJpaDao implements ApplicantDao{
@@ -27,9 +29,19 @@ public class ApplicantJpaDao implements ApplicantDao{
 
     @Override
     public List<Applicant> getAppliedJobsByApplicant(Employee employeeID, Long page, int pageSize) {
-        final TypedQuery<Applicant> query = em.createQuery("select a from Applicant a where a.employeeID =:employeeID", Applicant.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-        query.setParameter("employeeID", employeeID);
-        System.out.println("WHAT: " + query.getResultList());
+        final Query idQuery = em.createNativeQuery("SELECT jobid FROM applicants where employeeid =:employee LIMIT :pageSize OFFSET :offset");
+        idQuery.setParameter("pageSize", pageSize);
+        idQuery.setParameter("offset", page * pageSize);
+        idQuery.setParameter("employee", employeeID);
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        // noinspection JpaQlInspection
+        final TypedQuery<Applicant> query = em.createQuery("select a from Applicant a where jobid in :ids and a.employeeID =:employee", Applicant.class);
+        query.setParameter("ids", ids);
+        query.setParameter("employee", employeeID);
         return query.getResultList();
     }
 
@@ -42,8 +54,20 @@ public class ApplicantJpaDao implements ApplicantDao{
 
     @Override
     public List<Applicant> getApplicantsByJob(Job jobID, Long page, int pageSize) {
-        final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where u.jobID =:jobID order by u.status", Applicant.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+
+        final Query idQuery = em.createNativeQuery("SELECT employeeid FROM applicants where jobid =:job order by status LIMIT :pageSize OFFSET :offset");
+        idQuery.setParameter("pageSize", pageSize);
+        idQuery.setParameter("offset", page * pageSize);
+        idQuery.setParameter("job", jobID);
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        // noinspection JpaQlInspection
+        final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where employeeid in :ids and u.jobID =:jobID order by u.status", Applicant.class);
         query.setParameter("jobID", jobID);
+        query.setParameter("ids", ids);
         return (query.getResultList());
     }
 
