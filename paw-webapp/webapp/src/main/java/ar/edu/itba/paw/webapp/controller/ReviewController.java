@@ -23,9 +23,7 @@ public class ReviewController {
     @Context
     UriInfo uriInfo;
 
-    private final static int PAGE_SIZE = 9;
 
-    //TODO: los ids se pasan por body
     @POST
     @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})

@@ -13,7 +13,7 @@ export const Applicants = () => {
 
     const {applicants, title} = useLocation().state
     const {t} = useTranslation();
-    const [totalPages, setTotalPages]: any = useState(100)
+    const [totalPages, setTotalPages]: any = useState(0)
 
     async function setApplicantsByPage(page: number) {
         const result = await JobService.getApplicants(applicants, page)

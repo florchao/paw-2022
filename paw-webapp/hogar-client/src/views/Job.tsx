@@ -27,7 +27,7 @@ export const Job = () => {
     const [showError, setShowError] = useState<boolean>(false)
 
     let employeeId: number;
-    employeeId = localStorage.getItem('hogar-uid')? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
+    employeeId = localStorage.getItem('hogar-uid') ? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
 
     const {self} = useLocation().state
 
@@ -46,7 +46,7 @@ export const Job = () => {
     useFormPersist("reviewEmployerForm", {
         watch,
         setValue,
-        storage: localStorage.getItem('hogar-role') == "EMPLOYEE"? window.localStorage : undefined,
+        storage: localStorage.getItem('hogar-role') == "EMPLOYEE" ? window.localStorage : undefined,
         timeout: 1000 * 60 * 2,
     })
 
@@ -73,7 +73,7 @@ export const Job = () => {
                 ReviewService.getEmployerReviews(job.employerId.reviews, 0).then(
                     (rsp) => {
                         rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                        if(rsp.status === 200)
+                        if (rsp.status === 200)
                             rsp.json().then((reviews) => {
                                 setReviews(reviews)
                             })
@@ -107,24 +107,24 @@ export const Job = () => {
         );
     }
 
-    async function createApplicant(){
+    async function createApplicant() {
         const newStatus = await ApplicantService.createApplicant(job.jobId)
-        if(newStatus.status === 201)
+        if (newStatus.status === 201)
             setStatus("0")
     }
 
-    function delJob(){
-        JobService.deleteJob(job.jobId).then(()=>{
+    function delJob() {
+        JobService.deleteJob(job.jobId).then(() => {
             nav('/jobs', {replace: true})
         })
     }
 
-    async function openJob(){
+    async function openJob() {
         await JobService.updateJobStatus(job.jobId, true)
         setOpened(true)
     }
 
-    async function closeJob(){
+    async function closeJob() {
         await JobService.updateJobStatus(job.jobId, false)
         setOpened(false)
     }
@@ -149,8 +149,8 @@ export const Job = () => {
                         ariaLabel="MagnifyingGlass-loading"
                         wrapperStyle={{}}
                         wrapperClass="MagnifyingGlass-wrapper"
-                        glassColor = '#c0efff'
-                        color = '#e5de00'
+                        glassColor='#c0efff'
+                        color='#e5de00'
                     />
                 </div>
             }
@@ -171,37 +171,39 @@ export const Job = () => {
                                 <h1 className="block mb-2 ml-2 text-sm font-medium text-gray-600 "> {job.experienceYears}</h1>
                             </div>
 
-                            { status &&
+                            {status &&
                                 {
-                                    '-1':<div className="col-start-5 row-start-2">
-                                            <button type="submit" onClick={createApplicant} className="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.apply')}</button>
-                                        </div>,
+                                    '-1': <div className="col-start-5 row-start-2">
+                                        <button type="submit" onClick={createApplicant}
+                                                className="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.apply')}</button>
+                                    </div>,
                                     '0': <div className="col-start-5 row-start-2">
-                                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
-                                                {t('Job.statusTitle')}
-                                            </h1>
-                                            <a className="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5">
-                                                {t('Job.pending')}
-                                            </a>
+                                        <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                            {t('Job.statusTitle')}
+                                        </h1>
+                                        <a className="text-sm focus:outline-none text-purple-900 bg-yellow-300 font-small rounded-lg text-sm px-5 py-2.5">
+                                            {t('Job.pending')}
+                                        </a>
                                         <br/><br/>
-                                         <button type="submit" onClick={delApplication} className="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.delete')}</button>
-                                        </div>,
-                                    '1':<div className="col-start-5 row-start-2">
-                                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
-                                                {t('Job.statusTitle')}
-                                            </h1>
-                                            <a className="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5">
-                                                {t('Job.accepted')}
-                                            </a>
-                                        </div>,
-                                    '2':<div className="col-start-5 row-start-2">
-                                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
-                                                {t('Job.statusTitle')}
-                                            </h1>
-                                            <a className="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5">
-                                                {t('Job.rejected')}
-                                            </a>
-                                        </div>
+                                        <button type="submit" onClick={delApplication}
+                                                className="ml-2 h-fit w-fit text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">{t('Job.delete')}</button>
+                                    </div>,
+                                    '1': <div className="col-start-5 row-start-2">
+                                        <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                            {t('Job.statusTitle')}
+                                        </h1>
+                                        <a className="text-sm focus:outline-none text-purple-900 bg-green-300 font-small rounded-lg text-sm px-5 py-2.5">
+                                            {t('Job.accepted')}
+                                        </a>
+                                    </div>,
+                                    '2': <div className="col-start-5 row-start-2">
+                                        <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                            {t('Job.statusTitle')}
+                                        </h1>
+                                        <a className="text-sm focus:outline-none text-purple-900 bg-red-300 font-small rounded-lg text-sm px-5 py-2.5">
+                                            {t('Job.rejected')}
+                                        </a>
+                                    </div>
                                 }[status]
                             }
                         </div>
@@ -222,7 +224,7 @@ export const Job = () => {
                                 </h1>
                                 <ul role="list"
                                     className="list-inside marker:text-purple-900 list-disc pl-5 space-y-3 text-gray-500">
-                                    {job.availability.map((availability: String, i:number) => (
+                                    {job.availability.map((availability: String, i: number) => (
                                         <li key={i}>
                                             {availability}
                                         </li>
@@ -235,102 +237,108 @@ export const Job = () => {
                             </div>
                         </div>
                         {localStorage.getItem("hogar-role") == "EMPLOYER" &&
-                        <div className="grid grid-rows-3 grid-cols-5">
-                            <div className="col-start-2 row-start-3">
-                                <button type="submit" onClick={delJob} className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
-                                    <div className="grid grid-rows-1 grid-cols-3">
-                                        <img src={bin} alt="bin" className="mr-3 h-6 sm:h-5 col-start-1"/>
-                                            <p className="col-span-2">{t('Job.deleteJob')}</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div className="col-start-4 row-start-3">
-                                {opened ?
-                                    <button type="submit" onClick={closeJob} className="text-sm focus:outline-none text-purple-700 bg-yellow-300 border-violet-700 hover:bg-yellow-200 font-small rounded-lg text-sm px-5 py-2.5">
+                            <div className="grid grid-rows-3 grid-cols-5">
+                                <div className="col-start-2 row-start-3">
+                                    <button type="submit" onClick={delJob}
+                                            className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
                                         <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src={editingPurple} alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
-                                                <p className="col-span-2">{t('Job.closeJob')}</p>
+                                            <img src={bin} alt="bin" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                            <p className="col-span-2">{t('Job.deleteJob')}</p>
                                         </div>
                                     </button>
-                                    :
-                                    <button type="submit" onClick={openJob} className="text-sm focus:outline-none text-white bg-green-500 hover:bg-green-700 font-small rounded-lg text-sm px-5 py-2.5">
-                                        <div className="grid grid-rows-1 grid-cols-3">
-                                            <img src={editing} alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                </div>
+                                <div className="col-start-4 row-start-3">
+                                    {opened ?
+                                        <button type="submit" onClick={closeJob}
+                                                className="text-sm focus:outline-none text-purple-700 bg-yellow-300 border-violet-700 hover:bg-yellow-200 font-small rounded-lg text-sm px-5 py-2.5">
+                                            <div className="grid grid-rows-1 grid-cols-3">
+                                                <img src={editingPurple} alt="edit"
+                                                     className="mr-3 h-6 sm:h-5 col-start-1"/>
+                                                <p className="col-span-2">{t('Job.closeJob')}</p>
+                                            </div>
+                                        </button>
+                                        :
+                                        <button type="submit" onClick={openJob}
+                                                className="text-sm focus:outline-none text-white bg-green-500 hover:bg-green-700 font-small rounded-lg text-sm px-5 py-2.5">
+                                            <div className="grid grid-rows-1 grid-cols-3">
+                                                <img src={editing} alt="edit" className="mr-3 h-6 sm:h-5 col-start-1"/>
                                                 <p className="col-span-2">{t('Job.openJob')}</p>
-                                        </div>
-                                    </button>}
-                            </div>
-                        </div>}
+                                            </div>
+                                        </button>}
+                                </div>
+                            </div>}
                         {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
                             <h1 className="pb-3 pt-3 font-semibold text-purple-900">
                                 {t('Job.reviewsFor')} {job.employerId.name}
                             </h1>
                         }
-                        {localStorage.getItem("hogar-role") == "EMPLOYEE" && !reviews ?
-                            <div className={'flex items-center justify-center h-1/4'}>
-                                <MagnifyingGlass
-                                visible={true}
-                                height="160"
-                                width="160"
-                                ariaLabel="MagnifyingGlass-loading"
-                                wrapperStyle={{}}
-                                wrapperClass="MagnifyingGlass-wrapper"
-                                glassColor = '#c0efff'
-                                color = '#e5de00'
-                                /></div>
-                            :
-                            <div className="flow-root">
-                                {myReview == null && (
-                                    <form onSubmit={handleSubmit(onSubmit)}>
-                                        <div className="">
-                                            <label htmlFor="title"
-                                                   className="block pb-3 pt-3 font-semibold text-gray-900">
-                                                {t('ReviewForm.label_title')}
-                                            </label>
-                                            <textarea
-                                                value={getValues("content")}
-                                                {...register("content", {
-                                                    required: true,
-                                                    maxLength: 1000,
-                                                    minLength: 10
-                                                })}
-                                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                            {errors.content && (
-                                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
-                                                    {t('ReviewForm.error')}
-                                                </p>
+                        {localStorage.getItem("hogar-role") == "EMPLOYEE" && (
+                            !reviews ?
+                                <div className={'flex items-center justify-center h-1/4'}>
+                                    <MagnifyingGlass
+                                        visible={true}
+                                        height="160"
+                                        width="160"
+                                        ariaLabel="MagnifyingGlass-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="MagnifyingGlass-wrapper"
+                                        glassColor='#c0efff'
+                                        color='#e5de00'
+                                    /></div>
+                                :
+                                <div className="flow-root">
+                                    {myReview == null && (
+                                        <form onSubmit={handleSubmit(onSubmit)}>
+                                            <div className="">
+                                                <label htmlFor="title"
+                                                       className="block pb-3 pt-3 font-semibold text-gray-900">
+                                                    {t('ReviewForm.label_title')}
+                                                </label>
+                                                <textarea
+                                                    value={getValues("content")}
+                                                    {...register("content", {
+                                                        required: true,
+                                                        maxLength: 1000,
+                                                        minLength: 10
+                                                    })}
+                                                    className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                                {errors.content && (
+                                                    <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
+                                                        {t('ReviewForm.error')}
+                                                    </p>
 
-                                            )}
-                                            <div className="mt-5 col-start-2 col-span-4 row-span-3">
-                                                <button type="submit"
-                                                        className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                                    {t('ReviewForm.button')}
-                                                </button>
+                                                )}
+                                                <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                                                    <button type="submit"
+                                                            className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                                                        {t('ReviewForm.button')}
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>)}
-                                {reviews === 0 && !myReview &&
-                                    (<div className="grid content-center justify-center h-5/6 mt-16">
-                                            <div className="grid justify-items-center">
-                                                <img src={noEmployees} alt="sinEmpleadas"
-                                                     className="mr-3 h-6 sm:h-52"/>
-                                                <p className="text-3xl font-semibold text-purple-700">
-                                                    {t('Job.noReviews')}
-                                                </p>
+                                        </form>)}
+                                    {reviews === 0 && !myReview &&
+                                        (<div className="grid content-center justify-center h-5/6 mt-16">
+                                                <div className="grid justify-items-center">
+                                                    <img src={noEmployees} alt="sinEmpleadas"
+                                                         className="mr-3 h-6 sm:h-52"/>
+                                                    <p className="text-3xl font-semibold text-purple-700">
+                                                        {t('Job.noReviews')}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
-                                <ul role="list" className="divide-y divide-gray-300">
-                                    {myReview && <MyReviewCard review={myReview}/>}
-                                    {reviews && reviews.length > 0 &&
-                                        <div>
-                                            {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
-                                                                                   review={rev}/>)}
-                                            <PaginationButtons changePages={changePage} pages={pages}/>
-                                        </div>
-                                    }
-                                </ul>
-                            </div>
+                                        )}
+                                    <ul role="list" className="divide-y divide-gray-300">
+                                        {myReview && <MyReviewCard review={myReview}/>}
+                                        {reviews && reviews.length > 0 &&
+                                            <div>
+                                                {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
+                                                                                       review={rev}/>)}
+                                                <PaginationButtons changePages={changePage} pages={pages}/>
+                                            </div>
+                                        }
+                                    </ul>
+                                </div>
+                        )
                         }
                     </div>
                 </div>}

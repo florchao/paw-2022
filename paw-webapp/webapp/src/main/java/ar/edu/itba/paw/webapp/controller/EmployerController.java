@@ -47,10 +47,10 @@ public class EmployerController {
     @Context
     private UriInfo uriInfo;
 
-    private final static long PAGE_SIZE = 1;
+    private final static long PAGE_SIZE = 7;
     private final static long PAGE_SIZE_PROFILE = 2;
 
-    private final static int PAGE_SIZE_REVIEWS = 1;
+    private final static int PAGE_SIZE_REVIEWS = 4;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployerController.class);
 

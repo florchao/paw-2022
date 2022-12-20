@@ -27,9 +27,6 @@ import java.util.Objects;
 @Path("/api/applicants")
 @Component
 public class ApplicantController {
-
-    //TODO: poner mas
-    private final int PAGE_SIZE = 5;
     @Autowired
     private JobService jobService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicantController.class);

@@ -49,7 +49,6 @@ public class EmployeeJpaDao implements EmployeeDao {
         final Query idQuery = em.createNativeQuery("SELECT employeeid FROM employee order by rating desc LIMIT :pageSize");
         idQuery.setParameter("pageSize", pageSize);
 
-        @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
         if (ids.isEmpty()) {
