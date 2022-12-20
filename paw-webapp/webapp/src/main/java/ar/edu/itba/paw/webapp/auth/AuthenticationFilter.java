@@ -101,7 +101,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     .setSigningKey(hmacKey)
                     .build()
                     .parseClaimsJws(jwt);
-            //        System.out.println(parsed.getBody());
             UserDetails userDetails = pawUserDetailsService.loadUserByUsername(parsed.getBody().get("email").toString());
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails == null ? Collections.emptyList() : userDetails.getAuthorities()

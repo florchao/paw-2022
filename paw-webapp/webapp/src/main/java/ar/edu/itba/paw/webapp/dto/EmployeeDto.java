@@ -79,8 +79,6 @@ public class EmployeeDto {
         dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), language);
         dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), language);
 
-        System.out.println("ANONYMOUS: " + anonymous);
-
         if(!anonymous) {
             final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
             final UriBuilder employerReviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");

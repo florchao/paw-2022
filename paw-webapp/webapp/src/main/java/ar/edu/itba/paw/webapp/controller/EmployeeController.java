@@ -91,7 +91,6 @@ public class EmployeeController {
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
             return Response.status(Response.Status.FORBIDDEN).build();
         } else if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-            System.out.println("EMPLOYER");
             hogarUser = (HogarUser) auth.getPrincipal();
         } else {
             hogarUser = null;

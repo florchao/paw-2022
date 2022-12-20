@@ -106,11 +106,8 @@ public class ReviewServiceImpl implements ReviewService {
     public Optional<Review> getMyReviewEmployer(long employeeId, long employerId) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        System.out.println("EMPLOYEE " + employeeId + ": " + employee.isPresent());
-        System.out.println("EMPLOYER " + employerId + ": " + employer.isPresent());
 
         if (employee.isPresent() && employer.isPresent()) {
-            System.out.println("getMyReviewEmployer");
             return reviewDao.getMyReviewEmployer(employee.get(), employer.get());
         }
         return Optional.empty();
