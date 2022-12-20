@@ -23,11 +23,4 @@ public interface ReviewDao {
 
     Optional<Review> getMyReviewEmployer(Employee employeeId, Employer id);
 
-//    List<Review> getMyProfileReviews(Employee employeeId,long page, int pageSize);
-
-//    List<Review> getMyProfileReviewsEmployer(Employer employerId, long page, int pageSize);
-
-//    int getMyProfileReviewsEmployerPageNumber(Employer employerId, int pageSize);
-
-//    int getMyProfileReviewsPageNumber(Employee employee, int pageSize);
 }

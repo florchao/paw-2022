@@ -57,7 +57,6 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     @Override
     public boolean contact(User to, User from, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
-//        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
             return true;
         mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
