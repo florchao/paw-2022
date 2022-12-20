@@ -20,9 +20,10 @@ public class IdsController {
 
     @GET
     @Path("")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getIds() {
-        GenericEntity<IdsDto> genericEntity = new GenericEntity<IdsDto>(IdsDto.fromForm(Availability.getIds(), Abilities.getIds(), Location.getIds())){};
+        GenericEntity<IdsDto> genericEntity = new GenericEntity<IdsDto>(IdsDto.fromForm(Availability.getIds(), Abilities.getIds(), Location.getIds())) {
+        };
         return Response.ok(genericEntity).build();
     }
 

@@ -20,7 +20,6 @@ const Register = () => {
                         <br/>{t('Register.employerDesc3')}
                     </p>
                     <div className="pb-4 grid col-start-2 col-span-2 mt-7">
-                        {/*TODO pagina registerEmployer*/}
                         <Button link="/register/employer" name={t('Register.createEmployer')}/>
                     </div>
                 </div>
@@ -37,7 +36,6 @@ const Register = () => {
                         <br/> {t('Register.employerDesc3')}
                     </p>
                     <div className="pb-4 grid col-start-2 col-span-2 mt-7">
-                        {/*TODO pagina registerEmployee*/}
                         <Button link="/register/employee" name={t('Register.createEmployee')}/>
                     </div>
                 </div>
