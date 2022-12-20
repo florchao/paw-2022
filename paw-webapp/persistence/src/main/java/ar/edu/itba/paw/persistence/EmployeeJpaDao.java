@@ -130,6 +130,7 @@ public class EmployeeJpaDao implements EmployeeDao{
         idQuery.setParameter("offset", page * pageSize);
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+//        noinspection JpaQlInspection
         TypedQuery<Employee> filteredQuery = em.createQuery("select e from Employee e where employeeid in :ids", Employee.class);
         filteredQuery.setParameter("ids", ids);
         return filteredQuery.getResultList();
