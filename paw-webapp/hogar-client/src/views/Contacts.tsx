@@ -6,6 +6,7 @@ import ContactCard from "../components/ContactCard";
 import ContactCardModal from "../components/ContactCardModal";
 import Modal from "react-modal";
 import PaginationButtons from "../components/PaginationButtons";
+import {MagnifyingGlass} from "react-loader-spinner";
 
 export const Contacts = () => {
 
@@ -52,6 +53,20 @@ export const Contacts = () => {
             <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
                 {t('Contacts.title')}
             </p>
+            {!contacts &&
+                <div className={'flex items-center justify-center h-3/4'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {contacts && contacts.length === 0 &&
                 <div className="grid content-center justify-center h-5/6 mt-16">
                     <div className="grid justify-items-center">
