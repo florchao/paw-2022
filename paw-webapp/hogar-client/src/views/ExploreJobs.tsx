@@ -72,6 +72,7 @@ export const ExploreJobs = () => {
     }
 
     const changePage = (page: number) => {
+        setJobs(null)
         setValue("page", page)
         onSubmit(getValues())
     }

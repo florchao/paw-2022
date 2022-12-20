@@ -34,6 +34,7 @@ export const Contacts = () => {
     }, [])
 
     const changePage = (page: number) => {
+        setContacts(null)
         ContactService.contacts(id, page).then(
             (rsp) => {
                 rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)

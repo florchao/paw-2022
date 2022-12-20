@@ -15,6 +15,7 @@ export const Applicants = () => {
     const [totalPages, setTotalPages]: any = useState(100)
 
     async function setApplicantsByPage(page: number) {
+        setApplicantList(null)
         const result = await JobService.getApplicants(applicants, page)
         if (result.status === 200) {
             let body = await result.json()

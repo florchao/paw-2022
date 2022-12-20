@@ -137,6 +137,7 @@ export const ProfileEmployee = () => {
     )
 
     const changePage = async (page: number) => {
+        setReview(null)
         const get = await ReviewService.getEmployeeReviews(employee.reviews, page)
         get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
         get.json().then((reviews) => {
