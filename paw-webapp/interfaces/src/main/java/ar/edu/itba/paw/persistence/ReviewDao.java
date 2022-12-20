@@ -29,5 +29,5 @@ public interface ReviewDao {
 
     int getMyProfileReviewsEmployerPageNumber(Employer employerId, int pageSize);
 
-    int getMyProfileReviewsPageNumber(Employee employee, int pageSize);
+//    int getMyProfileReviewsPageNumber(Employee employee, int pageSize);
 }

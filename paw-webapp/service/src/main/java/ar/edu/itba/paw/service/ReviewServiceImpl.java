@@ -82,11 +82,11 @@ public class ReviewServiceImpl implements ReviewService{
 //        return Collections.emptyList();
 //    }
 
-    @Override
-    public int getMyProfileReviewsPageNumber(long employeeId, int pageSize) {
-        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        return employee.map(value -> reviewDao.getMyProfileReviewsPageNumber(value, pageSize)).orElse(0);
-    }
+//    @Override
+//    public int getMyProfileReviewsPageNumber(long employeeId, int pageSize) {
+//        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
+//        return employee.map(value -> reviewDao.getMyProfileReviewsPageNumber(value, pageSize)).orElse(0);
+//    }
 
     @Transactional(readOnly = true)
     @Override

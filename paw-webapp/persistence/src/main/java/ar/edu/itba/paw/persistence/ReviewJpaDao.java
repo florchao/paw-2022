@@ -103,23 +103,45 @@ public class ReviewJpaDao implements ReviewDao{
 //        return query.getResultList();
 //    }
 
-    @Override
-    public int getMyProfileReviewsPageNumber(Employee employee, int pageSize) {
-        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employeeId =:employeeId and u.forEmployee = true", Long.class);
-        filteredQuery.setParameter("employeeId", employee);
-        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
-    }
+//    @Override
+//    public int getMyProfileReviewsPageNumber(Employee employee, int pageSize) {
+//        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employeeId =:employeeId and u.forEmployee = true", Long.class);
+//        filteredQuery.setParameter("employeeId", employee);
+//        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
+//    }
 
     @Override
     public List<Review> getAllReviewsEmployer(Employee employeeId, Employer employerId, Long page, int pageSize) {
         final TypedQuery<Review> query;
         if(employeeId!=null) {
-            query = em.createQuery("select u from Review u where u.employerId =:employerId and u.employeeId <>:employeeId and u.forEmployee = false", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-            query.setParameter("employeeId", employeeId);
-            query.setParameter("employerId", employerId);
-        }else {
-            query = em.createQuery("select u from Review u where u.employerId =:employerId and u.forEmployee = false", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-            query.setParameter("employerId", employerId);
+            final Query idQuery = em.createNativeQuery("SELECT reviewid FROM review where employerid =:employer and employeeid <> :employee and foremployee = false LIMIT :pageSize OFFSET :offset");
+            idQuery.setParameter("pageSize", pageSize);
+            idQuery.setParameter("employer", employerId);
+            idQuery.setParameter("employee", employeeId);
+            idQuery.setParameter("offset", page * pageSize);
+            @SuppressWarnings("unchecked")
+            List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+            if (ids.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+//            noinspection JpaQlInspection
+            query = em.createQuery("select r from Review r where reviewid in :ids", Review.class);
+            query.setParameter("ids", ids);
+        } else {
+            final Query idQuery = em.createNativeQuery("SELECT reviewid FROM review where employerid =:employer and foremployee = false LIMIT :pageSize OFFSET :offset");
+            idQuery.setParameter("pageSize", pageSize);
+            idQuery.setParameter("employer", employerId);
+            idQuery.setParameter("offset", page * pageSize);
+            @SuppressWarnings("unchecked")
+            List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+            if (ids.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+//            noinspection JpaQlInspection
+            query = em.createQuery("select r from Review r where reviewid in :ids", Review.class);
+            query.setParameter("ids", ids);
         }
         return query.getResultList();
     }
