@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ReviewServiceImpl implements ReviewService{
+public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     private ReviewDao reviewDao;
@@ -41,12 +41,12 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<Review> getAllReviews(long employeeId, Long id, Long page, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        if(id!=null) {
+        if (id != null) {
             Optional<Employer> employer = employerDao.getEmployerById(id);
             if (employee.isPresent() && employer.isPresent())
                 return reviewDao.getAllReviews(employee.get(), employer.get(), page, pageSize);
-        }else {
-            if(employee.isPresent())
+        } else {
+            if (employee.isPresent())
                 return reviewDao.getAllReviews(employee.get(), null, page, pageSize);
         }
         return Collections.emptyList();
@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public int getPageNumber(long employeeId, Long id, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        if(id!=null) {
+        if (id != null) {
             Optional<Employer> employer = employerDao.getEmployerById(id);
             if (employee.isPresent() && employer.isPresent())
                 return reviewDao.getPageNumber(employee.get(), employer.get(), pageSize);
@@ -74,30 +74,16 @@ public class ReviewServiceImpl implements ReviewService{
         return Optional.empty();
     }
 
-//    @Override
-//    public List<Review> getMyProfileReviews(long employeeId, long page, int pageSize) {
-//        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-//        if (employee.isPresent() )
-//            return reviewDao.getMyProfileReviews(employee.get(), page, pageSize);
-//        return Collections.emptyList();
-//    }
-
-//    @Override
-//    public int getMyProfileReviewsPageNumber(long employeeId, int pageSize) {
-//        Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-//        return employee.map(value -> reviewDao.getMyProfileReviewsPageNumber(value, pageSize)).orElse(0);
-//    }
-
     @Transactional(readOnly = true)
     @Override
     public List<Review> getAllReviewsEmployer(Long employeeId, long employerId, Long page, int pageSize) {
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        if(employeeId!=null) {
+        if (employeeId != null) {
             Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
             if (employee.isPresent() && employer.isPresent())
                 return reviewDao.getAllReviewsEmployer(employee.get(), employer.get(), page, pageSize);
-        }else {
-            if(employer.isPresent())
+        } else {
+            if (employer.isPresent())
                 return reviewDao.getAllReviewsEmployer(null, employer.get(), page, pageSize);
         }
         return Collections.emptyList();
@@ -107,7 +93,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public int getPageNumberEmployer(Long employeeId, long employerId, int pageSize) {
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        if(employeeId!=null) {
+        if (employeeId != null) {
             Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
             if (employee.isPresent() && employer.isPresent())
                 return reviewDao.getPageNumberEmployer(employee.get(), employer.get(), pageSize);
@@ -129,18 +115,4 @@ public class ReviewServiceImpl implements ReviewService{
         }
         return Optional.empty();
     }
-
-//    @Override
-//    public List<Review> getMyProfileReviewsEmployer(long employerId, long page, int pageSize) {
-//        Optional<Employer> employer = employerDao.getEmployerById(employerId);
-//        if (employer.isPresent() )
-//            return reviewDao.getMyProfileReviewsEmployer(employer.get(), page, pageSize);
-//        return Collections.emptyList();
-//    }
-
-//    @Override
-//    public int getMyProfileReviewsEmployerPageNumber(long employerId, int pageSize) {
-//        Optional<Employer> employer = employerDao.getEmployerById(employerId);
-//        return employer.map(value -> reviewDao.getMyProfileReviewsEmployerPageNumber(value, pageSize)).orElse(0);
-//    }
 }

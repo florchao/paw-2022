@@ -1,14 +1,18 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.User;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
-public class EmployeeJpaDao implements EmployeeDao{
+public class EmployeeJpaDao implements EmployeeDao {
     @PersistenceContext
     private EntityManager em;
 
@@ -30,7 +34,7 @@ public class EmployeeJpaDao implements EmployeeDao{
     }
 
     @Override
-    public void update(Employee employee, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites, byte [] image) {
+    public void update(Employee employee, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites, byte[] image) {
         employee.setName(name);
         employee.setAbilities(abilites);
         employee.setLocation(location);
@@ -73,17 +77,9 @@ public class EmployeeJpaDao implements EmployeeDao{
         orderCriteriaWhiteList.add("rating");
         orderCriteriaWhiteList.add("experienceYears");
 
-//        final Query idQuery = em.createNativeQuery("SELECT employeeid FROM employee LIMIT :pageSize OFFSET :offset");
-//        idQuery.setParameter("pageSize", pageSize);
-//        idQuery.setParameter("offset", page * pageSize);
-//        @SuppressWarnings("unchecked")
-//        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
-
-
         Map<String, Object> paramMap = new HashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT employeeid FROM employee where ");
-//        stringBuilder.append(" employeeid IN :ids and   ");
 
         if (name != null) {
             stringBuilder.append("lower(name) like :name ");
@@ -101,30 +97,30 @@ public class EmployeeJpaDao implements EmployeeDao{
         for (String av : availability) {
             stringBuilder.append("availability like ").append(":availability").append(variableCount).append(" ");
             paramMap.put("availability" + variableCount, '%' + av + '%');
-            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            variableCount = String.valueOf((char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
-        if(!location.isEmpty())
+        if (!location.isEmpty())
             stringBuilder.append(" ( ");
         for (String l : location) {
             stringBuilder.append("location like ").append(":location").append(variableCount).append(" ");
             paramMap.put("location" + variableCount, '%' + l + '%');
-            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            variableCount = String.valueOf((char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" or   ");
         }
-        if(!location.isEmpty()) {
+        if (!location.isEmpty()) {
             stringBuilder.setLength(stringBuilder.length() - 7);
             stringBuilder.append(" ) and   ");
         }
         for (String ability : abilities) {
             stringBuilder.append("abilities like ").append(":abilities").append(variableCount).append(" ");
             paramMap.put("abilities" + variableCount, '%' + ability + '%');
-            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            variableCount = String.valueOf((char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
 
         stringBuilder.setLength(stringBuilder.length() - 7);
-        if (orderCriteria != null && orderCriteriaWhiteList.contains(orderCriteria)){
+        if (orderCriteria != null && orderCriteriaWhiteList.contains(orderCriteria)) {
             stringBuilder.append(" order by ")
                     .append(orderCriteria)
                     .append(" desc");
@@ -140,6 +136,9 @@ public class EmployeeJpaDao implements EmployeeDao{
         idQuery.setParameter("offset", page * pageSize);
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
 //        noinspection JpaQlInspection
         TypedQuery<Employee> filteredQuery = em.createQuery("select e from Employee e where employeeid in :ids", Employee.class);
         filteredQuery.setParameter("ids", ids);
@@ -166,30 +165,30 @@ public class EmployeeJpaDao implements EmployeeDao{
         for (String av : availability) {
             stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
             paramMap.put("availability" + variableCount, '%' + av + '%');
-            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            variableCount = String.valueOf((char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
-        if(!location.isEmpty())
+        if (!location.isEmpty())
             stringBuilder.append(" ( ");
         for (String l : location) {
             stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
             paramMap.put("location" + variableCount, '%' + l + '%');
-            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            variableCount = String.valueOf((char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" or   ");
         }
-        if(!location.isEmpty()) {
+        if (!location.isEmpty()) {
             stringBuilder.setLength(stringBuilder.length() - 7);
             stringBuilder.append(" ) and   ");
         }
         for (String ability : abilities) {
             stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
             paramMap.put("abilities" + variableCount, '%' + ability + '%');
-            variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
+            variableCount = String.valueOf((char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
         }
         stringBuilder.setLength(stringBuilder.length() - 7);
         stringBuilder.append(" group by e.id");
-        if (orderCriteria != null && orderCriteriaWhiteList.contains(orderCriteria)){
+        if (orderCriteria != null && orderCriteriaWhiteList.contains(orderCriteria)) {
             stringBuilder.append(" order by ")
                     .append(orderCriteria)
                     .append(" desc");
@@ -202,7 +201,7 @@ public class EmployeeJpaDao implements EmployeeDao{
             filteredQuery.setParameter(key, paramMap.get(key));
         }
 
-        return (int) Math.ceil( (double) filteredQuery.getResultList().size() / pageSize);
+        return (int) Math.ceil((double) filteredQuery.getResultList().size() / pageSize);
 
     }
 
