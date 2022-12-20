@@ -88,12 +88,20 @@ public class ReviewJpaDao implements ReviewDao{
         return Optional.empty();
     }
 
-    @Override
-    public List<Review> getMyProfileReviews(Employee employeeId, long page, int pageSize) {
-        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId and u.forEmployee = true", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-        query.setParameter("employeeId", employeeId);
-        return query.getResultList();
-    }
+//    @Override
+//    public List<Review> getMyProfileReviews(Employee employeeId, long page, int pageSize) {
+//
+//        final Query idQuery = em.createNativeQuery("SELECT reviewid FROM review where employeeid =:userid and foremployee = true LIMIT :pageSize OFFSET :offset");
+//        idQuery.setParameter("pageSize", pageSize);
+//        idQuery.setParameter("userid", employeeId);
+//        idQuery.setParameter("offset", page * pageSize);
+//        @SuppressWarnings("unchecked")
+//        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+//
+//        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employeeId=:employeeId and u.forEmployee = true", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+//        query.setParameter("employeeId", employeeId);
+//        return query.getResultList();
+//    }
 
     @Override
     public int getMyProfileReviewsPageNumber(Employee employee, int pageSize) {
