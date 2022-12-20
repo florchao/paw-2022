@@ -77,7 +77,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try {
             jwtToken = Jwts.builder()
                     .claim("email", credentials[0])
-                    .claim("role", user.getId() == 1 ? "EMPLOYER" : "EMPLOYEE")
+                    .claim("role", user.getRole() == 1 ? "EMPLOYEE" : "EMPLOYER")
                     .claim("uid", user.getId())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(Instant.now().plus(10000L, ChronoUnit.HOURS)))
@@ -115,6 +115,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeaderContent = httpServletRequest.getHeader("Authorization");
+        httpServletResponse.addHeader("Access-Control-Expose-Headers", "X-Total-Count");
         if (authHeaderContent == null) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
@@ -123,7 +124,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             try {
                 String jwt = basicAuthentication(authHeaderContent);
                 httpServletResponse.addHeader("Access-Control-Expose-Headers", "Authorization");
-//                httpServletResponse.addHeader("Access-Control-Expose-Headers", "X-Total-Count");
                 httpServletResponse.addHeader("Authorization", "Bearer " + jwt);
             } catch (Exception e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid username or password");
@@ -140,7 +140,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication error");
             return;
         }
-        httpServletResponse.addHeader("Access-Control-Expose-Headers", "X-Total-Count");
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 

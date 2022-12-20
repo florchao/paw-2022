@@ -1,4 +1,4 @@
-import {BACK_SLASH, JOB_URL, QUERY_PARAM} from "../utils/utils";
+import {BACK_SLASH, BASE_URL, JOB_URL, JOBS, QUERY_PARAM} from "../utils/utils";
 
 export class JobService {
     public static async getJobs() {
@@ -57,6 +57,20 @@ export class JobService {
         return url
     }
 
+    public static async getJobById(id: number, basicEncoded: string) {
+        return await fetch(BASE_URL + 'jobs' + '/' + id, {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+                'Authorization': 'Basic ' + basicEncoded
+            },
+        }).catch(
+                (error) => {
+                    console.log(error)
+                    throw error
+                })
+    }
 
     public static async getJob(url: string) {
         return await fetch(url, {
