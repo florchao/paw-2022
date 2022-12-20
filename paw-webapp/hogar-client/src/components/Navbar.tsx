@@ -1,10 +1,9 @@
 import { useTranslation } from "react-i18next";
-import {Link, useNavigate} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom";
 
 export const Navbar = () => {
     const { t } = useTranslation();
     const nav = useNavigate()
-    console.log(window.location.pathname)
     return (
         <nav className="bg-white w-full pr-2 sm:px-4 py-2.5 fixed shadow-md rounded z-10" style={{backgroundColor: "#ac70ff"}}>
             <div className="flex flex-wrap justify-between mx-auto">
