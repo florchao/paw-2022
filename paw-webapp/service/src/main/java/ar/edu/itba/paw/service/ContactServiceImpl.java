@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ContactServiceImpl implements ContactService{
+public class ContactServiceImpl implements ContactService {
 
     @Autowired
     private ContactDao contactDao;
@@ -45,8 +43,8 @@ public class ContactServiceImpl implements ContactService{
     @Transactional
     @Override
     public boolean create(long employeeId, long employerId, Date created, String contactMessage, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
-       Employee employee = employeeService.getEmployeeById(employeeId);
-       Employer employer = employerService.getEmployerById(employerId);
+        Employee employee = employeeService.getEmployeeById(employeeId);
+        Employer employer = employerService.getEmployerById(employerId);
         boolean exists;
         exists = !contactDao.existsContact(employee, employer).isEmpty();
         if (exists) {

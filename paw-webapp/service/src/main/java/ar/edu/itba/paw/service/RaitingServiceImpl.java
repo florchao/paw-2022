@@ -26,7 +26,7 @@ public class RaitingServiceImpl implements RaitingService {
     public float updateRating(long employeeId, Long rating, Long employerId) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        if(employee.isPresent() && employer.isPresent()) {
+        if (employee.isPresent() && employer.isPresent()) {
             float prevRating = employeeDao.getPrevRating(employee.get());
             float voteCount = employeeDao.getRatingVoteCount(employee.get());
             float newRating = (prevRating * voteCount + rating) / (voteCount + 1L);
@@ -48,7 +48,7 @@ public class RaitingServiceImpl implements RaitingService {
     public boolean hasAlreadyRated(long employeeId, long employerId) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        if(employee.isPresent() && employer.isPresent())
+        if (employee.isPresent() && employer.isPresent())
             return raitingDao.hasAlreadyRated(employee.get(), employer.get());
         return false;
     }
