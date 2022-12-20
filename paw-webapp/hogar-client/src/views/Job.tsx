@@ -137,7 +137,7 @@ export const Job = () => {
     return (
         <div className="grid h-screen grid-cols-6 overflow-auto">
             {!job &&
-                <div className={'flex items-center justify-center h-3/4'}>
+                <div className={'flex items-center justify-center h-screen w-screen'}>
                     <MagnifyingGlass
                         visible={true}
                         height="160"
@@ -257,8 +257,13 @@ export const Job = () => {
                                     </button>}
                             </div>
                         </div>}
-                        {!reviews && localStorage.getItem("hogar-role") == "EMPLOYEE" &&
-                            <div className={'flex items-center justify-center h-3/4'}>
+                        {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                {t('Job.reviewsFor')} {job.employerId.name}
+                            </h1>
+                        }
+                        {localStorage.getItem("hogar-role") == "EMPLOYEE" && !reviews ?
+                            <div className={'flex items-center justify-center h-1/4'}>
                                 <MagnifyingGlass
                                 visible={true}
                                 height="160"
@@ -269,12 +274,8 @@ export const Job = () => {
                                 glassColor = '#c0efff'
                                 color = '#e5de00'
                                 /></div>
-                        }
-                        {reviews && localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                            :
                             <div className="flow-root">
-                                <h1 className="pb-3 pt-3 font-semibold text-purple-900">
-                                    {t('Job.reviewsFor')} {job.employerId.name}
-                                </h1>
                                 {myReview == null && (
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <div className="">
