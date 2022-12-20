@@ -10,6 +10,7 @@ import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import PaginationButtons from "../components/PaginationButtons";
 import ErrorFeedback from "../components/ErrorFeedback";
+import {MagnifyingGlass} from "react-loader-spinner";
 
 export const Job = () => {
 
@@ -64,7 +65,6 @@ export const Job = () => {
     }, [])
 
     useEffect(() => {
-        //TODO: corregir tema reviews
             if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
                 ReviewService.getEmployerReviews(job.employerId.reviews, 0).then(
                     (rsp) => {
@@ -136,6 +136,20 @@ export const Job = () => {
 
     return (
         <div className="grid h-screen grid-cols-6 overflow-auto">
+            {!job &&
+                <div className={'flex items-center justify-center h-3/4'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {job &&
                 <div className=" grid grid-row-4 col-span-4 col-start-2 h-fit">
                     <div className=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
@@ -243,6 +257,19 @@ export const Job = () => {
                                     </button>}
                             </div>
                         </div>}
+                        {!reviews && localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                            <div className={'flex items-center justify-center h-3/4'}>
+                                <MagnifyingGlass
+                                visible={true}
+                                height="160"
+                                width="160"
+                                ariaLabel="MagnifyingGlass-loading"
+                                wrapperStyle={{}}
+                                wrapperClass="MagnifyingGlass-wrapper"
+                                glassColor = '#c0efff'
+                                color = '#e5de00'
+                                /></div>
+                        }
                         {reviews && localStorage.getItem("hogar-role") == "EMPLOYEE" &&
                             <div className="flow-root">
                                 <h1 className="pb-3 pt-3 font-semibold text-purple-900">

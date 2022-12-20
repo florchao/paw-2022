@@ -8,6 +8,7 @@ import {useTranslation} from "react-i18next";
 import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
 import PaginationButtons from "../components/PaginationButtons";
+import {MagnifyingGlass} from "react-loader-spinner";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
@@ -88,6 +89,20 @@ export const ProfileEmployer = () => {
 
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
+            {!employer &&
+                <div className={'flex items-center justify-center h-3/4'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {employer &&
                 <div className=" grid grid-row-4 col-span-4 col-start-2 h-fit">
                     <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
@@ -116,6 +131,20 @@ export const ProfileEmployer = () => {
                                 </button>
                             </div>
                         </div>
+                        {!jobs &&
+                            <div className={'flex items-center justify-center h-3/4'}>
+                                <MagnifyingGlass
+                                    visible={true}
+                                    height="160"
+                                    width="160"
+                                    ariaLabel="MagnifyingGlass-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass="MagnifyingGlass-wrapper"
+                                    glassColor = '#c0efff'
+                                    color = '#e5de00'
+                                />
+                            </div>
+                        }
                         {jobs &&
                             <h1 className="pb-3 pt-3 font-semibold">
                                 {t('EmployerProfile.jobs')}
@@ -153,6 +182,20 @@ export const ProfileEmployer = () => {
                             </div>
                         }
                         <ul role="list" className="divide-y divide-gray-300">
+                            {!reviews &&
+                                <div className={'flex items-center justify-center h-3/4'}>
+                                    <MagnifyingGlass
+                                        visible={true}
+                                        height="160"
+                                        width="160"
+                                        ariaLabel="MagnifyingGlass-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="MagnifyingGlass-wrapper"
+                                        glassColor = '#c0efff'
+                                        color = '#e5de00'
+                                    />
+                                </div>
+                            }
                             {reviews &&
                                 <div className="flow-root">
                                     <h1 className="pb-3 pt-3 font-semibold">

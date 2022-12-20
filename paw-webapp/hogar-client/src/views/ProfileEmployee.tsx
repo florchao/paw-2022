@@ -16,6 +16,7 @@ import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
 import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
+import {MagnifyingGlass} from "react-loader-spinner";
 
 export const ProfileEmployee = () => {
 
@@ -165,6 +166,20 @@ export const ProfileEmployee = () => {
 
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
+            {!employee &&
+                <div className={'flex items-center justify-center h-3/4'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {employee &&
                 <div className=" grid grid-row-4 col-span-4 col-start-2 h-fit">
                     <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
