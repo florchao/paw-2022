@@ -79,6 +79,7 @@ export const Explore = () => {
     }
 
     const changePage = async (page: number) => {
+        setEmployees(null)
         setValue("page", page)
         onSubmit(getValues())
     }

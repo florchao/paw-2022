@@ -21,6 +21,7 @@ export const CreatedJobs = () => {
     }, [])
 
     const changePage = async (page: number) => {
+        setCreatedJobs(null)
         let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
         JobService.getCreatedJobs(url, false, page).then( async (j) => {
             j.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)

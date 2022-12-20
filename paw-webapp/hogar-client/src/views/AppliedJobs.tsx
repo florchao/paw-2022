@@ -30,6 +30,7 @@ export const AppliedJobs = () => {
     }, [])
 
     const changePage = async (page: number) => {
+        setAppliedJobs(null)
         const get = await ApplicantService.getAppliedJobs(id, page)
         get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
         get.json().then((jobs) => {
