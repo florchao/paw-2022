@@ -170,19 +170,29 @@ public class ReviewJpaDao implements ReviewDao{
         return Optional.empty();
     }
 
-    @Override
-    public List<Review> getMyProfileReviewsEmployer(Employer employerId, long page, int pageSize) {
-        final TypedQuery<Review> query = em.createQuery("select u from Review u where u.employerId=:employerId and u.forEmployee = false", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-        query.setParameter("employerId", employerId);
-        return query.getResultList();
-    }
+//    @Override
+//    public List<Review> getMyProfileReviewsEmployer(Employer employerId, long page, int pageSize) {
+//        final Query idQuery = em.createNativeQuery("SELECT reviewid FROM review where employerid =:employer and foremployee = false LIMIT :pageSize OFFSET :offset");
+//        idQuery.setParameter("pageSize", pageSize);
+//        idQuery.setParameter("employer", employerId);
+//        idQuery.setParameter("offset", page * pageSize);
+//        @SuppressWarnings("unchecked")
+//        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+//        if (ids.isEmpty()) {
+//            return new ArrayList<>();
+//        }
+//        // noinspection JpaQlInspection
+//        final TypedQuery<Review> query = em.createQuery("select u from Review u where reviewid in :ids", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+//        query.setParameter("employerId", employerId);
+//        return query.getResultList();
+//    }
 
-    @Override
-    public int getMyProfileReviewsEmployerPageNumber(Employer employerId, int pageSize) {
-        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employerId =:employerId and u.forEmployee = false", Long.class);
-        filteredQuery.setParameter("employerId", employerId);
-        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
-    }
+//    @Override
+//    public int getMyProfileReviewsEmployerPageNumber(Employer employerId, int pageSize) {
+//        TypedQuery<Long> filteredQuery = em.createQuery("SELECT count(u) FROM Review u WHERE u.employerId =:employerId and u.forEmployee = false", Long.class);
+//        filteredQuery.setParameter("employerId", employerId);
+//        return (int) Math.ceil( (double) filteredQuery.getSingleResult() / pageSize);
+//    }
 
 
 }

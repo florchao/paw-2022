@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,11 @@ public class ContactJpaDao implements ContactDao{
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // noinspection JpaQlInspection
         final TypedQuery<Contact> query = em.createQuery("select u from Contact u where u.employeeID =:userId and employerid in :ids", Contact.class);
         query.setParameter("ids", ids);
         query.setParameter("userId", userId);

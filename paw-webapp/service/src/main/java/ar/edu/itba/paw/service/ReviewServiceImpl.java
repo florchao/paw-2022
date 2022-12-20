@@ -130,17 +130,17 @@ public class ReviewServiceImpl implements ReviewService{
         return Optional.empty();
     }
 
-    @Override
-    public List<Review> getMyProfileReviewsEmployer(long employerId, long page, int pageSize) {
-        Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        if (employer.isPresent() )
-            return reviewDao.getMyProfileReviewsEmployer(employer.get(), page, pageSize);
-        return Collections.emptyList();
-    }
+//    @Override
+//    public List<Review> getMyProfileReviewsEmployer(long employerId, long page, int pageSize) {
+//        Optional<Employer> employer = employerDao.getEmployerById(employerId);
+//        if (employer.isPresent() )
+//            return reviewDao.getMyProfileReviewsEmployer(employer.get(), page, pageSize);
+//        return Collections.emptyList();
+//    }
 
-    @Override
-    public int getMyProfileReviewsEmployerPageNumber(long employerId, int pageSize) {
-        Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        return employer.map(value -> reviewDao.getMyProfileReviewsEmployerPageNumber(value, pageSize)).orElse(0);
-    }
+//    @Override
+//    public int getMyProfileReviewsEmployerPageNumber(long employerId, int pageSize) {
+//        Optional<Employer> employer = employerDao.getEmployerById(employerId);
+//        return employer.map(value -> reviewDao.getMyProfileReviewsEmployerPageNumber(value, pageSize)).orElse(0);
+//    }
 }
