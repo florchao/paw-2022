@@ -42,9 +42,19 @@ public class EmployeeJpaDao implements EmployeeDao{
 
     @Override
     public List<Employee> getEmployees(long pageSize) {
-        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e order by e.rating desc", Employee.class)
-                .setFirstResult(0)
-                .setMaxResults((int) pageSize);
+        final Query idQuery = em.createNativeQuery("SELECT employeeid FROM employee order by rating desc LIMIT :pageSize");
+        idQuery.setParameter("pageSize", pageSize);
+
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // noinspection JpaQlInspection
+        final TypedQuery<Employee> employeeList = em.createQuery("select e from Employee e where employeeid in :ids", Employee.class);
+        employeeList.setParameter("ids", ids);
         return employeeList.getResultList();
     }
 
