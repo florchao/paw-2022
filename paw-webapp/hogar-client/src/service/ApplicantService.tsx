@@ -35,7 +35,7 @@ export class ApplicantService{
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: formData
-        }).then((r) => r.text())
+        })
     }
 
     public static async updateStatus(employeeId: number, jobId: number, status: number){
@@ -49,7 +49,7 @@ export class ApplicantService{
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: formData
-        }).then((r) => r.text())
+        })
     }
 
     public static async deleteApplication(employeeId: number, jobId: number){

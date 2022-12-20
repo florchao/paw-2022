@@ -103,9 +103,12 @@ export const ProfileEmployee = () => {
                     ReviewService.getEmployeeReviews(employee.reviews, 0).then(
                         (rsp) => {
                             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                            rsp.json().then((reviews) => {
-                                setReview(reviews)
-                            })
+                            if(rsp.status === 200)
+                                rsp.json().then((reviews) => {
+                                    setReview(reviews)
+                                })
+                            else
+                                setReview([])
                         }
                     )
                 if (localStorage.getItem("hogar-role") == "EMPLOYER")

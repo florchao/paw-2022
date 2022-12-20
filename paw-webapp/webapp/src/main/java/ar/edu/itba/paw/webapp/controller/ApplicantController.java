@@ -62,7 +62,6 @@ public class ApplicantController {
         if (Objects.isNull(jobId))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
-        //todo creo que esto hay que chequearle los permisos
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
@@ -71,7 +70,7 @@ public class ApplicantController {
             LOGGER.error(String.format("there has already been made a contact for %d by id %d", jobId, hogarUser.getUserID()));
             return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.status(Response.Status.CREATED).entity(0).build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
 

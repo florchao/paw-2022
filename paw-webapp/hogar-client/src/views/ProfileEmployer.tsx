@@ -55,9 +55,12 @@ export const ProfileEmployer = () => {
             ReviewService.getEmployerReviews(employer.reviews, 0).then(
                 (rsp) => {
                     rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                    rsp.json().then((reviews) => {
-                        setReviews(reviews)
-                    })
+                    if(rsp.status === 200)
+                        rsp.json().then((reviews) => {
+                            setReviews(reviews)
+                        })
+                    else
+                        setReviews([])
                 }
             )
         }

@@ -69,9 +69,12 @@ export const Job = () => {
                 ReviewService.getEmployerReviews(job.employerId.reviews, 0).then(
                     (rsp) => {
                         rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                        rsp.json().then((reviews) => {
-                            setReviews(reviews)
-                        })
+                        if(rsp.status === 200)
+                            rsp.json().then((reviews) => {
+                                setReviews(reviews)
+                            })
+                        else
+                            setReviews([])
                     }
                 )
                 ReviewService.getMyEmployerReview(job.employerId.reviews).then(
@@ -102,7 +105,8 @@ export const Job = () => {
 
     async function createApplicant(){
         const newStatus = await ApplicantService.createApplicant(job.jobId)
-        setStatus(newStatus)
+        if(newStatus.status === 201)
+            setStatus("0")
     }
 
     function delJob(){

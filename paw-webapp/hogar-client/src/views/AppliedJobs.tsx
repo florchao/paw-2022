@@ -16,9 +16,13 @@ export const AppliedJobs = () => {
     useEffect(() => {
         ApplicantService.getAppliedJobs(id, 0).then( (rsp) => {
                 rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                rsp.json().then((jobs) => {
-                    setAppliedJobs(jobs)
-                })
+                if(rsp.status === 200)
+                    rsp.json().then((jobs) => {
+                        console.log(jobs)
+                        setAppliedJobs(jobs)
+                    })
+                else
+                    setAppliedJobs([])
             }
         );
     }, [])

@@ -68,9 +68,12 @@ export const Explore = () => {
             data.orderBy
         ).then((rsp) => {
             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-            rsp.json().then((employees: any) => {
-                setEmployees(employees)
-            })
+            if(rsp.status === 200)
+                rsp.json().then((employees: any) => {
+                    setEmployees(employees)
+                })
+            else
+                setEmployees([])
         })
     }
 
@@ -92,9 +95,12 @@ export const Explore = () => {
         else {
             EmployeeService.getEmployees().then((rsp) => {
                 rsp.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                rsp.json().then((employees: any) => {
-                    setEmployees(employees)
-                })
+                if(rsp.status === 200)
+                    rsp.json().then((employees: any) => {
+                        setEmployees(employees)
+                    })
+                else
+                    setEmployees([])
             })
         }
 

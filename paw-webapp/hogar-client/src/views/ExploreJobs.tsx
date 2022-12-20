@@ -62,9 +62,12 @@ export const ExploreJobs = () => {
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
         ).then((rsp) => {
             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-            rsp.json().then((j: any) => {
-                setJobs(j)
-            })
+            if(rsp.status === 200)
+                rsp.json().then((j: any) => {
+                    setJobs(j)
+                })
+            else
+                setJobs([])
         })
     }
 
@@ -80,9 +83,12 @@ export const ExploreJobs = () => {
         else {
             JobService.getJobs().then((rsp) => {
                 rsp.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                rsp.json().then((j: any) => {
-                    setJobs(j)
-                })
+                if(rsp.status === 200)
+                    rsp.json().then((j: any) => {
+                        setJobs(j)
+                    })
+                else
+                    setJobs([])
             })
         }
     }, [])

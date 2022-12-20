@@ -88,9 +88,6 @@ public class EmployerController {
                 .map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).
                 collect(Collectors.toList());
 
-        if(jobs.isEmpty()){
-            return Response.noContent().build();
-        }
         if(profile != null && profile.equals("true")){
             GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
             return Response.ok(genericEntity).build();
@@ -99,7 +96,7 @@ public class EmployerController {
         int pages = jobService.getMyJobsPageNumber(id, PAGE_SIZE);
 
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return Response.status(jobs.isEmpty()? Response.Status.NO_CONTENT: Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -118,7 +115,7 @@ public class EmployerController {
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
         int pages = reviewService.getPageNumberEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))? principal.getUserID() : null, id, PAGE_SIZE_REVIEWS);
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return Response.status(reviews.isEmpty()? Response.Status.NO_CONTENT: Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET

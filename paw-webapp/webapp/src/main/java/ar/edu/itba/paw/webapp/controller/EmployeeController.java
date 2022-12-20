@@ -199,7 +199,7 @@ public class EmployeeController {
         int pages = applicantService.getPageNumberForAppliedJobs(id, PAGE_SIZE);
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list) {
         };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return Response.status(list.isEmpty()? Response.Status.NO_CONTENT: Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -216,7 +216,7 @@ public class EmployeeController {
         int pages = contactService.getPageNumber(id, PAGE_SIZE);
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
         };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return Response.status(contacts.isEmpty()? Response.Status.NO_CONTENT: Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -235,7 +235,7 @@ public class EmployeeController {
         int pages = reviewService.getPageNumber(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER")) ? principal.getUserID() : null, PAGE_SIZE_REVIEWS);
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return Response.status(reviews.isEmpty()? Response.Status.NO_CONTENT: Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
