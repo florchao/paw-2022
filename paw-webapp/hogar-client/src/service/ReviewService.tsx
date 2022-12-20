@@ -62,7 +62,6 @@ export class ReviewService {
     }
 
     public static async getMyEmployeeReview(url: number) {
-        //todo el id del employeeId despues va por token. Esta harcodeado
         return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {

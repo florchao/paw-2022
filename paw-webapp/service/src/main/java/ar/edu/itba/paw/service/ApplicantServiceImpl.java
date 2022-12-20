@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.Applicant;
+import ar.edu.itba.paw.model.Employee;
+import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.persistence.ApplicantDao;
 import ar.edu.itba.paw.persistence.EmployeeDao;
@@ -14,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ApplicantServiceImpl implements ApplicantService{
+public class ApplicantServiceImpl implements ApplicantService {
     @Autowired
     private ApplicantDao applicantDao;
     @Autowired
@@ -29,7 +32,7 @@ public class ApplicantServiceImpl implements ApplicantService{
     public Applicant create(long jobID, long employeeID) throws AlreadyExistsException {
         Optional<Job> job = jobDao.getJobById(jobID);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
-        if(employee.isPresent() && job.isPresent()) {
+        if (employee.isPresent() && job.isPresent()) {
             Boolean exists = applicantDao.existsApplicant(employee.get(), job.get());
             if (exists)
                 throw new AlreadyExistsException("You already applied for this job");
@@ -42,10 +45,10 @@ public class ApplicantServiceImpl implements ApplicantService{
     @Override
     public List<Applicant> getAppliedJobsByApplicant(long employeeID, Long page, int pageSize) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
-       if(employee.isPresent()){
-           return applicantDao.getAppliedJobsByApplicant(employee.get(), page, pageSize);
-       }
-       return Collections.emptyList();
+        if (employee.isPresent()) {
+            return applicantDao.getAppliedJobsByApplicant(employee.get(), page, pageSize);
+        }
+        return Collections.emptyList();
     }
 
     @Override
@@ -74,10 +77,10 @@ public class ApplicantServiceImpl implements ApplicantService{
         Optional<Job> job = jobDao.getJobById(jobID);
         if (job.isPresent()) {
             Optional<Employee> employee = employeeDao.getEmployeeById(employeeID);
-            Employer employer= job.get().getEmployerId();
+            Employer employer = job.get().getEmployerId();
             employer.firstWordsToUpper();
             String title = job.get().firstWordsToUpper();
-            if(employee.isPresent()) {
+            if (employee.isPresent()) {
                 String name = employee.get().firstWordsToUpper();
                 mailingService.sendApplyMail(employer.getId().getEmail(), title, name, jobID);
             }
@@ -90,7 +93,7 @@ public class ApplicantServiceImpl implements ApplicantService{
     public int changeStatus(int status, long employeeId, long jobId) {
         Optional<Job> job = jobDao.getJobById(jobId);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        if(job.isPresent() && employee.isPresent())
+        if (job.isPresent() && employee.isPresent())
             return applicantDao.changeStatus(status, employee.get(), job.get());
         return -1;
     }
@@ -100,7 +103,7 @@ public class ApplicantServiceImpl implements ApplicantService{
     public int getStatus(long employeeId, long jobId) {
         Optional<Job> job = jobDao.getJobById(jobId);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        if(job.isPresent() && employee.isPresent()) {
+        if (job.isPresent() && employee.isPresent()) {
             if (applicantDao.existsApplicant(employee.get(), job.get()))
                 return applicantDao.getStatus(employee.get(), job.get());
         }
@@ -112,7 +115,7 @@ public class ApplicantServiceImpl implements ApplicantService{
     public void withdrawApplication(long employeeId, long jobId) {
         Optional<Job> job = jobDao.getJobById(jobId);
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
-        if(job.isPresent() && employee.isPresent()) {
+        if (job.isPresent() && employee.isPresent()) {
             Optional<Applicant> applicant = applicantDao.getApplicant(employee.get(), job.get());
             applicant.ifPresent(value -> applicantDao.deleteApplication(value));
         }

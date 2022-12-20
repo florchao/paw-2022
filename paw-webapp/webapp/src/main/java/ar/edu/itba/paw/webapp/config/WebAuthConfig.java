@@ -94,7 +94,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/ids").permitAll()
                 .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
-//                .and().csrf().disable();
     }
 
 

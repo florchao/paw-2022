@@ -40,8 +40,7 @@ public class ReviewController {
         }
         Review review = reviewService.create(employeeId, employerId, message, new Date(), forEmployee);
         if (review == null) {
-            //todo check con respuesta sotuyo
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.CONFLICT).build();
         }
         ReviewDto reviewDto;
         if (forEmployee)

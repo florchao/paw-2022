@@ -12,6 +12,7 @@ import bin from "../assets/bin.png";
 import noEmployees from "../assets/sinEmpleadas.png";
 import noJobs from "../assets/sinTrabajos.png";
 import user from "../assets/user.png";
+import {MagnifyingGlass} from "react-loader-spinner";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
@@ -59,9 +60,12 @@ export const ProfileEmployer = () => {
             ReviewService.getEmployerReviews(employer.reviews, 0).then(
                 (rsp) => {
                     rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                    rsp.json().then((reviews) => {
-                        setReviews(reviews)
-                    })
+                    if(rsp.status === 200)
+                        rsp.json().then((reviews) => {
+                            setReviews(reviews)
+                        })
+                    else
+                        setReviews([])
                 }
             )
         }
@@ -89,6 +93,20 @@ export const ProfileEmployer = () => {
 
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
+            {!employer &&
+                <div className={'flex items-center justify-center h-screen w-screen'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {employer &&
                 <div className=" grid grid-row-4 col-span-4 col-start-2 h-fit">
                     <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
@@ -117,6 +135,20 @@ export const ProfileEmployer = () => {
                                 </button>
                             </div>
                         </div>
+                        {!jobs &&
+                            <div className={'flex items-center justify-center h-3/4'}>
+                                <MagnifyingGlass
+                                    visible={true}
+                                    height="160"
+                                    width="160"
+                                    ariaLabel="MagnifyingGlass-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass="MagnifyingGlass-wrapper"
+                                    glassColor = '#c0efff'
+                                    color = '#e5de00'
+                                />
+                            </div>
+                        }
                         {jobs &&
                             <h1 className="pb-3 pt-3 font-semibold">
                                 {t('EmployerProfile.jobs')}
@@ -154,6 +186,20 @@ export const ProfileEmployer = () => {
                             </div>
                         }
                         <ul role="list" className="divide-y divide-gray-300">
+                            {!reviews &&
+                                <div className={'flex items-center justify-center h-3/4'}>
+                                    <MagnifyingGlass
+                                        visible={true}
+                                        height="160"
+                                        width="160"
+                                        ariaLabel="MagnifyingGlass-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="MagnifyingGlass-wrapper"
+                                        glassColor = '#c0efff'
+                                        color = '#e5de00'
+                                    />
+                                </div>
+                            }
                             {reviews &&
                                 <div className="flow-root">
                                     <h1 className="pb-3 pt-3 font-semibold">

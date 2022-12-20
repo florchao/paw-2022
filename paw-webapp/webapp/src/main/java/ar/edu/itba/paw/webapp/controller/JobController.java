@@ -32,7 +32,7 @@ public class JobController {
     @Context
     UriInfo uriInfo;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
-    private static final int PAGE_SIZE = 9;
+    private static final int PAGE_SIZE = 1;
 
 
     @GET
@@ -47,11 +47,15 @@ public class JobController {
             @QueryParam("page") @DefaultValue("0") Long page,
             @Context HttpServletRequest request
     ) {
-        //todo analizar las availability y abilities con postman
-        if( name.isEmpty() || name.length() > 25 ||
-        location.length() > 1 || !location.matches("[1-4]") ||
-        Objects.isNull(experienceYears) || experienceYears < 0 || experienceYears > 100 ||
-        availability.isEmpty() || abilities.isEmpty())
+        if (experienceYears != null && (experienceYears < 0 || experienceYears > 100)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        if (location != null && (!location.matches("[1-4][,[1-4]]+") || location.length() > 7)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        if (availability != null && (!availability.matches("[1-3][,[1-3]]+") || availability.length() > 5))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (abilities != null && (!abilities.matches("[1-6][,[1-6]]+") || abilities.length() > 11))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -62,8 +66,9 @@ public class JobController {
         }).collect(Collectors.toList());
 
         int pages = jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE);
-        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs){};
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count") .header("X-Total-Count", pages).build();
+        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs) {
+        };
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -76,6 +81,9 @@ public class JobController {
         } catch (JobNotFoundException exception) {
             exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
         }
         JobDto jobDto = JobDto.fromJob(uriInfo, job, request.getHeader("Accept-Language"));
 
@@ -95,6 +103,9 @@ public class JobController {
         } catch (JobNotFoundException exception) {
             exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
         }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -107,7 +118,8 @@ public class JobController {
                 .map(a -> ApplicantDto.fromJob(uriInfo, a))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
-        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list) {};
+        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list) {
+        };
         return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
@@ -121,9 +133,21 @@ public class JobController {
                             @FormDataParam("abilities[]") List<String> abilities,
                             @FormDataParam("availability") String availability,
                             @FormDataParam("experienceYears") Long experienceYears) {
+        if (title.isEmpty() || (title.length() > 25) ||
+                (location.length() > 1) || !location.matches("[1-4]") ||
+                Objects.isNull(experienceYears) || (experienceYears < 0) || (experienceYears > 100) ||
+                availability.isEmpty() || !availability.matches("[1-3]") || abilities.isEmpty()
+                || (abilities.size() > 6))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        for (int i = 0; i < abilities.toArray().length; i++) {
+            if (!abilities.get(i).matches("[1-6]"))
+                return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Job job = jobService.create(title, location, hogarUser.getUserID(), availability, experienceYears, fromListToString(abilities), description);
-        if(job == null) {
+        if (job == null) {
             return Response.status(Response.Status.CONFLICT).build();
         }
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
@@ -158,7 +182,7 @@ public class JobController {
     public Response updateJobStatus(@PathParam("id") long id,
                                     @FormDataParam("status") Boolean status) throws JobNotFoundException {
 
-        if(Objects.isNull(status))
+        if (Objects.isNull(status))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
         Job job;

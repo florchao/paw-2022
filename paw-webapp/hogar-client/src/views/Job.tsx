@@ -10,6 +10,7 @@ import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import PaginationButtons from "../components/PaginationButtons";
 import ErrorFeedback from "../components/ErrorFeedback";
+import {MagnifyingGlass} from "react-loader-spinner";
 import bin from "../assets/bin.png";
 import editing from "../assets/editing.png";
 import editingPurple from "../assets/editing_purple.png";
@@ -37,7 +38,7 @@ export const Job = () => {
         content: string;
     };
 
-    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
+    const {register, handleSubmit, watch, formState: {errors}, getValues, setValue, reset} = useForm<FormData>();
 
 
     watch("content")
@@ -51,11 +52,13 @@ export const Job = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployerReview(e, job.employerId.id, data.content)
-        localStorage.removeItem("reviewEmployerForm")
         if (post.status != 201)
             setShowError(true)
-        else
+        else {
+            localStorage.removeItem("reviewEmployerForm")
+            reset()
             post.json().then((r) => setMyReview(r))
+        }
     }
 
     useEffect(() => {
@@ -66,19 +69,24 @@ export const Job = () => {
     }, [])
 
     useEffect(() => {
-        //TODO: corregir tema reviews
             if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
                 ReviewService.getEmployerReviews(job.employerId.reviews, 0).then(
                     (rsp) => {
                         rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                        rsp.json().then((reviews) => {
-                            setReviews(reviews)
-                        })
+                        if(rsp.status === 200)
+                            rsp.json().then((reviews) => {
+                                setReviews(reviews)
+                            })
+                        else
+                            setReviews([])
                     }
                 )
                 ReviewService.getMyEmployerReview(job.employerId.reviews).then(
                     (rsp) => {
                         setMyReview(rsp)
+                        if (rsp != undefined) {
+                            localStorage.removeItem("reviewEmployerForm")
+                        }
                     }
                 )
             }
@@ -101,7 +109,8 @@ export const Job = () => {
 
     async function createApplicant(){
         const newStatus = await ApplicantService.createApplicant(job.jobId)
-        setStatus(newStatus)
+        if(newStatus.status === 201)
+            setStatus("0")
     }
 
     function delJob(){
@@ -131,6 +140,20 @@ export const Job = () => {
 
     return (
         <div className="grid h-screen grid-cols-6 overflow-auto">
+            {!job &&
+                <div className={'flex items-center justify-center h-screen w-screen'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {job &&
                 <div className=" grid grid-row-4 col-span-4 col-start-2 h-fit">
                     <div className=" bg-gray-200 rounded-3xl overflow-auto p-5 mt-24 mb-5 shadow-2xl">
@@ -239,10 +262,24 @@ export const Job = () => {
                             </div>
                         </div>}
                         {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                            <h1 className="pb-3 pt-3 font-semibold text-purple-900">
+                                {t('Job.reviewsFor')} {job.employerId.name}
+                            </h1>
+                        }
+                        {localStorage.getItem("hogar-role") == "EMPLOYEE" && !reviews ?
+                            <div className={'flex items-center justify-center h-1/4'}>
+                                <MagnifyingGlass
+                                visible={true}
+                                height="160"
+                                width="160"
+                                ariaLabel="MagnifyingGlass-loading"
+                                wrapperStyle={{}}
+                                wrapperClass="MagnifyingGlass-wrapper"
+                                glassColor = '#c0efff'
+                                color = '#e5de00'
+                                /></div>
+                            :
                             <div className="flow-root">
-                                <h1 className="pb-3 pt-3 font-semibold text-purple-900">
-                                    {t('Job.reviewsFor')} {job.employerId.name}
-                                </h1>
                                 {myReview == null && (
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <div className="">

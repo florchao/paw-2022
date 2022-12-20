@@ -1,17 +1,41 @@
 import {EMPLOYEE_URL, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
-    public static async getEmployees() {
-        return await fetch(EMPLOYEE_URL, {
-            method: 'GET',
-            headers: localStorage.getItem('hogar-jwt') != null ?{
+    public static async getEmployees(basicEncoded:string="") {
+        console.log("ACACACACAC")
+        console.log(basicEncoded)
+        console.log("ACACACACAC")
+        let header
+        if (localStorage.getItem('hogar-jwt') != null) {
+            header = {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
-            } : {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            }
+        } else if (basicEncoded != "") {
+            header = {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + basicEncoded
+            }
+        } else {
+            header = {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
+        }
+
+        return await fetch(EMPLOYEE_URL, {
+            method: 'GET',
+            headers: header
+            // headers: localStorage.getItem('hogar-jwt') != null ?{
+            //     'Access-Control-Allow-Origin': '*',
+            //     'Content-Type': 'application/json',
+            //     "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
+            // } : {
+            //     'Access-Control-Allow-Origin': '*',
+            //     'Content-Type': 'application/json'
+            // }
         })
             .catch(
                 (error) => {

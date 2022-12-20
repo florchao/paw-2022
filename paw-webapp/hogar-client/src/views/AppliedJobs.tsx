@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {ApplicantService} from "../service/ApplicantService";
 import JobCard from "../components/JobCard";
 import PaginationButtons from "../components/PaginationButtons";
+import {MagnifyingGlass} from "react-loader-spinner";
 import noJobs from "../assets/sinTrabajos.png";
 
 export const AppliedJobs = () => {
@@ -17,9 +18,13 @@ export const AppliedJobs = () => {
     useEffect(() => {
         ApplicantService.getAppliedJobs(id, 0).then( (rsp) => {
                 rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                rsp.json().then((jobs) => {
-                    setAppliedJobs(jobs)
-                })
+                if(rsp.status === 200)
+                    rsp.json().then((jobs) => {
+                        console.log(jobs)
+                        setAppliedJobs(jobs)
+                    })
+                else
+                    setAppliedJobs([])
             }
         );
     }, [])
@@ -38,6 +43,20 @@ export const AppliedJobs = () => {
             <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
                 {t('AppliedJobs.title')}
             </p>
+            {!appliedJobs &&
+                <div className={'flex items-center justify-center h-3/4'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {appliedJobs && appliedJobs.length == 0 && <div
                 className="grid content-center justify-center h-5/6 mt-16">
                 <div className="grid justify-items-center">

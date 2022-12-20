@@ -6,6 +6,7 @@ import JobCard from "../components/JobCard";
 import {BACK_SLASH, EMPLOYER_URL, JOBS} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
 import noJobs from "../assets/sinTrabajos.png";
+import {MagnifyingGlass} from "react-loader-spinner";
 
 export const CreatedJobs = () => {
     const [createdJobs, setCreatedJobs]: any = useState()
@@ -33,6 +34,20 @@ export const CreatedJobs = () => {
             <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
                 {t('CreatedJobs.publications')}
             </p>
+            {!createdJobs &&
+                <div className={'flex items-center justify-center h-3/4'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {createdJobs && createdJobs.length === 0 &&
                 <div className="grid content-center justify-center h-5/6 mt-16">
                     <div className="grid justify-items-center">

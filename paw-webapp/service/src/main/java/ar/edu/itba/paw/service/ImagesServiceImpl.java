@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ImagesServiceImpl implements ImagesService{
+public class ImagesServiceImpl implements ImagesService {
 
     @Autowired
     private ImagesDao imagesDao;
@@ -20,7 +20,7 @@ public class ImagesServiceImpl implements ImagesService{
     @Override
     public Optional<byte[]> getProfileImage(Long userId) {
         Optional<User> user = userDao.getUserById(userId);
-        if(user.isPresent())
+        if (user.isPresent())
             return imagesDao.getProfileImage(user.get().getId());
         return Optional.empty();
     }
@@ -28,9 +28,9 @@ public class ImagesServiceImpl implements ImagesService{
     @Override
     public boolean updateProfileImage(Long userId, byte[] image) {
         Optional<User> user = userDao.getUserById(userId);
-        if(user.isPresent()){
-                imagesDao.updateProfileImage(user.get().getId(), image);
-                return true;
+        if (user.isPresent()) {
+            imagesDao.updateProfileImage(user.get().getId(), image);
+            return true;
         }
         return false;
     }

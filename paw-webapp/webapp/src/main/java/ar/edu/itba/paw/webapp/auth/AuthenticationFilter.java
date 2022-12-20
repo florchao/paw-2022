@@ -77,7 +77,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try {
             jwtToken = Jwts.builder()
                     .claim("email", credentials[0])
-                    .claim("role", user.getId() == 1 ? "EMPLOYER" : "EMPLOYEE")
+                    .claim("role", user.getRole() == 1 ? "EMPLOYEE" : "EMPLOYER")
                     .claim("uid", user.getId())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(Instant.now().plus(10000L, ChronoUnit.HOURS)))
@@ -101,7 +101,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     .setSigningKey(hmacKey)
                     .build()
                     .parseClaimsJws(jwt);
-    //        System.out.println(parsed.getBody());
+            //        System.out.println(parsed.getBody());
             UserDetails userDetails = pawUserDetailsService.loadUserByUsername(parsed.getBody().get("email").toString());
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails == null ? Collections.emptyList() : userDetails.getAuthorities()
@@ -115,14 +115,15 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeaderContent = httpServletRequest.getHeader("Authorization");
-        if(authHeaderContent == null){
+        httpServletResponse.addHeader("Access-Control-Expose-Headers", "X-Total-Count");
+        if (authHeaderContent == null) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
         if (authHeaderContent.startsWith("Basic")) {
             try {
                 String jwt = basicAuthentication(authHeaderContent);
-                httpServletResponse.addHeader("Access-Control-Expose-Headers","Authorization");
+                httpServletResponse.addHeader("Access-Control-Expose-Headers", "Authorization");
                 httpServletResponse.addHeader("Authorization", "Bearer " + jwt);
             } catch (Exception e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid username or password");
@@ -145,6 +146,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     class Pair {
         private final String method;
         private final String path;
+
         Pair(String method, String path) {
             this.method = method;
             this.path = path;

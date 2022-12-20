@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Path("/api/employees")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 3;
+    private final int PAGE_SIZE = 1;
 
     private final int PAGE_SIZE_REVIEWS = 1;
 
@@ -74,6 +74,17 @@ public class EmployeeController {
             @QueryParam("order") String orderCriteria,
             @Context HttpServletRequest request
     ) {
+        if (experienceYears != null && (experienceYears < 0 || experienceYears > 100)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        if (location != null && (!location.matches("[1-4][,[1-4]]+") || location.length() > 7)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        if (availability != null && (!availability.matches("[1-3][,[1-3]]+") || availability.length() > 5))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (abilities != null && (!abilities.matches("[1-6][,[1-6]]+") || abilities.length() > 11))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser hogarUser;
 
@@ -96,8 +107,9 @@ public class EmployeeController {
                 return EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language"));
         }).collect(Collectors.toList());
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
-        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees){};
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
+        };
+        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -117,9 +129,9 @@ public class EmployeeController {
         }
 
         Employee employee;
-        try{
-            employee = employeeService.getEmployeeById(id);}
-        catch(UserNotFoundException e){
+        try {
+            employee = employeeService.getEmployeeById(id);
+        } catch (UserNotFoundException e) {
             return Response.noContent().build();
         }
 
@@ -129,47 +141,16 @@ public class EmployeeController {
         else if (user != null)
             dto = EmployeeDto.fromMyProfile(uriInfo, employee, request.getHeader("Accept-Language"));
         else if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-                HogarUser hogarUser = (HogarUser) auth.getPrincipal();
-                Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
-                dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), false, hasContact);
-        }else{
+            HogarUser hogarUser = (HogarUser) auth.getPrincipal();
+            Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
+            dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), false, hasContact);
+        } else {
             dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), true, false);
         }
 
-        GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto){};
+        GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto) {
+        };
         return Response.ok(genericEntity).build();
-
-//        mav.addObject("status", status);
-//        if (page == null)
-//            page = 0L;
-//        List<Review> reviews;
-//        int maxPage;
-//        boolean hasAlreadyRated = false;
-//        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-//            HogarUser user = (HogarUser) auth.getPrincipal();
-//            Boolean exists = contactService.existsContact(userId, user.getUserID());
-//            mav.addObject("contacted", exists);
-//            Optional<Review> myReview = reviewService.getMyReview(userId, user.getUserID());
-//            if (myReview.isPresent()) {
-//                myReview.get().getEmployerId().firstWordsToUpper();
-//                mav.addObject("myReview", myReview.get());
-//            }
-//            reviews = reviewService.getAllReviews(userId, user.getUserID(), page, PAGE_SIZE);
-//            maxPage = reviewService.getPageNumber(userId, user.getUserID(), PAGE_SIZE);
-//            hasAlreadyRated = raitingService.hasAlreadyRated(userId, user.getUserID());
-//        } else {
-//            maxPage = reviewService.getPageNumber(userId, null, PAGE_SIZE);
-//            reviews = reviewService.getAllReviews(userId, null, page, PAGE_SIZE);
-//        }
-//        for (Review rev : reviews) {
-//            rev.getEmployerId().firstWordsToUpper();
-//        }
-//        mav.addObject("alreadyRated", hasAlreadyRated);
-//        mav.addObject("rating", employeeService.getRating(userId));
-//        mav.addObject("voteCount", employeeService.getRatingVoteCount(userId));
-//        mav.addObject("ReviewList", reviews);
-//        mav.addObject("page", page);
-//        mav.addObject("maxPage", maxPage);
     }
 
     @GET
@@ -188,7 +169,7 @@ public class EmployeeController {
         int pages = applicantService.getPageNumberForAppliedJobs(id, PAGE_SIZE);
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list) {
         };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return Response.status(list.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -205,7 +186,7 @@ public class EmployeeController {
         int pages = contactService.getPageNumber(id, PAGE_SIZE);
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
         };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return Response.status(contacts.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -224,7 +205,7 @@ public class EmployeeController {
         int pages = reviewService.getPageNumber(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER")) ? principal.getUserID() : null, PAGE_SIZE_REVIEWS);
         GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
         };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return Response.status(reviews.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
@@ -252,7 +233,7 @@ public class EmployeeController {
                                    @FormDataParam("hourlyFee") long hourlyFee,
                                    @FormDataParam("availabilities[]") List<String> availabilities,
                                    @FormDataParam("abilities[]") List<String> abilities,
-                                   @FormDataParam("image") InputStream image) throws IOException, UserFoundException, PassMatchException {
+                                   @FormDataParam("image") InputStream image) throws UserFoundException, PassMatchException {
         if (!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
                 password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
                 name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
@@ -267,9 +248,8 @@ public class EmployeeController {
         try {
             u = userService.create(mail, password, password, 1);
             employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-            //TODO CHECK CON LO QUE RESPONDE SOTUYO
             return Response.status(Response.Status.CONFLICT).build();
         }
         return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).build();

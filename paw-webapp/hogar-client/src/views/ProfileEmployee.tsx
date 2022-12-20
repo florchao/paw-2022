@@ -19,6 +19,7 @@ import PaginationButtons from "../components/PaginationButtons";
 import bin from "../assets/bin.png";
 import noEmployees from "../assets/sinEmpleadas.png";
 import user from "../assets/user.png";
+import {MagnifyingGlass} from "react-loader-spinner";
 
 export const ProfileEmployee = () => {
 
@@ -50,17 +51,22 @@ export const ProfileEmployee = () => {
     useFormPersist("reviewEmployeeForm", {
         watch,
         setValue,
-        storage: localStorage.getItem('hogar-role') == "EMPLOYER"? window.localStorage : undefined,
+        storage: localStorage.getItem('hogar-role') == "EMPLOYER" ? window.localStorage : undefined,
         timeout: 1000 * 60,
     })
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployeeReview(e, employee.id, data.content)
-        localStorage.removeItem("reviewEmployeeForm")
-        if( post.status != 201)
+        if (post.status !== 201)
             setShowMessage(true)
-        else
-            post.json().then((r) => setMyReview(r))
+        else {
+            setShowMessage(false)
+            post.json().then(
+                (r) => {
+                    setMyReview(r)
+                }
+            )
+        }
     }
 
     function delEmployee() {
@@ -76,15 +82,15 @@ export const ProfileEmployee = () => {
 
     useEffect(() => {
         let url
-        if(self == undefined && id != undefined) {
-            url =  EMPLOYEE_URL + BACK_SLASH + id
+        if (self == undefined && id != undefined) {
+            url = EMPLOYEE_URL + BACK_SLASH + id
         } else
             url = self
         EmployeeService.getEmployee(url, false).then((e) => setEmployee(e));
     }, [])
 
     useEffect(() => {
-        if(employee) {
+        if (employee) {
             UserService.loadImage(employee.image).then(
                 (img) => {
                     if (img.size == 0)
@@ -97,20 +103,23 @@ export const ProfileEmployee = () => {
 
     useEffect(() => {
             if (employee) {
-                if(localStorage.getItem('hogar-uid') != null)
+                if (localStorage.getItem('hogar-uid') != null)
                     ReviewService.getEmployeeReviews(employee.reviews, 0).then(
                         (rsp) => {
                             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                            rsp.json().then((reviews) => {
-                                setReview(reviews)
-                            })
+                            if(rsp.status === 200)
+                                rsp.json().then((reviews) => {
+                                    setReview(reviews)
+                                })
+                            else
+                                setReview([])
                         }
                     )
-                if(localStorage.getItem("hogar-role") == "EMPLOYER")
+                if (localStorage.getItem("hogar-role") == "EMPLOYER")
                     ReviewService.getMyEmployeeReview(employee.employerReview).then(
                         (rsp) => {
                             setMyReview(rsp)
-                            if(rsp != undefined) {
+                            if (rsp != undefined) {
                                 localStorage.removeItem("reviewEmployeeForm")
                             }
                         }
@@ -160,6 +169,20 @@ export const ProfileEmployee = () => {
 
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
+            {!employee &&
+                <div className={'flex items-center justify-center h-screen w-screen'}>
+                    <MagnifyingGlass
+                        visible={true}
+                        height="160"
+                        width="160"
+                        ariaLabel="MagnifyingGlass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="MagnifyingGlass-wrapper"
+                        glassColor = '#c0efff'
+                        color = '#e5de00'
+                    />
+                </div>
+            }
             {employee &&
                 <div className=" grid grid-row-4 col-span-4 col-start-2 h-fit">
                     <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
@@ -291,39 +314,59 @@ export const ProfileEmployee = () => {
                                 </ul>
                             </div>
                         </div>
+                        {!review &&
+                            <div className="flow-root">
+                                <h1 className="pb-3 pt-3 font-semibold">
+                                    {t('Profile.reviews')}
+                                </h1>
+                                <div className={'flex items-center justify-center h-1/4'}>
+                                    <MagnifyingGlass
+                                        visible={true}
+                                        height="160"
+                                        width="160"
+                                        ariaLabel="MagnifyingGlass-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="MagnifyingGlass-wrapper"
+                                        glassColor = '#c0efff'
+                                        color = '#e5de00'
+                                    />
+                                </div>
+                            </div>
+
+                        }
                         {review && <div className="flow-root">
                             <h1 className="pb-3 pt-3 font-semibold">
                                 {t('Profile.reviews')}
                             </h1>
-                                {localStorage.getItem("hogar-role") == "EMPLOYER" && myReview == null && (
-                                    <form onSubmit={handleSubmit(onSubmit)}>
-                                        <div className="">
-                                            <label htmlFor="title"
-                                                   className="block pb-3 pt-3 font-semibold text-gray-900">
-                                                {t('ReviewForm.label_title')}
-                                            </label>
-                                            <textarea
-                                                value={getValues("content")}
-                                                {...register("content", {
-                                                    required: true,
-                                                    maxLength: 1000,
-                                                    minLength: 10
-                                                })}
-                                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                            {errors.content && (
-                                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
-                                                    {t('ReviewForm.error')}
-                                                </p>
+                            {localStorage.getItem("hogar-role") == "EMPLOYER" && myReview == null && (
+                                <form onSubmit={handleSubmit(onSubmit)}>
+                                    <div className="">
+                                        <label htmlFor="title"
+                                               className="block pb-3 pt-3 font-semibold text-gray-900">
+                                            {t('ReviewForm.label_title')}
+                                        </label>
+                                        <textarea
+                                            value={getValues("content")}
+                                            {...register("content", {
+                                                required: true,
+                                                maxLength: 1000,
+                                                minLength: 10
+                                            })}
+                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                        {errors.content && (
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
+                                                {t('ReviewForm.error')}
+                                            </p>
 
-                                            )}
-                                            <div className="mt-5 col-start-2 col-span-4 row-span-3">
-                                                <button type="submit"
-                                                        className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                                    {t('ReviewForm.button')}
-                                                </button>
-                                            </div>
+                                        )}
+                                        <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                                            <button type="submit"
+                                                    className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                                                {t('ReviewForm.button')}
+                                            </button>
                                         </div>
-                                    </form>)}
+                                    </div>
+                                </form>)}
                             <ul role="list" className="divide-y divide-gray-300">
                                 {myReview && <MyReviewCard review={myReview}/>}
                                 {review.length > 0 &&

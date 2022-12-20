@@ -1,11 +1,9 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.Applicant;
 import ar.edu.itba.paw.model.Employee;
 import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
-import ar.edu.itba.paw.persistence.ApplicantDao;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import ar.edu.itba.paw.persistence.EmployerDao;
 import ar.edu.itba.paw.persistence.JobDao;
@@ -16,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
-public class JobServiceImpl implements JobService{
+public class JobServiceImpl implements JobService {
     @Autowired
     private JobDao jobDao;
     @Autowired
@@ -33,7 +31,7 @@ public class JobServiceImpl implements JobService{
         title = title.toLowerCase().trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
         Optional<Employer> employer = employerDao.getEmployerById(employerId);
-        if(employer.isPresent())
+        if (employer.isPresent())
             return jobDao.create(title, location.toLowerCase(), employer.get(), availability, experienceYears, abilities, description);
         return null;
     }
@@ -42,7 +40,7 @@ public class JobServiceImpl implements JobService{
     @Override
     public List<Job> getUserJobs(long employerID, Long page, long pageSize) {
         Optional<Employer> employer = employerDao.getEmployerById(employerID);
-        if(employer.isPresent())
+        if (employer.isPresent())
             return jobDao.getUserJobs(employer.get(), page, pageSize);
         return Collections.emptyList();
     }
@@ -50,7 +48,7 @@ public class JobServiceImpl implements JobService{
     @Transactional(readOnly = true)
     @Override
     public Job getJobByID(long jobID) throws JobNotFoundException {
-        Job job = jobDao.getJobById(jobID).orElseThrow(()-> new JobNotFoundException("job" + jobID + "does not exists"));
+        Job job = jobDao.getJobById(jobID).orElseThrow(() -> new JobNotFoundException("job" + jobID + "does not exists"));
         return job;
     }
 
@@ -64,11 +62,11 @@ public class JobServiceImpl implements JobService{
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
         }
-        List<String> abilitiesList= new ArrayList<>();
+        List<String> abilitiesList = new ArrayList<>();
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        List<String> locationList= new ArrayList<>();
+        List<String> locationList = new ArrayList<>();
         if (location != null) {
             locationList = Arrays.asList(location.split(","));
         }
@@ -79,7 +77,7 @@ public class JobServiceImpl implements JobService{
     public Boolean alreadyApplied(long jobId, long employeeId) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Job> job = jobDao.getJobById(jobId);
-        if(employee.isPresent() && job.isPresent())
+        if (employee.isPresent() && job.isPresent())
             return jobDao.alreadyApplied(job.get(), employee.get());
         return false;
     }
@@ -91,11 +89,11 @@ public class JobServiceImpl implements JobService{
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
         }
-        List<String> abilitiesList= new ArrayList<>();
+        List<String> abilitiesList = new ArrayList<>();
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        List<String> locationList= new ArrayList<>();
+        List<String> locationList = new ArrayList<>();
         if (location != null) {
             locationList = Arrays.asList(location.split(","));
         }
@@ -104,7 +102,7 @@ public class JobServiceImpl implements JobService{
 
     @Transactional
     @Override
-    public void deleteJob(long jobId){
+    public void deleteJob(long jobId) {
         jobDao.deleteJob(jobId);
     }
 

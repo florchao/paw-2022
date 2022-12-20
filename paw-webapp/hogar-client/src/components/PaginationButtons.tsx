@@ -6,8 +6,6 @@ const PaginationButtons = ({changePages, pages, current}: {changePages: any ,pag
 
     const { t } = useTranslation();
 
-    console.log(current)
-
     return (
         <div className="flex justify-center items-center">
             {page > 0 &&

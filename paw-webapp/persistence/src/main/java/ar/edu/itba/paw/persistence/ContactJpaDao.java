@@ -7,9 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ContactJpaDao implements ContactDao{
@@ -18,7 +21,21 @@ public class ContactJpaDao implements ContactDao{
 
     @Override
     public List<Contact> getAllContacts(Employee userId,  Long page, int pageSize) {
-        final TypedQuery<Contact> query = em.createQuery("select u from Contact u where u.employeeID =:userId", Contact.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
+
+        final Query idQuery = em.createNativeQuery("SELECT employerid FROM contact where employeeid =:userid LIMIT :pageSize OFFSET :offset");
+        idQuery.setParameter("userid", userId);
+        idQuery.setParameter("pageSize", pageSize);
+        idQuery.setParameter("offset", page * pageSize);
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // noinspection JpaQlInspection
+        final TypedQuery<Contact> query = em.createQuery("select u from Contact u where u.employeeID =:userId and employerid in :ids", Contact.class);
+        query.setParameter("ids", ids);
         query.setParameter("userId", userId);
         return query.getResultList();
     }

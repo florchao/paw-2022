@@ -44,7 +44,6 @@ public class ContactController {
         if( name.isEmpty() || !name.matches("[a-zA-z\\s]+|^$") || name.length() > 100
         || mail.isEmpty() || !mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || content.isEmpty())
             Response.status(Response.Status.BAD_REQUEST).build();
-        //todo check que pasa el post con error con sotuyo
         contactService.contactUS(content, mail, name);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -57,10 +56,6 @@ public class ContactController {
                                     @FormDataParam("phone") String phone,
                                     @FormDataParam("employee_id") Long employeeId,
                                     @FormDataParam("employer_id") Long employerId) throws AlreadyExistsException {
-//        if(error.hasErrors()) {
-//            LOGGER.debug("Couldn't contact Hogar");
-//            //return contactPage(form, "error");
-//        }
         if(content.isEmpty() || !phone.matches("[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
         || Objects.isNull(employeeId) || Objects.isNull(employerId) || employeeId.equals(employerId)){
             Response.status(Response.Status.BAD_REQUEST).build();
@@ -91,9 +86,12 @@ public class ContactController {
         List<ContactDto> exists;
         try {
             exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
-        } catch (Exception ex){
-            ex.printStackTrace();
+        } catch (UserNotFoundException exception) {
+            exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
         }
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(exists) {
         };

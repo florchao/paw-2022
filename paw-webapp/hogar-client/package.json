@@ -20,6 +20,7 @@
     "react-hook-form": "^7.40.0",
     "react-hook-form-persist": "^3.0.0",
     "react-i18next": "^12.0.0",
+    "react-loader-spinner": "^5.3.4",
     "react-modal": "^3.16.1",
     "react-rater": "^6.0.5",
     "react-router-dom": "^6.4.0",

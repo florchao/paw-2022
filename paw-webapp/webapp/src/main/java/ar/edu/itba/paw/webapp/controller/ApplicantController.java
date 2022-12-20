@@ -5,7 +5,10 @@ import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
-import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.service.ApplicantService;
+import ar.edu.itba.paw.service.ContactService;
+import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -20,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Objects;
+
 @Path("/api/applicants")
 @Component
 public class ApplicantController {
@@ -28,8 +32,6 @@ public class ApplicantController {
     private final int PAGE_SIZE = 5;
     @Autowired
     private JobService jobService;
-    @Autowired
-    private UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicantController.class);
     @Autowired
     private EmployeeService employeeService;
@@ -44,55 +46,53 @@ public class ApplicantController {
     @GET
     @Path("/{employeeId}/{jobId}")
     public Response getStatusApplication(@PathParam("employeeId") long employeeId,
-                                         @PathParam("jobId") long jobId){
+                                         @PathParam("jobId") long jobId) {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != employeeId){
+        if (hogarUser.getUserID() != employeeId) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
         int status = applicantService.getStatus(employeeId, jobId);
         return Response.ok(status).build();
     }
+
     @POST
     @Path("")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
-    public Response createApplicant(@FormDataParam("jobId") Long jobId) throws UserNotFoundException{
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
+    public Response createApplicant(@FormDataParam("jobId") Long jobId) throws UserNotFoundException {
 
-        if(Objects.isNull(jobId))
+        if (Objects.isNull(jobId))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
-        //todo creo que esto hay que chequearle los permisos
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
             applicantService.apply(jobId, hogarUser.getUserID());
         } catch (AlreadyExistsException alreadyExistsException) {
             LOGGER.error(String.format("there has already been made a contact for %d by id %d", jobId, hogarUser.getUserID()));
-            //todo check con lo que responde sotuyo
-            return Response.ok(-1).build();
+            return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.status(Response.Status.CREATED).entity(0).build();
+        return Response.status(Response.Status.CREATED).build();
     }
-
 
 
     @PUT
     @Path("/{employeeId}/{jobId}")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA, })
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response changeStatus(@PathParam("employeeId") long employeeId,
                                  @PathParam("jobId") long jobId,
-                                 @FormDataParam("status") Integer status) throws JobNotFoundException, UserNotFoundException{
+                                 @FormDataParam("status") Integer status) throws JobNotFoundException, UserNotFoundException {
 
-        if(Objects.isNull(status)){
+        if (Objects.isNull(status)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         Job job;
         Employee employee;
 
-        try{
+        try {
             job = jobService.getJobByID(jobId);
             employee = employeeService.getEmployeeById(employeeId);
             HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if(hogarUser.getUserID() != job.getEmployerId().getId().getId()){
+            if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
 
@@ -100,23 +100,26 @@ public class ApplicantController {
             contactService.changedStatus(status, job, employee);
             return Response.ok(finalStatus).build();
 
-        }catch(Exception e){
-            //TODO: CHCK RESPUESTA
-            return Response.serverError().build();
+        } catch (UserNotFoundException | JobNotFoundException ex) {
+            ex.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
         }
     }
 
     @DELETE
     @Path("/{employeeId}/{jobId}")
     public Response deleteApplication(@PathParam("employeeId") long employeeId,
-                                      @PathParam("jobId") long jobId){
+                                      @PathParam("jobId") long jobId) {
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != employeeId){
+        if (hogarUser.getUserID() != employeeId) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        applicantService.withdrawApplication(employeeId,jobId);
+        applicantService.withdrawApplication(employeeId, jobId);
         return Response.noContent().build();
     }
 

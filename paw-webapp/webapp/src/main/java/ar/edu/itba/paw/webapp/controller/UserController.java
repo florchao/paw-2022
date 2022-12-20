@@ -3,17 +3,17 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.UserDto;
-import ar.edu.itba.paw.webapp.form.NewPasswordForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/api")
@@ -31,30 +31,16 @@ public class UserController {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userRole = hogarUser.getAuthorities().stream().findFirst().get().getAuthority();
         UserDto userDto = UserDto.fromForm(userRole, String.valueOf(hogarUser.getUserID()));
-        GenericEntity<UserDto> genericEntity = new GenericEntity<UserDto>(userDto){};
+        GenericEntity<UserDto> genericEntity = new GenericEntity<UserDto>(userDto) {
+        };
         return Response.ok(genericEntity).build();
-    }
-
-    //todo check passwords
-    @PUT
-    @Path("/users")
-    @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response updatePassword(@Valid final NewPasswordForm form) {
-        boolean ans = userService.update(form.getMail(), form.getPassword());
-        if(ans) {
-            LOGGER.debug("password updated");
-            return Response.ok().build();
-        }
-        else {
-            return Response.notModified().build();
-        }
     }
 
     @DELETE
     @Path("/users/{id}")
-    public Response deleteUser(@PathParam("id") long id){
+    public Response deleteUser(@PathParam("id") long id) {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != id){
+        if (hogarUser.getUserID() != id) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
         userService.deleteUser(id);

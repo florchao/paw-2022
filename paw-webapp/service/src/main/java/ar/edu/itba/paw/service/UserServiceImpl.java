@@ -11,10 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
@@ -24,7 +22,7 @@ public class UserServiceImpl implements UserService{
     @Transactional(readOnly = true)
     @Override
     public User getUserById(long id) throws UserNotFoundException {
-       return userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("User " + id + " not found"));
+        return userDao.getUserById(id).orElseThrow(() -> new UserNotFoundException("User " + id + " not found"));
     }
 
     @Transactional
@@ -34,14 +32,15 @@ public class UserServiceImpl implements UserService{
             throw new UserFoundException("There is an account with that email address: "
                     + username);
         }
-        if(!password.equals(confPassword)){
+        if (!password.equals(confPassword)) {
             throw new PassMatchException("Passwords don't match");
         }
         return userDao.create(username, passwordEncoder.encode(password), role);
     }
+
     @Transactional(readOnly = true)
     @Override
-    public User findByUsername(String username) throws UsernameNotFoundException{
+    public User findByUsername(String username) throws UsernameNotFoundException {
         return userDao.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("There is no user with username:" + username));
     }
 

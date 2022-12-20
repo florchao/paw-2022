@@ -12,7 +12,6 @@ const ContactCardModal = (contact: any) => {
     contact = contact.contact
 
     useEffect(() => {
-        //TODO:usar el de Employer
         UserService.loadImage(contact.employer.image).then(
             (img) => {
                 if (img.size == 0)

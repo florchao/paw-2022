@@ -13,12 +13,14 @@ const ApplicantCard = (applicant: any) =>{
 
     async function acceptApplicant(){
         const s = await ApplicantService.updateStatus(a.employee.id, a.jobId, 1)
-        setStatus(s)
+        if(s.status === 200)
+            s.text().then(newStatus => setStatus(newStatus))
     }
 
     async function rejectApplicant(){
         const s = await ApplicantService.updateStatus(a.employee.id, a.jobId, 2)
-        setStatus(s)
+        if(s.status === 200)
+            s.text().then(newStatus => setStatus(newStatus))
     }
     useEffect(() => {
         UserService.loadImage(a.employee.image).then(

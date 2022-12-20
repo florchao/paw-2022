@@ -24,16 +24,17 @@ public class RatingController {
 
     @GET
     @Path("/{employeeId}/{employerId}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployeeRating(@PathParam("employeeId") long userId, @PathParam("employerId") long employerId) {
         try {
             Rating rating = new Rating(employeeService.getRating(userId), employeeService.getRatingVoteCount(userId), ratingService.hasAlreadyRated(userId, employerId));
-            GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(rating) {};
+            GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(rating) {
+            };
             return Response.ok(genericEntity).build();
         } catch (Exception e) {
             e.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.noContent().build();
     }
 
     @POST
@@ -43,15 +44,16 @@ public class RatingController {
         if (rating == null)
             rating = 0L;
 
-        if(Objects.isNull(employeeId) || Objects.isNull(employerId) || Objects.equals(employeeId, employerId) )
+        if (Objects.isNull(employeeId) || Objects.isNull(employerId) || Objects.equals(employeeId, employerId))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
-        if(ratingService.hasAlreadyRated(employeeId, employerId))
+        if (ratingService.hasAlreadyRated(employeeId, employerId))
             return Response.status(Response.Status.FORBIDDEN).build();
 
         float newRating = ratingService.updateRating(employeeId, rating, employerId);
         Rating r = new Rating(newRating, employeeService.getRatingVoteCount(employeeId), ratingService.hasAlreadyRated(employeeId, employerId));
-        GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(r) {};
+        GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(r) {
+        };
         return Response.status(Response.Status.CREATED).entity(genericEntity).build();
     }
 

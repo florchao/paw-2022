@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeDao employeeDao;
@@ -31,7 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional
     @Override
-    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, long hourlyFee, String[] abilities, byte [] image) {
+    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, long hourlyFee, String[] abilities, byte[] image) {
         StringBuilder abilitiesSB = new StringBuilder();
         StringBuilder availabilitySB = new StringBuilder();
         name = name.trim().replaceAll(" +", " ");
@@ -42,17 +42,17 @@ public class EmployeeServiceImpl implements EmployeeService{
         for (String av : availability) {
             availabilitySB.append(av).append(",");
         }
-        if(abilitiesSB.length() == 0)
+        if (abilitiesSB.length() == 0)
             abilitiesSB.setLength(0);
         else
             abilitiesSB.setLength(abilitiesSB.length() - 1);
-        if(availabilitySB.length() == 0)
+        if (availabilitySB.length() == 0)
             availabilitySB.setLength(0);
         else
             availabilitySB.setLength(availabilitySB.length() - 1);
         Optional<Employee> employee = employeeDao.getEmployeeById(id);
-        if(employee.isPresent())
-            if(image.length == 0)
+        if (employee.isPresent())
+            if (image.length == 0)
                 employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString(), employee.get().getId().getImage());
             else
                 employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString(), image);
@@ -63,8 +63,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee create(String name, String location, Long id, String availability, long experienceYears, long hourlyFee, String abilities, byte[] image) {
         name = name.trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
-        Optional<User> user=  userDao.getUserById(id);
-        if(user.isPresent())
+        Optional<User> user = userDao.getUserById(id);
+        if (user.isPresent())
             return employeeDao.create(user.get(), name, location, availability, experienceYears, hourlyFee, abilities, image);
         return null;
     }
@@ -73,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public void isEmployee(long id) throws UserNotFoundException {
         Optional<Employee> employee = employeeDao.getEmployeeById(id);
-        if(employee.isPresent()) {
+        if (employee.isPresent()) {
             Boolean exists = employeeDao.isEmployee(employee.get());
             if (!exists)
                 throw new UserNotFoundException("Employee " + id + " not found");
@@ -87,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
         }
-        List<String> abilitiesList= new ArrayList<>();
+        List<String> abilitiesList = new ArrayList<>();
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
@@ -117,15 +117,15 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
         }
-        List<String> abilitiesList= new ArrayList<>();
+        List<String> abilitiesList = new ArrayList<>();
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
         }
-        List<String> locationList= new ArrayList<>();
+        List<String> locationList = new ArrayList<>();
         if (location != null) {
             locationList = Arrays.asList(location.split(","));
         }
-        return employeeDao.getFilteredEmployees(name,experienceYears, locationList, availabilityList,abilitiesList,page,pageSize, orderCriteria);
+        return employeeDao.getFilteredEmployees(name, experienceYears, locationList, availabilityList, abilitiesList, page, pageSize, orderCriteria);
     }
 
     @Override

@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
+import {MagnifyingGlass} from "react-loader-spinner";
 import noJobs from "../assets/sinTrabajos.png";
 
 export const ExploreJobs = () => {
@@ -62,9 +63,12 @@ export const ExploreJobs = () => {
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
         ).then((rsp) => {
             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-            rsp.json().then((j: any) => {
-                setJobs(j)
-            })
+            if(rsp.status === 200)
+                rsp.json().then((j: any) => {
+                    setJobs(j)
+                })
+            else
+                setJobs([])
         })
     }
 
@@ -80,9 +84,12 @@ export const ExploreJobs = () => {
         else {
             JobService.getJobs().then((rsp) => {
                 rsp.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                rsp.json().then((j: any) => {
-                    setJobs(j)
-                })
+                if(rsp.status === 200)
+                    rsp.json().then((j: any) => {
+                        setJobs(j)
+                    })
+                else
+                    setJobs([])
             })
         }
     }, [])
@@ -96,6 +103,20 @@ export const ExploreJobs = () => {
                     <h1 className="text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8">{t('Explore.jobs')}</h1>
                     <div className="col-span-3 col-start-2">
                         <div className="flex flex-wrap content-start justify-center">
+                            {!jobs &&
+                                <div className={'flex items-center justify-center h-3/4'}>
+                                    <MagnifyingGlass
+                                        visible={true}
+                                        height="160"
+                                        width="160"
+                                        ariaLabel="MagnifyingGlass-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="MagnifyingGlass-wrapper"
+                                        glassColor = '#c0efff'
+                                        color = '#e5de00'
+                                    />
+                                </div>
+                            }
                             {jobs && jobs.map(
                                         (job: any) => (
                                             <div key={job.jobId}
