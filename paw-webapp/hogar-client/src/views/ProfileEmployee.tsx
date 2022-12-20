@@ -107,7 +107,7 @@ export const ProfileEmployee = () => {
                     ReviewService.getEmployeeReviews(employee.reviews, 0).then(
                         (rsp) => {
                             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                            if(rsp.status === 200)
+                            if (rsp.status === 200)
                                 rsp.json().then((reviews) => {
                                     setReview(reviews)
                                 })
@@ -178,8 +178,8 @@ export const ProfileEmployee = () => {
                         ariaLabel="MagnifyingGlass-loading"
                         wrapperStyle={{}}
                         wrapperClass="MagnifyingGlass-wrapper"
-                        glassColor = '#c0efff'
-                        color = '#e5de00'
+                        glassColor='#c0efff'
+                        color='#e5de00'
                     />
                 </div>
             }
@@ -314,121 +314,120 @@ export const ProfileEmployee = () => {
                                 </ul>
                             </div>
                         </div>
-                        {!review &&
+                        {localStorage.getItem("hogar-role") &&
                             <div className="flow-root">
+                                {!review &&
+                                    <div className={'flex items-center justify-center h-1/4'}>
+                                        <MagnifyingGlass
+                                            visible={true}
+                                            height="160"
+                                            width="160"
+                                            ariaLabel="MagnifyingGlass-loading"
+                                            wrapperStyle={{}}
+                                            wrapperClass="MagnifyingGlass-wrapper"
+                                            glassColor='#c0efff'
+                                            color='#e5de00'
+                                        />
+                                    </div>
+                                }
+                            </div>
+                        }
+                            {review && <div className="flow-root">
                                 <h1 className="pb-3 pt-3 font-semibold">
                                     {t('Profile.reviews')}
                                 </h1>
-                                <div className={'flex items-center justify-center h-1/4'}>
-                                    <MagnifyingGlass
-                                        visible={true}
-                                        height="160"
-                                        width="160"
-                                        ariaLabel="MagnifyingGlass-loading"
-                                        wrapperStyle={{}}
-                                        wrapperClass="MagnifyingGlass-wrapper"
-                                        glassColor = '#c0efff'
-                                        color = '#e5de00'
-                                    />
-                                </div>
+                                {localStorage.getItem("hogar-role") == "EMPLOYER" && myReview == null && (
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <div className="">
+                                            <label htmlFor="title"
+                                                   className="block pb-3 pt-3 font-semibold text-gray-900">
+                                                {t('ReviewForm.label_title')}
+                                            </label>
+                                            <textarea
+                                                value={getValues("content")}
+                                                {...register("content", {
+                                                    required: true,
+                                                    maxLength: 1000,
+                                                    minLength: 10
+                                                })}
+                                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                            {errors.content && (
+                                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
+                                                    {t('ReviewForm.error')}
+                                                </p>
+
+                                            )}
+                                            <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                                                <button type="submit"
+                                                        className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                                                    {t('ReviewForm.button')}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>)}
+                                <ul role="list" className="divide-y divide-gray-300">
+                                    {myReview && <MyReviewCard review={myReview}/>}
+                                    {review.length > 0 &&
+                                        <div>
+                                            {review.map((rev: any) =>
+                                                <ReviewCard key={rev.employer.id} review={rev}/>)}
+                                            <PaginationButtons pages={pages} changePages={changePage}/>
+                                        </div>
+                                    }
+                                    {review.length === 0 && !myReview &&
+                                        <div className="grid content-center justify-center h-5/6 mt-16">
+                                            <div className="grid justify-items-center">
+                                                <img src={noEmployees} alt="sinEmpleadas"
+                                                     className="mr-3 h-6 sm:h-52"/>
+                                                <p className="text-3xl font-semibold text-purple-700">
+                                                    {t('Profile.noReviews')}
+                                                </p>
+                                            </div>
+                                        </div>}
+                                </ul>
                             </div>
-
-                        }
-                        {review && <div className="flow-root">
-                            <h1 className="pb-3 pt-3 font-semibold">
-                                {t('Profile.reviews')}
-                            </h1>
-                            {localStorage.getItem("hogar-role") == "EMPLOYER" && myReview == null && (
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="">
-                                        <label htmlFor="title"
-                                               className="block pb-3 pt-3 font-semibold text-gray-900">
-                                            {t('ReviewForm.label_title')}
-                                        </label>
-                                        <textarea
-                                            value={getValues("content")}
-                                            {...register("content", {
-                                                required: true,
-                                                maxLength: 1000,
-                                                minLength: 10
-                                            })}
-                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                        {errors.content && (
-                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
-                                                {t('ReviewForm.error')}
-                                            </p>
-
-                                        )}
-                                        <div className="mt-5 col-start-2 col-span-4 row-span-3">
-                                            <button type="submit"
-                                                    className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                                {t('ReviewForm.button')}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>)}
-                            <ul role="list" className="divide-y divide-gray-300">
-                                {myReview && <MyReviewCard review={myReview}/>}
-                                {review.length > 0 &&
-                                    <div>
-                                        {review.map((rev: any) =>
-                                            <ReviewCard key={rev.employer.id} review={rev}/>)}
-                                        <PaginationButtons pages={pages} changePages={changePage}/>
-                                    </div>
-                                }
-                                {review.length === 0 && !myReview &&
-                                    <div className="grid content-center justify-center h-5/6 mt-16">
-                                        <div className="grid justify-items-center">
-                                            <img src={noEmployees} alt="sinEmpleadas"
-                                                 className="mr-3 h-6 sm:h-52"/>
-                                            <p className="text-3xl font-semibold text-purple-700">
-                                                {t('Profile.noReviews')}
-                                            </p>
-                                        </div>
-                                    </div>}
-                            </ul>
+                            }
                         </div>
-                        }
                     </div>
-                </div>}
-            {status == '0' && showMessage &&
-                <OkFeedback type="profile"/>
+                    }
+                    {status == '0' && showMessage &&
+                        <OkFeedback type="profile"/>
+                    }
+                    {status == '1' && showMessage &&
+                        <ErrorFeedback message={t('Feedback.errorContact')}/>
+                    }
+                    <div>
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={closeModal}
+                            style={{
+                                overlay: {
+                                    backgroundColor: 'rgb(0,0,0,0.50)'
+                                },
+                                content: {
+                                    top: '50%',
+                                    left: '50%',
+                                    right: 'auto',
+                                    bottom: 'auto',
+                                    borderRadius: '10px',
+                                    marginRight: '-50%',
+                                    overflow: 'visible',
+                                    transform: 'translate(-50%, -50%)',
+                                },
+                            }}
+                        >
+                            <button type="button"
+                                    className=" text-violet-900 bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg rounded-full text-sm py-1 px-2.5 text-center inline-flex items-center mr-2 border-solid border-transparent border-2 hover:border-purple-300"
+                                    style={{position: "absolute", right: 0}}
+                                    onClick={closeModal}
+                            >
+                                x
+                            </button>
+                            <RatingModal employee={employee} handleRating={handleRating}/>
+                        </Modal>
+                    </div>
+                </div>
+                )
             }
-            {status == '1' && showMessage &&
-                <ErrorFeedback message={t('Feedback.errorContact')}/>
-            }
-            <div>
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={closeModal}
-                    style={{
-                        overlay: {
-                            backgroundColor: 'rgb(0,0,0,0.50)'
-                        },
-                        content: {
-                            top: '50%',
-                            left: '50%',
-                            right: 'auto',
-                            bottom: 'auto',
-                            borderRadius: '10px',
-                            marginRight: '-50%',
-                            overflow: 'visible',
-                            transform: 'translate(-50%, -50%)',
-                        },
-                    }}
-                >
-                    <button type="button"
-                            className=" text-violet-900 bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg rounded-full text-sm py-1 px-2.5 text-center inline-flex items-center mr-2 border-solid border-transparent border-2 hover:border-purple-300"
-                            style={{position: "absolute", right: 0}}
-                            onClick={closeModal}
-                    >
-                        x
-                    </button>
-                    <RatingModal employee={employee} handleRating={handleRating}/>
-                </Modal>
-            </div>
-        </div>
-    )
-}
 
-export default ProfileEmployee;
+            export default ProfileEmployee;
