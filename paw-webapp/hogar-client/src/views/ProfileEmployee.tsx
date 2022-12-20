@@ -167,7 +167,7 @@ export const ProfileEmployee = () => {
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
             {!employee &&
-                <div className={'flex items-center justify-center h-3/4'}>
+                <div className={'flex items-center justify-center h-screen w-screen'}>
                     <MagnifyingGlass
                         visible={true}
                         height="160"
@@ -311,6 +311,26 @@ export const ProfileEmployee = () => {
                                 </ul>
                             </div>
                         </div>
+                        {!review &&
+                            <div className="flow-root">
+                                <h1 className="pb-3 pt-3 font-semibold">
+                                    {t('Profile.reviews')}
+                                </h1>
+                                <div className={'flex items-center justify-center h-1/4'}>
+                                    <MagnifyingGlass
+                                        visible={true}
+                                        height="160"
+                                        width="160"
+                                        ariaLabel="MagnifyingGlass-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="MagnifyingGlass-wrapper"
+                                        glassColor = '#c0efff'
+                                        color = '#e5de00'
+                                    />
+                                </div>
+                            </div>
+
+                        }
                         {review && <div className="flow-root">
                             <h1 className="pb-3 pt-3 font-semibold">
                                 {t('Profile.reviews')}

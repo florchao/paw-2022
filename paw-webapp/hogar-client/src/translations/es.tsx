@@ -176,7 +176,8 @@ export const TRANSLATIONS_ES = {
         statusTitle:"Estado de tu aplicación:",
         deleteJob:"Eliminar trabajo",
         openJob:"Abrir trabajo",
-        closeJob:"Cerrar trabajo"
+        closeJob:"Cerrar trabajo",
+        reviewsFor: "Opiniones para "
     },
 
     Applicants:{
