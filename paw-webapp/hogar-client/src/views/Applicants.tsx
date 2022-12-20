@@ -14,8 +14,11 @@ export const Applicants = () => {
     const {applicants, title} = useLocation().state
     const {t} = useTranslation();
     const [totalPages, setTotalPages]: any = useState(0)
+    const [current, setCurrent]: any = useState(0)
+
 
     async function setApplicantsByPage(page: number) {
+        setCurrent(page)
         setApplicantList(null)
         const result = await JobService.getApplicants(applicants, page)
         if (result.status === 200) {
@@ -68,38 +71,8 @@ export const Applicants = () => {
                                     <ApplicantCard key={applicant.employee.id} applicant={applicant}/>))}
                             </ul>
                         }
-                        <PaginationButtons changePages={setApplicantsByPage} pages={totalPages}></PaginationButtons>
+                        <PaginationButtons changePages={setApplicantsByPage} pages={totalPages} current={current}></PaginationButtons>
 
-                        {/*<c:url value="/aplicantes/${jobID}" var="getPath"/>*/}
-                        {/*                    <form:form method="get" action="${getPath}">*/}
-                        {/*                        <c:if test="${maxPage > 0 && page + 1 <= maxPage}">*/}
-                        {/*                            <div className="flex flex-row justify-center mt-4">*/}
-                        {/*                                <c:choose>*/}
-                        {/*                                    <c:when test="${page < 1}">*/}
-                        {/*                                        <button type="submit" className="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="previousPage(${page})"><</button>*/}
-                        {/*                                    </c:when>*/}
-                        {/*                                    <c:otherwise>*/}
-                        {/*                                        <button type="submit" className="font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="previousPage(${page})"><</button>*/}
-                        {/*                                    </c:otherwise>*/}
-                        {/*                                </c:choose>*/}
-                        {/*                                <div class="bg--300 w-16 flex justify-center">*/}
-                        {/*                                    <h1 class="text-purple-900">${page + 1} of ${maxPage}</h1>*/}
-                        {/*                                </div>*/}
-                        {/*                                <c:choose>*/}
-                        {/*                                    <c:when test="${page + 1 == maxPage}">*/}
-                        {/*                                        <button type="submit" className="font-semibold border shadow-md focus:outline-none text-violet-900 bg-gray-300 border-purple-900 rounded-lg px-2" disabled="true" onclick="nextPage(${page})">></button>*/}
-                        {/*                                    </c:when>*/}
-                        {/*                                    <c:otherwise>*/}
-                        {/*                                        <button type="submit" id="prevPageButton" className=" font-semibold border shadow-md focus:outline-none text-violet-900 bg-purple-400 border-purple-900 hover:bg-yellow-300 hover:bg-opacity-50 rounded-lg px-2" onclick="nextPage(${page})">></button>*/}
-                        {/*                                    </c:otherwise>*/}
-                        {/*                                </c:choose>*/}
-                        {/*                        </c:if>*/}
-                        {/*    </div>*/}
-                        {/*    <input style="visibility: hidden" type="number" name="page" id="pageNumber"/>*/}
-                        {/*</form:form>*/}
-                        {/*            </ul>*/}
-                        {/*        </c:otherwise>*/}
-                        {/*</c:choose>*/}
                     </div>
                 </div>
             </div>

@@ -25,6 +25,8 @@ export const Job = () => {
     const [status, setStatus] = useState<string>()
     const [opened, setOpened] = useState<boolean>()
     const [showError, setShowError] = useState<boolean>(false)
+    const [current, setCurrent]: any = useState(0)
+
 
     let employeeId: number;
     employeeId = localStorage.getItem('hogar-uid') ? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
@@ -131,6 +133,7 @@ export const Job = () => {
 
     const changePage = async (page: number) => {
         setReviews(null)
+        setCurrent(false)
         const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page)
         get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
         get.json().then((reviews) => {
@@ -334,7 +337,7 @@ export const Job = () => {
                                             <div>
                                                 {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                        review={rev}/>)}
-                                                <PaginationButtons changePages={changePage} pages={pages}/>
+                                                <PaginationButtons changePages={changePage} pages={pages} current={current}/>
                                             </div>
                                         }
                                     </ul>

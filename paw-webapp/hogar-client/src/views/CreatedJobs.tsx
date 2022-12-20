@@ -11,6 +11,7 @@ import {MagnifyingGlass} from "react-loader-spinner";
 export const CreatedJobs = () => {
     const [createdJobs, setCreatedJobs]: any = useState()
     const [pages, setPages]: any = useState(0)
+    const [current, setCurrent]: any = useState(0)
 
     const { t } = useTranslation()
 
@@ -22,6 +23,7 @@ export const CreatedJobs = () => {
 
     const changePage = async (page: number) => {
         setCreatedJobs(null)
+        setCurrent(page)
         let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
         JobService.getCreatedJobs(url, false, page).then( async (j) => {
             j.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
@@ -82,7 +84,7 @@ export const CreatedJobs = () => {
                         </Link>
                     </div>
                 </div>
-                    <PaginationButtons changePages={changePage} pages={pages}/>
+                    <PaginationButtons changePages={changePage} pages={pages} current={current}/>
                 </div>
             }
         </div>

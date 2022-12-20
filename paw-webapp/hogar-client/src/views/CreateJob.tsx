@@ -166,7 +166,6 @@ export const CreateJob = () => {
                                         </label>
                                         <input type="checkbox"
                                                {...register("abilities", {required: true})}
-                                            // onChange={(e) => console.log(getValues("abilities"))}
                                                id="cocinar-cb"
                                                value={ids.abilities[0]}
                                                style={{visibility: "hidden"}}

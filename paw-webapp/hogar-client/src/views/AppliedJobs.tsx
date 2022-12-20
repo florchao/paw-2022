@@ -20,7 +20,6 @@ export const AppliedJobs = () => {
                 rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
                 if(rsp.status === 200)
                     rsp.json().then((jobs) => {
-                        console.log(jobs)
                         setAppliedJobs(jobs)
                     })
                 else

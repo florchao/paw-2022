@@ -15,6 +15,8 @@ export const Contacts = () => {
     const [contacts, setContacts]: any = useState()
     const [pages, setPages]: any = useState(0)
     const [modalData, setModalData]: any = useState()
+    const [current, setCurrent]: any = useState(0)
+
 
     const {id} = useLocation().state
 
@@ -36,6 +38,7 @@ export const Contacts = () => {
 
     const changePage = (page: number) => {
         setContacts(null)
+        setCurrent(page)
         ContactService.contacts(id, page).then(
             (rsp) => {
                 rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
@@ -92,7 +95,7 @@ export const Contacts = () => {
                                 </div>
                             </button>
                             )}
-                            <PaginationButtons changePages={changePage} pages={pages}/>
+                            <PaginationButtons changePages={changePage} pages={pages} current={current}/>
                         </div>
                     }
                         <Modal

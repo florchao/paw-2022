@@ -20,6 +20,8 @@ export const ProfileEmployer = () => {
     const [reviews, setReviews]: any = useState(new Array(0))
     const [pages, setPages]: any = useState(0)
     const [jobs, setJobs]: any = useState(new Array(0))
+    const [current, setCurrent]: any = useState(0)
+
 
 
     const nav = useNavigate();
@@ -85,6 +87,7 @@ export const ProfileEmployer = () => {
 
     const changePage = async (page: number) => {
         setReviews(null)
+        setCurrent(page)
         const get = await ReviewService.getEmployerReviews(employer.reviews, page)
         get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
         get.json().then((reviews) => {
@@ -221,7 +224,7 @@ export const ProfileEmployer = () => {
                                         <div >
                                             {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                    review={rev}/>)}
-                                            <PaginationButtons changePages={changePage} pages={pages}/>
+                                            <PaginationButtons changePages={changePage} pages={pages} current={current}/>
                                         </div>
                                     }
                                 </div>
