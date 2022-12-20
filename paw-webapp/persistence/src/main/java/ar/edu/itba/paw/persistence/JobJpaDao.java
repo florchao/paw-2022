@@ -88,7 +88,7 @@ public class JobJpaDao implements JobDao {
             stringBuilder.append("availability like ").append(":availability").append(variableCount).append(" ");
             paramMap.put("availability" + variableCount, '%' + av + '%');
             variableCount = String.valueOf((char) (variableCount.charAt(0) + 1));
-            stringBuilder.append(" and  ");
+            stringBuilder.append(" and ");
         }
         if (!location.isEmpty())
             stringBuilder.append(" ( ");
