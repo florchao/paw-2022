@@ -63,33 +63,33 @@ public class EmployeeJpaDao implements EmployeeDao{
         orderCriteriaWhiteList.add("rating");
         orderCriteriaWhiteList.add("experienceYears");
 
-        final Query idQuery = em.createNativeQuery("SELECT employeeid FROM employee LIMIT :pageSize OFFSET :offset");
-        idQuery.setParameter("pageSize", pageSize);
-        idQuery.setParameter("offset", page * pageSize);
-        @SuppressWarnings("unchecked")
-        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+//        final Query idQuery = em.createNativeQuery("SELECT employeeid FROM employee LIMIT :pageSize OFFSET :offset");
+//        idQuery.setParameter("pageSize", pageSize);
+//        idQuery.setParameter("offset", page * pageSize);
+//        @SuppressWarnings("unchecked")
+//        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
 
         Map<String, Object> paramMap = new HashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("SELECT e FROM Employee e where");
-        stringBuilder.append(" employeeid IN :ids and   ");
+        stringBuilder.append("SELECT employeeid FROM employee where ");
+//        stringBuilder.append(" employeeid IN :ids and   ");
 
         if (name != null) {
-            stringBuilder.append("lower(e.name) like :name ");
+            stringBuilder.append("lower(name) like :name ");
             paramMap.put("name", '%' + name.toLowerCase() + '%');
             stringBuilder.append(" and   ");
 
         }
         if (experienceYears != null && experienceYears.intValue() > 0) {
-            stringBuilder.append("e.experienceYears >= :experienceYears ");
+            stringBuilder.append("experienceYears >= :experienceYears ");
             paramMap.put("experienceYears", experienceYears);
             stringBuilder.append(" and   ");
         }
 
         String variableCount = "a";
         for (String av : availability) {
-            stringBuilder.append("e.availability like ").append(":availability").append(variableCount).append(" ");
+            stringBuilder.append("availability like ").append(":availability").append(variableCount).append(" ");
             paramMap.put("availability" + variableCount, '%' + av + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
@@ -97,7 +97,7 @@ public class EmployeeJpaDao implements EmployeeDao{
         if(!location.isEmpty())
             stringBuilder.append(" ( ");
         for (String l : location) {
-            stringBuilder.append("e.location like ").append(":location").append(variableCount).append(" ");
+            stringBuilder.append("location like ").append(":location").append(variableCount).append(" ");
             paramMap.put("location" + variableCount, '%' + l + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" or   ");
@@ -107,7 +107,7 @@ public class EmployeeJpaDao implements EmployeeDao{
             stringBuilder.append(" ) and   ");
         }
         for (String ability : abilities) {
-            stringBuilder.append("e.abilities like ").append(":abilities").append(variableCount).append(" ");
+            stringBuilder.append("abilities like ").append(":abilities").append(variableCount).append(" ");
             paramMap.put("abilities" + variableCount, '%' + ability + '%');
             variableCount =  String.valueOf( (char) (variableCount.charAt(0) + 1));
             stringBuilder.append(" and   ");
@@ -119,13 +119,19 @@ public class EmployeeJpaDao implements EmployeeDao{
                     .append(orderCriteria)
                     .append(" desc");
         } else {
-            stringBuilder.append(" order by e.rating desc");
+            stringBuilder.append(" order by rating desc");
         }
-        TypedQuery<Employee> filteredQuery = em.createQuery(stringBuilder.toString(), Employee.class);
-        filteredQuery.setParameter("ids", ids);
+        stringBuilder.append(" LIMIT :pageSize OFFSET :offset");
+        final Query idQuery = em.createNativeQuery(stringBuilder.toString());
         for (String key : paramMap.keySet()) {
-            filteredQuery.setParameter(key, paramMap.get(key));
+            idQuery.setParameter(key, paramMap.get(key));
         }
+        idQuery.setParameter("pageSize", pageSize);
+        idQuery.setParameter("offset", page * pageSize);
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+        TypedQuery<Employee> filteredQuery = em.createQuery("select e from Employee e where employeeid in :ids", Employee.class);
+        filteredQuery.setParameter("ids", ids);
         return filteredQuery.getResultList();
     }
 
