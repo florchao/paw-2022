@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Path("/api/employees")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 8;
 
     private final int PAGE_SIZE_REVIEWS = 4;
 
@@ -77,12 +77,12 @@ public class EmployeeController {
         if (experienceYears != null && (experienceYears < 0 || experienceYears > 100)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        if (location != null && (!location.matches("[1-4][,[1-4]]+") || location.length() > 7)) {
+        if (location != null && (!location.matches("[1-4][,[1-4]]*") || location.length() > 7)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        if (availability != null && (!availability.matches("[1-3][,[1-3]]+") || availability.length() > 5))
+        if (availability != null && (!availability.matches("[1-3][,[1-3]]*") || availability.length() > 5))
             return Response.status(Response.Status.BAD_REQUEST).build();
-        if (abilities != null && (!abilities.matches("[1-6][,[1-6]]+") || abilities.length() > 11))
+        if (abilities != null && (!abilities.matches("[1-6][,[1-6]]*") || abilities.length() > 11))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
