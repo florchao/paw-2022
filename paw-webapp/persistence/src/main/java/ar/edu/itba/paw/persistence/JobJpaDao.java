@@ -10,10 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -30,8 +27,22 @@ public class JobJpaDao implements  JobDao{
 
     @Override
     public List<Job> getUserJobs(Employer employerID, Long page, long pageSize) {
-        final TypedQuery<Job> query = em.createQuery("select u from Job u where u.employerId =:employerId", Job.class).setFirstResult((int) (page * pageSize)).setMaxResults((int) pageSize);
-        query.setParameter("employerId", employerID);
+
+        final Query idQuery = em.createNativeQuery("SELECT jobid FROM jobs where employerid =:employer LIMIT :pageSize OFFSET :offset");
+        idQuery.setParameter("pageSize", pageSize);
+        idQuery.setParameter("offset", page * pageSize);
+        idQuery.setParameter("employer", employerID);
+
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // noinspection JpaQlInspection
+        final TypedQuery<Job> query = em.createQuery("select j from Job j where jobid in :ids", Job.class);
+        query.setParameter("ids", ids);
         return query.getResultList();
     }
 
