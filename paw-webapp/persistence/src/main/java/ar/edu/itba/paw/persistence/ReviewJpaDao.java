@@ -7,10 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class ReviewJpaDao implements ReviewDao{
@@ -29,12 +31,28 @@ public class ReviewJpaDao implements ReviewDao{
     public List<Review> getAllReviews(Employee employeeId, Employer id, Long page, int pageSize) {
         final TypedQuery<Review> query;
         if(id!=null) {
-            query = em.createQuery("select u from Review u where u.employeeId =:userId and u.employerId <>:employerId and u.forEmployee = true", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-                query.setParameter("userId", employeeId);
-                query.setParameter("employerId", id);
-        }else {
-            query = em.createQuery("select u from Review u where u.employeeId =:userId and u.forEmployee = true", Review.class).setFirstResult((int) (page * pageSize)).setMaxResults(pageSize);
-            query.setParameter("userId", employeeId);
+            final Query idQuery = em.createNativeQuery("SELECT reviewid FROM review where employeeid =:userid and employerid <> :employer and foremployee = true LIMIT :pageSize OFFSET :offset");
+            idQuery.setParameter("pageSize", pageSize);
+            idQuery.setParameter("employer", id);
+            idQuery.setParameter("userid", employeeId);
+            idQuery.setParameter("offset", page * pageSize);
+            @SuppressWarnings("unchecked")
+            List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+//            noinspection JpaQlInspection
+            query = em.createQuery("select u from Review u where reviewid in :ids", Review.class);
+            query.setParameter("ids", ids);
+        } else {
+            final Query idQuery = em.createNativeQuery("SELECT reviewid FROM review where employeeid =:userid and foremployee = true LIMIT :pageSize OFFSET :offset");
+            idQuery.setParameter("pageSize", pageSize);
+            idQuery.setParameter("userid", employeeId);
+            idQuery.setParameter("offset", page * pageSize);
+            @SuppressWarnings("unchecked")
+            List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+//            noinspection JpaQlInspection
+            query = em.createQuery("select u from Review u where reviewid in :ids", Review.class);
+            query.setParameter("ids", ids);
         }
         return query.getResultList();
     }
