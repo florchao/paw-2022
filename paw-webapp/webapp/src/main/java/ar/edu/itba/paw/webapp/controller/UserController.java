@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
@@ -28,15 +31,16 @@ public class UserController {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userRole = hogarUser.getAuthorities().stream().findFirst().get().getAuthority();
         UserDto userDto = UserDto.fromForm(userRole, String.valueOf(hogarUser.getUserID()));
-        GenericEntity<UserDto> genericEntity = new GenericEntity<UserDto>(userDto){};
+        GenericEntity<UserDto> genericEntity = new GenericEntity<UserDto>(userDto) {
+        };
         return Response.ok(genericEntity).build();
     }
 
     @DELETE
     @Path("/users/{id}")
-    public Response deleteUser(@PathParam("id") long id){
+    public Response deleteUser(@PathParam("id") long id) {
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(hogarUser.getUserID() != id){
+        if (hogarUser.getUserID() != id) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
         userService.deleteUser(id);

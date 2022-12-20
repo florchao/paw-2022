@@ -81,7 +81,7 @@ public class JobController {
         } catch (JobNotFoundException exception) {
             exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(Response.Status.CONFLICT).build();
         }
@@ -103,7 +103,7 @@ public class JobController {
         } catch (JobNotFoundException exception) {
             exception.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             return Response.status(Response.Status.CONFLICT).build();
         }

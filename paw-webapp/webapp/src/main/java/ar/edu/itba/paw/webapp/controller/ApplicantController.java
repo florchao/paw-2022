@@ -5,7 +5,10 @@ import ar.edu.itba.paw.model.Job;
 import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
-import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.service.ApplicantService;
+import ar.edu.itba.paw.service.ContactService;
+import ar.edu.itba.paw.service.EmployeeService;
+import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -29,8 +32,6 @@ public class ApplicantController {
     private final int PAGE_SIZE = 5;
     @Autowired
     private JobService jobService;
-    @Autowired
-    private UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicantController.class);
     @Autowired
     private EmployeeService employeeService;

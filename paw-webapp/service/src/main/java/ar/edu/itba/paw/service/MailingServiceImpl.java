@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
-public class MailingServiceImpl implements MailingService{
+public class MailingServiceImpl implements MailingService {
 
     private final Session session;
 
@@ -29,8 +31,8 @@ public class MailingServiceImpl implements MailingService{
     @Async
     public void sendContactMail(String replyTo, String to, String name) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String content = messageSource.getMessage("contactMail.text", new Object[]{name, replyTo},LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("contactMail.subject", new Object[]{name},LocaleContextHolder.getLocale());
+        String content = messageSource.getMessage("contactMail.text", new Object[]{name, replyTo}, LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("contactMail.subject", new Object[]{name}, LocaleContextHolder.getLocale());
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, replyTo);
     }
 
@@ -38,8 +40,8 @@ public class MailingServiceImpl implements MailingService{
     @Async
     public void sendApplyMail(String to, String jobTitle, String name, long jobid) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String content = messageSource.getMessage("applyMail.text", new Object[]{name, jobid},LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("applyMail.subject", new Object[]{name, jobTitle},LocaleContextHolder.getLocale());
+        String content = messageSource.getMessage("applyMail.text", new Object[]{name, jobid}, LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("applyMail.subject", new Object[]{name, jobTitle}, LocaleContextHolder.getLocale());
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, null);
     }
 
@@ -47,29 +49,29 @@ public class MailingServiceImpl implements MailingService{
     @Async
     public void sendContactUsMail(String name, String from, String content) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String question = messageSource.getMessage("contactUsMail.text", new Object[]{name, content, from},LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("contactUsMail.subject", new Object[]{name},LocaleContextHolder.getLocale());
+        String question = messageSource.getMessage("contactUsMail.text", new Object[]{name, content, from}, LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("contactUsMail.subject", new Object[]{name}, LocaleContextHolder.getLocale());
         sendEmail(mimeMessage, new ArrayList<>(), subject, question, from);
     }
 
-    private void sendRejection(String to, String title){
+    private void sendRejection(String to, String title) {
         MimeMessage mimeMessage = new MimeMessage(session);
         String content = messageSource.getMessage("rejectionMail.text", null, LocaleContextHolder.getLocale());
         String subject = messageSource.getMessage("rejectionMail.subject", new Object[]{title}, LocaleContextHolder.getLocale());
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, null);
-   }
+    }
 
-    private void sendAcceptance(String to, String from, String title){
+    private void sendAcceptance(String to, String from, String title) {
         MimeMessage mimeMessage = new MimeMessage(session);
         String content = messageSource.getMessage("acceptanceMail.text", new Object[]{title, from}, LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("acceptanceMail.subject",null , LocaleContextHolder.getLocale());
+        String subject = messageSource.getMessage("acceptanceMail.subject", null, LocaleContextHolder.getLocale());
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, from);
     }
 
     @Override
     @Async
     public void sendChangeStatus(int status, String to, String from, String title) {
-        if(status == 1)
+        if (status == 1)
             sendAcceptance(to, from, title);
         else if (status == 2) {
             sendRejection(to, title);
@@ -85,14 +87,13 @@ public class MailingServiceImpl implements MailingService{
             for (String destination : to) {
                 mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(destination));
             }
-            if(to.isEmpty()) {
+            if (to.isEmpty()) {
                 mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(SERVER_MAIL));
             }
             mimeMessage.setSubject(subject);
-            if(from == null) {
+            if (from == null) {
                 mimeMessage.setReplyTo(new Address[]{new InternetAddress(SERVER_MAIL)});
-            }
-            else {
+            } else {
                 mimeMessage.setReplyTo(new Address[]{new InternetAddress(from)});
             }
             mimeMessage.setContent(message, "text/html");

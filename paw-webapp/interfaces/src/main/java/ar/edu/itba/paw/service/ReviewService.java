@@ -1,16 +1,14 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Review;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface ReviewService {
     Review create(long employeeId, long employerId, String review, Date created, boolean forEmployee);
+
     List<Review> getAllReviews(long employeeId, Long id, Long page, int pageSize);
 
     int getPageNumber(long employeeId, Long id, int pageSize);
@@ -24,11 +22,4 @@ public interface ReviewService {
 
     Optional<Review> getMyReviewEmployer(long employeeId, long id);
 
-//    List<Review> getMyProfileReviews(long employeeId, long page, int pageSize);
-
-//    List<Review> getMyProfileReviewsEmployer(long employeeId, long page, int pageSize);
-
-//    int getMyProfileReviewsEmployerPageNumber(long id, int page_size);
-
-//    int getMyProfileReviewsPageNumber(long id, int page_size);
 }

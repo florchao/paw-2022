@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 //@EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.auth","ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
+@ComponentScan({"ar.edu.itba.paw.webapp.auth", "ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
 @Configuration
 @EnableAsync
 @PropertySource(value = {"classpath:application.properties"})
@@ -41,17 +41,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private static boolean isOnDevBuild() {
         return DEV_BUILD;
     }
-
-//    @Bean
-//    public ViewResolver viewResolver() {
-//        final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-//
-//        viewResolver.setViewClass(JstlView.class);
-//        viewResolver.setPrefix("/WEB-INF/jsp/");
-//        viewResolver.setSuffix(".jsp");
-//
-//        return viewResolver;
-//    }
 
     @Autowired
     private Environment environment;
@@ -109,13 +98,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-
-
     @Bean
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
@@ -137,18 +119,4 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return factoryBean;
     }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**").allowedOrigins("*");
-//    }
-
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurerAdapter() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**").allowedOrigins("http://localhost:8080");
-//            }
-//        };
-//    }
 }
