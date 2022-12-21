@@ -14,7 +14,7 @@ const PaginationButtons = ({changePages, pages, current}: {changePages: any ,pag
                         setPage(page - 1)
                     }
                 }
-                        className="bg-violet-300 w-auto hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent border-2 hover:border-purple-300">
+                        className="bg-violet-300 w-auto hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl border-solid border-transparent border-2 hover:border-purple-300">
                     <svg aria-hidden="true" className="w-4 h-5" fill="currentColor" viewBox="0 0 20 20"
                          xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd"
@@ -35,7 +35,7 @@ const PaginationButtons = ({changePages, pages, current}: {changePages: any ,pag
                         setPage(page + 1)
                     }
                 }
-                        className="bg-violet-300 w-auto font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl w-2/5 border-solid border-transparent border-2 hover:border-purple-300">
+                        className="bg-violet-300 w-auto font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl border-solid border-transparent border-2 hover:border-purple-300">
                 <svg aria-hidden="true" className="w-4 h-5" fill="currentColor" viewBox="0 0 20 20"
                          xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd"
