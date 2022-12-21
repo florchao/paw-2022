@@ -1,4 +1,4 @@
-let BASE_URL = 'http://localhost:8080/api/';
+let BASE_URL = 'http://pawserver.it.itba.edu.ar/paw-2022a-02/api/';
 let BACK_SLASH = '/';
 let QUERY_PARAM = '?';
 let EMPLOYEE_URL = BASE_URL + 'employees';

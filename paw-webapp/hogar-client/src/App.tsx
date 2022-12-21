@@ -27,7 +27,7 @@ import EditEmployee from "./views/EditEmployee";
 
 export default function App() {
     return (
-        <Router>
+        <Router basename={"paw-2022a-02"}>
             <Navbar />
             <Background />
             <Routes>
