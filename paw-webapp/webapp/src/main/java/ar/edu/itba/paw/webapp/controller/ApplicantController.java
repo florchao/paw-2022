@@ -14,14 +14,17 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.Locale;
 import java.util.Objects;
 
 @Path("/api/applicants")
@@ -55,12 +58,15 @@ public class ApplicantController {
     @POST
     @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response createApplicant(@FormDataParam("jobId") Long jobId) throws UserNotFoundException {
+    public Response createApplicant(@FormDataParam("jobId") Long jobId, @Context HttpServletRequest request) throws UserNotFoundException {
 
         if (Objects.isNull(jobId))
             return Response.status(Response.Status.BAD_REQUEST).build();
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0,2));
+        LocaleContextHolder.setLocale(locale);
 
         try {
             applicantService.apply(jobId, hogarUser.getUserID());
@@ -77,13 +83,17 @@ public class ApplicantController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response changeStatus(@PathParam("employeeId") long employeeId,
                                  @PathParam("jobId") long jobId,
-                                 @FormDataParam("status") Integer status) throws JobNotFoundException, UserNotFoundException {
+                                 @FormDataParam("status") Integer status,
+                                 @Context HttpServletRequest request) throws JobNotFoundException, UserNotFoundException {
 
         if (Objects.isNull(status)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         Job job;
         Employee employee;
+
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 2));
+        LocaleContextHolder.setLocale(locale);
 
         try {
             job = jobService.getJobByID(jobId);

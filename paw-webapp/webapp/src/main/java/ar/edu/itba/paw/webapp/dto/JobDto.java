@@ -33,12 +33,12 @@ public class JobDto {
 
     private Integer status;
 
-    public static JobDto fromExplore(final UriInfo uriInfo, final Job job, int status, String language) {
+    public static JobDto fromExplore(final UriInfo uriInfo, final Job job, int status) {
         final JobDto dto = new JobDto();
 
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
-        dto.location = job.nameLocation(job.getLocation(), language);
+        dto.location = job.nameLocation(job.getLocation(), LocaleContextHolder.getLocale().getLanguage());
         dto.description = job.getDescription();
         dto.status = status;
 
@@ -48,12 +48,12 @@ public class JobDto {
         return dto;
     }
 
-    public static JobDto fromCreated(final UriInfo uriInfo, final Job job, String language) {
+    public static JobDto fromCreated(final UriInfo uriInfo, final Job job) {
         final JobDto dto = new JobDto();
 
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
-        dto.location = job.nameLocation(job.getLocation(), language);
+        dto.location = job.nameLocation(job.getLocation(), LocaleContextHolder.getLocale().getLanguage());
 
         dto.description = job.getDescription();
 
@@ -78,12 +78,12 @@ public class JobDto {
         return dto;
     }
 
-    public static JobDto fromJob(final UriInfo uriInfo, final Job job, String language) {
+    public static JobDto fromJob(final UriInfo uriInfo, final Job job) {
         final JobDto dto = new JobDto();
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
 
-        dto.location = job.nameLocation(job.getLocation(), language);
+        dto.location = job.nameLocation(job.getLocation(), LocaleContextHolder.getLocale().getLanguage());
 
         dto.opened = job.isOpened();
 
@@ -91,9 +91,9 @@ public class JobDto {
         dto.experienceYears = job.getExperienceYears();
 
 
-        dto.abilities = job.getAbilitiesArr(job.getAbilities(), language);
+        dto.abilities = job.getAbilitiesArr(job.getAbilities(), LocaleContextHolder.getLocale().getLanguage());
 
-        dto.availability = job.getAvailabilityArr(job.getAvailability(), language);
+        dto.availability = job.getAvailabilityArr(job.getAvailability(), LocaleContextHolder.getLocale().getLanguage());
 
         dto.employerId = EmployerDto.fromJob(uriInfo, job.getEmployerId());
 

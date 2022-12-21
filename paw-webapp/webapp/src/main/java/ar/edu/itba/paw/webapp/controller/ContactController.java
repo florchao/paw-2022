@@ -12,11 +12,14 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -40,26 +43,34 @@ public class ContactController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response contactUs(@FormDataParam("name") String name,
                               @FormDataParam("mail") String mail,
-                              @FormDataParam("content") String content) {
+                              @FormDataParam("content") String content,
+                              @Context HttpServletRequest request) {
         if( name.isEmpty() || !name.matches("[a-zA-z\\s]+|^$") || name.length() > 100
         || mail.isEmpty() || !mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || content.isEmpty())
             Response.status(Response.Status.BAD_REQUEST).build();
+
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 2));
+        LocaleContextHolder.setLocale(locale);
+
         contactService.contactUS(content, mail, name);
         return Response.status(Response.Status.CREATED).build();
     }
 
-    //TODO: los ids van por body en el POST
     @POST
     @Path("")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response contactEmployee(@FormDataParam("content") String content,
                                     @FormDataParam("phone") String phone,
                                     @FormDataParam("employee_id") Long employeeId,
-                                    @FormDataParam("employer_id") Long employerId) throws AlreadyExistsException {
+                                    @FormDataParam("employer_id") Long employerId,
+                                    @Context HttpServletRequest request) throws AlreadyExistsException {
         if(content.isEmpty() || !phone.matches("[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
         || Objects.isNull(employeeId) || Objects.isNull(employerId) || employeeId.equals(employerId)){
             Response.status(Response.Status.BAD_REQUEST).build();
         }
+
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 2));
+        LocaleContextHolder.setLocale(locale);
 
         Employee employee;
         Employer employer;
@@ -78,7 +89,6 @@ public class ContactController {
     }
 
 
-    //TODO: al tener autorización vamos a poder chequear esto cuando traemos las empleadas y nos ahorramos una llamada a la API
     @GET
     @Path("/{employeeId}/{employerId}")
     @Produces(value = {MediaType.APPLICATION_JSON})

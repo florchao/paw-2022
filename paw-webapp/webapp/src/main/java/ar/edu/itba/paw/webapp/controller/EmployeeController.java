@@ -16,6 +16,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -96,14 +98,17 @@ public class EmployeeController {
             hogarUser = null;
         }
 
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+        LocaleContextHolder.setLocale(locale);
+
         List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(employee ->
         {
             float rating = ratingService.getRating(employee.getId().getId());
             if (hogarUser != null) {
                 Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
-                return EmployeeDto.fromExploreContact(uriInfo, employee, rating, request.getHeader("Accept-Language"), hasContact);
+                return EmployeeDto.fromExploreContact(uriInfo, employee, rating, hasContact);
             } else
-                return EmployeeDto.fromExploreRating(uriInfo, employee, rating, request.getHeader("Accept-Language"));
+                return EmployeeDto.fromExploreRating(uriInfo, employee, rating);
         }).collect(Collectors.toList());
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
@@ -134,17 +139,20 @@ public class EmployeeController {
             return Response.noContent().build();
         }
 
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+        LocaleContextHolder.setLocale(locale);
+
         EmployeeDto dto;
         if (edit != null && edit.equals("true"))
             dto = EmployeeDto.fromEdit(uriInfo, employee);
         else if (user != null)
-            dto = EmployeeDto.fromMyProfile(uriInfo, employee, request.getHeader("Accept-Language"));
+            dto = EmployeeDto.fromMyProfile(uriInfo, employee);
         else if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser hogarUser = (HogarUser) auth.getPrincipal();
             Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
-            dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), false, hasContact);
+            dto = EmployeeDto.fromProfile(uriInfo, employee, false, hasContact);
         } else {
-            dto = EmployeeDto.fromProfile(uriInfo, employee, request.getHeader("Accept-Language"), true, false);
+            dto = EmployeeDto.fromProfile(uriInfo, employee, true, false);
         }
 
         GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto) {
@@ -161,9 +169,12 @@ public class EmployeeController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+        LocaleContextHolder.setLocale(locale);
+
         List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, page, PAGE_SIZE)
                 .stream()
-                .map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant, request.getHeader("Accept-Language")))
+                .map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumberForAppliedJobs(id, PAGE_SIZE);
         GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list) {

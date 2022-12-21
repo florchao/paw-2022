@@ -9,6 +9,7 @@ import ar.edu.itba.paw.persistence.ApplicantDao;
 import ar.edu.itba.paw.persistence.EmployeeDao;
 import ar.edu.itba.paw.persistence.JobDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,7 +83,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             String title = job.get().firstWordsToUpper();
             if (employee.isPresent()) {
                 String name = employee.get().firstWordsToUpper();
-                mailingService.sendApplyMail(employer.getId().getEmail(), title, name, jobID);
+                mailingService.sendApplyMail(employer.getId().getEmail(), title, name, jobID, LocaleContextHolder.getLocale());
             }
             create(jobID, employeeID);
         }

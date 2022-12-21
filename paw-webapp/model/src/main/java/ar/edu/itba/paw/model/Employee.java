@@ -144,7 +144,7 @@ public class Employee implements Serializable {
 
     public List<String> nameAbilities(List<String> abilities, String language){
         ArrayList<String> employeeAbilities = new ArrayList<>();
-        if(language.startsWith("es-"))
+        if(language.startsWith("es"))
             for (String ability: abilities) {
                 employeeAbilities.add(Abilities.getAbilityById(Integer.parseInt(ability)).getNameEs());
             }
@@ -157,7 +157,7 @@ public class Employee implements Serializable {
 
     public List<String> nameAvailabilities(List<String> availabilityAr, String language){
         ArrayList<String> employeeAvailabilities = new ArrayList<>();
-        if(language.startsWith("es-"))
+        if(language.startsWith("es"))
             for (String availability: availabilityAr) {
                 employeeAvailabilities.add(Availability.getAvailabilityById(Integer.parseInt(availability)).getNameEs());
             }
@@ -179,7 +179,7 @@ public class Employee implements Serializable {
     }
 
     public String nameLocation(String location, String language){
-        if(language.startsWith("es-"))
+        if(language.startsWith("es"))
             return Location.getLocationById(Integer.parseInt(location)).getNameEs();
         else
             return Location.getLocationById(Integer.parseInt(location)).getName();

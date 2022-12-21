@@ -56,28 +56,28 @@ public class EmployeeDto {
         return dto;
     }
 
-    public static EmployeeDto fromExploreRating(final UriInfo uriInfo, final Employee employee, float rating, String language) {
+    public static EmployeeDto fromExploreRating(final UriInfo uriInfo, final Employee employee, float rating) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
-        dto.location = employee.nameLocation(employee.getLocation(), language);
+        dto.location = employee.nameLocation(employee.getLocation(), LocaleContextHolder.getLocale().getLanguage());
         dto.rating = rating;
         return dto;
     }
 
-    public static EmployeeDto fromExploreContact(final UriInfo uriInfo, final Employee employee, float rating, String language, Boolean isContacted) {
-        final EmployeeDto dto = EmployeeDto.fromExploreRating(uriInfo, employee, rating, language);
+    public static EmployeeDto fromExploreContact(final UriInfo uriInfo, final Employee employee, float rating, Boolean isContacted) {
+        final EmployeeDto dto = EmployeeDto.fromExploreRating(uriInfo, employee, rating);
 
         dto.isContacted = isContacted;
 
         return dto;
     }
-    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, String language, Boolean anonymous, Boolean isContacted) {
+    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, Boolean anonymous, Boolean isContacted) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
 
 
-        dto.location = employee.nameLocation(employee.getLocation(), language);
+        dto.location = employee.nameLocation(employee.getLocation(), LocaleContextHolder.getLocale().getLanguage());
 
-        dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), language);
-        dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), language);
+        dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), LocaleContextHolder.getLocale().getLanguage());
+        dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), LocaleContextHolder.getLocale().getLanguage());
 
         if(!anonymous) {
             final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
@@ -93,8 +93,8 @@ public class EmployeeDto {
         return dto;
     }
 
-    public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee, String language) {
-        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, language, false, false);
+    public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee) {
+        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, false, false);
         final UriBuilder deleteUriBuilder = uriInfo.getBaseUriBuilder().path("/api/users").path(String.valueOf(employee.getId().getId()));
 
         dto.delete = deleteUriBuilder.build();

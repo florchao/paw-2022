@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.exception.AlreadyExistsException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.persistence.ContactDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,21 +60,22 @@ public class ContactServiceImpl implements ContactService {
     public boolean contact(User to, User from, String message, String name, String phoneNumber) throws UserNotFoundException, AlreadyExistsException {
         if (create(to.getId(), from.getId(), new Date(System.currentTimeMillis()), message, phoneNumber))
             return true;
-        mailingService.sendContactMail(from.getEmail(), to.getEmail(), name);
+        mailingService.sendContactMail(from.getEmail(), to.getEmail(), name, LocaleContextHolder.getLocale());
         return false;
     }
 
     @Transactional
     @Override
     public void contactUS(String message, String from, String name) {
-        mailingService.sendContactUsMail(name, from, message);
+        String lang = LocaleContextHolder.getLocale().getLanguage();
+        mailingService.sendContactUsMail(name, from, message, LocaleContextHolder.getLocale());
     }
 
     @Transactional
     @Override
     public void changedStatus(int status, Job job, Employee employee) {
         String titile = job.firstWordsToUpper();
-        mailingService.sendChangeStatus(status, employee.getId().getEmail(), job.getEmployerId().getId().getEmail(), titile);
+        mailingService.sendChangeStatus(status, employee.getId().getEmail(), job.getEmployerId().getId().getEmail(), titile, LocaleContextHolder.getLocale());
     }
 
     @Override

@@ -63,6 +63,8 @@ export const ExploreJobs = () => {
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
         ).then((rsp) => {
             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+            console.log("jola")
+            console.log(rsp.status)
             if(rsp.status === 200)
                 rsp.json().then((j: any) => {
                     setJobs(j)
@@ -125,7 +127,7 @@ export const ExploreJobs = () => {
                                                 <JobCard job={job}/>
                                             </div>
                                         ))}
-                            {jobs === 0 && (
+                            {jobs && jobs.length === 0 && (
                                 <div className="grid content-center justify-center h-5/6 mt-16">
                                     <div className="grid justify-items-center">
                                         <img src={noJobs} alt="noJobs"

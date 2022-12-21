@@ -163,7 +163,7 @@ export const Explore = () => {
                         <PaginationButtonsExplore changePages={changePage} pages={pages} page={getValues("page")}/>
                     </div>
                 }
-                {employees === 0 && (
+                {employees && employees.length === 0 && (
                     <div className="grid content-center justify-center h-5/6 mt-16">
                         <div className="grid justify-items-center">
                             <img src={noEmployees} alt="noEmployees"

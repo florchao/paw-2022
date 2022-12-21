@@ -13,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class MailingServiceImpl implements MailingService {
@@ -29,52 +30,52 @@ public class MailingServiceImpl implements MailingService {
 
     @Override
     @Async
-    public void sendContactMail(String replyTo, String to, String name) {
+    public void sendContactMail(String replyTo, String to, String name, Locale locale) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String content = messageSource.getMessage("contactMail.text", new Object[]{name, replyTo}, LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("contactMail.subject", new Object[]{name}, LocaleContextHolder.getLocale());
+        String content = messageSource.getMessage("contactMail.text", new Object[]{name, replyTo}, locale);
+        String subject = messageSource.getMessage("contactMail.subject", new Object[]{name}, locale);
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, replyTo);
     }
 
     @Override
     @Async
-    public void sendApplyMail(String to, String jobTitle, String name, long jobid) {
+    public void sendApplyMail(String to, String jobTitle, String name, long jobid, Locale locale) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String content = messageSource.getMessage("applyMail.text", new Object[]{name, jobid}, LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("applyMail.subject", new Object[]{name, jobTitle}, LocaleContextHolder.getLocale());
+        String content = messageSource.getMessage("applyMail.text", new Object[]{name, jobid}, locale);
+        String subject = messageSource.getMessage("applyMail.subject", new Object[]{name, jobTitle}, locale);
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, null);
     }
 
     @Override
     @Async
-    public void sendContactUsMail(String name, String from, String content) {
+    public void sendContactUsMail(String name, String from, String content, Locale locale) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String question = messageSource.getMessage("contactUsMail.text", new Object[]{name, content, from}, LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("contactUsMail.subject", new Object[]{name}, LocaleContextHolder.getLocale());
+        String question = messageSource.getMessage("contactUsMail.text", new Object[]{name, content, from}, locale);
+        String subject = messageSource.getMessage("contactUsMail.subject", new Object[]{name}, locale);
         sendEmail(mimeMessage, new ArrayList<>(), subject, question, from);
     }
 
-    private void sendRejection(String to, String title) {
+    private void sendRejection(String to, String title, Locale locale) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String content = messageSource.getMessage("rejectionMail.text", null, LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("rejectionMail.subject", new Object[]{title}, LocaleContextHolder.getLocale());
+        String content = messageSource.getMessage("rejectionMail.text", null, locale);
+        String subject = messageSource.getMessage("rejectionMail.subject", new Object[]{title}, locale);
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, null);
     }
 
-    private void sendAcceptance(String to, String from, String title) {
+    private void sendAcceptance(String to, String from, String title, Locale locale) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String content = messageSource.getMessage("acceptanceMail.text", new Object[]{title, from}, LocaleContextHolder.getLocale());
-        String subject = messageSource.getMessage("acceptanceMail.subject", null, LocaleContextHolder.getLocale());
+        String content = messageSource.getMessage("acceptanceMail.text", new Object[]{title, from}, locale);
+        String subject = messageSource.getMessage("acceptanceMail.subject", null, locale);
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, from);
     }
 
     @Override
     @Async
-    public void sendChangeStatus(int status, String to, String from, String title) {
+    public void sendChangeStatus(int status, String to, String from, String title, Locale locale) {
         if (status == 1)
-            sendAcceptance(to, from, title);
+            sendAcceptance(to, from, title, locale);
         else if (status == 2) {
-            sendRejection(to, title);
+            sendRejection(to, title, locale);
         }
     }
 

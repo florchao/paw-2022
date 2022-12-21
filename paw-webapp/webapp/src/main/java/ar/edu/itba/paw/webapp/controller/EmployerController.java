@@ -18,6 +18,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -83,9 +85,13 @@ public class EmployerController {
     @Path("/{id}/jobs")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response createdJobs(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page, @QueryParam("profile") String profile, @Context HttpServletRequest request) {
+
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+        LocaleContextHolder.setLocale(locale);
+
         List<JobDto> jobs = jobService.getUserJobs(id, page, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE)
                 .stream()
-                .map(job -> JobDto.fromCreated(uriInfo, job, request.getHeader("Accept-Language"))).
+                .map(job -> JobDto.fromCreated(uriInfo, job)).
                 collect(Collectors.toList());
 
         if (profile != null && profile.equals("true")) {

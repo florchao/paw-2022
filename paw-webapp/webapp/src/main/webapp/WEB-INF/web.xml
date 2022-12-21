@@ -57,7 +57,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   </filter-mapping>
   <filter-mapping>
     <filter-name>unconditionalCacheFilter</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/static/*</url-pattern>
   </filter-mapping>
   <!--  <filter-mapping>-->
   <!--    <filter-name>encoding-filter</filter-name>-->

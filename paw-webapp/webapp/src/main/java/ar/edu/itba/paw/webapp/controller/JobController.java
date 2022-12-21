@@ -11,6 +11,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -60,9 +62,12 @@ public class JobController {
 
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+        LocaleContextHolder.setLocale(locale);
+
         List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> {
             int status = applicantService.getStatus(principal.getUserID(), j.getJobId());
-            return JobDto.fromExplore(uriInfo, j, status, request.getHeader("Accept-Language"));
+            return JobDto.fromExplore(uriInfo, j, status);
         }).collect(Collectors.toList());
 
         int pages = jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE);
@@ -85,7 +90,11 @@ public class JobController {
             ex.printStackTrace();
             return Response.status(Response.Status.CONFLICT).build();
         }
-        JobDto jobDto = JobDto.fromJob(uriInfo, job, request.getHeader("Accept-Language"));
+
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+        LocaleContextHolder.setLocale(locale);
+
+        JobDto jobDto = JobDto.fromJob(uriInfo, job);
 
         GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto) {
         };
