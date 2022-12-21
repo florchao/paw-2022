@@ -98,7 +98,7 @@ export const ProfileEmployer = () => {
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
             {!employer &&
-                <div className={'flex items-center justify-center h-3/4'}>
+                <div className={'flex items-center justify-center h-screen w-screen'}>
                     <MagnifyingGlass
                         visible={true}
                         height="160"

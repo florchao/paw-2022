@@ -100,12 +100,10 @@ export const TRANSLATIONS_ES = {
         availability: "Posible Jornada",
         connect: "CONTACTAR",
         alreadyConnected: "YA SE CONECTO",
-        reviews: "OPINIONES",
+        reviews: "Opiniones",
         noReviews: "No hay opiniones",
         editProfile: "EDITAR PERFIL",
-        rateUser: "Califica a ",
-        // viewProfile.thankEmployer = \u00a1Gracias por su colaboracion!
-        //     viewProfile.delete = Eliminar perfil
+        rateUser: "Califica a "
     },
     LogIn:{
         mail:"E-Mail",

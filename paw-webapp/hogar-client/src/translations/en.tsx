@@ -100,7 +100,7 @@ export const TRANSLATIONS_EN = {
     availability: "Abilities",
     connect: "CONTACT",
     alreadyConnected: "ALREADY CONNECTED",
-    reviews: "REVIEWS",
+    reviews: "Reviews",
     noReviews: "There are no reviews",
     editProfile: "EDIT PROFILE",
     rateUser: "Rate ",
