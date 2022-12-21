@@ -118,13 +118,13 @@ export const Explore = () => {
                 <div className={'flex flex-row-reverse'}>
                     <form className={'flex flex-row'} onSubmit={handleSubmit(onSubmit)}>
                         <h1 className={'font-semibold mr-3'}>{t('Explore.orderBy')}</h1>
-                        <label htmlFor={"pop"} className={getValues("orderBy") === "popularity"? 'text-yellow-300 underline' : 'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.popularity')}</label>
+                        <label htmlFor={"pop"} className={getValues("orderBy") === "rating"? 'text-yellow-300 underline' : 'mr-3 hover:text-yellow-300 hover:underline hover:cursor-pointer'}>{t('Explore.popularity')}</label>
                         <input type='radio'
-                               value="popularity"
+                               value="rating"
                                id={'pop'}
                                onClick={() => {
-                                   if(getValues("orderBy") !== "popularity") {
-                                       changeOrder("popularity")
+                                   if(getValues("orderBy") !== "rating") {
+                                       changeOrder("rating")
                                    }
                                }}
                                style={{visibility: "hidden"}}

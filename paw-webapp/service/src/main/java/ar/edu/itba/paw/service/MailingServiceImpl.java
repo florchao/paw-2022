@@ -41,7 +41,7 @@ public class MailingServiceImpl implements MailingService {
     @Async
     public void sendApplyMail(String to, String jobTitle, String name, long jobid, Locale locale) {
         MimeMessage mimeMessage = new MimeMessage(session);
-        String content = messageSource.getMessage("applyMail.text", new Object[]{name, jobid}, locale);
+        String content = messageSource.getMessage("applyMail.text", new Object[]{name}, locale);
         String subject = messageSource.getMessage("applyMail.subject", new Object[]{name, jobTitle}, locale);
         sendEmail(mimeMessage, Collections.singletonList(to), subject, content, null);
     }
