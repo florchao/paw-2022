@@ -10,7 +10,7 @@ const NotFound = () => {
                 <img src={warning} alt="Error" className="mr-3 h-6 sm:h-52"/>
                 <p className="text-3xl font-semibold text-purple-700">{t('NotFound.title')}</p>
                 <br/>
-                    <Button name={t('NotFound.goBack')} link="/"/>
+                <Button name={t('NotFound.goBack')} link="/"/>
             </div>
         </div>
     );
