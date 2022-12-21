@@ -138,8 +138,12 @@ public class EmployeeJpaDao implements EmployeeDao {
         if (ids.isEmpty()) {
             return new ArrayList<>();
         }
-//        noinspection JpaQlInspection
-        TypedQuery<Employee> filteredQuery = em.createQuery("select e from Employee e where employeeid in :ids", Employee.class);
+        StringBuilder filteredStringBuilder = new StringBuilder();
+
+        // noinspection JpaQlInspection
+        String query = "select e from Employee e where employeeid in :ids order by e." + orderCriteria + " desc";
+        TypedQuery<Employee> filteredQuery = em.createQuery(query, Employee.class);
+//        filteredQuery.setParameter("criteria", "e."+orderCriteria);
         filteredQuery.setParameter("ids", ids);
         return filteredQuery.getResultList();
     }
