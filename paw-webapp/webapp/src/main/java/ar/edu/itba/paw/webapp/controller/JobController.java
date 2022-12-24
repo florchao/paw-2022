@@ -5,7 +5,7 @@ import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
-import ar.edu.itba.paw.webapp.dto.ApplicantDto;
+import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantInJobsDto;
 import ar.edu.itba.paw.webapp.dto.JobDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -122,12 +122,12 @@ public class JobController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        List<ApplicantDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
+        List<ApplicantInJobsDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
                 .stream()
-                .map(a -> ApplicantDto.fromJob(uriInfo, a))
+                .map(a -> ApplicantInJobsDto.fromJob(uriInfo, a))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
-        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list) {
+        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) {
         };
         return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }

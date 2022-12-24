@@ -2,9 +2,6 @@ import {EMPLOYEE_URL, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees(basicEncoded:string="") {
-        console.log("ACACACACAC")
-        console.log(basicEncoded)
-        console.log("ACACACACAC")
         let header
         if (localStorage.getItem('hogar-jwt') != null) {
             header = {

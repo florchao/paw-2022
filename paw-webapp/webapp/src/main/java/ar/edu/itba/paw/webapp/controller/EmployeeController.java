@@ -7,8 +7,8 @@ import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
-import ar.edu.itba.paw.webapp.dto.ApplicantDto;
-import ar.edu.itba.paw.webapp.dto.ContactDto;
+import ar.edu.itba.paw.webapp.dto.ApplicantDto.JobsAppliedDto;
+import ar.edu.itba.paw.webapp.dto.ContactDto.ContactDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto;
 import org.apache.commons.io.IOUtils;
@@ -172,12 +172,12 @@ public class EmployeeController {
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
         LocaleContextHolder.setLocale(locale);
 
-        List<ApplicantDto> list = applicantService.getAppliedJobsByApplicant(id, page, PAGE_SIZE)
+        List<JobsAppliedDto> list = applicantService.getAppliedJobsByApplicant(id, page, PAGE_SIZE)
                 .stream()
-                .map(applicant -> ApplicantDto.fromEmployee(uriInfo, applicant))
+                .map(applicant -> JobsAppliedDto.fromEmployee(uriInfo, applicant))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumberForAppliedJobs(id, PAGE_SIZE);
-        GenericEntity<List<ApplicantDto>> genericEntity = new GenericEntity<List<ApplicantDto>>(list) {
+        GenericEntity<List<JobsAppliedDto>> genericEntity = new GenericEntity<List<JobsAppliedDto>>(list) {
         };
         return Response.status(list.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }

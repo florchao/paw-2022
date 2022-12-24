@@ -20,17 +20,21 @@ export class RatingService {
 
     public static async postEmployeeRating(e: any, employeeId: number, employerId: number, rating: number) {
         e.preventDefault();
-        const formData: any = new FormData();
-        formData.append("employeeId", employeeId)
-        formData.append("employerId", employerId)
-        formData.append("rating", rating)
+        const ratingForm = JSON.stringify({
+            rating: rating,
+            employeeId: employeeId,
+            employerId: employerId
+        });
+
+        //TODO: cambiar lo que hace con el response
 
         return await fetch(RATINGS_URL, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
+            body: ratingForm
         }).then((r) => r.json())
     }
 

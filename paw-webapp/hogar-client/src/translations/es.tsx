@@ -7,7 +7,8 @@ export const TRANSLATIONS_ES = {
         send:"Enviar",
         nameError: 'Por favor ingrese un nombre válido',
         mailError: 'Por favor ingrese un email válido',
-        messageError: 'Por favor ingrese un mensaje'
+        messageError: 'Por favor ingrese un mensaje',
+        genericError: 'El nombre, el email o el mensaje son inválidos',
     },
 
     RegisterEmployer:{
@@ -238,7 +239,8 @@ export const TRANSLATIONS_ES = {
         message: "Mensaje",
         submit: "Enviar",
         phoneError: "Por favor ingrese un número de teléfono válido",
-        messageError: "Por favor ingrese un mensaje"
+        messageError: "Por favor ingrese un mensaje",
+        genericError: "Numero de teléfono o mensaje inválido"
     },
 
     FilterForm:{

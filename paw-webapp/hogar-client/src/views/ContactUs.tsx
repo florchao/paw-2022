@@ -20,6 +20,8 @@ export const ContactUs = () => {
     const { t } = useTranslation();
 
     const [showFeedback, setShowFeedback] = useState(false);
+    const [contactUsError, setContactUsError]: any = useState(false)
+
 
     type FormData = {
         name: string;
@@ -50,10 +52,14 @@ export const ContactUs = () => {
     })
 
     const onSubmit = async (data: any, e: any) => {
-        await ContactService.contactUs(e, data.name, data.mail, data.content)
-        localStorage.removeItem("contactUsForm")
-        reset()
-        setShowFeedback(true)
+        let post = await ContactService.contactUs(e, data.name, data.mail, data.content)
+        if(post.status === 201) {
+            localStorage.removeItem("contactUsForm")
+            reset()
+            setShowFeedback(true)
+        } else if (post.status === 400) {
+            setContactUsError(true)
+        }
     }
     return (
         <div className="grid grid-cols-7 content-start justify-center h-full pt-5 overflow-auto">
@@ -99,7 +105,8 @@ export const ContactUs = () => {
                             <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactUs.messageError')}</p>
                         }
                     </div>
-
+                    {contactUsError &&
+                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactUs.genericError')}</p>}
                     <button type="submit" className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">{t('ContactUs.send')}</button>
                 </div>
             </form>

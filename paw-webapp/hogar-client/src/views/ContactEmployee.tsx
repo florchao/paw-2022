@@ -4,6 +4,7 @@ import {ContactService} from "../service/ContactService";
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
+import {useState} from "react";
 
 export const ContactEmployee = () => {
 
@@ -26,6 +27,9 @@ export const ContactEmployee = () => {
 
     const { id, name } = useLocation().state
 
+
+    const [contactEmployeeError, setContactEmployeeError]: any = useState(false)
+
     const {t} = useTranslation();
     const nav = useNavigate();
 
@@ -40,11 +44,18 @@ export const ContactEmployee = () => {
         const contact = await ContactService.contactEmployee(e, data.phone, data.content, id, employerId)
         localStorage.removeItem("contactForm")
         let status;
-        if (contact.status === 201)
+        if (contact.status === 201) {
             status = "0"
-        else
+            setContactEmployeeError(false)
+        }
+        else if (contact.status === 400)
+            setContactEmployeeError(true)
+        else {
             status = "1"
-        nav("/employee", {replace: true, state: {id: id, status: status}})
+            setContactEmployeeError(false)
+        }
+        if(status)
+            nav("/employee", {replace: true, state: {id: id, status: status}})
     }
 
     return (
@@ -84,6 +95,8 @@ export const ContactEmployee = () => {
                                 <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactEmployee.messageError')}</p>
                             }
                         </div>
+                        {contactEmployeeError &&
+                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactEmployee.genericError')}</p>}
                         <button type="submit"
                                 className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                             {t('ContactEmployee.submit')}

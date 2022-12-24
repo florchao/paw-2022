@@ -7,7 +7,8 @@ export const TRANSLATIONS_EN = {
     send:"Send",
     nameError: 'Please enter a valid name',
     mailError: 'Please enter a valid email',
-    messageError: 'Please enter a message'
+    messageError: 'Please enter a message',
+    genericError: 'The name, email or message are not valid',
   },
 
   RegisterEmployer: {
@@ -230,7 +231,8 @@ export const TRANSLATIONS_EN = {
     message: "Message",
     submit: "Submit",
     phoneError: "Please enter a valid phone number",
-    messageError: "Please enter a message"
+    messageError: "Please enter a message",
+    genericError: "Phone number or message are invalid"
   },
 
   FilterForm:{

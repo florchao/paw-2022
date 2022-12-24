@@ -5,12 +5,14 @@ export const FilterForm = ({handleSubmit, register, errors, onSubmit, reset, set
 
     const {t} = useTranslation();
 
-    const resetFilter = () => {
+    const resetFilter = (e: any) => {
+        e.preventDefault();
         reset()
         handleSubmit(onSubmit)()
     }
 
-    const submit = () => {
+    const submit = (e: any) => {
+        e.preventDefault()
         setValue("page", 0)
         handleSubmit(onSubmit)()
     }

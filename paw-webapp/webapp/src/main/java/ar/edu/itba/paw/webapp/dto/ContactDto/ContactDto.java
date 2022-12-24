@@ -1,12 +1,11 @@
-package ar.edu.itba.paw.webapp.dto;
+package ar.edu.itba.paw.webapp.dto.ContactDto;
 
 
 import ar.edu.itba.paw.model.Contact;
+import ar.edu.itba.paw.webapp.dto.DtoUtils;
+import ar.edu.itba.paw.webapp.dto.EmployerDto;
 
 import javax.ws.rs.core.UriInfo;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ContactDto {
 

@@ -10,6 +10,8 @@ import ar.edu.itba.paw.service.ContactService;
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
+import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantCreateDto;
+import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantEditDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -57,11 +60,11 @@ public class ApplicantController {
 
     @POST
     @Path("")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response createApplicant(@FormDataParam("jobId") Long jobId, @Context HttpServletRequest request) throws UserNotFoundException {
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    public Response createApplicant(@Valid ApplicantCreateDto applicantCreateDto, @Context HttpServletRequest request) throws UserNotFoundException {
 
-        if (Objects.isNull(jobId))
-            return Response.status(Response.Status.BAD_REQUEST).build();
+//        if (Objects.isNull(jobId))
+//            return Response.status(Response.Status.BAD_REQUEST).build();
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -69,9 +72,9 @@ public class ApplicantController {
         LocaleContextHolder.setLocale(locale);
 
         try {
-            applicantService.apply(jobId, hogarUser.getUserID());
+            applicantService.apply(applicantCreateDto.getJobId(), hogarUser.getUserID());
         } catch (AlreadyExistsException alreadyExistsException) {
-            LOGGER.error(String.format("there has already been made a contact for %d by id %d", jobId, hogarUser.getUserID()));
+            LOGGER.error(String.format("The user %d has already applied to job %d", hogarUser.getUserID(), applicantCreateDto.getJobId()));
             return Response.status(Response.Status.CONFLICT).build();
         }
         return Response.status(Response.Status.CREATED).build();
@@ -80,15 +83,15 @@ public class ApplicantController {
 
     @PUT
     @Path("/{employeeId}/{jobId}")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response changeStatus(@PathParam("employeeId") long employeeId,
                                  @PathParam("jobId") long jobId,
-                                 @FormDataParam("status") Integer status,
+                                 @Valid ApplicantEditDto applicantEditDto,
                                  @Context HttpServletRequest request) throws JobNotFoundException, UserNotFoundException {
 
-        if (Objects.isNull(status)) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+//        if (Objects.isNull(status)) {
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//        }
         Job job;
         Employee employee;
 
@@ -103,8 +106,8 @@ public class ApplicantController {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
 
-            int finalStatus = applicantService.changeStatus(status, employeeId, jobId);
-            contactService.changedStatus(status, job, employee);
+            int finalStatus = applicantService.changeStatus(applicantEditDto.getStatus(), employeeId, jobId);
+            contactService.changedStatus(applicantEditDto.getStatus(), job, employee);
             return Response.ok(finalStatus).build();
 
         } catch (UserNotFoundException | JobNotFoundException ex) {

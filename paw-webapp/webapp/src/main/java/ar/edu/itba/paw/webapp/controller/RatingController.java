@@ -3,14 +3,15 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.RaitingService;
+import ar.edu.itba.paw.webapp.dto.RatingDto.RatingCretaeDto;
+import ar.edu.itba.paw.webapp.dto.RatingDto.RatingDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.Objects;
 
 @Path("/api/ratings")
@@ -22,13 +23,16 @@ public class RatingController {
     @Autowired
     private RaitingService ratingService;
 
+    @Context
+    UriInfo uriInfo;
+
     @GET
     @Path("/{employeeId}/{employerId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployeeRating(@PathParam("employeeId") long userId, @PathParam("employerId") long employerId) {
         try {
-            Rating rating = new Rating(employeeService.getRating(userId), employeeService.getRatingVoteCount(userId), ratingService.hasAlreadyRated(userId, employerId));
-            GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(rating) {
+            RatingDto rating = RatingDto.fromRating(ratingService.getRating(userId), employeeService.getRatingVoteCount(userId), ratingService.hasAlreadyRated(userId, employerId));
+            GenericEntity<RatingDto> genericEntity = new GenericEntity<RatingDto>(rating) {
             };
             return Response.ok(genericEntity).build();
         } catch (Exception e) {
@@ -39,20 +43,17 @@ public class RatingController {
 
     @POST
     @Path("")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response postRating(@FormDataParam("rating") Long rating, @FormDataParam("employeeId") Long employeeId, @FormDataParam("employerId") Long employerId) {
-        if (rating == null)
-            rating = 0L;
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    public Response postRating(@Valid RatingCretaeDto ratingDto) {
 
-        if (Objects.isNull(employeeId) || Objects.isNull(employerId) || Objects.equals(employeeId, employerId))
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (ratingService.hasAlreadyRated(ratingDto.getEmployeeId(), ratingDto.getEmployerId()))
+            return Response.status(Response.Status.CONFLICT).build();
 
-        if (ratingService.hasAlreadyRated(employeeId, employerId))
-            return Response.status(Response.Status.FORBIDDEN).build();
-
-        float newRating = ratingService.updateRating(employeeId, rating, employerId);
-        Rating r = new Rating(newRating, employeeService.getRatingVoteCount(employeeId), ratingService.hasAlreadyRated(employeeId, employerId));
-        GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(r) {
+        float newRating = ratingService.updateRating(ratingDto.getEmployeeId(), ratingDto.getRating(), ratingDto.getEmployerId());
+        //TODO: hay que cambiarlo, debería devlver la url para ir a buscar esta info (como esta abajo)
+        //return Response.created(uriInfo.getBaseUriBuilder().path("/api/ratings/" + ratingDto.getEmployeeId() + "/" + ratingDto.getEmployerId()).build()).build();
+        RatingDto r = RatingDto.fromRating(newRating, employeeService.getRatingVoteCount(ratingDto.getEmployeeId()), ratingService.hasAlreadyRated(ratingDto.getEmployeeId(), ratingDto.getEmployerId()));
+        GenericEntity<RatingDto> genericEntity = new GenericEntity<RatingDto>(r) {
         };
         return Response.status(Response.Status.CREATED).entity(genericEntity).build();
     }
