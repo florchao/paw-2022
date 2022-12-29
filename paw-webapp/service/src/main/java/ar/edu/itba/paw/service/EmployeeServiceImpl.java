@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -83,17 +80,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize, String orderCriteria) {
-        List<String> availabilityList = new ArrayList<>();
+        List<String> availabilityList;
         if (availability != null) {
+            availabilityList = new ArrayList<>();
             availabilityList = Arrays.asList(availability.split(","));
+        } else {
+            availabilityList = Collections.emptyList();
         }
-        List<String> abilitiesList = new ArrayList<>();
+        List<String> abilitiesList;
         if (abilities != null) {
+            abilitiesList = new ArrayList<>();
             abilitiesList = Arrays.asList(abilities.split(","));
+        } else {
+            abilitiesList = Collections.emptyList();
         }
-        List<String> locationList = new ArrayList<>();
+        List<String> locationList;
         if (location != null) {
+            locationList = new ArrayList<>();
             locationList = Arrays.asList(location.split(","));
+        } else {
+            locationList = Collections.emptyList();
         }
         return employeeDao.getPageNumber(name, experienceYears, locationList, availabilityList, abilitiesList, pageSize, orderCriteria);
     }
