@@ -9,10 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -40,7 +37,7 @@ public class ReviewJpaDao implements ReviewDao {
             @SuppressWarnings("unchecked")
             List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
             if (ids.isEmpty()) {
-                return new ArrayList<>();
+                return Collections.emptyList();
             }
 
 //            noinspection JpaQlInspection
@@ -54,7 +51,7 @@ public class ReviewJpaDao implements ReviewDao {
             @SuppressWarnings("unchecked")
             List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
             if (ids.isEmpty()) {
-                return new ArrayList<>();
+                return Collections.emptyList();
             }
 
 //            noinspection JpaQlInspection
@@ -100,7 +97,7 @@ public class ReviewJpaDao implements ReviewDao {
             @SuppressWarnings("unchecked")
             List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
             if (ids.isEmpty()) {
-                return new ArrayList<>();
+                return Collections.emptyList();
             }
 
 //            noinspection JpaQlInspection
@@ -114,7 +111,7 @@ public class ReviewJpaDao implements ReviewDao {
             @SuppressWarnings("unchecked")
             List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
             if (ids.isEmpty()) {
-                return new ArrayList<>();
+                return Collections.emptyList();
             }
 
 //            noinspection JpaQlInspection

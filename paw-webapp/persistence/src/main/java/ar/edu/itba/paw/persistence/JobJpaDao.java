@@ -38,7 +38,7 @@ public class JobJpaDao implements JobDao {
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
 
         // noinspection JpaQlInspection
@@ -120,7 +120,7 @@ public class JobJpaDao implements JobDao {
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
 //        noinspection JpaQlInspection
         TypedQuery<Job> filteredQuery = em.createQuery("select j from Job j where jobid in :ids", Job.class);

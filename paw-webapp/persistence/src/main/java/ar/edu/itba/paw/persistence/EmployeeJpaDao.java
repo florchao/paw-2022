@@ -52,7 +52,7 @@ public class EmployeeJpaDao implements EmployeeDao {
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
 
         // noinspection JpaQlInspection
@@ -136,7 +136,7 @@ public class EmployeeJpaDao implements EmployeeDao {
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         if(!orderCriteriaWhiteList.contains(orderCriteria))
             orderCriteria = "rating";
