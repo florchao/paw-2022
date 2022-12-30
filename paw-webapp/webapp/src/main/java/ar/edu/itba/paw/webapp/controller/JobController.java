@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantInJobsDto;
+import ar.edu.itba.paw.webapp.dto.JobDto.JobCreateDto;
 import ar.edu.itba.paw.webapp.dto.JobDto.JobDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -16,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
@@ -135,27 +138,22 @@ public class JobController {
 
     @POST
     @Path("")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response postJob(@FormDataParam("title") String title,
-                            @FormDataParam("description") String description,
-                            @FormDataParam("location") String location,
-                            @FormDataParam("abilities[]") List<String> abilities,
-                            @FormDataParam("availability") String availability,
-                            @FormDataParam("experienceYears") Long experienceYears) {
-        if (title.isEmpty() || (title.length() > 25) ||
-                (location.length() > 1) || !location.matches("[1-4]") ||
-                Objects.isNull(experienceYears) || (experienceYears < 0) || (experienceYears > 100) ||
-                availability.isEmpty() || !availability.matches("[1-3]") || abilities.isEmpty()
-                || (abilities.size() > 6))
-            return Response.status(Response.Status.BAD_REQUEST).build();
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    public Response postJob(@Valid JobCreateDto jobCreateDto) {
+//        if (title.isEmpty() || (title.length() > 25) ||
+//                (location.length() > 1) || !location.matches("[1-4]") ||
+//                Objects.isNull(experienceYears) || (experienceYears < 0) || (experienceYears > 100) ||
+//                availability.isEmpty() || !availability.matches("[1-3]") || abilities.isEmpty()
+//                || (abilities.size() > 6))
+//            return Response.status(Response.Status.BAD_REQUEST).build();
 
-        for (int i = 0; i < abilities.toArray().length; i++) {
-            if (!abilities.get(i).matches("[1-6]"))
-                return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+//        for (int i = 0; i < abilities.toArray().length; i++) {
+//            if (!abilities.get(i).matches("[1-6]"))
+//                return Response.status(Response.Status.BAD_REQUEST).build();
+//        }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Job job = jobService.create(title, location, hogarUser.getUserID(), availability, experienceYears, fromListToString(abilities), description);
+        Job job = jobService.create(jobCreateDto.getTitle(), jobCreateDto.getLocation(), hogarUser.getUserID(), jobCreateDto.getAvailability(), jobCreateDto.getExperienceYears(), fromArrayToString(jobCreateDto.getAbilities()), jobCreateDto.getDescription());
         if (job == null) {
             return Response.status(Response.Status.CONFLICT).build();
         }
@@ -189,10 +187,7 @@ public class JobController {
     @Path("/{id}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response updateJobStatus(@PathParam("id") long id,
-                                    @FormDataParam("status") Boolean status) throws JobNotFoundException {
-
-        if (Objects.isNull(status))
-            return Response.status(Response.Status.BAD_REQUEST).build();
+                                    @NotNull @FormDataParam("status") Boolean status) throws JobNotFoundException {
 
         Job job;
         try {
@@ -227,6 +222,14 @@ public class JobController {
             str[i] = arr.get(i);
         }
         return str;
+    }
+
+    private String fromArrayToString(String[] arr) {
+        StringBuilder ret = new StringBuilder();
+        for (String str : arr) {
+            ret.append(str).append(",");
+        }
+        return ret.substring(0, ret.length() - 1);
     }
 
 }

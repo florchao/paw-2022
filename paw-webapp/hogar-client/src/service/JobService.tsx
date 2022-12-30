@@ -1,4 +1,4 @@
-import {BACK_SLASH, BASE_URL, JOB_URL, JOBS, QUERY_PARAM} from "../utils/utils";
+import {BACK_SLASH, BASE_URL, JOB_URL, QUERY_PARAM} from "../utils/utils";
 
 export class JobService {
     public static async getJobs() {
@@ -90,20 +90,23 @@ export class JobService {
 
     public static async postJob(e: any, title: string, location: string, experienceYears: number, availability: string, abilities: string[], description: string) {
         e.preventDefault();
-        let formData = new FormData();
-        formData.append("title", title);
-        formData.append("location", location);
-        formData.append("experienceYears", experienceYears.toString());
-        formData.append("availability", availability);
-        abilities.forEach(a => formData.append("abilities[]", a))
-        formData.append("description", description);
+
+        const jobForm = JSON.stringify({
+            title: title,
+            location: location,
+            experienceYears: experienceYears,
+            availability: availability,
+            abilities: abilities,
+            description: description
+        });
 
         return await fetch(JOB_URL, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
+            body: jobForm
         })
     }
 
