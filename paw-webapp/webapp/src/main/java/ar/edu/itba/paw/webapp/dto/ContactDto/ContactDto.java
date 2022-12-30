@@ -3,7 +3,7 @@ package ar.edu.itba.paw.webapp.dto.ContactDto;
 
 import ar.edu.itba.paw.model.Contact;
 import ar.edu.itba.paw.webapp.dto.DtoUtils;
-import ar.edu.itba.paw.webapp.dto.EmployerDto;
+import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerDto;
 
 import javax.ws.rs.core.UriInfo;
 

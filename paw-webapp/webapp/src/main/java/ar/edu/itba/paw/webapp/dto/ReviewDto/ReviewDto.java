@@ -1,13 +1,13 @@
-package ar.edu.itba.paw.webapp.dto;
+package ar.edu.itba.paw.webapp.dto.ReviewDto;
 
-import ar.edu.itba.paw.model.Employee;
-import ar.edu.itba.paw.model.Employer;
 import ar.edu.itba.paw.model.Review;
+import ar.edu.itba.paw.webapp.dto.DtoUtils;
+import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
+import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerDto;
 
 import javax.ws.rs.core.UriInfo;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ReviewDto {
     private long reviewId;

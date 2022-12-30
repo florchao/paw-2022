@@ -10,9 +10,10 @@ import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
-import ar.edu.itba.paw.webapp.dto.EmployerDto;
-import ar.edu.itba.paw.webapp.dto.JobDto;
-import ar.edu.itba.paw.webapp.dto.ReviewDto;
+import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerCreateDto;
+import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerDto;
+import ar.edu.itba.paw.webapp.dto.JobDto.JobDto;
+import ar.edu.itba.paw.webapp.dto.ReviewDto.ReviewDto;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.InputStream;
@@ -142,27 +144,14 @@ public class EmployerController {
 
     @POST
     @Path("")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response createEmployer(@FormDataParam("mail") String mail,
-                                   @FormDataParam("password") String password,
-                                   @FormDataParam("confirmPassword") String confirmPassword,
-                                   @FormDataParam("name") String name,
-                                   @FormDataParam("last") String lastName,
-                                   @FormDataParam("image") InputStream image
-    ) throws UserFoundException, PassMatchException {
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    public Response createEmployer(@Valid EmployerCreateDto employerDto) throws UserFoundException, PassMatchException {
 
-        if (!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
-                password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
-                name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
-                lastName.length() > 100 || !lastName.matches("[a-zA-z\\s'-]+|^$") || lastName.isEmpty()
-                || image == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
         final User u;
         try {
-            u = userService.create(mail, password, confirmPassword, 2);
-            String fullName = name + " " + lastName;
-            employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
+            u = userService.create(employerDto.getMail(), employerDto.getPassword(), employerDto.getConfirmPassword(), 2);
+            String fullName = employerDto.getName() + " " + employerDto.getLastname();
+            employerService.create(fullName.toLowerCase(), u, employerDto.getImage());
         } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(Response.Status.CONFLICT).build();

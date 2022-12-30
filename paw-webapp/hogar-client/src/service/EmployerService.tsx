@@ -21,18 +21,23 @@ export class EmployerService {
     public static async registerEmployer (e: any, name: string,lastname: string, mail: string, password: string, confirmPassword: string, image: File) {
         e.preventDefault();
 
-        const formData:any = new FormData();
-        formData.append("mail", mail)
-        formData.append("password", password)
-        formData.append("confirmPassword", confirmPassword)
-        formData.append("name", name)
-        formData.append("last", lastname)
-        formData.append("image", image, image.name)
+        const employerForm = JSON.stringify({
+            name: name,
+            lastname: lastname,
+            mail: mail,
+            password: password,
+            confirmPassword: confirmPassword,
+            image: image
+        });
+
+        //TODO: Arreglar lo de las imágenes
 
         return await fetch(EMPLOYER_URL, {
             method: 'POST',
-            headers: {},
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: employerForm
         })
     }
 }

@@ -6,7 +6,7 @@ import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantInJobsDto;
-import ar.edu.itba.paw.webapp.dto.JobDto;
+import ar.edu.itba.paw.webapp.dto.JobDto.JobDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

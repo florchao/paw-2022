@@ -1,6 +1,8 @@
-package ar.edu.itba.paw.webapp.dto;
+package ar.edu.itba.paw.webapp.dto.JobDto;
 
 import ar.edu.itba.paw.model.Job;
+import ar.edu.itba.paw.webapp.dto.DtoUtils;
+import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerDto;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.ws.rs.core.UriBuilder;

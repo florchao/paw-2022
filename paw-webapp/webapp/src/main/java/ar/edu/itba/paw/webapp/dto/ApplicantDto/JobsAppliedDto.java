@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.dto.ApplicantDto;
 
 import ar.edu.itba.paw.model.Applicant;
-import ar.edu.itba.paw.webapp.dto.JobDto;
+import ar.edu.itba.paw.webapp.dto.JobDto.JobDto;
 
 import javax.ws.rs.core.UriInfo;
 

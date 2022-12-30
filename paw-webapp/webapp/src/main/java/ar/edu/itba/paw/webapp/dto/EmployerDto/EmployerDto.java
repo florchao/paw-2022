@@ -1,6 +1,7 @@
-package ar.edu.itba.paw.webapp.dto;
+package ar.edu.itba.paw.webapp.dto.EmployerDto;
 
 import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.webapp.dto.DtoUtils;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
