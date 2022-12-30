@@ -111,43 +111,52 @@ export class EmployeeService {
     public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
         e.preventDefault();
 
-        const formData:any = new FormData();
-        formData.append("mail", mail)
-        formData.append("password", password)
-        formData.append("confirmPassword", confirmPassword)
-        formData.append("name", name)
-        formData.append("location", location)
-        formData.append("experienceYears", experienceYears)
-        formData.append("hourlyFee", hourlyFee)
-        availabilities.forEach(a => formData.append("availabilities[]", a))
-        abilities.forEach(a => formData.append("abilities[]", a))
-        formData.append("image", image, image.name)
+        const employeeForm = JSON.stringify({
+            name: name,
+            mail: mail,
+            password: password,
+            confirmPassword: confirmPassword,
+            location: location,
+            experienceYears: experienceYears,
+            hourlyFee: hourlyFee,
+            availability: availabilities,
+            abilities: abilities,
+            image: image
+        });
+
+        //TODO: Arreglar lo de las imágenes
 
         return await fetch(EMPLOYEE_URL, {
             method: 'POST',
-            headers: {},
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: employeeForm
         })
     }
 
     public static async editEmployee(e: any, self:string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
         e.preventDefault();
 
-        const formData:any = new FormData();
-        formData.append("name", name)
-        formData.append("location", location)
-        formData.append("experienceYears", experienceYears)
-        formData.append("hourlyFee", hourlyFee)
-        availabilities.forEach(a => formData.append("availabilities[]", a))
-        abilities.forEach(a => formData.append("abilities[]", a))
-        formData.append("image", image, image.name)
+        const employeeEditForm = JSON.stringify({
+            name: name,
+            location: location,
+            experienceYears: experienceYears,
+            hourlyFee: hourlyFee,
+            availability: availabilities,
+            abilities: abilities,
+            image: image
+        });
+
+        //TODO: Arreglar lo de las imágenes
 
         return await fetch(self, {
             method: 'PUT',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
+            body: employeeEditForm
         }).then((r) => r.text())
     }
 }

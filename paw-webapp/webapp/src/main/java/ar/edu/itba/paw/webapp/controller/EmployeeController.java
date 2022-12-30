@@ -9,7 +9,9 @@ import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.JobsAppliedDto;
 import ar.edu.itba.paw.webapp.dto.ContactDto.ContactDto;
+import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeCreateDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
+import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeEditDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto.ReviewDto;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -23,14 +25,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Path("/api/employees")
@@ -233,31 +233,22 @@ public class EmployeeController {
 
     @POST
     @Path("")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response createEmployee(@FormDataParam("mail") String mail,
-                                   @FormDataParam("password") String password,
-                                   @FormDataParam("confirmPassword") String confirmPassword,
-                                   @FormDataParam("name") String name,
-                                   @FormDataParam("location") String location,
-                                   @FormDataParam("experienceYears") long experienceYears,
-                                   @FormDataParam("hourlyFee") long hourlyFee,
-                                   @FormDataParam("availabilities[]") List<String> availabilities,
-                                   @FormDataParam("abilities[]") List<String> abilities,
-                                   @FormDataParam("image") InputStream image) throws UserFoundException, PassMatchException {
-        if (!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
-                password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
-                name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
-                experienceYears < 0 || experienceYears > 100 || hourlyFee == 0 || hourlyFee < 0 ||
-                location.length() > 1 || !location.matches("[1-4]") ||
-                availabilities.isEmpty() || abilities.isEmpty() ||
-                image == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    public Response createEmployee(@Valid EmployeeCreateDto employeeCreateDto) throws UserFoundException, PassMatchException {
+//        if (!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
+//                password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
+//                name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
+//                experienceYears < 0 || experienceYears > 100 || hourlyFee == 0 || hourlyFee < 0 ||
+//                location.length() > 1 || !location.matches("[1-4]") ||
+//                availabilities.isEmpty() || abilities.isEmpty() ||
+//                image == null) {
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//        }
 
         User u;
         try {
-            u = userService.create(mail, password, password, 1);
-            employeeService.create(name, location.toLowerCase(), u.getId(), fromListToString(availabilities), experienceYears, hourlyFee, fromListToString(abilities), IOUtils.toByteArray(image));
+            u = userService.create(employeeCreateDto.getMail(), employeeCreateDto.getPassword(), employeeCreateDto.getConfirmPassword(), 1);
+            employeeService.create(employeeCreateDto.getName(), employeeCreateDto.getLocation(), u.getId(), fromArrayToString(employeeCreateDto.getAvailability()), employeeCreateDto.getExperienceYears(), employeeCreateDto.getHourlyFee(), fromArrayToString(employeeCreateDto.getAbilities()), employeeCreateDto.getImage());
         } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(Response.Status.CONFLICT).build();
@@ -267,34 +258,36 @@ public class EmployeeController {
 
     @PUT
     @Path("/{id}")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response editEmployee(@FormDataParam("name") String name,
-                                 @FormDataParam("location") String location,
-                                 @FormDataParam("experienceYears") long experienceYears,
-                                 @FormDataParam("hourlyFee") long hourlyFee,
-                                 @FormDataParam("availabilities[]") List<String> availabilities,
-                                 @FormDataParam("abilities[]") List<String> abilities,
-                                 @FormDataParam("image") InputStream image,
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    public Response editEmployee(@Valid EmployeeEditDto employeeEditDto,
                                  @PathParam("id") long id) throws IOException, UserFoundException, PassMatchException {
-        if (name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
-                experienceYears < 0 || experienceYears > 100 || hourlyFee == 0 || hourlyFee < 0 ||
-                location.length() > 1 || !location.matches("[1-4]") ||
-                availabilities.isEmpty() || abilities.isEmpty() ||
-                image == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+//        if (name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
+//                experienceYears < 0 || experienceYears > 100 || hourlyFee == 0 || hourlyFee < 0 ||
+//                location.length() > 1 || !location.matches("[1-4]") ||
+//                availabilities.isEmpty() || abilities.isEmpty() ||
+//                image == null) {
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//        }
         HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getUserID() != id) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        employeeService.editProfile(name.toLowerCase(), location.toLowerCase(), id, fromListToArray(availabilities), experienceYears, hourlyFee, fromListToArray(abilities), IOUtils.toByteArray(image));
+        employeeService.editProfile(employeeEditDto.getName(), employeeEditDto.getLocation(), id, employeeEditDto.getAvailability(), employeeEditDto.getExperienceYears(), employeeEditDto.getHourlyFee(), employeeEditDto.getAbilities(), employeeEditDto.getImage());
         LOGGER.debug(String.format("updated profile for userid %d", id));
 
         return Response.ok(id).build();
     }
 
     private String fromListToString(List<String> arr) {
+        StringBuilder ret = new StringBuilder();
+        for (String str : arr) {
+            ret.append(str).append(",");
+        }
+        return ret.substring(0, ret.length() - 1);
+    }
+
+    private String fromArrayToString(String[] arr) {
         StringBuilder ret = new StringBuilder();
         for (String str : arr) {
             ret.append(str).append(",");
