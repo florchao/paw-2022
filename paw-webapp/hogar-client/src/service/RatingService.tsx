@@ -35,7 +35,7 @@ export class RatingService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: ratingForm
-        }).then((r) => r.json())
+        })
     }
 
 }

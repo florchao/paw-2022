@@ -1,4 +1,4 @@
-import {USER_URL, USERS_URL} from "../utils/utils";
+import {USER_URL} from "../utils/utils";
 
 export class UserService {
 

@@ -32,6 +32,7 @@ export const ProfileEmployee = () => {
     const [myReview, setMyReview]: any = useState(null)
     const [pages, setPages]: any = useState(0)
     const [current, setCurrent]: any = useState(0)
+    const [ratingError, setRatingError]: any = useState(false)
 
 
     const {self, status, id} = useLocation().state
@@ -167,8 +168,13 @@ export const ProfileEmployee = () => {
 
     const handleRating = async (rate: number, index: number, event: any) => {
         const r = await RatingService.postEmployeeRating(event, employee.id, employerId, rate)
-        setRating(r)
-        closeModal()
+        if (r.status === 201) {
+            setRating(r)
+            closeModal()
+        } else {
+            setRatingError(true)
+        }
+
     }
 
     return (
@@ -430,6 +436,9 @@ export const ProfileEmployee = () => {
                             <RatingModal employee={employee} handleRating={handleRating}/>
                         </Modal>
                     </div>
+                {ratingError &&
+                    <ErrorFeedback message={t('Feedback.genericError')}/>}
+
                 </div>
                 )
             }
