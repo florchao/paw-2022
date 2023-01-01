@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {JobService} from "../service/JobService";
 import {ReviewService} from "../service/ReviewService";
@@ -15,6 +15,7 @@ import bin from "../assets/bin.png";
 import editing from "../assets/editing.png";
 import editingPurple from "../assets/editing_purple.png";
 import noEmployees from "../assets/sinEmpleadas.png";
+import {BACK_SLASH, EMPLOYEE_URL, JOB_URL} from "../utils/utils";
 
 export const Job = () => {
 
@@ -31,8 +32,13 @@ export const Job = () => {
     let employeeId: number;
     employeeId = localStorage.getItem('hogar-uid') ? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
 
-    const {self} = useLocation().state
+    const jobId = useParams();
+    const location = useLocation();
+    let {self}: any = useState()
 
+    if(location.state) {
+        self = location.state.self
+    }
     const {t} = useTranslation();
     const nav = useNavigate();
 
@@ -64,7 +70,13 @@ export const Job = () => {
     }
 
     useEffect(() => {
-        JobService.getJob(self).then((e) => {
+        let url
+        if (self === undefined && jobId.id !== undefined) {
+            url = JOB_URL + BACK_SLASH + jobId.id
+        } else {
+            url = self
+        }
+        JobService.getJob(url).then((e) => {
             setJob(e)
             setOpened(e.opened)
         })

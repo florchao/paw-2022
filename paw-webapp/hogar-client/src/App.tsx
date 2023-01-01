@@ -32,7 +32,7 @@ export default function App() {
             <Background />
             <Routes>
                 {localStorage.getItem("hogar-role") == "EMPLOYER" &&
-                    <Route path="/contact/employee" element={<ContactEmployee/>}/>
+                    <Route path="/contact/employee/:id" element={<ContactEmployee/>}/>
                 }
                 {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
                     <Route path="/contacts" element={<Contacts/>}/>
@@ -49,16 +49,16 @@ export default function App() {
                 {localStorage.getItem("hogar-role") == "EMPLOYEE" && <Route path="/explore" element={<ExploreJobs/>}/>}
                 {localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/explore" element={<Explore/>}/>}
                 
-                {localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/employee" element={<ProfileEmployee/>}/>}
-                {!localStorage.getItem("hogar-role") && <Route path="/employee" element={<ProfileEmployee/>}/>}
+                {localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/employee/:id" element={<ProfileEmployee/>}/>}
+                {!localStorage.getItem("hogar-role") && <Route path="/employee/:id" element={<ProfileEmployee/>}/>}
 
                 {localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/profile" element={<ProfileEmployer/>}/>}
                 {localStorage.getItem("hogar-role") == "EMPLOYEE" && <Route path="/profile" element={<ProfileEmployee/>}/>}
 
                 {localStorage.getItem("hogar-role") == "EMPLOYEE" && <Route path="/edit" element={<EditEmployee/>}/>}
 
-                {localStorage.getItem("hogar-role") && <Route path="/job" element={<Job/>}/>}
-                {localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/job/applicants" element={<Applicants/>}/>}
+                {localStorage.getItem("hogar-role") && <Route path="/job/:id" element={<Job/>}/>}
+                {localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/job/applicants/:id" element={<Applicants/>}/>}
                 {localStorage.getItem("hogar-role") == "EMPLOYER" &&<Route path="/create/job" element={<CreateJob/>}/>}
                 
                 {localStorage.getItem("hogar-role") == "EMPLOYER" && <Route path="/jobs" element={<CreatedJobs/>}/>}

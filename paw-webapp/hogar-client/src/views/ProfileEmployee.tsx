@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {EmployeeService} from "../service/EmployeeService";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {ReviewService} from "../service/ReviewService";
 import ReviewCard from "../components/ReviewCard";
 import {RatingService} from "../service/RatingService";
@@ -33,10 +33,13 @@ export const ProfileEmployee = () => {
     const [pages, setPages]: any = useState(0)
     const [current, setCurrent]: any = useState(0)
     const [ratingError, setRatingError]: any = useState(false)
-
-
-    const {self, status, id} = useLocation().state
-
+    const employeeId = useParams();
+    const location = useLocation();
+    let {self, status}: any = useState()
+    if(location.state) {
+        self = location.state.self
+        status = location.state.status
+    }
     const {t} = useTranslation();
     const nav = useNavigate();
 
@@ -85,8 +88,8 @@ export const ProfileEmployee = () => {
 
     useEffect(() => {
         let url
-        if (self === undefined && id !== undefined) {
-            url = EMPLOYEE_URL + BACK_SLASH + id
+        if (self === undefined && employeeId.id !== undefined) {
+            url = EMPLOYEE_URL + BACK_SLASH + employeeId.id
         } else {
             url = self
         }
@@ -237,7 +240,7 @@ export const ProfileEmployee = () => {
                             </div>
                             <div className="ml-3 col-start-5 row-start-2 w-fit">
                                 {localStorage.getItem("hogar-role") === "EMPLOYER" && !employee.contacted &&
-                                    <Link to="/contact/employee" state={{id: employee.id, name: employee.name}}>
+                                    <Link to={"/contact/employee/"+employee.id} state={{id: employee.id, name: employee.name}}>
                                         <button
                                             className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
                                             {t('Profile.connect')}

@@ -1,10 +1,12 @@
 import './style.css'
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate, useParams} from 'react-router-dom'
 import {ContactService} from "../service/ContactService";
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+import {EmployeeService} from "../service/EmployeeService";
 
 export const ContactEmployee = () => {
 
@@ -25,8 +27,26 @@ export const ContactEmployee = () => {
         timeout: 1000 * 60 * 2,
     })
 
-    const { id, name } = useLocation().state
 
+    const [name, setName]: any = useState()
+
+    let {employeeId} :any = useState()
+    const params = useParams();
+    const location = useLocation();
+    if(location.state) {
+        setName(location.state.name)
+        employeeId = location.state.id
+    } else {
+        employeeId = params.id
+    }
+
+    useEffect(() => {
+        console.log(name)
+        if (name === undefined) {
+            const url = EMPLOYEE_URL + BACK_SLASH + employeeId
+            EmployeeService.getEmployee(url, false).then((e) => setName(e.name))
+        }
+    }, [])
 
     const [contactEmployeeError, setContactEmployeeError]: any = useState(false)
 
@@ -41,7 +61,7 @@ export const ContactEmployee = () => {
     const employerId = localStorage.getItem("hogar-uid") as unknown as number
 
     const onSubmit = async (data: any, e: any) => {
-        const contact = await ContactService.contactEmployee(e, data.phone, data.content, id, employerId)
+        const contact = await ContactService.contactEmployee(e, data.phone, data.content, employeeId, employerId)
         localStorage.removeItem("contactForm")
         let status;
         if (contact.status === 201) {
@@ -55,7 +75,7 @@ export const ContactEmployee = () => {
             setContactEmployeeError(false)
         }
         if(status)
-            nav("/employee", {replace: true, state: {id: id, status: status}})
+            nav("/employee", {replace: true, state: {id: employeeId, status: status}})
     }
 
     return (
