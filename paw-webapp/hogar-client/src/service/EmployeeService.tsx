@@ -1,4 +1,4 @@
-import {EMPLOYEE_URL, QUERY_PARAM} from "../utils/utils";
+import {EMPLOYEE_URL, EMPLOYEES_URL, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees(basicEncoded:string="") {
@@ -22,7 +22,7 @@ export class EmployeeService {
             }
         }
 
-        return await fetch(EMPLOYEE_URL, {
+        return await fetch(EMPLOYEES_URL, {
             method: 'GET',
             headers: header
             // headers: localStorage.getItem('hogar-jwt') != null ?{
@@ -50,7 +50,7 @@ export class EmployeeService {
         order?: string
     ) {
 
-        let url = EMPLOYEE_URL + QUERY_PARAM
+        let url = EMPLOYEES_URL + QUERY_PARAM
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))

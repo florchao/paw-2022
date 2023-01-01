@@ -15,24 +15,17 @@ public class EmployeeDto {
     private String name;
     private String location;
     private Long experienceYears;
-
     private List<String> availabilityArr;
     private List<String> abilitiesArr;
     private Long hourlyFee;
     private long id;
     private URI self;
     private float rating;
-
     private Boolean isContacted;
-
     private URI reviews;
-
     private URI image;
-
     private URI employerReview;
-
     private URI ratings;
-
     private URI delete;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeDto.class);
@@ -49,7 +42,7 @@ public class EmployeeDto {
         LOGGER.info("URI: " + uriInfo.getAbsolutePath().toString());
         LOGGER.info("URI: " + uriInfo.getBaseUri().toString());
 
-        final UriBuilder employeeUriBuilder = uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder employeeUriBuilder = uriInfo.getBaseUriBuilder().path("/api/employee").path(String.valueOf(employee.getId().getId()));
         final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/api/images").path(String.valueOf(employee.getId().getId()));
 
         dto.self = employeeUriBuilder.build();
@@ -81,8 +74,8 @@ public class EmployeeDto {
         dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), LocaleContextHolder.getLocale().getLanguage());
 
         if(!anonymous) {
-            final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
-            final UriBuilder employerReviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
+            final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employee").path(String.valueOf(employee.getId().getId())).path("reviews");
+            final UriBuilder employerReviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employee").path(String.valueOf(employee.getId().getId())).path("reviews");
             final UriBuilder ratingsUriBuilder = uriInfo.getBaseUriBuilder().path("/api/ratings").path(String.valueOf(employee.getId().getId()));
 
             dto.reviews = reviewBuilder.build();
@@ -131,7 +124,7 @@ public class EmployeeDto {
     public static EmployeeDto fromApplicant(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = EmployeeDto.fromReview(uriInfo, employee);
 
-        final UriBuilder employeeUriBuilder = uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder employeeUriBuilder = uriInfo.getBaseUriBuilder().path("/api/employee").path(String.valueOf(employee.getId().getId()));
         dto.self = employeeUriBuilder.build();
 
         dto.hourlyFee = employee.getHourlyFee();

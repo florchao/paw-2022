@@ -54,7 +54,7 @@ export const ProfileEmployee = () => {
     useFormPersist("reviewEmployeeForm", {
         watch,
         setValue,
-        storage: localStorage.getItem('hogar-role') == "EMPLOYER" ? window.localStorage : undefined,
+        storage: localStorage.getItem('hogar-role') === "EMPLOYER" ? window.localStorage : undefined,
         timeout: 1000 * 60,
     })
 
@@ -85,10 +85,11 @@ export const ProfileEmployee = () => {
 
     useEffect(() => {
         let url
-        if (self == undefined && id != undefined) {
+        if (self === undefined && id !== undefined) {
             url = EMPLOYEE_URL + BACK_SLASH + id
-        } else
+        } else {
             url = self
+        }
         EmployeeService.getEmployee(url, false).then((e) => setEmployee(e));
     }, [])
 
@@ -96,7 +97,7 @@ export const ProfileEmployee = () => {
         if (employee) {
             UserService.loadImage(employee.image).then(
                 (img) => {
-                    if (img.size == 0)
+                    if (img.size === 0)
                         setImg(user)
                     else
                         setImg(URL.createObjectURL(img))
@@ -118,7 +119,7 @@ export const ProfileEmployee = () => {
                                 setReview([])
                         }
                     )
-                if (localStorage.getItem("hogar-role") == "EMPLOYER")
+                if (localStorage.getItem("hogar-role") === "EMPLOYER")
                     ReviewService.getMyEmployeeReview(employee.employerReview).then(
                         (rsp) => {
                             setMyReview(rsp)
@@ -132,7 +133,7 @@ export const ProfileEmployee = () => {
     )
 
     useEffect(() => {
-            if (employee && localStorage.getItem("hogar-role") == "EMPLOYER") {
+            if (employee && localStorage.getItem("hogar-role") === "EMPLOYER") {
                 RatingService.getEmployeeRating(employee.ratings, employerId).then(
                     (rsp) => {
                         setRating(rsp)
@@ -235,7 +236,7 @@ export const ProfileEmployee = () => {
                                 </h1>
                             </div>
                             <div className="ml-3 col-start-5 row-start-2 w-fit">
-                                {localStorage.getItem("hogar-role") == "EMPLOYER" && !employee.contacted &&
+                                {localStorage.getItem("hogar-role") === "EMPLOYER" && !employee.contacted &&
                                     <Link to="/contact/employee" state={{id: employee.id, name: employee.name}}>
                                         <button
                                             className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
@@ -243,12 +244,12 @@ export const ProfileEmployee = () => {
                                         </button>
                                     </Link>
                                 }
-                                {localStorage.getItem("hogar-role") == "EMPLOYER" && employee.contacted &&
+                                {localStorage.getItem("hogar-role") === "EMPLOYER" && employee.contacted &&
                                     <p className="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2 mb-2">
                                         {t('Profile.alreadyConnected')}
                                     </p>
                                 }
-                                {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                                {localStorage.getItem("hogar-role") === "EMPLOYEE" &&
                                     <Link to="/edit" state={{self: employee.self}}>
                                         <button
                                             className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
@@ -281,7 +282,7 @@ export const ProfileEmployee = () => {
                                     </button>
                                 )}
                             </div>
-                            {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                            {localStorage.getItem("hogar-role") === "EMPLOYEE" &&
                                 <div className="ml-3 col-start-5 row-start-3">
                                     <button type="submit" onClick={delEmployee}
                                             className="text-sm focus:outline-none text-white bg-red-500 hover:bg-red-700 font-small rounded-lg text-sm px-5 py-2.5">
@@ -346,7 +347,7 @@ export const ProfileEmployee = () => {
                                 <h1 className="pb-3 pt-3 font-semibold">
                                     {t('Profile.reviews')}
                                 </h1>
-                                {localStorage.getItem("hogar-role") == "EMPLOYER" && myReview == null && (
+                                {localStorage.getItem("hogar-role") === "EMPLOYER" && myReview === null && (
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <div className="">
                                             <label htmlFor="title"
@@ -400,10 +401,10 @@ export const ProfileEmployee = () => {
                         </div>
                     </div>
                     }
-                    {status == '0' && showMessage &&
+                    {status === '0' && showMessage &&
                         <OkFeedback type="profile"/>
                     }
-                    {status == '1' && showMessage &&
+                    {status === '1' && showMessage &&
                         <ErrorFeedback message={t('Feedback.errorContact')}/>
                     }
                     <div>
