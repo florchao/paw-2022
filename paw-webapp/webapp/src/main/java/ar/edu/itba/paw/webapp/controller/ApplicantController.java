@@ -111,10 +111,10 @@ public class ApplicantController {
             return Response.ok(finalStatus).build();
 
         } catch (UserNotFoundException | JobNotFoundException ex) {
-            ex.printStackTrace();
+            LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.CONFLICT).build();
         }
     }

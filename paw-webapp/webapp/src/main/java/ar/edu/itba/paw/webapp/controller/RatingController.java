@@ -6,6 +6,8 @@ import ar.edu.itba.paw.service.RaitingService;
 import ar.edu.itba.paw.webapp.dto.RatingDto.RatingCretaeDto;
 import ar.edu.itba.paw.webapp.dto.RatingDto.RatingDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ public class RatingController {
 
     @Context
     UriInfo uriInfo;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RatingController.class);
 
     @GET
     @Path("/{employeeId}/{employerId}")
@@ -36,7 +39,7 @@ public class RatingController {
             };
             return Response.ok(genericEntity).build();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("an exception occurred:", e);
             return Response.status(Response.Status.CONFLICT).build();
         }
     }

@@ -87,10 +87,10 @@ public class JobController {
         try {
             job = jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
-            exception.printStackTrace();
+            LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
 
@@ -113,10 +113,10 @@ public class JobController {
         try {
             job = jobService.getJobByID(jobId);
         } catch (JobNotFoundException exception) {
-            exception.printStackTrace();
+            LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.CONFLICT).build();
         }
 
@@ -170,7 +170,7 @@ public class JobController {
         try {
             job = jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
-            exception.printStackTrace();
+            LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
@@ -193,7 +193,7 @@ public class JobController {
         try {
             job = jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
-            exception.printStackTrace();
+            LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

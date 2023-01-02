@@ -194,7 +194,7 @@ public class EmployeeController {
             u = userService.create(employeeCreateDto.getMail(), employeeCreateDto.getPassword(), employeeCreateDto.getConfirmPassword(), 1);
             employeeService.create(employeeCreateDto.getName(), employeeCreateDto.getLocation(), u.getId(), fromArrayToString(employeeCreateDto.getAvailability()), employeeCreateDto.getExperienceYears(), employeeCreateDto.getHourlyFee(), fromArrayToString(employeeCreateDto.getAbilities()), employeeCreateDto.getImage());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
         return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).build();

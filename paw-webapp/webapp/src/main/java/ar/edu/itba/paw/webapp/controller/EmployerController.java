@@ -153,7 +153,7 @@ public class EmployerController {
             String fullName = employerDto.getName() + " " + employerDto.getLastname();
             employerService.create(fullName.toLowerCase(), u, employerDto.getImage());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));

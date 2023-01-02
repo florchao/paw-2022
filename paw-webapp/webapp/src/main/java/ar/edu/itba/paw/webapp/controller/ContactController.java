@@ -95,10 +95,10 @@ public class ContactController {
         try {
             exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
         } catch (UserNotFoundException exception) {
-            exception.printStackTrace();
+            LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.CONFLICT).build();
         }
         GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(exists) {
