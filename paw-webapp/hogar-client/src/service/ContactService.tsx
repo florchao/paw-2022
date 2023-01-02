@@ -45,7 +45,6 @@ export class ContactService {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
@@ -61,7 +60,6 @@ export class ContactService {
         return await fetch(CONTACT_URL + BACK_SLASH + id + BACK_SLASH + employerId , {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },

@@ -11,7 +11,6 @@ export class ApplicantService{
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
@@ -56,7 +55,6 @@ export class ApplicantService{
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
             method: 'DELETE',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
 
@@ -68,7 +66,6 @@ export class ApplicantService{
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },

@@ -9,7 +9,6 @@ export class ReviewService {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
@@ -28,7 +27,6 @@ export class ReviewService {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
@@ -44,7 +42,6 @@ export class ReviewService {
         return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
@@ -65,7 +62,6 @@ export class ReviewService {
         return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
 

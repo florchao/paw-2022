@@ -5,7 +5,6 @@ export class JobService {
         return await fetch(JOB_URL, {
             method: 'GET',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
@@ -39,7 +38,6 @@ export class JobService {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
@@ -61,7 +59,6 @@ export class JobService {
         return await fetch(BASE_URL + 'jobs' + '/' + id, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Basic ' + basicEncoded
             },
@@ -76,7 +73,6 @@ export class JobService {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
@@ -118,7 +114,6 @@ export class JobService {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
@@ -137,7 +132,6 @@ export class JobService {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
@@ -154,7 +148,6 @@ export class JobService {
         return await fetch(JOB_URL + BACK_SLASH + id, {
             method: 'DELETE',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }

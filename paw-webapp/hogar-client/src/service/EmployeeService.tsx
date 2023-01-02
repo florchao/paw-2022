@@ -5,19 +5,16 @@ export class EmployeeService {
         let header
         if (localStorage.getItem('hogar-jwt') != null) {
             header = {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
         } else if (basicEncoded != "") {
             header = {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + basicEncoded
             }
         } else {
             header = {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
         }
@@ -26,7 +23,6 @@ export class EmployeeService {
             method: 'GET',
             headers: header
             // headers: localStorage.getItem('hogar-jwt') != null ?{
-            //     'Access-Control-Allow-Origin': '*',
             //     'Content-Type': 'application/json',
             //     "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
             // } : {
@@ -65,11 +61,9 @@ export class EmployeeService {
         return await fetch(url, {
             method: 'GET',
             headers: localStorage.getItem('hogar-jwt') != null ?{
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
             } : {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
         })
@@ -93,11 +87,9 @@ export class EmployeeService {
         return await fetch(url, {
             method: 'GET',
             headers: localStorage.getItem('hogar-jwt') != null ? {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
             }: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json"
             }
         }).then((resp) => resp.json())

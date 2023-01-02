@@ -6,7 +6,6 @@ export class EmployerService {
         return await fetch(EMPLOYER_URL + BACK_SLASH + id, {
             method: 'GET',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }

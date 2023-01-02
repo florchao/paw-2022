@@ -9,7 +9,6 @@ const useFetch = (url: any) => {
             fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Access-Control-Allow-Origin':'*',
                     'Content-Type': 'application/json'
                 }
             })

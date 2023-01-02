@@ -6,7 +6,6 @@ export class IdsService {
         return await fetch(IDS_URL, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
             },
         }).then((resp) => resp.json())

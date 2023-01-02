@@ -8,7 +8,6 @@ export class UserService {
         return await fetch(USER_URL, {
             method: 'GET',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + btoa(email + ":" + password),
             }
@@ -24,7 +23,6 @@ export class UserService {
         return await fetch(url, {
             method: 'DELETE',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
@@ -35,7 +33,6 @@ export class UserService {
         return fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json"
             },
         }).then((resp) => resp.blob()
