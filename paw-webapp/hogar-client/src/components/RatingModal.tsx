@@ -1,6 +1,8 @@
 import {Rating} from "react-simple-star-rating";
+import {useTranslation} from "react-i18next";
 
 const RatingModal = ({employee, handleRating}: {employee: any, handleRating: any}) => {
+    const {t} = useTranslation();
 
 
     return (
@@ -20,7 +22,7 @@ const RatingModal = ({employee, handleRating}: {employee: any, handleRating: any
             <br></br>
             <div className="flex justify-center">
                 <p className="text-lg font-semibold">
-                    Thanks!
+                    {t('Rating.thanks')}
                 </p>
             </div>
         </div>

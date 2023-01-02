@@ -311,6 +311,9 @@ export const TRANSLATIONS_ES = {
         descriptionJob: "Publique una oferta de trabajo y espere a que nuestra comunidad aplique al mismo",
         buttonEmployee: "Buscar empleadas",
         buttonJob: "Mis trabajos publicados"
+    },
+    Rating:{
+        thanks:"¡Gracias!"
     }
 
 }

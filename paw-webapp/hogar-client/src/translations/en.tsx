@@ -302,6 +302,9 @@ export const TRANSLATIONS_EN = {
     descriptionJob: "Publish a job offer and wait until our community to apply",
     buttonEmployee: "Search employees",
     buttonJob: "My published jobs"
+  },
+  Rating:{
+    thanks:"Thanks!"
   }
 
 }
