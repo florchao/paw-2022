@@ -76,7 +76,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/employee/{id}/reviews").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/employee/{employeeId}/reviews/{employerId}").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.POST, "/api/employee").anonymous()
-                .antMatchers(HttpMethod.PUT, "/api/employee/{id}").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.PUT, "/api/employee/{id}").access("hasAuthority('EMPLOYEE') or @antMatcherVoter.canEditEmployee(authentication, #id)")
                 .antMatchers(HttpMethod.GET, "/api/employers/{id}").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.GET, "/api/employers/{id}/jobs").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.GET, "/api/employers/{id}/reviews").authenticated()

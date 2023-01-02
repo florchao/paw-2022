@@ -208,10 +208,10 @@ public class EmployeeController {
 //                image == null) {
 //            return Response.status(Response.Status.BAD_REQUEST).build();
 //        }
-        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getUserID() != id) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (user.getUserID() != id) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
 
         employeeService.editProfile(employeeEditDto.getName(), employeeEditDto.getLocation(), id, employeeEditDto.getAvailability(), employeeEditDto.getExperienceYears(), employeeEditDto.getHourlyFee(), employeeEditDto.getAbilities(), employeeEditDto.getImage());
         LOGGER.debug(String.format("updated profile for userid %d", id));
