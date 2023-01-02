@@ -73,8 +73,8 @@ public class JobJpaDao implements JobDao {
 
         stringBuilder.append("SELECT jobid FROM jobs where opened=TRUE and ");
         if (name != null) {
-            stringBuilder.append("lower(title) like :title ");
-            paramMap.put("title", '%' + name.toLowerCase() + '%');
+            stringBuilder.append("title like :title ");
+            paramMap.put("title", '%' + name + '%');
             stringBuilder.append(" and ");
 
         }

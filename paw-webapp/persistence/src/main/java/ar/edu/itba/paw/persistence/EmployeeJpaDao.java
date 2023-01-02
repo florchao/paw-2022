@@ -81,8 +81,8 @@ public class EmployeeJpaDao implements EmployeeDao {
         stringBuilder.append("SELECT employeeid FROM employee where ");
 
         if (name != null) {
-            stringBuilder.append("lower(name) like :name ");
-            paramMap.put("name", '%' + name.toLowerCase() + '%');
+            stringBuilder.append("name ilike :name ");
+            paramMap.put("name", '%' + name + '%');
             stringBuilder.append(" and   ");
 
         }
