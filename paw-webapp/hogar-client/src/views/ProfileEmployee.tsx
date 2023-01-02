@@ -35,8 +35,9 @@ export const ProfileEmployee = () => {
     const [ratingError, setRatingError]: any = useState(false)
     const employeeId = useParams();
     const location = useLocation();
-    let {self, status}: any = useState()
+    let {self, status, id}: any = useState()
     if(location.state) {
+        id = location.state.id
         self = location.state.self
         status = location.state.status
     }
@@ -90,7 +91,10 @@ export const ProfileEmployee = () => {
         let url
         if (self === undefined && employeeId.id !== undefined) {
             url = EMPLOYEE_URL + BACK_SLASH + employeeId.id
-        } else {
+        } else if(self === undefined){
+            url = EMPLOYEE_URL + BACK_SLASH + id
+        }
+        else{
             url = self
         }
         EmployeeService.getEmployee(url, false).then((e) => setEmployee(e));
