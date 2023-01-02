@@ -104,10 +104,10 @@ public class EmployeeController {
     @Path("{id}/jobs")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response appliedTo(@QueryParam("page") @DefaultValue("0") Long page, @PathParam("id") long id, @Context HttpServletRequest request) {
-        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getUserID() != id) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (user.getUserID() != id) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
 
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
         LocaleContextHolder.setLocale(locale);
@@ -127,10 +127,10 @@ public class EmployeeController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response employeeContacts(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page) throws UserNotFoundException {
 
-        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getUserID() != id) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (user.getUserID() != id) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
 
         List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, page, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
         int pages = contactService.getPageNumber(id, PAGE_SIZE);
