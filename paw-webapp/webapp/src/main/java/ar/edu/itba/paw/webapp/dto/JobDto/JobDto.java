@@ -60,7 +60,7 @@ public class JobDto {
         dto.description = job.getDescription();
 
         UriBuilder jobUriBuilder = uriInfo.getBaseUriBuilder().path("/api/jobs").path(String.valueOf(job.getJobId()));
-        UriBuilder applicantsUriBuilder = uriInfo.getBaseUriBuilder().path("/api/jobs").path(String.valueOf(job.getJobId())).path("applicants");
+        UriBuilder applicantsUriBuilder = uriInfo.getBaseUriBuilder().path("/api/applicants").path(String.valueOf(job.getJobId()));
         dto.self = jobUriBuilder.build();
 
         dto.applicants = applicantsUriBuilder.build();

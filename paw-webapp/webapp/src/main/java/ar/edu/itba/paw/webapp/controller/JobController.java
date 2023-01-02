@@ -5,7 +5,6 @@ import ar.edu.itba.paw.model.exception.JobNotFoundException;
 import ar.edu.itba.paw.service.ApplicantService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
-import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantInJobsDto;
 import ar.edu.itba.paw.webapp.dto.JobDto.JobCreateDto;
 import ar.edu.itba.paw.webapp.dto.JobDto.JobDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -23,7 +22,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Path("/api/jobs")
@@ -104,38 +102,6 @@ public class JobController {
         return Response.ok(genericEntity).build();
     }
 
-    @GET
-    @Path("/{jobId}/applicants")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page) {
-
-        Job job;
-        try {
-            job = jobService.getJobByID(jobId);
-        } catch (JobNotFoundException exception) {
-            LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception exception) {
-            LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.CONFLICT).build();
-        }
-
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-
-        List<ApplicantInJobsDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
-                .stream()
-                .map(a -> ApplicantInJobsDto.fromJob(uriInfo, a))
-                .collect(Collectors.toList());
-        int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
-        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) {
-        };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
-    }
-
-
     @POST
     @Path("")
     @Consumes(value = {MediaType.APPLICATION_JSON,})
@@ -206,22 +172,6 @@ public class JobController {
             jobService.closeJob(id);
         }
         return Response.ok(status).build();
-    }
-
-    private String fromListToString(List<String> arr) {
-        StringBuilder ret = new StringBuilder();
-        for (String str : arr) {
-            ret.append(str).append(",");
-        }
-        return ret.substring(0, ret.length() - 1);
-    }
-
-    private String[] fromListToArray(List<String> arr) {
-        String[] str = new String[arr.size()];
-        for (int i = 0; i < arr.size(); i++) {
-            str[i] = arr.get(i);
-        }
-        return str;
     }
 
     private String fromArrayToString(String[] arr) {

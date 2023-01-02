@@ -6,7 +6,7 @@ import {JobService} from "../service/JobService";
 import PaginationButtons from "../components/PaginationButtons";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
-import {APPLICANTS, BACK_SLASH, JOB_URL} from "../utils/utils";
+import {APPLICANT_URL, BACK_SLASH, JOB_URL} from "../utils/utils";
 
 export const Applicants = () => {
 
@@ -26,7 +26,7 @@ export const Applicants = () => {
         setApplicantList(null)
         let url
         if (applicants === undefined) {
-            url = JOB_URL + BACK_SLASH + jobId.id + APPLICANTS
+            url = APPLICANT_URL + BACK_SLASH + jobId.id
         } else {
             url = applicants
         }

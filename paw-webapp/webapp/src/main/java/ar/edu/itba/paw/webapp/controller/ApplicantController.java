@@ -12,6 +12,7 @@ import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantCreateDto;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantEditDto;
+import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantInJobsDto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +24,11 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Path("/api/applicants")
 @Component
@@ -42,9 +42,9 @@ public class ApplicantController {
     private ContactService contactService;
     @Autowired
     private ApplicantService applicantService;
-
     @Context
     private UriInfo uriInfo;
+    private static final int PAGE_SIZE = 9;
 
     @GET
     @Path("/{employeeId}/{jobId}")
@@ -117,6 +117,37 @@ public class ApplicantController {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.CONFLICT).build();
         }
+    }
+
+    @GET
+    @Path("/{jobId}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page) {
+
+        Job job;
+        try {
+            job = jobService.getJobByID(jobId);
+        } catch (JobNotFoundException exception) {
+            LOGGER.error("an exception occurred:", exception);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception exception) {
+            LOGGER.error("an exception occurred:", exception);
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        List<ApplicantInJobsDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
+                .stream()
+                .map(a -> ApplicantInJobsDto.fromJob(uriInfo, a))
+                .collect(Collectors.toList());
+        int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
+        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) {
+        };
+        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @DELETE
