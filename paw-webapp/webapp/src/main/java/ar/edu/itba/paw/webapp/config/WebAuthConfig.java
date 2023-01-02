@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.config;
 
 import ar.edu.itba.paw.webapp.auth.AuthenticationFilter;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
+import ar.edu.itba.paw.webapp.voters.AntMatcherVoter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -50,6 +51,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+    @Bean
+    public AntMatcherVoter antMatcherVoter() { return new AntMatcherVoter();}
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -66,8 +69,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/contacts/us").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/contacts").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.GET, "/api/contacts/{employeeId}/{employerId}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET, "/api/employees").access("hasAuthority('EMPLOYER') or hasRole('ANONYMOUS')")
-                .antMatchers(HttpMethod.GET, "/api/employee/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/employees").access("hasAuthority('EMPLOYER') or isAnonymous()")
+                .antMatchers(HttpMethod.GET, "/api/employee/{id}").access("permitAll() or @antMatcherVoter.canAccesEmployeeProfile(authentication, #id)")
                 .antMatchers(HttpMethod.GET, "/api/employee/{id}/jobs").hasAuthority("EMPLOYEE")
                 .antMatchers(HttpMethod.GET, "/api/employee/{id}/contacts").hasAuthority("EMPLOYEE")
                 .antMatchers(HttpMethod.GET, "/api/employee/{id}/reviews").authenticated()
