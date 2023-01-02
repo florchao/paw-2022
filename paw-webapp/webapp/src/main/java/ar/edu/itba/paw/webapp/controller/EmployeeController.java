@@ -13,8 +13,6 @@ import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeCreateDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeEditDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto.ReviewDto;
-import org.apache.commons.io.IOUtils;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Path("/api/employee")
@@ -80,7 +79,7 @@ public class EmployeeController {
         try {
             employee = employeeService.getEmployeeById(id);
         } catch (UserNotFoundException e) {
-            return Response.noContent().build();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
@@ -223,27 +222,11 @@ public class EmployeeController {
         return Response.ok(id).build();
     }
 
-    private String fromListToString(List<String> arr) {
-        StringBuilder ret = new StringBuilder();
-        for (String str : arr) {
-            ret.append(str).append(",");
-        }
-        return ret.substring(0, ret.length() - 1);
-    }
-
     private String fromArrayToString(String[] arr) {
         StringBuilder ret = new StringBuilder();
         for (String str : arr) {
             ret.append(str).append(",");
         }
         return ret.substring(0, ret.length() - 1);
-    }
-
-    private String[] fromListToArray(List<String> arr) {
-        String[] str = new String[arr.size()];
-        for (int i = 0; i < arr.size(); i++) {
-            str[i] = arr.get(i);
-        }
-        return str;
     }
 }

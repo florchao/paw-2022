@@ -76,8 +76,12 @@ export class JobService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => resp.json())
-            .catch(
+        }).then((resp) => {
+            if (resp.status == 200) {
+                return resp.json()
+            }
+        })
+        .catch(
                 (error) => {
                     console.log(error)
                     throw error

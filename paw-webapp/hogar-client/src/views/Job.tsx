@@ -15,7 +15,7 @@ import bin from "../assets/bin.png";
 import editing from "../assets/editing.png";
 import editingPurple from "../assets/editing_purple.png";
 import noEmployees from "../assets/sinEmpleadas.png";
-import {BACK_SLASH, EMPLOYEE_URL, JOB_URL} from "../utils/utils";
+import {BACK_SLASH, JOB_URL} from "../utils/utils";
 
 export const Job = () => {
 
@@ -76,11 +76,19 @@ export const Job = () => {
         } else {
             url = self
         }
-        JobService.getJob(url).then((e) => {
-            setJob(e)
-            setOpened(e.opened)
-        })
+        fetchData(url)
     }, [])
+
+    const fetchData = async (url: string) => {
+        await JobService.getJob(url).then((rsp) => {
+                if (rsp != undefined) {
+                    setJob(rsp)
+                    setOpened(rsp.opened)
+                } else {
+                    nav("/*")
+                }
+            })
+    }
 
     useEffect(() => {
             if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {

@@ -1,9 +1,8 @@
 import {BACK_SLASH, REVIEWS_URL} from "../utils/utils";
 
 export class ReviewService {
-
-    public static async getEmployeeReviews(url: string, page:number) {
-        if(page > 0) {
+    public static async getEmployeeReviews(url: string, page: number) {
+        if (page > 0) {
             url = url + "?page=" + page
         }
         return await fetch(url, {
@@ -21,7 +20,7 @@ export class ReviewService {
     }
 
     public static async getEmployerReviews(url: string, page: number) {
-        if(page > 0) {
+        if (page > 0) {
             url = url + "?page=" + page
         }
         return await fetch(url, {

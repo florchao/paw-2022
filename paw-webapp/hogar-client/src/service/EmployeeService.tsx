@@ -92,7 +92,11 @@ export class EmployeeService {
             }: {
                 "Content-Type": "application/json"
             }
-        }).then((resp) => resp.json())
+        }).then((resp) => {
+            if (resp.status == 200) {
+                return resp.json()
+            }
+        })
             .catch(
                 (error) => {
                     console.log(error)

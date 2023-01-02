@@ -33,20 +33,32 @@ export const ContactEmployee = () => {
     let {employeeId} :any = useState()
     const params = useParams();
     const location = useLocation();
-    if(location.state) {
-        setName(location.state.name)
-        employeeId = location.state.id
-    } else {
-        employeeId = params.id
+
+    const fetchData = async (url: string) => {
+        await EmployeeService.getEmployee(url, false).then(
+            (rsp) => {
+                if (rsp != undefined) {
+                    setName(rsp.name)
+                } else {
+                    nav("/*")
+                }
+            })
     }
 
     useEffect(() => {
+        if(location.state) {
+            setName(location.state.name)
+            employeeId = location.state.id
+        } else {
+            employeeId = params.id
+        }
         console.log(name)
         if (name === undefined) {
             const url = EMPLOYEE_URL + BACK_SLASH + employeeId
-            EmployeeService.getEmployee(url, false).then((e) => setName(e.name))
+            fetchData(url)
         }
     }, [])
+
 
     const [contactEmployeeError, setContactEmployeeError]: any = useState(false)
 

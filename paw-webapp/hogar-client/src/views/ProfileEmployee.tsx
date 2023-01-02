@@ -97,8 +97,20 @@ export const ProfileEmployee = () => {
         else{
             url = self
         }
-        EmployeeService.getEmployee(url, false).then((e) => setEmployee(e));
+    fetchData(url)
     }, [])
+
+    const fetchData = async (url: string) => {
+        await EmployeeService.getEmployee(url, false).then(
+            (rsp) => {
+                if (rsp != undefined) {
+                    setEmployee(rsp)
+                    localStorage.removeItem("reviewEmployeeForm")
+                } else {
+                    nav("/*")
+                }
+            })
+    }
 
     useEffect(() => {
         if (employee) {
