@@ -25,29 +25,33 @@ export class ApplicantService{
 
     public static async createApplicant(jobId: number){
 
-        const formData:any = new FormData();
-        formData.append("jobId", jobId)
+        const applyForm = JSON.stringify({
+            jobId: jobId
+        });
 
         return await fetch(APPLICANT_URL, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
+            body: applyForm
         })
     }
 
     public static async updateStatus(employeeId: number, jobId: number, status: number){
 
-        const formData:any = new FormData();
-        formData.append("status", status)
+        const statusForm = JSON.stringify({
+            status: status
+        });
 
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
             method: 'PUT',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
+            body: statusForm
         })
     }
 
