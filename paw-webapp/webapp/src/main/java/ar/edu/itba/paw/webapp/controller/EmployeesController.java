@@ -60,9 +60,7 @@ public class EmployeesController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HogarUser hogarUser;
 
-        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        } else if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             hogarUser = (HogarUser) auth.getPrincipal();
         } else {
             hogarUser = null;
