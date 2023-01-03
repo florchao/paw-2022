@@ -64,14 +64,14 @@ public class EmployerController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response employerProfile(@PathParam("id") long id) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth != null) {
-            HogarUser user = (HogarUser) auth.getPrincipal();
-            if (user.getUserID() != id) {
-                return Response.status(Response.Status.FORBIDDEN).build();
-            }
-        }
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (auth != null) {
+//            HogarUser user = (HogarUser) auth.getPrincipal();
+//            if (user.getUserID() != id) {
+//                return Response.status(Response.Status.FORBIDDEN).build();
+//            }
+//        }
         try {
             Employer employer = employerService.getEmployerById(id);
             EmployerDto employerDto = EmployerDto.fromEmployer(uriInfo, employer);
@@ -113,7 +113,7 @@ public class EmployerController {
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployerReviews(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page) {
-
+        //TODO: chequear si se puede dejar asi porque de igual manera usa el principal para sacar el id
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         HogarUser principal = (HogarUser) auth.getPrincipal();

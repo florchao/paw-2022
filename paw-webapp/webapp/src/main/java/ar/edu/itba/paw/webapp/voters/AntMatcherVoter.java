@@ -32,4 +32,12 @@ public class AntMatcherVoter {
         }
     }
 
+    public boolean canAccessEmployerProfile(Authentication auth, Long id) {
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+            HogarUser user = (HogarUser) auth.getPrincipal();
+            return user.getUserID() == id;
+        }
+        return true;
+    }
+
 }
