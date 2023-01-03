@@ -16,20 +16,20 @@ public class AntMatcherVoter {
     private EmployeeService employeeService;
 
     public boolean canAccessEmployeeProfile(Authentication auth, Long id) {
-        if (auth instanceof AnonymousAuthenticationToken) return false;
-        HogarUser user = null;
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
-            user = (HogarUser) auth.getPrincipal();
-            if (user.getUserID() != id) {
-                return false;
-            }
+            HogarUser user = (HogarUser) auth.getPrincipal();
+            return user.getUserID() == id;
         }
-        return false;
+        return true;
     }
 
     public boolean canEditEmployee(Authentication auth, Long id) {
-        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return user.getUserID() == id;
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
+            HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return user.getUserID() == id;
+        } else{
+            return false;
+        }
     }
 
 }

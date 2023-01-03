@@ -27,7 +27,7 @@ import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("ar.edu.itba.paw.webapp.auth")
+@ComponentScan({"ar.edu.itba.paw.webapp.auth", "ar.edu.itba.paw.webapp.voters"})
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -61,7 +61,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                .and().antMatcher("/**").authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/applicants/{employeeId}/{jobId}").hasAuthority("EMPLOYEE")
                 .antMatchers(HttpMethod.POST, "/api/applicants").hasAuthority("EMPLOYEE")
                 .antMatchers(HttpMethod.PUT, "/api/applicants/{employeeId}/{jobId}").hasAuthority("EMPLOYER")
@@ -70,13 +69,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/contacts").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.GET, "/api/contacts/{employeeId}/{employerId}").hasAuthority("EMPLOYEE")
                 .antMatchers(HttpMethod.GET, "/api/employees").access("hasAuthority('EMPLOYER') or isAnonymous()")
-                .antMatchers(HttpMethod.GET, "/api/employee/{id}").access("permitAll() or @antMatcherVoter.canAccesEmployeeProfile(authentication, #id)")
-                .antMatchers(HttpMethod.GET, "/api/employee/{id}/jobs").access("hasAuthority('EMPLOYEE') or @antMatcherVoter.canEditEmployee(authentication, #id)")
-                .antMatchers(HttpMethod.GET, "/api/employee/{id}/contacts").access("hasAuthority('EMPLOYEE') or @antMatcherVoter.canEditEmployee(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/api/employee/{id}").access("@antMatcherVoter.canAccessEmployeeProfile(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/api/employee/{id}/jobs").access("@antMatcherVoter.canEditEmployee(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/api/employee/{id}/contacts").access("@antMatcherVoter.canEditEmployee(authentication, #id)")
                 .antMatchers(HttpMethod.GET, "/api/employee/{id}/reviews").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/employee/{employeeId}/reviews/{employerId}").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.POST, "/api/employee").anonymous()
-                .antMatchers(HttpMethod.PUT, "/api/employee/{id}").access("hasAuthority('EMPLOYEE') or @antMatcherVoter.canEditEmployee(authentication, #id)")
+                .antMatchers(HttpMethod.PUT, "/api/employee/{id}").access("@antMatcherVoter.canEditEmployee(authentication, #id)")
                 .antMatchers(HttpMethod.GET, "/api/employers/{id}").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.GET, "/api/employers/{id}/jobs").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.GET, "/api/employers/{id}/reviews").authenticated()
@@ -95,6 +94,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/user").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/users/{id}").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/ids").permitAll()
+                .and().antMatcher("/**").authorizeRequests()
                 .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
