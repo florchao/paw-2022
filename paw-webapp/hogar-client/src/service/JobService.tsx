@@ -21,19 +21,26 @@ export class JobService {
         name?: string,
         location?: string,
         abilities?: string,
-        availability?: string
+        availability?: string,
+        link?: string
     ) {
 
         let url = JOB_URL + QUERY_PARAM
 
-        if (minimumYears > 0)
-            url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        if(page > 0)
-            url = this.concatStringQueries(url, 'page', String(page))
-        url = this.concatStringQueries(url, 'name', name)
-        url = this.concatStringQueries(url, 'location', location)
-        url = this.concatStringQueries(url, 'abilities', abilities)
-        url = this.concatStringQueries(url, 'availability', availability)
+        //   =========  A reminder of simpler times  =========
+
+        // if (minimumYears > 0)
+        //     url = this.concatStringQueries(url, 'experience', String(minimumYears))
+        // if(page > 0)
+        //     url = this.concatStringQueries(url, 'page', String(page))
+        // url = this.concatStringQueries(url, 'name', name)
+        // url = this.concatStringQueries(url, 'location', location)
+        // url = this.concatStringQueries(url, 'abilities', abilities)
+        // url = this.concatStringQueries(url, 'availability', availability)
+
+        if (link !== undefined && link !== '') {
+            url = link
+        }
 
         return await fetch(url, {
             method: 'GET',

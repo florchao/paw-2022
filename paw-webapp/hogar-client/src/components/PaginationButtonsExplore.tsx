@@ -9,7 +9,7 @@ const PaginationButtonsExplore = ({changePages, pages, page, nextPage, prevPage,
     return (
         <div className="flex justify-center items-center">
             {page > 0 &&
-                <button onClick={() => {
+                <button onClick={ () => {
                     changePages(page - 1, prevPage)
                 }
                 }
@@ -29,7 +29,7 @@ const PaginationButtonsExplore = ({changePages, pages, page, nextPage, prevPage,
                 <p className={"mx-2"}>{page + 1} {t('Pagination.of')} {pages}</p>
             }
             {page < pages - 1 &&
-                <button onClick={() => {
+                <button onClick={ () => {
                     changePages(page + 1, nextPage)
                 }
                 }

@@ -83,8 +83,7 @@ public class EmployeesController {
                 return EmployeeDto.fromExploreRating(uriInfo, employee, rating);
         }).collect(Collectors.toList());
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
-        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
-        };
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) { };
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
         return uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages)
                 .header("Access-Control-Expose-Headers", "X-Total-Count")

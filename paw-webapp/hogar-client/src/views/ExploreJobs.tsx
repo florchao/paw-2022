@@ -8,13 +8,19 @@ import useFormPersist from "react-hook-form-persist";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
 import {MagnifyingGlass} from "react-loader-spinner";
 import noJobs from "../assets/sinTrabajos.png";
+import {parseLink} from "../utils/utils";
 
 export const ExploreJobs = () => {
 
     const [jobs, setJobs]: any = useState()
-    const [pages, setPages] :any = useState(0)
+    const [pages, setPages]: any = useState(0)
 
-    const { t } = useTranslation();
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
+
+    const [linkUrl, setLinkUrl] = useState("")
+
+    const {t} = useTranslation();
 
     type FormData = {
         name: string;
@@ -22,20 +28,21 @@ export const ExploreJobs = () => {
         experienceYears: number;
         availabilities: string[];
         abilities: string[];
-        page:number;
+        page: number;
         isActive: boolean;
     };
 
     const {register, handleSubmit, watch, formState: {errors}, getValues, setValue, reset} = useForm<FormData>({
-        defaultValues: {
-            name: "",
-            location: [],
-            experienceYears: 0,
-            availabilities: [],
-            abilities: [],
-            page: 0,
-            isActive: false,
-        }}
+            defaultValues: {
+                name: "",
+                location: [],
+                experienceYears: 0,
+                availabilities: [],
+                abilities: [],
+                page: 0,
+                isActive: false,
+            }
+        }
     );
 
     watch("name");
@@ -61,37 +68,51 @@ export const ExploreJobs = () => {
             (data.location.toString() === "") ? undefined : data.location.toString().toString(),
             (data.abilities.toString() === "") ? undefined : data.abilities.toString().toString(),
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
+            linkUrl
         ).then((rsp) => {
             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-            console.log("jola")
-            console.log(rsp.status)
-            if(rsp.status === 200)
+            if (rsp.status === 200) {
+                let linkHeader = rsp.headers.get("Link")
+                if (linkHeader !== null) {
+                    parseLink(linkHeader, setNextPage, setPrevPage)
+                }
                 rsp.json().then((j: any) => {
                     setJobs(j)
                 })
-            else
+            } else
                 setJobs([])
         })
     }
 
-    const changePage = (page: number) => {
+    function updatePage(page: number) {
+        setValue("page", page)
+        onSubmit(getValues())
+    }
+
+    const changePage = async (page: number, link?: string) => {
         setJobs(null)
+        if (link !== undefined) {
+            setLinkUrl(link)
+        }
         setValue("page", page)
         onSubmit(getValues())
     }
 
     useEffect(() => {
-        if(getValues("isActive")){
+        if (getValues("isActive")) {
             onSubmit(getValues())
-        }
-        else {
-            JobService.getJobs().then((rsp) => {
+        } else {
+            JobService.getJobs().then(async (rsp) => {
                 rsp.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if(rsp.status === 200)
+                if (rsp.status === 200) {
+                    let linkHeader = rsp.headers.get("Link")
+                    if (linkHeader !== null) {
+                        parseLink(linkHeader, setNextPage, setPrevPage)
+                    }
                     rsp.json().then((j: any) => {
                         setJobs(j)
                     })
-                else
+                } else
                     setJobs([])
             })
         }
@@ -101,7 +122,8 @@ export const ExploreJobs = () => {
         <div className="grid content-start h-screen overflow-auto pl-5 pr-5 pb-5">
             <div className="my-10 w-full"></div>
             <div className="grid grid-cols-4">
-                <FilterForm handleSubmit={handleSubmit} register={register} errors={errors} onSubmit={onSubmit} reset={reset} setValue={setValue}/>
+                <FilterForm handleSubmit={handleSubmit} register={register} errors={errors} onSubmit={onSubmit}
+                            reset={reset} setValue={setValue}/>
                 <div className="col-span-3 col-start-2">
                     <h1 className="text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8">{t('Explore.jobs')}</h1>
                     <div className="col-span-3 col-start-2">
@@ -115,32 +137,39 @@ export const ExploreJobs = () => {
                                         ariaLabel="MagnifyingGlass-loading"
                                         wrapperStyle={{}}
                                         wrapperClass="MagnifyingGlass-wrapper"
-                                        glassColor = '#c0efff'
-                                        color = '#e5de00'
+                                        glassColor='#c0efff'
+                                        color='#e5de00'
                                     />
                                 </div>
                             }
                             {jobs && jobs.map(
-                                        (job: any) => (
-                                            <div key={job.jobId}
-                                                 className="flex flex-wrap content-start justify-center">
-                                                <JobCard job={job}/>
-                                            </div>
-                                        ))}
+                                (job: any) => (
+                                    <div key={job.jobId}
+                                         className="flex flex-wrap content-start justify-center">
+                                        <JobCard job={job}/>
+                                    </div>
+                                ))}
                             {jobs && jobs.length === 0 && (
                                 <div className="grid content-center justify-center h-5/6 mt-16">
                                     <div className="grid justify-items-center">
                                         <img src={noJobs} alt="noJobs"
                                              className="mr-3 h-6 sm:h-52"/>
                                         <p className="text-3xl font-semibold text-purple-700">
-                                                {t("Explore.noJobs")}
-                                            </p>
+                                            {t("Explore.noJobs")}
+                                        </p>
                                     </div>
                                 </div>
                             )}
                         </div>
                         {jobs &&
-                            <PaginationButtonsExplore changePages={changePage} pages={pages} page={getValues("page")}/>
+                            <PaginationButtonsExplore
+                                changePages={changePage}
+                                pages={pages}
+                                page={getValues("page")}
+                                nextPage={nextPage}
+                                prevPage={prevPage}
+                                setLinkUrl={setLinkUrl}
+                            />
                         }
                     </div>
                 </div>
