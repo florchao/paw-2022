@@ -50,10 +50,10 @@ public class ApplicantController {
     @Path("/{employeeId}/{jobId}")
     public Response getStatusApplication(@PathParam("employeeId") long employeeId,
                                          @PathParam("jobId") long jobId) {
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (hogarUser.getUserID() != employeeId) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (hogarUser.getUserID() != employeeId) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
         int status = applicantService.getStatus(employeeId, jobId);
         return Response.ok(status).build();
     }
@@ -101,10 +101,10 @@ public class ApplicantController {
         try {
             job = jobService.getJobByID(jobId);
             employee = employeeService.getEmployeeById(employeeId);
-            HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
-                return Response.status(Response.Status.FORBIDDEN).build();
-            }
+//            HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
+//                return Response.status(Response.Status.FORBIDDEN).build();
+//            }
 
             int finalStatus = applicantService.changeStatus(applicantEditDto.getStatus(), employeeId, jobId);
             contactService.changedStatus(applicantEditDto.getStatus(), job, employee);
@@ -135,10 +135,10 @@ public class ApplicantController {
             return Response.status(Response.Status.CONFLICT).build();
         }
 
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
 
         List<ApplicantInJobsDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
                 .stream()
@@ -155,10 +155,10 @@ public class ApplicantController {
     public Response deleteApplication(@PathParam("employeeId") long employeeId,
                                       @PathParam("jobId") long jobId) {
 
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (hogarUser.getUserID() != employeeId) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (hogarUser.getUserID() != employeeId) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
 
         applicantService.withdrawApplication(employeeId, jobId);
         return Response.noContent().build();
