@@ -137,7 +137,7 @@ export const Job = () => {
 
     async function delJob() {
         const post = await JobService.deleteJob(job.jobId)
-        if (post.status === 200) {
+        if (post.status === 204) {
             nav('/jobs', {replace: true})
         }
     }

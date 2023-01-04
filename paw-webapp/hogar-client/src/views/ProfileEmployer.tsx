@@ -32,7 +32,7 @@ export const ProfileEmployer = () => {
 
     async function delEmployer() {
         const post = await UserService.deleteUser(employer.delete)
-        if (post.status === 200) {
+        if (post.status === 204) {
             localStorage.removeItem("hogar-uid")
             localStorage.removeItem("hogar-jwt")
             localStorage.removeItem("hogar-role")
