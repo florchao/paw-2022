@@ -1,7 +1,7 @@
 
 import {useTranslation} from "react-i18next";
 
-const PaginationButtonsExplore = ({changePages, pages, page}: {changePages: any ,pages: number, page: number}) => {
+const PaginationButtonsExplore = ({changePages, pages, page, nextPage, prevPage, setLinkUrl}: {changePages: any ,pages: number, page: number, nextPage?: string, prevPage?: string, setLinkUrl?: any}) => {
 
     const { t } = useTranslation();
 
@@ -10,7 +10,7 @@ const PaginationButtonsExplore = ({changePages, pages, page}: {changePages: any 
         <div className="flex justify-center items-center">
             {page > 0 &&
                 <button onClick={() => {
-                    changePages(page - 1)
+                    changePages(page - 1, prevPage)
                 }
                 }
                         className="bg-violet-300 w-auto hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl border-solid border-transparent border-2 hover:border-purple-300">
@@ -30,7 +30,7 @@ const PaginationButtonsExplore = ({changePages, pages, page}: {changePages: any 
             }
             {page < pages - 1 &&
                 <button onClick={() => {
-                    changePages(page + 1)
+                    changePages(page + 1, nextPage)
                 }
                 }
                         className="bg-violet-300 w-auto font-semibold hover:bg-yellow-300 shadow-lg text-violet-900 py-2 px-4 rounded-xl border-solid border-transparent border-2 hover:border-purple-300">

@@ -43,21 +43,29 @@ export class EmployeeService {
         location?: string,
         abilities?: string,
         availability?: string,
-        order?: string
+        order?: string,
+        linkUrl?: string
     ) {
 
-        let url = EMPLOYEES_URL + QUERY_PARAM
+        let url = EMPLOYEES_URL
 
-        if (minimumYears > 0)
-            url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        if(page > 0)
-            url = this.concatStringQueries(url, 'page', String(page))
-        url = this.concatStringQueries(url, 'name', name)
-        url = this.concatStringQueries(url, 'location', location)
-        url = this.concatStringQueries(url, 'abilities', abilities)
-        url = this.concatStringQueries(url, 'availability', availability)
-        url = this.concatStringQueries(url, 'order', order)
+        //   =========  A reminder of simpler times  =========
 
+        // let url = EMPLOYEES_URL + QUERY_PARAM
+
+        // if (minimumYears > 0)
+        //     url = this.concatStringQueries(url, 'experience', String(minimumYears))
+        // if(page > 0)
+        //     url = this.concatStringQueries(url, 'page', String(page))
+        // url = this.concatStringQueries(url, 'name', name)
+        // url = this.concatStringQueries(url, 'location', location)
+        // url = this.concatStringQueries(url, 'abilities', abilities)
+        // url = this.concatStringQueries(url, 'availability', availability)
+        // url = this.concatStringQueries(url, 'order', order)
+
+        if (linkUrl !== "" && linkUrl !== undefined) {
+            url = linkUrl
+        }
         return await fetch(url, {
             method: 'GET',
             headers: localStorage.getItem('hogar-jwt') != null ?{

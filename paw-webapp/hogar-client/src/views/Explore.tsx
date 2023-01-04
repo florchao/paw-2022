@@ -8,6 +8,7 @@ import useFormPersist from "react-hook-form-persist";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {parseLink} from "../utils/utils";
 
 
 export const Explore = () => {
@@ -15,6 +16,10 @@ export const Explore = () => {
     const [employees, setEmployees]: any = useState()
     const [pages, setPages] :any = useState(0)
 
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
+
+    const [linkUrl, setLinkUrl] = useState("")
 
     const { t } = useTranslation();
 
@@ -66,8 +71,13 @@ export const Explore = () => {
             (data.location.toString() === "") ? undefined : data.location.toString().toString(),
             (data.abilities.toString() === "") ? undefined : data.abilities.toString().toString(),
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
-            data.orderBy
+            data.orderBy,
+            linkUrl
         ).then((rsp) => {
+            let linkHeader = rsp.headers.get("Link")
+            if (linkHeader !== null) {
+                parseLink(linkHeader, setNextPage, setPrevPage)
+            }
             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
             if(rsp.status === 200)
                 rsp.json().then((employees: any) => {
@@ -78,8 +88,11 @@ export const Explore = () => {
         })
     }
 
-    const changePage = async (page: number) => {
+    const changePage = async (page: number, link?: string) => {
         setEmployees(null)
+        if (link !== undefined) {
+            await setLinkUrl(link)
+        }
         setValue("page", page)
         onSubmit(getValues())
     }
@@ -97,12 +110,18 @@ export const Explore = () => {
         else {
             EmployeeService.getEmployees().then((rsp) => {
                 rsp.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if(rsp.status === 200)
+                if(rsp.status === 200) {
+                    let linkHeader = rsp.headers.get("Link")
+                    if (linkHeader !== null) {
+                        parseLink(linkHeader, setNextPage, setPrevPage)
+                    }
                     rsp.json().then((employees: any) => {
                         setEmployees(employees)
                     })
-                else
+                }
+                else {
                     setEmployees([])
+                }
             })
         }
 
@@ -160,7 +179,14 @@ export const Explore = () => {
                 {employees &&
                     <div>
                         {employees.map((employee: any) => (<EmployeeCard key={employee.id} employee={employee}/>))}
-                        <PaginationButtonsExplore changePages={changePage} pages={pages} page={getValues("page")}/>
+                        <PaginationButtonsExplore
+                            changePages={changePage}
+                            pages={pages}
+                            page={getValues("page")}
+                            nextPage={nextPage}
+                            prevPage={prevPage}
+                            setLinkUrl={setLinkUrl}
+                        />
                     </div>
                 }
                 {employees && employees.length === 0 && (

@@ -18,7 +18,7 @@ public class UriHelper {
         if (page > 0) {
             responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page - 1).build(), "prev");
         }
-        if (maxPage - page > 0) {
+        if (maxPage - (page + 1) > 0) {
             responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page + 1).build(), "next");
         }
         return responseBuilder.header("Access-Control-Expose-Headers", "Link");

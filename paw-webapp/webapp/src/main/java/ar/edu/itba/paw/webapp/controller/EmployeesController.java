@@ -5,6 +5,7 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.RaitingService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
+import ar.edu.itba.paw.webapp.helpers.UriHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @Component
 public class EmployeesController {
 
-    private final int PAGE_SIZE = 8;
+    private final int PAGE_SIZE = 1;
     @Autowired
     private EmployeeService employeeService;
     @Autowired
@@ -32,6 +33,9 @@ public class EmployeesController {
     private RaitingService ratingService;
     @Context
     private UriInfo uriInfo;
+
+    @Context
+    private UriHelper uriHelper;
 
     @GET
     @Path("")
@@ -81,6 +85,10 @@ public class EmployeesController {
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
         };
-        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        return uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages)
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 }
