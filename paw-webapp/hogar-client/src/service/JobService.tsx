@@ -110,11 +110,14 @@ export class JobService {
         })
     }
 
-    public static async getCreatedJobs(url: string, profile: boolean, page: number) {
+    public static async getCreatedJobs(url: string, profile: boolean, page: number, linkUrl?: string) {
         if(profile)
             url = url + QUERY_PARAM + 'profile=true'
         if(page > 0)
             url = url + QUERY_PARAM + 'page=' + page.toString()
+        if (linkUrl !== undefined) {
+            url = linkUrl
+        }
         return await fetch(url, {
             method: 'GET',
             headers: {

@@ -16,4 +16,38 @@ let USER_URL = BASE_URL + 'user';
 let JOBS = '/jobs';
 let CONTACTS = '/contacts';
 
-export { BASE_URL, IDS_URL, QUERY_PARAM, EMPLOYEE_URL, EMPLOYEES_URL, IMAGE_URL, EMPLOYER_URL, JOB_URL, REVIEWS_URL, RATINGS_URL, APPLICANT_URL, USER_URL, JOBS, CONTACT_URL, CONTACTS, USERS_URL,BACK_SLASH };
+function parseLink(fullLink: string, setNextPage: any, setPrevPage: any) {
+    const links = fullLink.split(',')
+    for (let i = 0; i < links.length; i++) {
+        const link = links[i].split(';');
+        const url = link[0].substring(i+1, link[0].length - 1);
+        const page = link[1].split('"');
+        if (page[1] === 'next') {
+            setNextPage(url);
+        }
+        if (page[1] === 'prev') {
+            setPrevPage(url);
+        }
+    }
+}
+
+export {
+    BASE_URL,
+    IDS_URL,
+    QUERY_PARAM,
+    EMPLOYEE_URL,
+    EMPLOYEES_URL,
+    IMAGE_URL,
+    EMPLOYER_URL,
+    JOB_URL,
+    REVIEWS_URL,
+    RATINGS_URL,
+    APPLICANT_URL,
+    USER_URL,
+    JOBS,
+    CONTACT_URL,
+    CONTACTS,
+    USERS_URL,
+    BACK_SLASH,
+    parseLink
+};
