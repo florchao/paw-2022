@@ -37,7 +37,7 @@ public class AntMatcherVoter {
             HogarUser user = (HogarUser) auth.getPrincipal();
             return user.getUserID() == id;
         }
-        return true;
+        return false;
     }
 
 }
