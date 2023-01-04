@@ -36,7 +36,7 @@ export const Job = () => {
     const location = useLocation();
     let {self}: any = useState()
 
-    if(location.state) {
+    if (location.state) {
         self = location.state.self
     }
     const {t} = useTranslation();
@@ -81,13 +81,13 @@ export const Job = () => {
 
     const fetchData = async (url: string) => {
         await JobService.getJob(url).then((rsp) => {
-                if (rsp != undefined) {
-                    setJob(rsp)
-                    setOpened(rsp.opened)
-                } else {
-                    nav("/*")
-                }
-            })
+            if (rsp != undefined) {
+                setJob(rsp)
+                setOpened(rsp.opened)
+            } else {
+                nav("/*")
+            }
+        })
     }
 
     useEffect(() => {
@@ -135,10 +135,11 @@ export const Job = () => {
             setStatus("0")
     }
 
-    function delJob() {
-        JobService.deleteJob(job.jobId).then(() => {
+    async function delJob() {
+        const post = await JobService.deleteJob(job.jobId)
+        if (post.status === 200) {
             nav('/jobs', {replace: true})
-        })
+        }
     }
 
     async function openJob() {
@@ -357,7 +358,8 @@ export const Job = () => {
                                             <div>
                                                 {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                        review={rev}/>)}
-                                                <PaginationButtons changePages={changePage} pages={pages} current={current}/>
+                                                <PaginationButtons changePages={changePage} pages={pages}
+                                                                   current={current}/>
                                             </div>
                                         }
                                     </ul>
