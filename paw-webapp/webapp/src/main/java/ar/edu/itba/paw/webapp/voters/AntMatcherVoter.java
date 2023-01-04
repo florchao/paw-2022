@@ -9,6 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.core.Response;
+
 @Component
 public class AntMatcherVoter {
 
@@ -36,6 +38,14 @@ public class AntMatcherVoter {
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
             HogarUser user = (HogarUser) auth.getPrincipal();
             return user.getUserID() == id;
+        }
+        return false;
+    }
+
+    public boolean canDeleteUser(Authentication auth, Long id){
+        if(auth.isAuthenticated()){
+            HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return hogarUser.getUserID() == id;
         }
         return false;
     }

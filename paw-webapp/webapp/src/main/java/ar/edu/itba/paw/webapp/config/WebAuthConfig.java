@@ -92,7 +92,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/reviews").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/users").anonymous()
                 .antMatchers(HttpMethod.GET, "/api/user").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/users/{id}").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/users/{id}").access("@antMatcherVoter.canDeleteUser(authentication, #id)")
                 .antMatchers(HttpMethod.GET, "/api/ids").permitAll()
                 .and().antMatcher("/**").authorizeRequests()
                 .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)

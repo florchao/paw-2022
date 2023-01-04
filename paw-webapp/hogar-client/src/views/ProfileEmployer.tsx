@@ -30,15 +30,15 @@ export const ProfileEmployer = () => {
     const {t} = useTranslation();
 
 
-    function delEmployer() {
-        UserService.deleteUser(employer.delete).then(() => {
-                localStorage.removeItem("hogar-uid")
-                localStorage.removeItem("hogar-jwt")
-                localStorage.removeItem("hogar-role")
-                nav('/', {replace: true})
-                window.location.reload()
-            }
-        );
+    async function delEmployer() {
+        const post = await UserService.deleteUser(employer.delete)
+        if (post.status === 200) {
+            localStorage.removeItem("hogar-uid")
+            localStorage.removeItem("hogar-jwt")
+            localStorage.removeItem("hogar-role")
+            nav('/', {replace: true})
+            window.location.reload()
+        }
     }
 
     useEffect(() => {
