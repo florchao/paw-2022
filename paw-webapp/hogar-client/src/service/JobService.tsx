@@ -83,10 +83,10 @@ export class JobService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => {
-            if (resp.status == 200) {
-                return resp.json()
-            }
+        // }).then((resp) => {
+        //     if (resp.status == 200) {
+        //         return resp.json()
+        //     }
         })
         .catch(
                 (error) => {
@@ -139,9 +139,12 @@ export class JobService {
                 })
     }
 
-    public static async getApplicants(url : string, page: number){
+    public static async getApplicants(url : string, page: number, linkUrl?: string){
         if (page > 0) {
             url = url + QUERY_PARAM + "page=" + page.toString()
+        }
+        if (linkUrl !== undefined) {
+            url = linkUrl
         }
         return await fetch(url, {
             method: 'GET',

@@ -6,11 +6,14 @@ import {JobService} from "../service/JobService";
 import PaginationButtons from "../components/PaginationButtons";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
-import {APPLICANT_URL, BACK_SLASH, JOB_URL} from "../utils/utils";
+import {APPLICANT_URL, BACK_SLASH, JOB_URL, parseLink} from "../utils/utils";
 
 export const Applicants = () => {
 
     const [applicantList, setApplicantList]: any = useState()
+
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
 
     const jobId = useParams();
     const location = useLocation();
@@ -21,7 +24,7 @@ export const Applicants = () => {
     const [current, setCurrent]: any = useState(0)
     const nav = useNavigate();
 
-    async function setApplicantsByPage(page: number) {
+    async function setApplicantsByPage(page: number, linkUrl?: string) {
         setCurrent(page)
         setApplicantList(null)
         let url
@@ -30,19 +33,29 @@ export const Applicants = () => {
         } else {
             url = applicants
         }
-        const result = await JobService.getApplicants(url, page)
+        const result = await JobService.getApplicants(url, page, linkUrl)
         if (result.status === 200) {
             let body = await result.json()
             let pageCountHeader = result.headers.get('X-Total-Count')
+            let linkHeader = result.headers.get("link")
+            if (linkHeader !== null) {
+                parseLink(linkHeader, setNextPage, setPrevPage)
+            }
             setApplicantList(body)
             setTotalPages(pageCountHeader)
         }
     }
 
     const fetchData = async (url: string) => {
-        await JobService.getJob(url).then((rsp) => {
+        await JobService.getJob(url).then(async (rsp) => {
             if (rsp != undefined) {
-                setTitle(rsp.title)
+                let linkHeader = rsp.headers.get("Link")
+                if (linkHeader !== null) {
+                    parseLink(linkHeader, setNextPage, setPrevPage)
+                }
+                rsp.json().then((body) => {
+                    setTitle(body.title)
+                })
             } else {
                 nav("/*")
             }
@@ -99,9 +112,13 @@ export const Applicants = () => {
                                     <ApplicantCard key={applicant.employee.id} applicant={applicant}/>))}
                             </ul>
                         }
-                        <PaginationButtons changePages={setApplicantsByPage} pages={totalPages}
-                                           current={current}></PaginationButtons>
-
+                        <PaginationButtons
+                            changePages={setApplicantsByPage}
+                            pages={totalPages}
+                            current={current}
+                            nextPage={nextPage}
+                            prevPage={prevPage}
+                        />
                     </div>
                 </div>
             </div>

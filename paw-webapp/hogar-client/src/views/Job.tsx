@@ -81,6 +81,7 @@ export const Job = () => {
 
     const fetchData = async (url: string) => {
         await JobService.getJob(url).then((rsp) => {
+            rsp.json().then((rsp) => {
                 if (rsp != undefined) {
                     setJob(rsp)
                     setOpened(rsp.opened)
@@ -88,6 +89,7 @@ export const Job = () => {
                     nav("/*")
                 }
             })
+        })
     }
 
     useEffect(() => {
