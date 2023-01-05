@@ -19,9 +19,12 @@ export class ReviewService {
                 })
     }
 
-    public static async getEmployerReviews(url: string, page: number) {
+    public static async getEmployerReviews(url: string, page: number, linkUrl?: string) {
         if (page > 0) {
             url = url + "?page=" + page
+        }
+        if (linkUrl !== "" && linkUrl !== undefined) {
+            url = linkUrl
         }
         return await fetch(url, {
             method: 'GET',

@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.RaitingService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
 import ar.edu.itba.paw.webapp.helpers.UriHelper;
+import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
@@ -83,11 +84,45 @@ public class EmployeesController {
                 return EmployeeDto.fromExploreRating(uriInfo, employee, rating);
         }).collect(Collectors.toList());
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
-        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) { };
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
+        };
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
-        return uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages)
+        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+        if (request.getQueryString() != null) {
+            fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, orderCriteria);
+        }
+        return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
                 .header("Access-Control-Expose-Headers", "X-Total-Count")
                 .header("X-Total-Count", pages)
                 .build();
+    }
+
+    private void fillQueryParams(
+            UriBuilder uriBuilder,
+            String name,
+            Long experienceYears,
+            String location,
+            String availability,
+            String abilities,
+            String orderCriteria
+    ) {
+        if (name != null && !name.equals("")) {
+            uriBuilder.queryParam("name", name);
+        }
+        if (experienceYears != null) {
+            uriBuilder.queryParam("experience", experienceYears);
+        }
+        if (location != null) {
+            uriBuilder.queryParam("location", location);
+        }
+        if (availability != null && !availability.equals("")) {
+            uriBuilder.queryParam("availability", availability);
+        }
+        if (abilities != null && !abilities.equals("")) {
+            uriBuilder.queryParam("abilities", abilities);
+        }
+        if (orderCriteria != null && !orderCriteria.equals("") && !orderCriteria.equals("null")) {
+            uriBuilder.queryParam("order", orderCriteria);
+        }
     }
 }

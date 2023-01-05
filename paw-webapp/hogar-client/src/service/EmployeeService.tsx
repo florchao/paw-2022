@@ -47,21 +47,17 @@ export class EmployeeService {
         linkUrl?: string
     ) {
 
-        let url = EMPLOYEES_URL
+        let url = EMPLOYEES_URL + QUERY_PARAM
 
-        //   =========  A reminder of simpler times  =========
-
-        // let url = EMPLOYEES_URL + QUERY_PARAM
-
-        // if (minimumYears > 0)
-        //     url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        // if(page > 0)
-        //     url = this.concatStringQueries(url, 'page', String(page))
-        // url = this.concatStringQueries(url, 'name', name)
-        // url = this.concatStringQueries(url, 'location', location)
-        // url = this.concatStringQueries(url, 'abilities', abilities)
-        // url = this.concatStringQueries(url, 'availability', availability)
-        // url = this.concatStringQueries(url, 'order', order)
+        if (minimumYears > 0)
+            url = this.concatStringQueries(url, 'experience', String(minimumYears))
+        if(page > 0)
+            url = this.concatStringQueries(url, 'page', String(page))
+        url = this.concatStringQueries(url, 'name', name)
+        url = this.concatStringQueries(url, 'location', location)
+        url = this.concatStringQueries(url, 'abilities', abilities)
+        url = this.concatStringQueries(url, 'availability', availability)
+        url = this.concatStringQueries(url, 'order', order)
 
         if (linkUrl !== "" && linkUrl !== undefined) {
             url = linkUrl

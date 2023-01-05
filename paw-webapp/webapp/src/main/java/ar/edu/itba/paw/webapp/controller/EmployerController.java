@@ -55,7 +55,7 @@ public class EmployerController {
     private final static long PAGE_SIZE = 1;
     private final static long PAGE_SIZE_PROFILE = 2;
 
-    private final static int PAGE_SIZE_REVIEWS = 4;
+    private final static int PAGE_SIZE_REVIEWS = 1;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployerController.class);
 
@@ -127,10 +127,14 @@ public class EmployerController {
                 .stream()
                 .map(r -> ReviewDto.fromEmployerReview(uriInfo, r))
                 .collect(Collectors.toList());
-        GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
-        };
+        GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) { };
         int pages = reviewService.getPageNumberEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE")) ? principal.getUserID() : null, id, PAGE_SIZE_REVIEWS);
-        return Response.status(reviews.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        Response.ResponseBuilder responseBuilder = Response.status(reviews.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        return responseBuilder
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @GET
