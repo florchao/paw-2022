@@ -42,20 +42,13 @@ export const ProfileEmployer = () => {
     }
 
     useEffect(() => {
-        EmployerService.getEmployer(id).then((val) => setEmployer(val));
+        EmployerService.getEmployer(id).then((val) => {
+                setEmployer(val)
+                setImage(val.image)
+            }
+        );
     }, [])
 
-    useEffect(() => {
-        if (employer) {
-            UserService.loadImage(employer.image).then(
-                (img) => {
-                    if (img.size === 0)
-                        setImage(user)
-                    else
-                        setImage(URL.createObjectURL(img))
-                });
-        }
-    }, [employer])
 
     useEffect(() => {
         if (employer) {
@@ -118,7 +111,7 @@ export const ProfileEmployer = () => {
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
                                 {image &&
                                     <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={image}
-                                         alt="profile pic"/>
+                                         alt="profile photo" onError={() => setImage(user)}/>
                                 }
                             </div>
                             <div className="ml-3 col-span-2">

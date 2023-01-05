@@ -105,23 +105,12 @@ export const ProfileEmployee = () => {
                 if (rsp != undefined) {
                     setEmployee(rsp)
                     localStorage.removeItem("reviewEmployeeForm")
+                    setImg(rsp.image)
                 } else {
                     nav("/*")
                 }
             })
     }
-
-    useEffect(() => {
-        if (employee) {
-            UserService.loadImage(employee.image).then(
-                (img) => {
-                    if (img.size === 0)
-                        setImg(user)
-                    else
-                        setImg(URL.createObjectURL(img))
-                })
-        }
-    }, [employee])
 
     useEffect(() => {
             if (employee) {
@@ -218,7 +207,7 @@ export const ProfileEmployee = () => {
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
                                 <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img}
-                                     alt="profile pic"/>
+                                     alt="profile photo" onError={() => setImg(user)}/>
                             </div>
                             <div className="ml-3 col-span-2">
                                 <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">

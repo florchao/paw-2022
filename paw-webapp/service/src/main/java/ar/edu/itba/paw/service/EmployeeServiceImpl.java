@@ -49,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             availabilitySB.setLength(availabilitySB.length() - 1);
         Optional<Employee> employee = employeeDao.getEmployeeById(id);
         if (employee.isPresent())
-            if (image.length == 0)
+            if (image == null || image.length == 0)
                 employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString(), employee.get().getId().getImage());
             else
                 employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString(), image);
@@ -82,21 +82,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize, String orderCriteria) {
         List<String> availabilityList;
         if (availability != null) {
-            availabilityList = new ArrayList<>();
             availabilityList = Arrays.asList(availability.split(","));
         } else {
             availabilityList = Collections.emptyList();
         }
         List<String> abilitiesList;
         if (abilities != null) {
-            abilitiesList = new ArrayList<>();
             abilitiesList = Arrays.asList(abilities.split(","));
         } else {
             abilitiesList = Collections.emptyList();
         }
         List<String> locationList;
         if (location != null) {
-            locationList = new ArrayList<>();
             locationList = Arrays.asList(location.split(","));
         } else {
             locationList = Collections.emptyList();

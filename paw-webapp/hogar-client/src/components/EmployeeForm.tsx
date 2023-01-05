@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {EmployeeService} from "../service/EmployeeService";
-import {UserService} from "../service/UserService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
@@ -25,6 +24,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
 
     const [image, setImage] = useState<File>()
     const [imageURL, setImageURL] = useState<string>()
+    const [updatedImage, setUpdatedImage] = useState<boolean>(false)
 
     watch("password")
     watch("confirmPassword")
@@ -112,6 +112,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
         if (localStorage.getItem("imgEmployeeForm") !== null) {
             const img = await urltoFile(localStorage.getItem("imgEmployeeForm")!, "imgEmployeeForm")
             setImage(img)
+            setUpdatedImage(true)
         }
     }
 
@@ -146,17 +147,6 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
         }
     }, [])
 
-    useEffect(() => {
-        if (imageURL) {
-            UserService.loadImage(imageURL).then(
-                (img) => {
-                    if (img.size > 0) {
-                        setImage(new File([img], "imgEmployeeForm"));
-                    }
-                })
-        }
-    }, [imageURL])
-
     window.onload = imageDownload
 
     const submitForm = async (data: any, e: any) => {
@@ -176,8 +166,8 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                 <div className="row-span-4 col-span-2 m-6">
                                     <div className="overflow-hidden bg-gray-100 rounded-full">
                                         <img id="picture"
-                                             src={image ? URL.createObjectURL(image) : user}
-                                             alt="user pic"/>
+                                             src={updatedImage? image ? URL.createObjectURL(image) : user : imageURL}
+                                             alt="user photo"/>
                                     </div>
                                     <label htmlFor="image-input" id="image-label"
                                            className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
@@ -189,6 +179,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                            onChange={(e) => {
                                                if (e.target.files != null) {
                                                    setImage(e.target.files[0])
+                                                   setUpdatedImage(true)
                                                    imageUpload(e)
                                                }
                                            }}
