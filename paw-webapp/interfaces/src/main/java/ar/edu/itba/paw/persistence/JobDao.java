@@ -11,7 +11,7 @@ public interface JobDao {
     Job create(String title, String location, Employer employerId, String availability, long experienceYears, String abilities, String description);
     List<Job> getUserJobs(Employer employerID,  Long page, long pageSize);
     Optional<Job> getJobById(long jobId);
-    Boolean alreadyApplied(Job jobId, Employee employeeId);
+    boolean alreadyApplied(Job jobId, Employee employeeId);
     List<Job> getAllActiveJobs(long pageSize);
     List<Job> getFilteredJobs(String name, Long experienceYears, List<String> location, List<String> availabilityList, List<String> abilitiesList, Long page, long pageSize);
     int getPageNumber(String name, Long experienceYears, List<String> location, List<String> availability, List<String> abilities, Long pageSize);

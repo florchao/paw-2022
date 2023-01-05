@@ -145,11 +145,11 @@ public class JobController {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//
+//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
 
         jobService.deleteJob(id);
         return Response.ok().build();
@@ -168,10 +168,10 @@ public class JobController {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
         if (status) {
             jobService.openJob(id);
         } else {

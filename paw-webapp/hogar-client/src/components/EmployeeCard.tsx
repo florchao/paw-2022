@@ -1,26 +1,15 @@
 import {Link} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {UserService} from "../service/UserService";
+import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {Rating} from "react-simple-star-rating";
 import user from "../assets/user.png";
 
 const EmployeeCard = (employee: any) => {
     const e = employee.employee
-    const [image, setImage]: any = useState()
+    const [image, setImage]: any = useState(e.image)
 
     const {t} = useTranslation();
 
-    useEffect(() => {
-        UserService.loadImage(e.image).then(
-            (img) => {
-                if (img.size == 0)
-                    setImage(user)
-                else
-                    setImage(URL.createObjectURL(img))
-            }
-        )
-    }, [])
 
     return (
         <div className="w-full col-span-5">
@@ -28,7 +17,7 @@ const EmployeeCard = (employee: any) => {
                   className="grid grid-cols-9 items-center w-full bg-white rounded-lg border shadow-md mb-5 md:flex-row md:max-w-full hover:bg-gray-100 ">
                 <img style={{maxHeight: 150}}
                      className="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg col-start-1 col-span-1"
-                     src={image} alt="user photo"/>
+                     src={image} alt="user photo" onError={() => setImage(user)}/>
                 <div className="flex flex-col justify-between p-4 leading-normal col-start-2 col-span-4">
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-black text-ellipsis overflow-hidden">
                         {e.name}

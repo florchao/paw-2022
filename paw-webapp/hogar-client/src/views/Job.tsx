@@ -36,7 +36,7 @@ export const Job = () => {
     const location = useLocation();
     let {self}: any = useState()
 
-    if(location.state) {
+    if (location.state) {
         self = location.state.self
     }
     const {t} = useTranslation();
@@ -137,10 +137,11 @@ export const Job = () => {
             setStatus("0")
     }
 
-    function delJob() {
-        JobService.deleteJob(job.jobId).then(() => {
+    async function delJob() {
+        const post = await JobService.deleteJob(job.jobId)
+        if (post.status === 204) {
             nav('/jobs', {replace: true})
-        })
+        }
     }
 
     async function openJob() {

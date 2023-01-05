@@ -36,7 +36,7 @@ export const ProfileEmployee = () => {
     const employeeId = useParams();
     const location = useLocation();
     let {self, status, id}: any = useState()
-    if(location.state) {
+    if (location.state) {
         id = location.state.id
         self = location.state.self
         status = location.state.status
@@ -76,28 +76,27 @@ export const ProfileEmployee = () => {
         }
     }
 
-    function delEmployee() {
-        UserService.deleteUser(employee.delete).then(() => {
-                localStorage.removeItem("hogar-uid")
-                localStorage.removeItem("hogar-jwt")
-                localStorage.removeItem("hogar-role")
-                nav('/', {replace: true})
-                window.location.reload()
-            }
-        );
+    async function delEmployee() {
+        const post = await UserService.deleteUser(employee.delete)
+        if (post.status === 204) {
+            localStorage.removeItem("hogar-uid")
+            localStorage.removeItem("hogar-jwt")
+            localStorage.removeItem("hogar-role")
+            nav('/', {replace: true})
+            window.location.reload()
+        }
     }
 
     useEffect(() => {
         let url
         if (self === undefined && employeeId.id !== undefined) {
             url = EMPLOYEE_URL + BACK_SLASH + employeeId.id
-        } else if(self === undefined){
+        } else if (self === undefined) {
             url = EMPLOYEE_URL + BACK_SLASH + id
-        }
-        else{
+        } else {
             url = self
         }
-    fetchData(url)
+        fetchData(url)
     }, [])
 
     const fetchData = async (url: string) => {
@@ -106,23 +105,12 @@ export const ProfileEmployee = () => {
                 if (rsp != undefined) {
                     setEmployee(rsp)
                     localStorage.removeItem("reviewEmployeeForm")
+                    setImg(rsp.image)
                 } else {
                     nav("/*")
                 }
             })
     }
-
-    useEffect(() => {
-        if (employee) {
-            UserService.loadImage(employee.image).then(
-                (img) => {
-                    if (img.size === 0)
-                        setImg(user)
-                    else
-                        setImg(URL.createObjectURL(img))
-                })
-        }
-    }, [employee])
 
     useEffect(() => {
             if (employee) {
@@ -219,7 +207,7 @@ export const ProfileEmployee = () => {
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
                                 <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img}
-                                     alt="profile pic"/>
+                                     alt="profile photo" onError={() => setImg(user)}/>
                             </div>
                             <div className="ml-3 col-span-2">
                                 <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
@@ -256,7 +244,8 @@ export const ProfileEmployee = () => {
                             </div>
                             <div className="ml-3 col-start-5 row-start-2 w-fit">
                                 {localStorage.getItem("hogar-role") === "EMPLOYER" && !employee.contacted &&
-                                    <Link to={"/contact/employee/"+employee.id} state={{id: employee.id, name: employee.name}}>
+                                    <Link to={"/contact/employee/" + employee.id}
+                                          state={{id: employee.id, name: employee.name}}>
                                         <button
                                             className="h-fit  text-xs text-white bg-violet-400 border border-purple-900 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-yellow-300 hover:bg-opacity-70 hover:text-purple-900">
                                             {t('Profile.connect')}
@@ -362,105 +351,105 @@ export const ProfileEmployee = () => {
                                 }
                             </div>
                         }
-                            {review && <div className="flow-root">
-                                <h1 className="pb-3 pt-3 font-semibold">
-                                    {t('Profile.reviews')}
-                                </h1>
-                                {localStorage.getItem("hogar-role") === "EMPLOYER" && myReview === null && (
-                                    <form onSubmit={handleSubmit(onSubmit)}>
-                                        <div className="">
-                                            <label htmlFor="title"
-                                                   className="block pb-3 pt-3 font-semibold text-gray-900">
-                                                {t('ReviewForm.label_title')}
-                                            </label>
-                                            <textarea
-                                                value={getValues("content")}
-                                                {...register("content", {
-                                                    required: true,
-                                                    maxLength: 1000,
-                                                    minLength: 10
-                                                })}
-                                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
-                                            {errors.content && (
-                                                <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
-                                                    {t('ReviewForm.error')}
-                                                </p>
+                        {review && <div className="flow-root">
+                            <h1 className="pb-3 pt-3 font-semibold">
+                                {t('Profile.reviews')}
+                            </h1>
+                            {localStorage.getItem("hogar-role") === "EMPLOYER" && myReview === null && (
+                                <form onSubmit={handleSubmit(onSubmit)}>
+                                    <div className="">
+                                        <label htmlFor="title"
+                                               className="block pb-3 pt-3 font-semibold text-gray-900">
+                                            {t('ReviewForm.label_title')}
+                                        </label>
+                                        <textarea
+                                            value={getValues("content")}
+                                            {...register("content", {
+                                                required: true,
+                                                maxLength: 1000,
+                                                minLength: 10
+                                            })}
+                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
+                                        {errors.content && (
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">
+                                                {t('ReviewForm.error')}
+                                            </p>
 
-                                            )}
-                                            <div className="mt-5 col-start-2 col-span-4 row-span-3">
-                                                <button type="submit"
-                                                        className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                                    {t('ReviewForm.button')}
-                                                </button>
-                                            </div>
+                                        )}
+                                        <div className="mt-5 col-start-2 col-span-4 row-span-3">
+                                            <button type="submit"
+                                                    className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
+                                                {t('ReviewForm.button')}
+                                            </button>
                                         </div>
-                                    </form>)}
-                                <ul role="list" className="divide-y divide-gray-300">
-                                    {myReview && <MyReviewCard review={myReview}/>}
-                                    {review.length > 0 &&
-                                        <div>
-                                            {review.map((rev: any) =>
-                                                <ReviewCard key={rev.employer.id} review={rev}/>)}
-                                            <PaginationButtons pages={pages} changePages={changePage} current={current}/>
+                                    </div>
+                                </form>)}
+                            <ul role="list" className="divide-y divide-gray-300">
+                                {myReview && <MyReviewCard review={myReview}/>}
+                                {review.length > 0 &&
+                                    <div>
+                                        {review.map((rev: any) =>
+                                            <ReviewCard key={rev.employer.id} review={rev}/>)}
+                                        <PaginationButtons pages={pages} changePages={changePage} current={current}/>
+                                    </div>
+                                }
+                                {review.length === 0 && !myReview &&
+                                    <div className="grid content-center justify-center h-5/6 mt-16">
+                                        <div className="grid justify-items-center">
+                                            <img src={noEmployees} alt="sinEmpleadas"
+                                                 className="mr-3 h-6 sm:h-52"/>
+                                            <p className="text-3xl font-semibold text-purple-700">
+                                                {t('Profile.noReviews')}
+                                            </p>
                                         </div>
-                                    }
-                                    {review.length === 0 && !myReview &&
-                                        <div className="grid content-center justify-center h-5/6 mt-16">
-                                            <div className="grid justify-items-center">
-                                                <img src={noEmployees} alt="sinEmpleadas"
-                                                     className="mr-3 h-6 sm:h-52"/>
-                                                <p className="text-3xl font-semibold text-purple-700">
-                                                    {t('Profile.noReviews')}
-                                                </p>
-                                            </div>
-                                        </div>}
-                                </ul>
-                            </div>
-                            }
+                                    </div>}
+                            </ul>
                         </div>
+                        }
                     </div>
-                    }
-                    {status === '0' && showMessage &&
-                        <OkFeedback type="profile"/>
-                    }
-                    {status === '1' && showMessage &&
-                        <ErrorFeedback message={t('Feedback.errorContact')}/>
-                    }
-                    <div>
-                        <Modal
-                            isOpen={modalIsOpen}
-                            onRequestClose={closeModal}
-                            style={{
-                                overlay: {
-                                    backgroundColor: 'rgb(0,0,0,0.50)'
-                                },
-                                content: {
-                                    top: '50%',
-                                    left: '50%',
-                                    right: 'auto',
-                                    bottom: 'auto',
-                                    borderRadius: '10px',
-                                    marginRight: '-50%',
-                                    overflow: 'visible',
-                                    transform: 'translate(-50%, -50%)',
-                                },
-                            }}
-                        >
-                            <button type="button"
-                                    className=" text-violet-900 bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg rounded-full text-sm py-1 px-2.5 text-center inline-flex items-center mr-2 border-solid border-transparent border-2 hover:border-purple-300"
-                                    style={{position: "absolute", right: 0}}
-                                    onClick={closeModal}
-                            >
-                                x
-                            </button>
-                            <RatingModal employee={employee} handleRating={handleRating}/>
-                        </Modal>
-                    </div>
-                {ratingError &&
-                    <ErrorFeedback message={t('Feedback.genericError')}/>}
-
                 </div>
-                )
             }
+            {status === '0' && showMessage &&
+                <OkFeedback type="profile"/>
+            }
+            {status === '1' && showMessage &&
+                <ErrorFeedback message={t('Feedback.errorContact')}/>
+            }
+            <div>
+                <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={closeModal}
+                    style={{
+                        overlay: {
+                            backgroundColor: 'rgb(0,0,0,0.50)'
+                        },
+                        content: {
+                            top: '50%',
+                            left: '50%',
+                            right: 'auto',
+                            bottom: 'auto',
+                            borderRadius: '10px',
+                            marginRight: '-50%',
+                            overflow: 'visible',
+                            transform: 'translate(-50%, -50%)',
+                        },
+                    }}
+                >
+                    <button type="button"
+                            className=" text-violet-900 bg-violet-300 font-semibold hover:bg-yellow-300 shadow-lg rounded-full text-sm py-1 px-2.5 text-center inline-flex items-center mr-2 border-solid border-transparent border-2 hover:border-purple-300"
+                            style={{position: "absolute", right: 0}}
+                            onClick={closeModal}
+                    >
+                        x
+                    </button>
+                    <RatingModal employee={employee} handleRating={handleRating}/>
+                </Modal>
+            </div>
+            {ratingError &&
+                <ErrorFeedback message={t('Feedback.genericError')}/>}
 
-            export default ProfileEmployee;
+        </div>
+    )
+}
+
+export default ProfileEmployee;

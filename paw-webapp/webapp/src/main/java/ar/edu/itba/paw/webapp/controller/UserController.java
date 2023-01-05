@@ -39,10 +39,10 @@ public class UserController {
     @DELETE
     @Path("/users/{id}")
     public Response deleteUser(@PathParam("id") long id) {
-        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (hogarUser.getUserID() != id) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (hogarUser.getUserID() != id) {
+//            return Response.status(Response.Status.FORBIDDEN).build();
+//        }
         userService.deleteUser(id);
         return Response.noContent().build();
     }

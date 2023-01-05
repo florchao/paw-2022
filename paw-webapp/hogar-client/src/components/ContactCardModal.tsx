@@ -1,32 +1,20 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {UserService} from "../service/UserService";
 import user from "../assets/user.png";
 
 const ContactCardModal = (contact: any) => {
-
-    const [image, setImage]: any = useState()
 
     const { t } = useTranslation();
 
     contact = contact.contact
 
-    useEffect(() => {
-        UserService.loadImage(contact.employer.image).then(
-            (img) => {
-                if (img.size == 0)
-                    setImage(user)
-                else
-                    setImage(URL.createObjectURL(img))
-            }
-        )
-    }, [])
+    const [image, setImage]: any = useState(contact.employer.image)
 
     return (
         <div id="${contact.employerID.id.id}" className="modal w-96">
             <div className="flex grid grid-cols-3 items-center py-8 w-fill">
                 <img className="col-span-1 mb-3 w-24 h-24 rounded-full shadow-lg object-cover"
-                     src={image? image : user} alt="profile pic"/>
+                     src={image} alt="employer photo" onError={() => setImage(user)}/>
                 <div className="col-span-2 row-span-2">
                     <h5 className="mb-1 text-xl font-medium text-gray-900">
                         {contact.employer.name}
