@@ -83,7 +83,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Boolean alreadyApplied(long jobId, long employeeId) {
+    public boolean alreadyApplied(long jobId, long employeeId) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Job> job = jobDao.getJobById(jobId);
         if (employee.isPresent() && job.isPresent())

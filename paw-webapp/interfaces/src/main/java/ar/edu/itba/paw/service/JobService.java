@@ -12,7 +12,7 @@ public interface JobService {
     List<Job> getUserJobs(long employerID, Long page, long pageSize);
     Job getJobByID(long jobID) throws JobNotFoundException;
     List<Job> getFilteredJobs(String name, Long experienceYears,String location, String availability, String abilities, Long page, long pageSize);
-    Boolean alreadyApplied(long jobId, long employeeId);
+    boolean alreadyApplied(long jobId, long employeeId);
     int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize);
     void deleteJob(long jobId);
     void closeJob(long jobId);

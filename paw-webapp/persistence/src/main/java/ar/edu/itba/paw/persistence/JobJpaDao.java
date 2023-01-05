@@ -53,7 +53,7 @@ public class JobJpaDao implements JobDao {
     }
 
     @Override
-    public Boolean alreadyApplied(Job jobId, Employee employeeId) {
+    public boolean alreadyApplied(Job jobId, Employee employeeId) {
         TypedQuery<Applicant> typedQuery = em.createQuery("select a from Applicant a where a.employeeID =:employee and a.jobID =:job", Applicant.class);
         typedQuery.setParameter("employee", employeeId);
         typedQuery.setParameter("job", jobId);
