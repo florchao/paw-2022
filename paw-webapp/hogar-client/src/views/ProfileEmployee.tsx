@@ -175,14 +175,10 @@ export const ProfileEmployee = () => {
     }
 
     const handleRating = async (rate: number, index: number, event: any) => {
-        const r = await RatingService.postEmployeeRating(event, employee.id, employerId, rate)
-        if (r.status === 201) {
-            setRating(r)
+        await RatingService.postEmployeeRating(event, employee.id, employerId, rate).then((rsp) => {
+            setRating(rsp)
             closeModal()
-        } else {
-            setRatingError(true)
-        }
-
+        }).catch(error => setRatingError(true))
     }
 
     return (
