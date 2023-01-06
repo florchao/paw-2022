@@ -19,9 +19,6 @@ public class ImageController {
     @Autowired
     private ImagesService imagesService;
 
-    @Autowired
-    private UriInfo uriInfo;
-
     @GET
     @Path("/{id}")
     @Produces(value = {"image/webp",})
