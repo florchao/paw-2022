@@ -35,7 +35,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("/api/employers")
+@Path("/employers")
 @Component
 public class EmployerController {
 
@@ -158,6 +158,6 @@ public class EmployerController {
         }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
 
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(u.getId())).build()).build();
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(u.getId())).build()).build();
     }
 }

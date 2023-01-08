@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-@Path("/api/contacts")
+@Path("/contacts")
 @Component
 public class ContactController {
     @Autowired

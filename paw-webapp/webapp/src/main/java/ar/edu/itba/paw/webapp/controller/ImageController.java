@@ -10,13 +10,12 @@ import javax.ws.rs.core.*;
 import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
-@Path("/api/images")
+@Path("/images")
 @Component
 public class ImageController {
 
     @Autowired
     private ImagesService imagesService;
-
 
     @GET
     @Path("/{id}")

@@ -14,7 +14,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/api/ids")
+@Path("/ids")
 @Component
 public class IdsController {
 

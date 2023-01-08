@@ -16,7 +16,7 @@ import javax.ws.rs.core.*;
 import java.util.Date;
 import java.util.Objects;
 
-@Path("/api/reviews")
+@Path("/reviews")
 @Component
 public class ReviewController {
     @Autowired

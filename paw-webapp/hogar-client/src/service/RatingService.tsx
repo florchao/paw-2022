@@ -25,8 +25,6 @@ export class RatingService {
             employerId: employerId
         });
 
-        //TODO: cambiar lo que hace con el response
-
         return await fetch(RATINGS_URL, {
             method: 'POST',
             headers: {
@@ -34,7 +32,10 @@ export class RatingService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: ratingForm
-        })
+        }).then( r => {
+            return this.getEmployeeRating(r.headers.get('Location') as string, employerId)
+            }
+        )
     }
 
 }

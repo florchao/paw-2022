@@ -32,7 +32,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("/api/employee")
+@Path("/employee")
 @Component
 public class EmployeeController {
     private final int PAGE_SIZE = 8;

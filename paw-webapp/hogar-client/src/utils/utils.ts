@@ -1,4 +1,4 @@
-let BASE_URL = 'http://localhost:8080/api/';
+let BASE_URL = 'http://localhost:8080/';
 let BACK_SLASH = '/';
 let QUERY_PARAM = '?';
 let EMPLOYEES_URL = BASE_URL + 'employees';
