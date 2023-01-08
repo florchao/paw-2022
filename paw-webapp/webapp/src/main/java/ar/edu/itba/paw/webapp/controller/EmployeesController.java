@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-@Path("/api/employees")
+@Path("/employees")
 @Component
 public class EmployeesController {
 

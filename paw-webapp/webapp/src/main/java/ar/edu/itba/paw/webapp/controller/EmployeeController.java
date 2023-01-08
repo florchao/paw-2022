@@ -32,7 +32,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("/api/employee")
+@Path("/employee")
 @Component
 public class EmployeeController {
     private final int PAGE_SIZE = 8;
@@ -193,7 +193,7 @@ public class EmployeeController {
             LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).build();
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/employees").path(String.valueOf(u.getId())).build()).build();
     }
 
     @PUT

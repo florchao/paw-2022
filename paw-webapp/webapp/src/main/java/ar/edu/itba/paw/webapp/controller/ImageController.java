@@ -12,7 +12,7 @@ import javax.ws.rs.core.UriInfo;
 import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
-@Path("/api/images")
+@Path("/images")
 @Component
 public class ImageController {
 

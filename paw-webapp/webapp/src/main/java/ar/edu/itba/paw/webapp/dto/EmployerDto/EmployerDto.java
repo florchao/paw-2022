@@ -28,10 +28,10 @@ public class EmployerDto {
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
         dto.id = employer.getId().getId();
 
-        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/api/images").path(String.valueOf(employer.getId().getId()));
-        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
-        final UriBuilder deleteBuilder = uriInfo.getBaseUriBuilder().path("/api/users").path(String.valueOf(employer.getId().getId()));
-        final UriBuilder jobsBuilder = uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(employer.getId().getId())).path("jobs");
+        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
+        final UriBuilder deleteBuilder = uriInfo.getBaseUriBuilder().path("/users").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder jobsBuilder = uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(employer.getId().getId())).path("jobs");
 
         dto.image = imageUriBuilder.build();
         dto.reviews = reviewBuilder.build();
@@ -46,7 +46,7 @@ public class EmployerDto {
 
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
         dto.id = employer.getId().getId();
-        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
+        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
         dto.reviews = reviewBuilder.build();
 
         return dto;
@@ -59,7 +59,7 @@ public class EmployerDto {
 
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
 
-        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/api/images").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(employer.getId().getId()));
         dto.image = imageUriBuilder.build();
 
         return dto;

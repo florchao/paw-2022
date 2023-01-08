@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-@Path("/api/ratings")
+@Path("/ratings")
 @Component
 public class RatingController {
 
@@ -52,7 +52,7 @@ public class RatingController {
 
         ratingService.updateRating(ratingDto.getEmployeeId(), ratingDto.getRating(), ratingDto.getEmployerId());
 
-        return Response.created(uriInfo.getBaseUriBuilder().path("/api/ratings/" + ratingDto.getEmployeeId()).build()).header("Access-Control-Expose-Headers", "Location").build();
+        return Response.created(uriInfo.getBaseUriBuilder().path("/ratings/" + ratingDto.getEmployeeId()).build()).header("Access-Control-Expose-Headers", "Location").build();
 
     }
 }

@@ -16,7 +16,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
-@Path("/api")
+@Path("")
 @Component
 public class UserController {
 
