@@ -165,9 +165,25 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                             <div className="grid grid-cols-6 gap-6">
                                 <div className="row-span-4 col-span-2 m-6">
                                     <div className="overflow-hidden bg-gray-100 rounded-full">
-                                        <img id="picture"
-                                             src={updatedImage? image ? URL.createObjectURL(image) : user : imageURL}
-                                             alt="user photo"/>
+                                        {updatedImage?
+                                            <img id="picture"
+                                                 src={image? URL.createObjectURL(image) : user}
+                                                 alt="user photo"
+                                                 onError={() => {
+                                                     setUpdatedImage(true)
+
+                                                 }}
+                                            />
+                                            :
+                                            <img id="picture"
+                                                 src={imageURL? imageURL : user}
+                                                 alt="user photo"
+                                                 onError={() => {
+                                                     setImageURL(user)
+                                                 }}
+                                            />
+                                        }
+
                                     </div>
                                     <label htmlFor="image-input" id="image-label"
                                            className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">

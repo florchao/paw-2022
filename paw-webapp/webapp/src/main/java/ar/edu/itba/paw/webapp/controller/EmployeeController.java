@@ -175,15 +175,6 @@ public class EmployeeController {
     @Path("")
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response createEmployee(@Valid EmployeeCreateDto employeeCreateDto) throws UserFoundException, PassMatchException {
-//        if (!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
-//                password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
-//                name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
-//                experienceYears < 0 || experienceYears > 100 || hourlyFee == 0 || hourlyFee < 0 ||
-//                location.length() > 1 || !location.matches("[1-4]") ||
-//                availabilities.isEmpty() || abilities.isEmpty() ||
-//                image == null) {
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-//        }
 
         User u;
         try {
@@ -193,7 +184,7 @@ public class EmployeeController {
             LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).build();
+        return Response.created(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).build();
     }
 
     @PUT
