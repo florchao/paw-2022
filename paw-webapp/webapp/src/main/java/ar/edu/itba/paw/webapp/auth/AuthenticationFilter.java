@@ -3,10 +3,7 @@ package ar.edu.itba.paw.webapp.auth;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -106,6 +103,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     userDetails, null, userDetails == null ? Collections.emptyList() : userDetails.getAuthorities()
             );
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        } catch (ExpiredJwtException exception) {
+            throw new InsufficientAuthenticationException("Expired token", exception);
+        } catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException | SignatureException e) {
+            throw new InsufficientAuthenticationException("Invalid token", e);
+        } catch (InvalidClaimException e) {
+            throw new InsufficientAuthenticationException("Invalid value for claim \"" + e.getClaimName() + "\"", e);
         } catch (Exception e) {
             throw new InsufficientAuthenticationException("Invalid token", e);
         }
