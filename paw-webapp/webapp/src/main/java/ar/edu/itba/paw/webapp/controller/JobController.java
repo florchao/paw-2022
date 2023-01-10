@@ -68,7 +68,7 @@ public class JobController {
 
         List<JobDto> jobs = jobService.getFilteredJobs(name, experienceYears, location, availability, abilities, page, PAGE_SIZE).stream().map(j -> {
             int status = applicantService.getStatus(principal.getUserID(), j.getJobId());
-            return JobDto.fromExplore(uriInfo, j, status);
+            return JobDto.fromJob(uriInfo, j, status);
         }).collect(Collectors.toList());
 
         int pages = jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE);
@@ -91,11 +91,12 @@ public class JobController {
             LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
-
+        HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
         LocaleContextHolder.setLocale(locale);
+        int status = applicantService.getStatus(principal.getUserID(), job.getJobId());
 
-        JobDto jobDto = JobDto.fromJob(uriInfo, job);
+        JobDto jobDto = JobDto.fromJob(uriInfo, job, status);
 
         GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto) {
         };

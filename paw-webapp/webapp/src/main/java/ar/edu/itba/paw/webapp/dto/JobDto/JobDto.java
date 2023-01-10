@@ -80,8 +80,9 @@ public class JobDto {
         return dto;
     }
 
-    public static JobDto fromJob(final UriInfo uriInfo, final Job job) {
+    public static JobDto fromJob(final UriInfo uriInfo, final Job job, int status) {
         final JobDto dto = new JobDto();
+        dto.status = status;
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
 
@@ -98,6 +99,9 @@ public class JobDto {
         dto.availability = job.getAvailabilityArr(job.getAvailability(), LocaleContextHolder.getLocale().getLanguage());
 
         dto.employerId = EmployerDto.fromJob(uriInfo, job.getEmployerId());
+
+        UriBuilder jobUriBuilder = uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId()));
+        dto.self = jobUriBuilder.build();
 
         return dto;
 
