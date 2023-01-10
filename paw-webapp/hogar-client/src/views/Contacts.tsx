@@ -8,6 +8,7 @@ import Modal from "react-modal";
 import PaginationButtons from "../components/PaginationButtons";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {CheckJWTExpired} from "../utils/utils";
 
 export const Contacts = () => {
 
@@ -48,6 +49,7 @@ export const Contacts = () => {
                     })
                 else
                     setContacts([])
+                CheckJWTExpired(rsp)
             }
         );
     }

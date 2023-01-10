@@ -13,6 +13,7 @@ import noEmployees from "../assets/sinEmpleadas.png";
 import noJobs from "../assets/sinTrabajos.png";
 import user from "../assets/user.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {CheckJWTExpired} from "../utils/utils";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
@@ -39,12 +40,14 @@ export const ProfileEmployer = () => {
             nav('/', {replace: true})
             window.location.reload()
         }
+        CheckJWTExpired(post)
     }
 
     useEffect(() => {
         EmployerService.getEmployer(id).then((val) => {
                 setEmployer(val)
                 setImage(val.image)
+                CheckJWTExpired(val)
             }
         );
     }, [])
@@ -61,6 +64,7 @@ export const ProfileEmployer = () => {
                         })
                     else
                         setReviews([])
+                    CheckJWTExpired(rsp)
                 }
             )
         }
@@ -72,6 +76,7 @@ export const ProfileEmployer = () => {
                 JobService.getCreatedJobs(employer.jobs, true, 0).then(
                     async (rsp) => {
                         rsp.status === 204 ? setJobs([]) : setJobs(await rsp.json())
+                        CheckJWTExpired(rsp)
                     }
                 )
             }
@@ -86,6 +91,7 @@ export const ProfileEmployer = () => {
         get.json().then((reviews) => {
             setReviews(reviews)
         })
+        CheckJWTExpired(get)
     }
 
     return (

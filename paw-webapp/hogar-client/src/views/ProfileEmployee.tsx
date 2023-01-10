@@ -14,7 +14,7 @@ import ErrorFeedback from "../components/ErrorFeedback";
 import Modal from "react-modal";
 import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
-import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+import {BACK_SLASH, CheckJWTExpired, EMPLOYEE_URL} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
 import bin from "../assets/bin.png";
 import noEmployees from "../assets/sinEmpleadas.png";
@@ -73,6 +73,7 @@ export const ProfileEmployee = () => {
                     setMyReview(r)
                 }
             )
+            CheckJWTExpired(post)
         }
     }
 
@@ -85,6 +86,7 @@ export const ProfileEmployee = () => {
             nav('/', {replace: true})
             window.location.reload()
         }
+        CheckJWTExpired(post)
     }
 
     useEffect(() => {
@@ -109,6 +111,7 @@ export const ProfileEmployee = () => {
                 } else {
                     nav("/*")
                 }
+                CheckJWTExpired(rsp)
             })
     }
 
@@ -124,6 +127,7 @@ export const ProfileEmployee = () => {
                                 })
                             else
                                 setReview([])
+                            CheckJWTExpired(rsp)
                         }
                     )
                 if (localStorage.getItem("hogar-role") === "EMPLOYER")
@@ -133,6 +137,7 @@ export const ProfileEmployee = () => {
                             if (rsp != undefined) {
                                 localStorage.removeItem("reviewEmployeeForm")
                             }
+                            CheckJWTExpired(rsp)
                         }
                     )
             }
@@ -144,6 +149,7 @@ export const ProfileEmployee = () => {
                 RatingService.getEmployeeRating(employee.ratings, employerId).then(
                     (rsp) => {
                         setRating(rsp)
+                        CheckJWTExpired(rsp)
                     }
                 )
             }
@@ -158,6 +164,7 @@ export const ProfileEmployee = () => {
         get.json().then((reviews) => {
             setReview(reviews)
         })
+        CheckJWTExpired(get)
     }
 
     window.onload = () => setShowMessage(false)

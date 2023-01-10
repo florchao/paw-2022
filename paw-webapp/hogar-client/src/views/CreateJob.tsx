@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
+import {CheckJWTExpired} from "../utils/utils";
 
 export const CreateJob = () => {
 
@@ -68,6 +69,7 @@ export const CreateJob = () => {
             reset()
             post.json().then(j => nav('/job', {replace: true, state: {self: j.value}}))
         }
+        CheckJWTExpired(post)
     }
 
     return (

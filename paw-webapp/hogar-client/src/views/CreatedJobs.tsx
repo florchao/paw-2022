@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
-import {BACK_SLASH, EMPLOYER_URL, JOBS} from "../utils/utils";
+import {BACK_SLASH, CheckJWTExpired, EMPLOYER_URL, JOBS} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
 import noJobs from "../assets/sinTrabajos.png";
 import {MagnifyingGlass} from "react-loader-spinner";
@@ -28,7 +28,9 @@ export const CreatedJobs = () => {
         JobService.getCreatedJobs(url, false, page).then( async (j) => {
             j.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
             j.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j.json())
+            CheckJWTExpired(j)
         });
+
     }
 
     return (

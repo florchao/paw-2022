@@ -8,6 +8,7 @@ import useFormPersist from "react-hook-form-persist";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {CheckJWTExpired} from "../utils/utils";
 
 
 export const Explore = () => {
@@ -75,6 +76,7 @@ export const Explore = () => {
                 })
             else
                 setEmployees([])
+            CheckJWTExpired(rsp)
         })
     }
 
@@ -103,6 +105,7 @@ export const Explore = () => {
                     })
                 else
                     setEmployees([])
+                CheckJWTExpired(rsp)
             })
         }
 
