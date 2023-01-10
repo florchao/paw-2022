@@ -49,25 +49,10 @@ public class EmployeeDto {
         dto.image = imageUriBuilder.build();
         return dto;
     }
-
-    public static EmployeeDto fromExploreRating(final UriInfo uriInfo, final Employee employee, float rating) {
-        final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
-        dto.location = employee.nameLocation(employee.getLocation(), LocaleContextHolder.getLocale().getLanguage());
-        dto.rating = rating;
-        return dto;
-    }
-
-    public static EmployeeDto fromExploreContact(final UriInfo uriInfo, final Employee employee, float rating, Boolean isContacted) {
-        final EmployeeDto dto = EmployeeDto.fromExploreRating(uriInfo, employee, rating);
-
-        dto.isContacted = isContacted;
-
-        return dto;
-    }
     public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, Boolean anonymous, Boolean isContacted) {
         final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
 
-
+        dto.rating = employee.getRating();
         dto.location = employee.nameLocation(employee.getLocation(), LocaleContextHolder.getLocale().getLanguage());
 
         dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), LocaleContextHolder.getLocale().getLanguage());

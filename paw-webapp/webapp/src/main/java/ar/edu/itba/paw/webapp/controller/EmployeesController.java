@@ -28,8 +28,6 @@ public class EmployeesController {
     private EmployeeService employeeService;
     @Autowired
     private ContactService contactService;
-    @Autowired
-    private RaitingService ratingService;
     @Context
     private UriInfo uriInfo;
 
@@ -71,12 +69,11 @@ public class EmployeesController {
 
         List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(employee ->
         {
-            float rating = ratingService.getRating(employee.getId().getId());
             if (hogarUser != null) {
                 Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
-                return EmployeeDto.fromExploreContact(uriInfo, employee, rating, hasContact);
+                return EmployeeDto.fromProfile(uriInfo, employee, false, hasContact);
             } else
-                return EmployeeDto.fromExploreRating(uriInfo, employee, rating);
+                return EmployeeDto.fromProfile(uriInfo, employee, true, false);
         }).collect(Collectors.toList());
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
