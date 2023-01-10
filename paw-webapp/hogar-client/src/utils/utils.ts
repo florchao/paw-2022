@@ -1,3 +1,5 @@
+import {useNavigate} from "react-router-dom";
+
 let BASE_URL = 'http://localhost:8080/';
 let BACK_SLASH = '/';
 let QUERY_PARAM = '?';
@@ -15,5 +17,16 @@ let USERS_URL = BASE_URL + 'users';
 let USER_URL = BASE_URL + 'user';
 let JOBS = '/jobs';
 let CONTACTS = '/contacts';
+
+export function CheckJWTExpired(response: Response){
+    const nav = useNavigate()
+    if( response.status === 401){
+        localStorage.removeItem("hogar-uid");
+        localStorage.removeItem("hogar-role");
+        localStorage.removeItem("hogar-jwt");
+        nav("/", {replace: true})
+        window.location.reload()
+    }
+}
 
 export { BASE_URL, IDS_URL, QUERY_PARAM, EMPLOYEE_URL, EMPLOYEES_URL, IMAGE_URL, EMPLOYER_URL, JOB_URL, REVIEWS_URL, RATINGS_URL, APPLICANT_URL, USER_URL, JOBS, CONTACT_URL, CONTACTS, USERS_URL,BACK_SLASH };

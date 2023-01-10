@@ -40,26 +40,16 @@ export const LoginCard = () => {
         let result = undefined
         try {
             let encoded = btoa(data.email + ":" + data.password)
-            console.log("encoded")
-            console.log(encoded)
             result = await JobService.getJobById(1, encoded)
-            // result = await EmployeeService.getEmployees(btoa(data.email + ":" + data.password));
         } catch (error: any) {
             setLoginError(t("Feedback.genericError"))
         }
         if (result?.status === 200) {
-            // let body = await result?.json()
-            console.log("result")
-            console.log(result)
             let authHeader = result?.headers.get('Authorization')
-            console.log("authheader")
-            console.log(authHeader)
             let jwt = authHeader?.slice(7)
             if (jwt === undefined)
                 return
             let payload = JSON.parse(atob(jwt.split('.')[1]))
-            console.log("PAYLOAD")
-            console.log(payload)
             localStorage['hogar-jwt'] = jwt
             localStorage['hogar-role'] = payload.role
             localStorage['hogar-uid'] = payload.uid
