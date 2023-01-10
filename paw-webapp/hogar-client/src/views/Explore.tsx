@@ -67,9 +67,9 @@ export const Explore = () => {
             (data.abilities.toString() === "") ? undefined : data.abilities.toString().toString(),
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
             data.orderBy
-        ).then((rsp) => {
-            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-            if(rsp.status === 200)
+        ).then((rsp?) => {
+            rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+            if(rsp?.status === 200)
                 rsp.json().then((employees: any) => {
                     setEmployees(employees)
                 })

@@ -1,7 +1,12 @@
-import {EMPLOYEE_URL, EMPLOYEES_URL, QUERY_PARAM} from "../utils/utils";
+import {
+    EMPLOYEE_URL,
+    EMPLOYEES_URL,
+    JWTExpired,
+    QUERY_PARAM
+} from "../utils/utils";
 
 export class EmployeeService {
-    public static async getEmployees(basicEncoded:string="") {
+    public static async getEmployees(basicEncoded: string = "") {
         let header
         if (localStorage.getItem('hogar-jwt') != null) {
             header = {
@@ -50,7 +55,7 @@ export class EmployeeService {
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        if(page > 0)
+        if (page > 0)
             url = this.concatStringQueries(url, 'page', String(page))
         url = this.concatStringQueries(url, 'name', name)
         url = this.concatStringQueries(url, 'location', location)
@@ -60,13 +65,19 @@ export class EmployeeService {
 
         return await fetch(url, {
             method: 'GET',
-            headers: localStorage.getItem('hogar-jwt') != null ?{
+            headers: localStorage.getItem('hogar-jwt') != null ? {
                 'Content-Type': 'application/json',
                 "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
             } : {
                 'Content-Type': 'application/json'
             }
         })
+            .then((algo) => {
+                if (algo.status === 401) {
+                    return JWTExpired()
+                }
+                return algo
+            })
             .catch(
                 (error) => {
                     throw error
@@ -81,15 +92,15 @@ export class EmployeeService {
     }
 
 
-    public static async getEmployee(url: string, edit:boolean) {
-        if(edit)
+    public static async getEmployee(url: string, edit: boolean) {
+        if (edit)
             url = url.concat('?edit=true')
         return await fetch(url, {
             method: 'GET',
             headers: localStorage.getItem('hogar-jwt') != null ? {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
-            }: {
+            } : {
                 "Content-Type": "application/json"
             }
         }).then((resp) => {
@@ -104,7 +115,7 @@ export class EmployeeService {
                 })
     }
 
-    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
+    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image: File) {
         e.preventDefault();
 
         const employeeForm = JSON.stringify({
@@ -131,7 +142,7 @@ export class EmployeeService {
         })
     }
 
-    public static async editEmployee(e: any, self:string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
+    public static async editEmployee(e: any, self: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image: File) {
         e.preventDefault();
 
         const employeeEditForm = JSON.stringify({

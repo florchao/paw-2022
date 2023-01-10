@@ -18,9 +18,9 @@ let USER_URL = BASE_URL + 'user';
 let JOBS = '/jobs';
 let CONTACTS = '/contacts';
 
-export function CheckJWTExpired(response: Response){
+export function CheckJWTExpired(response: Response) {
     const nav = useNavigate()
-    if( response.status === 401){
+    if (response.status === 401) {
         localStorage.removeItem("hogar-uid");
         localStorage.removeItem("hogar-role");
         localStorage.removeItem("hogar-jwt");
@@ -29,4 +29,30 @@ export function CheckJWTExpired(response: Response){
     }
 }
 
-export { BASE_URL, IDS_URL, QUERY_PARAM, EMPLOYEE_URL, EMPLOYEES_URL, IMAGE_URL, EMPLOYER_URL, JOB_URL, REVIEWS_URL, RATINGS_URL, APPLICANT_URL, USER_URL, JOBS, CONTACT_URL, CONTACTS, USERS_URL,BACK_SLASH };
+export function JWTExpired() {
+    window.location.replace('/login');
+    localStorage.removeItem("hogar-uid");
+    localStorage.removeItem("hogar-role");
+    localStorage.removeItem("hogar-jwt");
+    return undefined
+}
+
+export {
+    BASE_URL,
+    IDS_URL,
+    QUERY_PARAM,
+    EMPLOYEE_URL,
+    EMPLOYEES_URL,
+    IMAGE_URL,
+    EMPLOYER_URL,
+    JOB_URL,
+    REVIEWS_URL,
+    RATINGS_URL,
+    APPLICANT_URL,
+    USER_URL,
+    JOBS,
+    CONTACT_URL,
+    CONTACTS,
+    USERS_URL,
+    BACK_SLASH
+};
