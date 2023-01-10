@@ -27,14 +27,13 @@ export class EmployeeService {
         return await fetch(EMPLOYEES_URL, {
             method: 'GET',
             headers: header
-            // headers: localStorage.getItem('hogar-jwt') != null ?{
-            //     'Content-Type': 'application/json',
-            //     "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
-            // } : {
-            //     'Access-Control-Allow-Origin': '*',
-            //     'Content-Type': 'application/json'
-            // }
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     throw error
@@ -72,11 +71,11 @@ export class EmployeeService {
                 'Content-Type': 'application/json'
             }
         })
-            .then((algo) => {
-                if (algo.status === 401) {
+            .then((response) => {
+                if (response.status === 401) {
                     return JWTExpired()
                 }
-                return algo
+                return response
             })
             .catch(
                 (error) => {

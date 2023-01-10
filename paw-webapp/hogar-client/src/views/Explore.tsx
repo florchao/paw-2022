@@ -76,7 +76,7 @@ export const Explore = () => {
                 })
             else
                 setEmployees([])
-            CheckJWTExpired(rsp)
+            // CheckJWTExpired(rsp)
         })
     }
 
@@ -98,14 +98,14 @@ export const Explore = () => {
         }
         else {
             EmployeeService.getEmployees().then((rsp) => {
-                rsp.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if(rsp.status === 200)
+                rsp?.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                if(rsp?.status === 200)
                     rsp.json().then((employees: any) => {
                         setEmployees(employees)
                     })
                 else
                     setEmployees([])
-                CheckJWTExpired(rsp)
+                // CheckJWTExpired(rsp)
             })
         }
 
