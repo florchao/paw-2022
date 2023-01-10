@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {useEffect, useState} from "react";
-import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+import {BACK_SLASH, CheckJWTExpired, EMPLOYEE_URL} from "../utils/utils";
 import {EmployeeService} from "../service/EmployeeService";
 
 export const ContactEmployee = () => {
@@ -42,6 +42,7 @@ export const ContactEmployee = () => {
                 } else {
                     nav("/*")
                 }
+                CheckJWTExpired(rsp)
             })
     }
 
@@ -52,7 +53,6 @@ export const ContactEmployee = () => {
         } else {
             employeeId = params.id
         }
-        console.log(name)
         if (name === undefined) {
             const url = EMPLOYEE_URL + BACK_SLASH + employeeId
             fetchData(url)

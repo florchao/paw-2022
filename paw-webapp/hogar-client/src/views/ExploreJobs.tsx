@@ -8,6 +8,7 @@ import useFormPersist from "react-hook-form-persist";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
 import {MagnifyingGlass} from "react-loader-spinner";
 import noJobs from "../assets/sinTrabajos.png";
+import {CheckJWTExpired} from "../utils/utils";
 
 export const ExploreJobs = () => {
 
@@ -63,14 +64,13 @@ export const ExploreJobs = () => {
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
         ).then((rsp) => {
             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-            console.log("jola")
-            console.log(rsp.status)
             if(rsp.status === 200)
                 rsp.json().then((j: any) => {
                     setJobs(j)
                 })
             else
                 setJobs([])
+            CheckJWTExpired(rsp)
         })
     }
 
@@ -93,6 +93,7 @@ export const ExploreJobs = () => {
                     })
                 else
                     setJobs([])
+                CheckJWTExpired(rsp)
             })
         }
     }, [])

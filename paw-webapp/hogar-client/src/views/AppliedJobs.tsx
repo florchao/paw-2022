@@ -5,6 +5,7 @@ import JobCard from "../components/JobCard";
 import PaginationButtons from "../components/PaginationButtons";
 import {MagnifyingGlass} from "react-loader-spinner";
 import noJobs from "../assets/sinTrabajos.png";
+import {CheckJWTExpired} from "../utils/utils";
 
 export const AppliedJobs = () => {
 
@@ -24,6 +25,7 @@ export const AppliedJobs = () => {
                     })
                 else
                     setAppliedJobs([])
+                CheckJWTExpired(rsp)
             }
         );
     }, [])
@@ -35,6 +37,7 @@ export const AppliedJobs = () => {
         get.json().then((jobs) => {
             setAppliedJobs(jobs)
         })
+        CheckJWTExpired(get)
     }
 
     return (
