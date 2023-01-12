@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {useEffect, useState} from "react";
-import {BACK_SLASH, CheckJWTExpired, EMPLOYEE_URL} from "../utils/utils";
+import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
 import {EmployeeService} from "../service/EmployeeService";
 
 export const ContactEmployee = () => {
@@ -42,7 +42,6 @@ export const ContactEmployee = () => {
                 } else {
                     nav("/*")
                 }
-                CheckJWTExpired(rsp)
             })
     }
 
@@ -76,11 +75,11 @@ export const ContactEmployee = () => {
         const contact = await ContactService.contactEmployee(e, data.phone, data.content, employeeId, employerId)
         localStorage.removeItem("contactForm")
         let status;
-        if (contact.status === 201) {
+        if (contact?.status === 201) {
             status = "0"
             setContactEmployeeError(false)
         }
-        else if (contact.status === 400)
+        else if (contact?.status === 400)
             setContactEmployeeError(true)
         else {
             status = "1"

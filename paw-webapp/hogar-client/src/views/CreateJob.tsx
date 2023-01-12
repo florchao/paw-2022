@@ -5,7 +5,6 @@ import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
-import {CheckJWTExpired} from "../utils/utils";
 
 export const CreateJob = () => {
 
@@ -62,14 +61,13 @@ export const CreateJob = () => {
 
     const onSubmit = async (data:any, e: any) => {
         const post = await JobService.postJob(e, data.title, data.location, data.experienceYears, data.availability, data.abilities, data.description)
-        if (post.status !== 201) {
+        if (post?.status !== 201) {
             setJobError(true)
         } else {
             localStorage.removeItem("jobForm")
             reset()
             post.json().then(j => nav('/job', {replace: true, state: {self: j.value}}))
         }
-        CheckJWTExpired(post)
     }
 
     return (

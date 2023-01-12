@@ -6,7 +6,7 @@ import {JobService} from "../service/JobService";
 import PaginationButtons from "../components/PaginationButtons";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
-import {APPLICANT_URL, BACK_SLASH, CheckJWTExpired, JOB_URL} from "../utils/utils";
+import {APPLICANT_URL, BACK_SLASH, JOB_URL} from "../utils/utils";
 
 export const Applicants = () => {
 
@@ -31,13 +31,12 @@ export const Applicants = () => {
             url = applicants
         }
         const result = await JobService.getApplicants(url, page)
-        if (result.status === 200) {
+        if (result?.status === 200) {
             let body = await result.json()
             let pageCountHeader = result.headers.get('X-Total-Count')
             setApplicantList(body)
             setTotalPages(pageCountHeader)
         }
-        CheckJWTExpired(result)
     }
 
     const fetchData = async (url: string) => {
@@ -47,7 +46,6 @@ export const Applicants = () => {
             } else {
                 nav("/*")
             }
-            CheckJWTExpired(rsp)
         })
     }
 

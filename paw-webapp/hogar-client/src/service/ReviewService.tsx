@@ -1,4 +1,4 @@
-import {BACK_SLASH, REVIEWS_URL} from "../utils/utils";
+import {BACK_SLASH, JWTExpired, REVIEWS_URL} from "../utils/utils";
 
 export class ReviewService {
     public static async getEmployeeReviews(url: string, page: number) {
@@ -12,6 +12,12 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     console.log(error)
@@ -29,6 +35,11 @@ export class ReviewService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
             .catch(
                 (error) => {
@@ -45,7 +56,10 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => {
-                if (resp.status == 200) {
+            if (resp.status === 401) {
+                return JWTExpired()
+            }
+            else if (resp.status == 200) {
                     return resp.json()
                 }
             }
@@ -66,7 +80,10 @@ export class ReviewService {
 
             },
         }).then((resp) => {
-                if (resp.status == 200) {
+            if (resp.status === 401) {
+                return JWTExpired()
+            }
+            else if (resp.status == 200) {
                     return resp.json()
                 }
             }
@@ -95,6 +112,11 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: reviewFrom
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
@@ -115,6 +137,11 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: reviewForm
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 }

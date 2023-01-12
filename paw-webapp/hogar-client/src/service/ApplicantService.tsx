@@ -1,4 +1,4 @@
-import {APPLICANT_URL, BACK_SLASH, EMPLOYEE_URL, JOBS} from "../utils/utils";
+import {APPLICANT_URL, BACK_SLASH, EMPLOYEE_URL, JOBS, JWTExpired} from "../utils/utils";
 
 
 export class ApplicantService{
@@ -14,6 +14,11 @@ export class ApplicantService{
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
             .catch(
                 (error) => {
@@ -36,6 +41,11 @@ export class ApplicantService{
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: applyForm
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
@@ -52,6 +62,11 @@ export class ApplicantService{
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: statusForm
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
@@ -63,6 +78,11 @@ export class ApplicantService{
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
 
             }
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
@@ -73,7 +93,13 @@ export class ApplicantService{
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((r) => r.text())
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response.text()
+
+        })
     }
 
 

@@ -15,7 +15,7 @@ import bin from "../assets/bin.png";
 import editing from "../assets/editing.png";
 import editingPurple from "../assets/editing_purple.png";
 import noEmployees from "../assets/sinEmpleadas.png";
-import {BACK_SLASH, CheckJWTExpired, JOB_URL} from "../utils/utils";
+import {BACK_SLASH, JOB_URL} from "../utils/utils";
 
 export const Job = () => {
 
@@ -60,13 +60,12 @@ export const Job = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployerReview(e, job.employerId.id, data.content)
-        if (post.status != 201)
+        if (post?.status != 201)
             setShowError(true)
         else {
             localStorage.removeItem("reviewEmployerForm")
             reset()
             post.json().then((r) => setMyReview(r))
-            CheckJWTExpired(post)
         }
     }
 
@@ -88,7 +87,6 @@ export const Job = () => {
             } else {
                 nav("/*")
             }
-            CheckJWTExpired(rsp)
         })
     }
 
@@ -96,14 +94,15 @@ export const Job = () => {
             if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
                 ReviewService.getEmployerReviews(job.employerId.reviews, 0).then(
                     (rsp) => {
-                        rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                        if (rsp.status === 200)
-                            rsp.json().then((reviews) => {
-                                setReviews(reviews)
-                            })
-                        else
-                            setReviews([])
-                        CheckJWTExpired(rsp)
+                        if( rsp !== undefined) {
+                            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            if (rsp.status === 200)
+                                rsp.json().then((reviews) => {
+                                    setReviews(reviews)
+                                })
+                            else
+                                setReviews([])
+                        }
                     }
                 )
                 ReviewService.getMyEmployerReview(job.employerId.reviews).then(
@@ -112,7 +111,6 @@ export const Job = () => {
                         if (rsp != undefined) {
                             localStorage.removeItem("reviewEmployerForm")
                         }
-                        CheckJWTExpired(rsp)
                     }
                 )
             }
@@ -129,24 +127,25 @@ export const Job = () => {
     function delApplication() {
         ApplicantService.deleteApplication(employeeId, job.jobId).then((rsp) => {
                 nav('/jobs', {replace: true})
-                CheckJWTExpired(rsp)
             }
         );
     }
 
     async function createApplicant() {
         const newStatus = await ApplicantService.createApplicant(job.jobId)
-        if (newStatus.status === 201)
-            setStatus("0")
-        CheckJWTExpired(newStatus)
+        if (newStatus !== undefined) {
+            if (newStatus.status === 201)
+                setStatus("0")
+        }
     }
 
     async function delJob() {
         const post = await JobService.deleteJob(job.jobId)
-        if (post.status === 204) {
-            nav('/jobs', {replace: true})
+        if (post !== undefined) {
+            if (post.status === 204) {
+                nav('/jobs', {replace: true})
+            }
         }
-        CheckJWTExpired(post)
     }
 
     async function openJob() {
@@ -163,10 +162,12 @@ export const Job = () => {
         setReviews(null)
         setCurrent(false)
         const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page)
-        get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
-        get.json().then((reviews) => {
-            setReviews(reviews)
-        })
+        if( get !== undefined) {
+            get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+            get.json().then((reviews) => {
+                setReviews(reviews)
+            })
+        }
     }
 
 

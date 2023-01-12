@@ -5,7 +5,6 @@ import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
 import user from "../assets/user.png";
-import {CheckJWTExpired} from "../utils/utils";
 
 export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: { onSubmit: any, from: string, self: string, onEdit: boolean, errorFromRequest: boolean}) => {
 
@@ -143,7 +142,6 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                     setValue("availabilities", e.availabilityArr)
                     setValue("hourlyFee", e.hourlyFee)
                     setImageURL(e.image)
-                    CheckJWTExpired(e)
                 }
             )
         }

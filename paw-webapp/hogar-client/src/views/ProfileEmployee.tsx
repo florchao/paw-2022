@@ -14,7 +14,7 @@ import ErrorFeedback from "../components/ErrorFeedback";
 import Modal from "react-modal";
 import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
-import {BACK_SLASH, CheckJWTExpired, EMPLOYEE_URL} from "../utils/utils";
+import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
 import bin from "../assets/bin.png";
 import noEmployees from "../assets/sinEmpleadas.png";
@@ -64,7 +64,7 @@ export const ProfileEmployee = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployeeReview(e, employee.id, data.content)
-        if (post.status !== 201)
+        if (post?.status !== 201)
             setShowMessage(true)
         else {
             setShowMessage(false)
@@ -73,20 +73,18 @@ export const ProfileEmployee = () => {
                     setMyReview(r)
                 }
             )
-            CheckJWTExpired(post)
         }
     }
 
     async function delEmployee() {
         const post = await UserService.deleteUser(employee.delete)
-        if (post.status === 204) {
+        if (post?.status === 204) {
             localStorage.removeItem("hogar-uid")
             localStorage.removeItem("hogar-jwt")
             localStorage.removeItem("hogar-role")
             nav('/', {replace: true})
             window.location.reload()
         }
-        CheckJWTExpired(post)
     }
 
     useEffect(() => {
@@ -111,7 +109,6 @@ export const ProfileEmployee = () => {
                 } else {
                     nav("/*")
                 }
-                CheckJWTExpired(rsp)
             })
     }
 
@@ -120,14 +117,13 @@ export const ProfileEmployee = () => {
                 if (localStorage.getItem('hogar-uid') != null)
                     ReviewService.getEmployeeReviews(employee.reviews, 0).then(
                         (rsp) => {
-                            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                            if (rsp.status === 200)
+                            rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            if (rsp?.status === 200)
                                 rsp.json().then((reviews) => {
                                     setReview(reviews)
                                 })
                             else
                                 setReview([])
-                            CheckJWTExpired(rsp)
                         }
                     )
                 if (localStorage.getItem("hogar-role") === "EMPLOYER")
@@ -137,7 +133,6 @@ export const ProfileEmployee = () => {
                             if (rsp != undefined) {
                                 localStorage.removeItem("reviewEmployeeForm")
                             }
-                            CheckJWTExpired(rsp)
                         }
                     )
             }
@@ -149,7 +144,6 @@ export const ProfileEmployee = () => {
                 RatingService.getEmployeeRating(employee.ratings, employerId).then(
                     (rsp) => {
                         setRating(rsp)
-                        CheckJWTExpired(rsp)
                     }
                 )
             }
@@ -160,11 +154,10 @@ export const ProfileEmployee = () => {
         setReview(null)
         setCurrent(page)
         const get = await ReviewService.getEmployeeReviews(employee.reviews, page)
-        get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
-        get.json().then((reviews) => {
+        get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        get?.json().then((reviews) => {
             setReview(reviews)
         })
-        CheckJWTExpired(get)
     }
 
     window.onload = () => setShowMessage(false)

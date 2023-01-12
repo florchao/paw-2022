@@ -13,7 +13,6 @@ import noEmployees from "../assets/sinEmpleadas.png";
 import noJobs from "../assets/sinTrabajos.png";
 import user from "../assets/user.png";
 import {MagnifyingGlass} from "react-loader-spinner";
-import {CheckJWTExpired} from "../utils/utils";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
@@ -33,21 +32,19 @@ export const ProfileEmployer = () => {
 
     async function delEmployer() {
         const post = await UserService.deleteUser(employer.delete)
-        if (post.status === 204) {
+        if (post?.status === 204) {
             localStorage.removeItem("hogar-uid")
             localStorage.removeItem("hogar-jwt")
             localStorage.removeItem("hogar-role")
             nav('/', {replace: true})
             window.location.reload()
         }
-        CheckJWTExpired(post)
     }
 
     useEffect(() => {
         EmployerService.getEmployer(id).then((val) => {
                 setEmployer(val)
                 setImage(val.image)
-                CheckJWTExpired(val)
             }
         );
     }, [])
@@ -57,14 +54,13 @@ export const ProfileEmployer = () => {
         if (employer) {
             ReviewService.getEmployerReviews(employer.reviews, 0).then(
                 (rsp) => {
-                    rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                    if(rsp.status === 200)
+                    rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                    if(rsp?.status === 200)
                         rsp.json().then((reviews) => {
                             setReviews(reviews)
                         })
                     else
                         setReviews([])
-                    CheckJWTExpired(rsp)
                 }
             )
         }
@@ -75,8 +71,7 @@ export const ProfileEmployer = () => {
             if (employer) {
                 JobService.getCreatedJobs(employer.jobs, true, 0).then(
                     async (rsp) => {
-                        rsp.status === 204 ? setJobs([]) : setJobs(await rsp.json())
-                        CheckJWTExpired(rsp)
+                        rsp?.status === 204 ? setJobs([]) : setJobs(await rsp?.json())
                     }
                 )
             }
@@ -87,11 +82,10 @@ export const ProfileEmployer = () => {
         setReviews(null)
         setCurrent(page)
         const get = await ReviewService.getEmployerReviews(employer.reviews, page)
-        get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
-        get.json().then((reviews) => {
+        get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        get?.json().then((reviews) => {
             setReviews(reviews)
         })
-        CheckJWTExpired(get)
     }
 
     return (

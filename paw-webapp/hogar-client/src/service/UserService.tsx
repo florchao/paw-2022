@@ -1,4 +1,4 @@
-import {USER_URL} from "../utils/utils";
+import {JWTExpired, USER_URL} from "../utils/utils";
 
 export class UserService {
 
@@ -26,6 +26,11 @@ export class UserService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 

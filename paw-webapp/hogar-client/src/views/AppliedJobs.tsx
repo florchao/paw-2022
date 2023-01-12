@@ -5,7 +5,6 @@ import JobCard from "../components/JobCard";
 import PaginationButtons from "../components/PaginationButtons";
 import {MagnifyingGlass} from "react-loader-spinner";
 import noJobs from "../assets/sinTrabajos.png";
-import {CheckJWTExpired} from "../utils/utils";
 
 export const AppliedJobs = () => {
 
@@ -18,14 +17,13 @@ export const AppliedJobs = () => {
 
     useEffect(() => {
         ApplicantService.getAppliedJobs(id, 0).then( (rsp) => {
-                rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if(rsp.status === 200)
+                rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                if(rsp?.status === 200)
                     rsp.json().then((jobs) => {
                         setAppliedJobs(jobs)
                     })
                 else
                     setAppliedJobs([])
-                CheckJWTExpired(rsp)
             }
         );
     }, [])
@@ -33,11 +31,10 @@ export const AppliedJobs = () => {
     const changePage = async (page: number) => {
         setAppliedJobs(null)
         const get = await ApplicantService.getAppliedJobs(id, page)
-        get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
-        get.json().then((jobs) => {
+        get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        get?.json().then((jobs) => {
             setAppliedJobs(jobs)
         })
-        CheckJWTExpired(get)
     }
 
     return (

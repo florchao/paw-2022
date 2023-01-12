@@ -1,4 +1,4 @@
-import {BACK_SLASH, EMPLOYER_URL} from "../utils/utils";
+import {BACK_SLASH, EMPLOYER_URL, JWTExpired} from "../utils/utils";
 
 export class EmployerService {
 
@@ -9,7 +9,12 @@ export class EmployerService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
-        }).then((resp) => resp.json())
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response.json()
+        })
             .catch(
                 (error) => {
                     console.log(error)

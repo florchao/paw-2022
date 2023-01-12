@@ -3,7 +3,6 @@ import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {ApplicantService} from "../service/ApplicantService";
 import user from "../assets/user.png";
-import {CheckJWTExpired} from "../utils/utils";
 
 const ApplicantCard = (applicant: any) =>{
     const a = applicant.applicant
@@ -12,16 +11,14 @@ const ApplicantCard = (applicant: any) =>{
 
     async function acceptApplicant(){
         const s = await ApplicantService.updateStatus(a.employee.id, a.jobId, 1)
-        if(s.status === 200)
+        if(s?.status === 200)
             s.text().then(newStatus => setStatus(newStatus))
-        CheckJWTExpired(s)
     }
 
     async function rejectApplicant(){
         const s = await ApplicantService.updateStatus(a.employee.id, a.jobId, 2)
-        if(s.status === 200)
+        if(s?.status === 200)
             s.text().then(newStatus => setStatus(newStatus))
-        CheckJWTExpired(s)
     }
     const [image, setImage]: any = useState(a.employee.image)
     return(

@@ -8,7 +8,6 @@ import Modal from "react-modal";
 import PaginationButtons from "../components/PaginationButtons";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
-import {CheckJWTExpired} from "../utils/utils";
 
 export const Contacts = () => {
 
@@ -42,14 +41,13 @@ export const Contacts = () => {
         setCurrent(page)
         ContactService.contacts(id, page).then(
             (rsp) => {
-                rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if(rsp.status === 200)
+                rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                if(rsp?.status === 200)
                     rsp.json().then((conts: any) => {
                         setContacts(conts)
                     })
                 else
                     setContacts([])
-                CheckJWTExpired(rsp)
             }
         );
     }

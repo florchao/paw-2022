@@ -1,9 +1,4 @@
-import {
-    EMPLOYEE_URL,
-    EMPLOYEES_URL,
-    JWTExpired,
-    QUERY_PARAM
-} from "../utils/utils";
+import {EMPLOYEE_URL, EMPLOYEES_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees(basicEncoded: string = "") {
@@ -102,9 +97,11 @@ export class EmployeeService {
             } : {
                 "Content-Type": "application/json"
             }
-        }).then((resp) => {
-            if (resp.status == 200) {
-                return resp.json()
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            } else if (response.status == 200) {
+                return response.json()
             }
         })
             .catch(
@@ -163,6 +160,11 @@ export class EmployeeService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: employeeEditForm
-        }).then((r) => r.text())
+        }).then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response.text()
+            })
     }
 }
