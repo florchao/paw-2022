@@ -14,7 +14,7 @@ const RegisterEmployee = () => {
     const onSubmit = async (data: any, e: any, image: File) => {
         const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.hourlyFee, data.availabilities, data.abilities, image!)
         //TODO: el 400 puede que se mande mal la info, no es solo que ya existe el usuario
-        if (post.status === 500 || post.status === 400) {
+        if (post.status === 500 || post.status === 400 || post.status === 409) {
             setRegisterEmployeeError(true)
         }
 
