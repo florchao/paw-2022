@@ -31,7 +31,7 @@ const RegisterEmployee = () => {
                 let authHeader = result.headers.get('Authorization')
                 localStorage['hogar-jwt'] = authHeader?.slice(7)
             }
-            nav('/profile', {replace: true, state: {self: post.headers.get('Location'), status: -1}})
+            nav('/explore')
             window.location.reload()
         }
 
