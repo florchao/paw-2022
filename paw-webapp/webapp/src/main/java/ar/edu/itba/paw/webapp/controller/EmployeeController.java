@@ -13,6 +13,7 @@ import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeCreateDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeEditDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto.ReviewDto;
+import ar.edu.itba.paw.webapp.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,12 +180,14 @@ public class EmployeeController {
         User u;
         try {
             u = userService.create(employeeCreateDto.getMail(), employeeCreateDto.getPassword(), employeeCreateDto.getConfirmPassword(), 1);
-            employeeService.create(employeeCreateDto.getName(), employeeCreateDto.getLocation(), u.getId(), fromArrayToString(employeeCreateDto.getAvailability()), employeeCreateDto.getExperienceYears(), employeeCreateDto.getHourlyFee(), fromArrayToString(employeeCreateDto.getAbilities()), employeeCreateDto.getImage());
+            employeeService.create(employeeCreateDto.getName(), employeeCreateDto.getLocation(), u.getId(), fromArrayToString(employeeCreateDto.getAvailability()), employeeCreateDto.getExperienceYears(), employeeCreateDto.getHourlyFee(), fromArrayToString(employeeCreateDto.getAbilities()));
         } catch (Exception ex) {
             LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
-        return Response.created(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).build();
+        GenericEntity<UserDto> genericEntity = new GenericEntity<UserDto>(UserDto.fromCrete(u.getRole(), u.getId())) {
+        };
+        return Response.created(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).entity(genericEntity).build();
     }
 
     @PUT
@@ -192,19 +195,8 @@ public class EmployeeController {
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response editEmployee(@Valid EmployeeEditDto employeeEditDto,
                                  @PathParam("id") long id) throws UserFoundException, PassMatchException {
-//        if (name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
-//                experienceYears < 0 || experienceYears > 100 || hourlyFee == 0 || hourlyFee < 0 ||
-//                location.length() > 1 || !location.matches("[1-4]") ||
-//                availabilities.isEmpty() || abilities.isEmpty() ||
-//                image == null) {
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-//        }
-//        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (user.getUserID() != id) {
-//            return Response.status(Response.Status.FORBIDDEN).build();
-//        }
 
-        employeeService.editProfile(employeeEditDto.getName(), employeeEditDto.getLocation(), id, employeeEditDto.getAvailability(), employeeEditDto.getExperienceYears(), employeeEditDto.getHourlyFee(), employeeEditDto.getAbilities(), employeeEditDto.getImage());
+        employeeService.editProfile(employeeEditDto.getName(), employeeEditDto.getLocation(), id, employeeEditDto.getAvailability(), employeeEditDto.getExperienceYears(), employeeEditDto.getHourlyFee(), employeeEditDto.getAbilities());
         LOGGER.debug(String.format("updated profile for userid %d", id));
 
         return Response.ok(id).build();

@@ -151,7 +151,7 @@ public class EmployerController {
         try {
             u = userService.create(employerDto.getMail(), employerDto.getPassword(), employerDto.getConfirmPassword(), 2);
             String fullName = employerDto.getName() + " " + employerDto.getLastname();
-            employerService.create(fullName.toLowerCase(), u, employerDto.getImage());
+            employerService.create(fullName.toLowerCase(), u);
         } catch (Exception ex) {
             LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();

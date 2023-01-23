@@ -4,7 +4,6 @@ import {EmployeeService} from "../service/EmployeeService";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {IdsService} from "../service/IdsService";
-import user from "../assets/user.png";
 
 export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: { onSubmit: any, from: string, self: string, onEdit: boolean, errorFromRequest: boolean}) => {
 
@@ -22,9 +21,6 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
 
     const {register, handleSubmit, watch, formState: {errors}, getValues, setValue} = useForm<FormData>();
 
-    const [image, setImage] = useState<File>()
-    const [imageURL, setImageURL] = useState<string>()
-    const [updatedImage, setUpdatedImage] = useState<boolean>(false)
 
     watch("password")
     watch("confirmPassword")
@@ -65,17 +61,6 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
         return confPassword == getValues("password")
     };
 
-    function urltoFile(url: string, filename: string) {
-        return (fetch(url)
-                .then(function (res) {
-                    return res.arrayBuffer();
-                })
-                .then(function (buf) {
-                    return new File([buf], filename);
-                })
-        );
-    }
-
     const setColorAb = (name: string, id: number) => {
         let label = document.getElementById(name + "-label")
         if (getValues("abilities").toString() === "false" || !getValues("abilities").includes(id.toString())) {
@@ -100,22 +85,6 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
         }
     }
 
-    const imageUpload = (e: any) => {
-        const file = e.target.files[0];
-        getBase64(file).then(base64 => {
-            localStorage["imgEmployeeForm"] = base64;
-            console.debug("file stored", base64);
-        });
-    };
-
-    const imageDownload = async () => {
-        if (localStorage.getItem("imgEmployeeForm") !== null) {
-            const img = await urltoFile(localStorage.getItem("imgEmployeeForm")!, "imgEmployeeForm")
-            setImage(img)
-            setUpdatedImage(true)
-        }
-    }
-
     const getBase64 = (file: File) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -129,7 +98,6 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
         IdsService.getIds().then((i) => {
             setIds(i)
         });
-        imageDownload()
     }, [])
 
     useEffect(() => {
@@ -141,16 +109,13 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                     setValue("abilities", e.abilitiesArr)
                     setValue("availabilities", e.availabilityArr)
                     setValue("hourlyFee", e.hourlyFee)
-                    setImageURL(e.image)
                 }
             )
         }
     }, [])
 
-    window.onload = imageDownload
-
     const submitForm = async (data: any, e: any) => {
-        onSubmit(data, e, image)
+        onSubmit(data, e)
     }
 
     return (
@@ -163,48 +128,48 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                         </p>
                         <div className="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                             <div className="grid grid-cols-6 gap-6">
-                                <div className="row-span-4 col-span-2 m-6">
-                                    <div className="overflow-hidden bg-gray-100 rounded-full">
-                                        {updatedImage?
-                                            <img id="picture"
-                                                 src={image? URL.createObjectURL(image) : user}
-                                                 alt="user photo"
-                                                 onError={() => {
-                                                     setUpdatedImage(true)
+                                {/*<div className="row-span-4 col-span-2 m-6">*/}
+                                {/*    <div className="overflow-hidden bg-gray-100 rounded-full">*/}
+                                {/*        {updatedImage?*/}
+                                {/*            <img id="picture"*/}
+                                {/*                 src={image? URL.createObjectURL(image) : user}*/}
+                                {/*                 alt="user photo"*/}
+                                {/*                 onError={() => {*/}
+                                {/*                     setUpdatedImage(true)*/}
 
-                                                 }}
-                                            />
-                                            :
-                                            <img id="picture"
-                                                 src={imageURL? imageURL : user}
-                                                 alt="user photo"
-                                                 onError={() => {
-                                                     setImageURL(user)
-                                                 }}
-                                            />
-                                        }
+                                {/*                 }}*/}
+                                {/*            />*/}
+                                {/*            :*/}
+                                {/*            <img id="picture"*/}
+                                {/*                 src={imageURL? imageURL : user}*/}
+                                {/*                 alt="user photo"*/}
+                                {/*                 onError={() => {*/}
+                                {/*                     setImageURL(user)*/}
+                                {/*                 }}*/}
+                                {/*            />*/}
+                                {/*        }*/}
 
-                                    </div>
-                                    <label htmlFor="image-input" id="image-label"
-                                           className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">
-                                        {t('EmployeeForm.image')}
-                                    </label>
-                                    <input id="image-input"
-                                           type="file"
-                                           accept="image/png, image/jpeg"
-                                           onChange={(e) => {
-                                               if (e.target.files != null) {
-                                                   setImage(e.target.files[0])
-                                                   setUpdatedImage(true)
-                                                   imageUpload(e)
-                                               }
-                                           }}
-                                           style={{visibility: "hidden"}}/>
-                                    {!image &&
-                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.imageError')}</p>
-                                    }
-                                </div>
-                                <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
+                                {/*    </div>*/}
+                                {/*    <label htmlFor="image-input" id="image-label"*/}
+                                {/*           className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">*/}
+                                {/*        {t('EmployeeForm.image')}*/}
+                                {/*    </label>*/}
+                                {/*    <input id="image-input"*/}
+                                {/*           type="file"*/}
+                                {/*           accept="image/png, image/jpeg"*/}
+                                {/*           onChange={(e) => {*/}
+                                {/*               if (e.target.files != null) {*/}
+                                {/*                   setImage(e.target.files[0])*/}
+                                {/*                   setUpdatedImage(true)*/}
+                                {/*                   imageUpload(e)*/}
+                                {/*               }*/}
+                                {/*           }}*/}
+                                {/*           style={{visibility: "hidden"}}/>*/}
+                                {/*    {!image &&*/}
+                                {/*        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.imageError')}</p>*/}
+                                {/*    }*/}
+                                {/*</div>*/}
+                                <div className="ml-3 col-span-3 w-4/5 justify-self-center">
                                     <label htmlFor="name"
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('EmployeeForm.name')}
@@ -233,7 +198,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                     </div>
                                 }
                                 {from == "create" &&
-                                    <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
+                                    <div className="ml-3 col-span-3 w-4/5 justify-self-center">
                                         <label htmlFor="password"
                                                className="text-sm font-medium text-gray-900">
                                             {t('EmployeeForm.password')}
@@ -298,7 +263,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.locationError')}</p>
                                     }
                                 </div>
-                                <div className="ml-3 col-span-2 col-start-4 w-4/5 justify-self-center">
+                                <div className={from == "create"? "ml-3 col-span-2 col-start-4 w-4/5 justify-self-center" : "ml-3 col-span-3 w-4/5 justify-self-center"}>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('EmployeeForm.experienceYears')}
                                     </label>
@@ -310,7 +275,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.expYearsError')}</p>
                                     }
                                 </div>
-                                <div className="ml-3 col-span-1 col-start-6 w-4/5 justify-self-center">
+                                <div className={from == "create"? "ml-3 col-span-1 col-start-6 w-4/5 justify-self-center" : "ml-3 col-span-3 col-start-4 w-4/5 justify-self-center" }>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('EmployeeForm.hourlyFee')}
                                     </label>

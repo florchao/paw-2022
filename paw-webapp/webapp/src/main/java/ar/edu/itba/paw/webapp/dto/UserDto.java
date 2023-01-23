@@ -11,6 +11,13 @@ public class UserDto {
         return dto;
     }
 
+    public static UserDto fromCrete(Integer role, Long uid){
+        UserDto dto = new UserDto();
+        dto.role = role.toString();
+        dto.uid = uid.toString();
+        return dto;
+    }
+
     public String getRole() {
         return role;
     }

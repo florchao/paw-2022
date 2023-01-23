@@ -31,10 +31,6 @@ public class EmployerCreateDto {
     @NotBlank
     private String confirmPassword;
 
-    private byte[] image;
-
-
-
 
     public String getName() {
         return name;
@@ -76,11 +72,5 @@ public class EmployerCreateDto {
         this.confirmPassword = confirmPassword;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
 }

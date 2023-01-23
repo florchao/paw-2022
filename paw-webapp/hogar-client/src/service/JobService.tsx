@@ -14,6 +14,12 @@ export class JobService {
             }
             return response
         })
+            // .then((response) => {
+            //     if (response.status === 401) {
+            //         return JWTExpired()
+            //     }
+            //     return response
+            // })
             .catch(
                 (error) => {
                     throw error
@@ -33,7 +39,7 @@ export class JobService {
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        if(page > 0)
+        if (page > 0)
             url = this.concatStringQueries(url, 'page', String(page))
         url = this.concatStringQueries(url, 'name', name)
         url = this.concatStringQueries(url, 'location', location)
@@ -52,6 +58,12 @@ export class JobService {
             }
             return response
         })
+            // .then((response) => {
+            //     if (response.status === 401) {
+            //         return JWTExpired()
+            //     }
+            //     return response
+            // })
             .catch(
                 (error) => {
                     throw error
@@ -73,10 +85,10 @@ export class JobService {
                 'Authorization': 'Basic ' + basicEncoded
             },
         }).catch(
-                (error) => {
-                    console.log(error)
-                    throw error
-                })
+            (error) => {
+                console.log(error)
+                throw error
+            })
     }
 
     public static async getJob(url: string) {
@@ -94,7 +106,7 @@ export class JobService {
                 return resp.json()
             }
         })
-        .catch(
+            .catch(
                 (error) => {
                     console.log(error)
                     throw error
@@ -130,9 +142,9 @@ export class JobService {
     }
 
     public static async getCreatedJobs(url: string, profile: boolean, page: number) {
-        if(profile)
+        if (profile)
             url = url + QUERY_PARAM + 'profile=true'
-        if(page > 0)
+        if (page > 0)
             url = url + QUERY_PARAM + 'page=' + page.toString()
         return await fetch(url, {
             method: 'GET',
@@ -153,7 +165,7 @@ export class JobService {
                 })
     }
 
-    public static async getApplicants(url : string, page: number){
+    public static async getApplicants(url: string, page: number) {
         if (page > 0) {
             url = url + QUERY_PARAM + "page=" + page.toString()
         }
@@ -192,12 +204,12 @@ export class JobService {
         })
     }
 
-    public static async updateJobStatus(id: number, status: boolean){
+    public static async updateJobStatus(id: number, status: boolean) {
 
-        const formData:any = new FormData();
+        const formData: any = new FormData();
         formData.append("status", status)
 
-        return await fetch(JOB_URL + BACK_SLASH + id , {
+        return await fetch(JOB_URL + BACK_SLASH + id, {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string

@@ -1,7 +1,7 @@
 import {EMPLOYEE_URL, EMPLOYEES_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
-    public static async getEmployees(basicEncoded: string = "") {
+    public static async getEmployees(basicEncoded:string="") {
         let header
         if (localStorage.getItem('hogar-jwt') != null) {
             header = {
@@ -111,7 +111,7 @@ export class EmployeeService {
                 })
     }
 
-    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image: File) {
+    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[]) {
         e.preventDefault();
 
         const employeeForm = JSON.stringify({
@@ -124,7 +124,6 @@ export class EmployeeService {
             hourlyFee: hourlyFee,
             availability: availabilities,
             abilities: abilities,
-            image: image
         });
 
         //TODO: Arreglar lo de las imágenes

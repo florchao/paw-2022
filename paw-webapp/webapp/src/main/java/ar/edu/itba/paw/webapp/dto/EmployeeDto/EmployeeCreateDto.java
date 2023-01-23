@@ -46,7 +46,6 @@ public class EmployeeCreateDto {
 //    @CheckboxesAvailabilitiesEdit
     private String[] availability;
 
-    private byte[] image;
 
     public String getMail() {
         return mail;
@@ -111,14 +110,6 @@ public class EmployeeCreateDto {
 
     public void setAvailability(String[] availability) {
         this.availability = availability;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public long getHourlyFee() {

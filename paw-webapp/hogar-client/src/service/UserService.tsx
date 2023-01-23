@@ -34,6 +34,31 @@ export class UserService {
         })
     }
 
+    public static async addImage(e: any, url: string, image: File, id: number) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('id', id.toString());
+        formData.append('image', image, image.name);
+        return await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            }
+        })
+    }
+
+    public static async updateImage(e: any, url:string, image:File, id:number) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('image', image, image.name);
+        return await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            }
+        })
+    }
+
     public static async loadImage(url: string) {
         return fetch(url, {
             method: 'GET',

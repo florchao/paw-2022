@@ -22,7 +22,7 @@ export class EmployerService {
                 })
     }
 
-    public static async registerEmployer (e: any, name: string,lastname: string, mail: string, password: string, confirmPassword: string, image: File) {
+    public static async registerEmployer (e: any, name: string,lastname: string, mail: string, password: string, confirmPassword: string) {
         e.preventDefault();
 
         const employerForm = JSON.stringify({
@@ -31,7 +31,6 @@ export class EmployerService {
             mail: mail,
             password: password,
             confirmPassword: confirmPassword,
-            image: image
         });
 
         //TODO: Arreglar lo de las imágenes
