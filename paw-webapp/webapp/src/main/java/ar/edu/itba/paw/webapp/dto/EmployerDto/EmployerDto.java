@@ -18,7 +18,7 @@ public class EmployerDto {
 
     private URI employeeReview;
 
-    private URI delete;
+    private URI users;
 
     private URI jobs;
 
@@ -30,12 +30,12 @@ public class EmployerDto {
 
         final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(employer.getId().getId()));
         final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
-        final UriBuilder deleteBuilder = uriInfo.getBaseUriBuilder().path("/users").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder usersBuilder = uriInfo.getBaseUriBuilder().path("/users").path(String.valueOf(employer.getId().getId()));
         final UriBuilder jobsBuilder = uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(employer.getId().getId())).path("jobs");
 
         dto.image = imageUriBuilder.build();
         dto.reviews = reviewBuilder.build();
-        dto.delete = deleteBuilder.build();
+        dto.users = usersBuilder.build();
         dto.jobs = jobsBuilder.build();
 
         return dto;
@@ -120,12 +120,12 @@ public class EmployerDto {
         this.employeeReview = employeeReview;
     }
 
-    public URI getDelete() {
-        return delete;
+    public URI getUsers() {
+        return users;
     }
 
-    public void setDelete(URI delete) {
-        this.delete = delete;
+    public void setUsers(URI users) {
+        this.users = users;
     }
 
     public URI getJobs() {

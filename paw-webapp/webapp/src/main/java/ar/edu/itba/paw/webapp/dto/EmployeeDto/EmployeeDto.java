@@ -26,7 +26,7 @@ public class EmployeeDto {
     private URI image;
     private URI employerReview;
     private URI ratings;
-    private URI delete;
+    private URI users;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeDto.class);
 
@@ -74,9 +74,9 @@ public class EmployeeDto {
 
     public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee) {
         final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, false, false);
-        final UriBuilder deleteUriBuilder = uriInfo.getBaseUriBuilder().path("/users").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder usersUriBuilder = uriInfo.getBaseUriBuilder().path("/users").path(String.valueOf(employee.getId().getId()));
 
-        dto.delete = deleteUriBuilder.build();
+        dto.users = usersUriBuilder.build();
 
         return dto;
     }
@@ -213,12 +213,12 @@ public class EmployeeDto {
         this.ratings = ratings;
     }
 
-    public URI getDelete() {
-        return delete;
+    public URI getUsers() {
+        return users;
     }
 
-    public void setDelete(URI delete) {
-        this.delete = delete;
+    public void setUsers(URI users) {
+        this.users = users;
     }
 
     public Long getHourlyFee() {

@@ -33,7 +33,7 @@ export class ApplicantService{
         const applyForm = JSON.stringify({
             jobId: jobId
         });
-
+        //TODO: que me pase el url el DTO?
         return await fetch(APPLICANT_URL, {
             method: 'POST',
             headers: {
@@ -55,6 +55,7 @@ export class ApplicantService{
             status: status
         });
 
+        //TODO: que me pase el url el DTO?
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
             method: 'PUT',
             headers: {
@@ -71,6 +72,8 @@ export class ApplicantService{
     }
 
     public static async deleteApplication(employeeId: number, jobId: number){
+
+        //TODO: que me pase el url el DTO?
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
             method: 'DELETE',
             headers: {
@@ -87,6 +90,8 @@ export class ApplicantService{
     }
 
     public static async getApplicationStatus(employeeId: number, jobId: number){
+
+        //TODO: que me pase el url el DTO?
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId, {
             method: 'GET',
             headers: {

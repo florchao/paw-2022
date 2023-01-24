@@ -80,7 +80,7 @@ export const ProfileEmployee = () => {
     }
 
     async function delEmployee() {
-        const post = await UserService.deleteUser(employee.delete)
+        const post = await UserService.deleteUser(employee.users)
         if (post?.status === 204) {
             localStorage.removeItem("hogar-uid")
             localStorage.removeItem("hogar-jwt")
