@@ -105,6 +105,8 @@ export const TRANSLATIONS_EN = {
     noReviews: "There are no reviews",
     editProfile: "EDIT PROFILE",
     rateUser: "Rate ",
+    editImage: "Edit image",
+    addImage: "Add image",
   },
   LogIn:{
     mail:"E-Mail",

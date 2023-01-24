@@ -77,7 +77,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     .claim("role", user.getRole() == 1 ? "EMPLOYEE" : "EMPLOYER")
                     .claim("uid", user.getId())
                     .setIssuedAt(Date.from(Instant.now()))
-                    .setExpiration(Date.from(Instant.now().plus(1L, ChronoUnit.MINUTES)))
+                    .setExpiration(Date.from(Instant.now().plus(365L, ChronoUnit.DAYS)))
                     .signWith(hmacKey)
                     .compact();
         } catch (Exception e) {

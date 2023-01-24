@@ -104,7 +104,9 @@ export const TRANSLATIONS_ES = {
         reviews: "Opiniones",
         noReviews: "No hay opiniones",
         editProfile: "EDITAR PERFIL",
-        rateUser: "Califica a "
+        rateUser: "Califica a ",
+        editImage: "Editar imagen",
+        addImage: "Agregar imagen",
     },
     LogIn:{
         mail:"E-Mail",

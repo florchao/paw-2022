@@ -1,4 +1,4 @@
-import {JWTExpired, USER_URL} from "../utils/utils";
+import {BACK_SLASH, IMAGE_URL, JWTExpired, USER_URL} from "../utils/utils";
 
 export class UserService {
 
@@ -34,28 +34,30 @@ export class UserService {
         })
     }
 
-    public static async addImage(e: any, url: string, image: File, id: number) {
+    public static async addImage(e: any, image: File, id: number) {
         e.preventDefault();
         const formData = new FormData();
         formData.append('id', id.toString());
         formData.append('image', image, image.name);
-        return await fetch(url, {
+        return await fetch(IMAGE_URL, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
-            }
+            },
+            body: formData
         })
     }
 
-    public static async updateImage(e: any, url:string, image:File, id:number) {
+    public static async updateImage(e: any, image:File, id:number) {
         e.preventDefault();
         const formData = new FormData();
         formData.append('image', image, image.name);
-        return await fetch(url, {
+        return await fetch(IMAGE_URL + BACK_SLASH + id, {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
-            }
+            },
+            body: formData
         })
     }
 

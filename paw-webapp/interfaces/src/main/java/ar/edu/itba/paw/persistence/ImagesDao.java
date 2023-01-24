@@ -9,7 +9,7 @@ public interface ImagesDao {
 
     Optional<byte[]> getProfileImage(long userId);
 
-    boolean updateProfileImage(long userId, byte[] image);
+    void updateProfileImage(long user, byte[] image);
 
     Images insertImage(User userId, byte[] image);
 }

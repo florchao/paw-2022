@@ -20,11 +20,14 @@ import bin from "../assets/bin.png";
 import noEmployees from "../assets/sinEmpleadas.png";
 import user from "../assets/user.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import editing from "../assets/editing.png";
 
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
     const [img, setImg]: any = useState()
+    const [typeError, setTypeError] = useState(false)
+    const [noImage, setNoImage] = useState(false)
     const [rating, setRating]: any = useState()
     const [showMessage, setShowMessage]: any = useState<boolean>(true)
 
@@ -181,6 +184,25 @@ export const ProfileEmployee = () => {
         }).catch(error => setRatingError(true))
     }
 
+    const updateImageHandler = async (e: any) => {
+        if (e.target.files.length && e.target.files[0].type.match("image/jpeg|image/png|image/jpg")) {
+            const put = await UserService.updateImage(e, e.target.files[0], employee.id)
+            if (put?.status === 200) {
+                put.json().then((rsp) => {
+                    setImg(rsp.image)
+                })
+            }
+        }
+    }
+
+    const addImageHandler = (e: any) => {
+        if (e.target.files.length) {
+            const post = UserService.addImage(e, e.target.files[0], employee.id)
+            setNoImage(false)
+            console.log(e.target.files[0])
+        }
+    }
+
     return (
         <div className="grid overflow-auto h-screen grid-cols-6">
             {!employee &&
@@ -203,7 +225,24 @@ export const ProfileEmployee = () => {
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
                                 <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img}
-                                     alt="profile photo" onError={() => setImg(user)}/>
+                                     alt="profile photo" onError={() => {
+                                    setImg(user);
+                                    setNoImage(true)
+                                }}/>
+                                <form>
+                                    <div className={"cursor-pointer grid grid-rows-1 grid-cols-3 text-sm w-full focus:outline-none text-white bg-violet-400 hover:bg-violet-700 font-small rounded-full text-sm px-5 py-2.5 items-center"}>
+                                        <img src={editing} alt="edit" className="mr-3 h-6"/>
+                                        <label htmlFor="upload-button" className=" col-start-2 col-span-2 cursor-pointer">
+                                            {noImage? t('Profile.addImage') : t('Profile.editImage')}
+                                        </label>
+                                    </div>
+                                    <input
+                                        type="file"
+                                        id="upload-button"
+                                        style={{display: "none"}}
+                                        onChange={noImage? addImageHandler : updateImageHandler}
+                                    />
+                                </form>
                             </div>
                             <div className="ml-3 col-span-2">
                                 <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">

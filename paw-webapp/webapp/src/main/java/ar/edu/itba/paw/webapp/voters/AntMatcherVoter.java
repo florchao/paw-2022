@@ -52,14 +52,10 @@ public class AntMatcherVoter {
         return false;
     }
 
-    public boolean canUploadImage(Authentication auth, HttpServletRequest request) throws IOException {
+    public boolean canUploadImage(Authentication auth, Long id) throws IOException {
         if (auth.isAuthenticated()) {
             HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            BufferedReader reader = request.getReader();
-            StringBuilder sb = new StringBuilder();
-            reader.lines().forEach(sb::append);
-
-            return hogarUser.getUserID() == 0;
+            return hogarUser.getUserID() == id;
         }
         return false;
     }

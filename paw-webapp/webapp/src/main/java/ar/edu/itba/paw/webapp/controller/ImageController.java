@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.service.ImagesService;
+import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 @Path("/images")
@@ -16,6 +19,9 @@ public class ImageController {
 
     @Autowired
     private ImagesService imagesService;
+
+    @Context
+    private UriInfo uriInfo;
 
     @GET
     @Path("/{id}")
@@ -36,10 +42,21 @@ public class ImageController {
 
     @POST
     @Path("")
-    @Produces(value = {MediaType.MULTIPART_FORM_DATA,})
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response postImage(@FormDataParam("image") byte[] image, @FormDataParam("id") long id) {
         imagesService.insertImage(id, image);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.created(uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(id)).build()).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
+    public Response putImage(@PathParam("id") long id, @FormDataParam("image") InputStream image) throws IOException {
+        boolean updated = imagesService.updateProfileImage(id, IOUtils.toByteArray(image));
+        if (updated)
+            return Response.status(Response.Status.OK).entity(uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(id)).build()).build();
+        else
+            return Response.status(Response.Status.CONFLICT).build();
     }
 
     public static Response.ResponseBuilder getConditionalCacheResponse(Request request, EntityTag eTag) {

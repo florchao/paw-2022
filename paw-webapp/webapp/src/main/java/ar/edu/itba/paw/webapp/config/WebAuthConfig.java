@@ -97,7 +97,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/users/{id}").access("@antMatcherVoter.canDeleteUser(authentication, #id)")
                 .antMatchers(HttpMethod.GET, "/ids").permitAll()
                 .antMatchers(HttpMethod.GET, "/images/{id}").permitAll()
-                .antMatchers(HttpMethod.POST, "/images").access("@antMatcherVoter.canUploadImage(authentication, request)")
+                .antMatchers(HttpMethod.POST, "/images").permitAll()
+                .antMatchers(HttpMethod.PUT, "/images/{id}").access("@antMatcherVoter.canUploadImage(authentication, #id)")
                 .and().antMatcher("/**").authorizeRequests()
                 .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
