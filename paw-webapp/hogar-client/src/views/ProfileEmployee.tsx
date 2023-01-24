@@ -185,21 +185,35 @@ export const ProfileEmployee = () => {
     }
 
     const updateImageHandler = async (e: any) => {
-        if (e.target.files.length && e.target.files[0].type.match("image/jpeg|image/png|image/jpg")) {
-            const put = await UserService.updateImage(e, e.target.files[0], employee.id)
-            if (put?.status === 200) {
-                put.json().then((rsp) => {
-                    setImg(rsp.image)
-                })
+        if (e.target.files.length) {
+            if(!e.target.files[0].type.match("image/jpeg|image/png|image/jpg"))
+                setTypeError(true)
+            else {
+                const put = await UserService.updateImage(e, e.target.files[0], employee.id)
+                if (put?.status === 200) {
+                    put.json().then((rsp) => {
+                        setImg(rsp.image)
+                    })
+                }
+                setTypeError(false);
             }
         }
     }
 
-    const addImageHandler = (e: any) => {
+    const addImageHandler = async (e: any) => {
         if (e.target.files.length) {
-            const post = UserService.addImage(e, e.target.files[0], employee.id)
-            setNoImage(false)
-            console.log(e.target.files[0])
+            if (!e.target.files[0].type.match("image/jpeg|image/png|image/jpg"))
+                setTypeError(true)
+            else {
+                const post = await UserService.addImage(e, e.target.files[0], employee.id)
+                if (post?.status === 200) {
+                    post.json().then((rsp) => {
+                        setImg(rsp.image)
+                    })
+                }
+                setNoImage(false)
+                setTypeError(false)
+            }
         }
     }
 
@@ -242,6 +256,9 @@ export const ProfileEmployee = () => {
                                         style={{display: "none"}}
                                         onChange={noImage? addImageHandler : updateImageHandler}
                                     />
+                                    {typeError &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('Profile.typeError')}</p>
+                                    }
                                 </form>
                             </div>
                             <div className="ml-3 col-span-2">

@@ -107,6 +107,7 @@ export const TRANSLATIONS_EN = {
     rateUser: "Rate ",
     editImage: "Edit image",
     addImage: "Add image",
+    typeError: "Image should be png, jpg or jpeg"
   },
   LogIn:{
     mail:"E-Mail",
