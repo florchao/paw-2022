@@ -101,7 +101,10 @@ public class JobDto {
         dto.employerId = EmployerDto.fromJob(uriInfo, job.getEmployerId());
 
         UriBuilder jobUriBuilder = uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId()));
+        UriBuilder applicantsUriBuilder = uriInfo.getBaseUriBuilder().path("/applicants");
+
         dto.self = jobUriBuilder.build();
+        dto.self = applicantsUriBuilder.build();
 
         return dto;
 
@@ -202,4 +205,5 @@ public class JobDto {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
 }

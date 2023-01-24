@@ -1,4 +1,4 @@
-import {BACK_SLASH, BASE_URL, JOB_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
+import {BASE_URL, JOB_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
 
 export class JobService {
     public static async getJobs() {
@@ -189,8 +189,8 @@ export class JobService {
     }
 
 
-    public static async deleteJob(id: number) {
-        return await fetch(JOB_URL + BACK_SLASH + id, {
+    public static async deleteJob(url: string) {
+        return await fetch(url, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -204,12 +204,12 @@ export class JobService {
         })
     }
 
-    public static async updateJobStatus(id: number, status: boolean) {
+    public static async updateJobStatus(url: string, status: boolean) {
 
         const formData: any = new FormData();
         formData.append("status", status)
 
-        return await fetch(JOB_URL + BACK_SLASH + id, {
+        return await fetch(url, {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string

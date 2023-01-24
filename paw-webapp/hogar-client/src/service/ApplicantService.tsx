@@ -28,13 +28,13 @@ export class ApplicantService{
     }
 
 
-    public static async createApplicant(jobId: number){
+    public static async createApplicant(url: string, jobId: number){
 
         const applyForm = JSON.stringify({
             jobId: jobId
         });
         //TODO: que me pase el url el DTO?
-        return await fetch(APPLICANT_URL, {
+        return await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -49,14 +49,13 @@ export class ApplicantService{
         })
     }
 
-    public static async updateStatus(employeeId: number, jobId: number, status: number){
+    public static async updateStatus(url: string, status: number){
 
         const statusForm = JSON.stringify({
             status: status
         });
 
-        //TODO: que me pase el url el DTO?
-        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
+        return await fetch(url , {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

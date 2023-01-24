@@ -125,14 +125,14 @@ export const Job = () => {
     }, [job])
 
     function delApplication() {
-        ApplicantService.deleteApplication(employeeId, job.jobId).then((rsp) => {
+        ApplicantService.deleteApplication(employeeId, job.jobId).then(() => {
                 nav('/jobs', {replace: true})
             }
         );
     }
 
     async function createApplicant() {
-        const newStatus = await ApplicantService.createApplicant(job.jobId)
+        const newStatus = await ApplicantService.createApplicant(job.applicants, job.jobId)
         if (newStatus !== undefined) {
             if (newStatus.status === 201)
                 setStatus("0")
@@ -140,7 +140,7 @@ export const Job = () => {
     }
 
     async function delJob() {
-        const post = await JobService.deleteJob(job.jobId)
+        const post = await JobService.deleteJob(job.self)
         if (post !== undefined) {
             if (post.status === 204) {
                 nav('/jobs', {replace: true})
@@ -149,12 +149,12 @@ export const Job = () => {
     }
 
     async function openJob() {
-        await JobService.updateJobStatus(job.jobId, true)
+        await JobService.updateJobStatus(job.self, true)
         setOpened(true)
     }
 
     async function closeJob() {
-        await JobService.updateJobStatus(job.jobId, false)
+        await JobService.updateJobStatus(job.self, false)
         setOpened(false)
     }
 
