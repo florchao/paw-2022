@@ -24,7 +24,6 @@ public class EmployeeDto {
     private Boolean isContacted;
     private URI reviews;
     private URI image;
-    private URI employerReview;
     private URI ratings;
     private URI users;
 
@@ -42,47 +41,53 @@ public class EmployeeDto {
         LOGGER.info("URI: " + uriInfo.getAbsolutePath().toString());
         LOGGER.info("URI: " + uriInfo.getBaseUri().toString());
 
-        final UriBuilder employeeUriBuilder = uriInfo.getBaseUriBuilder().path("/employee").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder employeeUriBuilder = uriInfo.getBaseUriBuilder().path("/employees").path(String.valueOf(employee.getId().getId()));
         final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(employee.getId().getId()));
 
         dto.self = employeeUriBuilder.build();
         dto.image = imageUriBuilder.build();
         return dto;
     }
-    public static EmployeeDto fromProfile(final UriInfo uriInfo, final Employee employee, Boolean anonymous, Boolean isContacted) {
-        final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+    public static EmployeeDto fromEmployee(final UriInfo uriInfo, final Employee employee, boolean edit) {
+        final EmployeeDto dto = new EmployeeDto();
 
-        dto.rating = employee.getRating();
-        dto.location = employee.nameLocation(employee.getLocation(), LocaleContextHolder.getLocale().getLanguage());
+        dto.name = DtoUtils.firstWordsToUpper(employee.getName());
+        dto.experienceYears = employee.getExperienceYears();
+        dto.hourlyFee = employee.getHourlyFee();
 
-        dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), LocaleContextHolder.getLocale().getLanguage());
-        dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), LocaleContextHolder.getLocale().getLanguage());
+        dto.id = employee.getId().getId();
 
-        if(!anonymous) {
-            final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/employee").path(String.valueOf(employee.getId().getId())).path("reviews");
-            final UriBuilder employerReviewBuilder = uriInfo.getBaseUriBuilder().path("/employee").path(String.valueOf(employee.getId().getId())).path("reviews");
-            final UriBuilder ratingsUriBuilder = uriInfo.getBaseUriBuilder().path("/ratings").path(String.valueOf(employee.getId().getId()));
+        LOGGER.info("URI: " + uriInfo.getAbsolutePath().toString());
+        LOGGER.info("URI: " + uriInfo.getBaseUri().toString());
 
-            dto.reviews = reviewBuilder.build();
-            dto.employerReview = employerReviewBuilder.build();
-            dto.ratings = ratingsUriBuilder.build();
-            dto.isContacted = isContacted;
-        }
 
-        return dto;
-    }
-
-    public static EmployeeDto fromMyProfile(final UriInfo uriInfo, final Employee employee) {
-        final EmployeeDto dto = EmployeeDto.fromProfile(uriInfo, employee, false, false);
+        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/employees").path(String.valueOf(employee.getId().getId())).path("reviews");
+        final UriBuilder ratingsUriBuilder = uriInfo.getBaseUriBuilder().path("/ratings").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder employeeUriBuilder = uriInfo.getBaseUriBuilder().path("/employees").path(String.valueOf(employee.getId().getId()));
+        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(employee.getId().getId()));
         final UriBuilder usersUriBuilder = uriInfo.getBaseUriBuilder().path("/users").path(String.valueOf(employee.getId().getId()));
 
         dto.users = usersUriBuilder.build();
+        dto.self = employeeUriBuilder.build();
+        dto.image = imageUriBuilder.build();
+        dto.reviews = reviewBuilder.build();
+        dto.ratings = ratingsUriBuilder.build();
 
+
+        dto.rating = employee.getRating();
+
+        if(!edit) {
+            dto.location = employee.nameLocation(employee.getLocation(), LocaleContextHolder.getLocale().getLanguage());
+
+            dto.abilitiesArr = employee.getAbilitiesArr(employee.getAbilities(), LocaleContextHolder.getLocale().getLanguage());
+            dto.availabilityArr = employee.getAvailabilityArr(employee.getAvailability(), LocaleContextHolder.getLocale().getLanguage());
+        }
         return dto;
     }
 
+
     public static EmployeeDto fromEdit(final UriInfo uriInfo, final Employee employee) {
-        final EmployeeDto dto = EmployeeDto.fromExplore(uriInfo, employee);
+        final EmployeeDto dto = EmployeeDto.fromEmployee(uriInfo, employee, true);
 
         dto.location = employee.getLocation();
 
@@ -93,29 +98,7 @@ public class EmployeeDto {
         return dto;
     }
 
-    public static EmployeeDto fromReview(final UriInfo uriInfo, final Employee employee) {
-        final EmployeeDto dto = new EmployeeDto();
 
-        dto.name = DtoUtils.firstWordsToUpper(employee.getName());
-
-        dto.id = employee.getId().getId();
-
-        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(employee.getId().getId()));
-        dto.image = imageUriBuilder.build();
-
-        return dto;
-    }
-
-    public static EmployeeDto fromApplicant(final UriInfo uriInfo, final Employee employee) {
-        final EmployeeDto dto = EmployeeDto.fromReview(uriInfo, employee);
-
-        final UriBuilder employeeUriBuilder = uriInfo.getBaseUriBuilder().path("/employee").path(String.valueOf(employee.getId().getId()));
-        dto.self = employeeUriBuilder.build();
-
-        dto.hourlyFee = employee.getHourlyFee();
-
-        return dto;
-    }
 
     public String getName() {
         return name;
@@ -195,14 +178,6 @@ public class EmployeeDto {
 
     public void setImage(URI image) {
         this.image = image;
-    }
-
-    public URI getEmployerReview() {
-        return employerReview;
-    }
-
-    public void setEmployerReview(URI employerReview) {
-        this.employerReview = employerReview;
     }
 
     public URI getRatings() {

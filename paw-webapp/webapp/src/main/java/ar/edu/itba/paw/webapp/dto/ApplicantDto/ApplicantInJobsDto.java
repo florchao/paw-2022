@@ -2,13 +2,14 @@ package ar.edu.itba.paw.webapp.dto.ApplicantDto;
 
 import ar.edu.itba.paw.model.Applicant;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
+import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeFromApplicantDto;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
 public class ApplicantInJobsDto {
-    private EmployeeDto employee;
+    private EmployeeFromApplicantDto employee;
     private String mail;
 
     private Long jobId;
@@ -19,7 +20,7 @@ public class ApplicantInJobsDto {
 
     public static ApplicantInJobsDto fromJob(final UriInfo uriInfo, final Applicant applicant){
         final ApplicantInJobsDto dto = new ApplicantInJobsDto();
-        dto.employee = EmployeeDto.fromApplicant(uriInfo, applicant.getEmployeeID());
+        dto.employee = EmployeeFromApplicantDto.fromApplicant(uriInfo, applicant.getEmployeeID());
         dto.mail = applicant.getEmployeeID().getId().getEmail();
         dto.status = applicant.getStatus();
         dto.jobId = applicant.getJobID().getJobId();
@@ -29,11 +30,11 @@ public class ApplicantInJobsDto {
         return dto;
     }
 
-    public EmployeeDto getEmployee() {
+    public EmployeeFromApplicantDto getEmployee() {
         return employee;
     }
 
-    public void setEmployee(EmployeeDto employee) {
+    public void setEmployee(EmployeeFromApplicantDto employee) {
         this.employee = employee;
     }
 

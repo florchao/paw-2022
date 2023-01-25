@@ -1,9 +1,16 @@
 import {BACK_SLASH, JWTExpired, REVIEWS_URL} from "../utils/utils";
 
 export class ReviewService {
-    public static async getEmployeeReviews(url: string, page: number) {
+    public static async getEmployeeReviews(url: string, page: number, employerId?: number) {
         if (page > 0) {
             url = url + "?page=" + page
+        }
+
+        if (employerId && employerId !== 0) {
+            if(page > 0){
+                url = url + "&except=" + employerId
+            } else
+                url = url + "?except=" + employerId
         }
         return await fetch(url, {
             method: 'GET',
@@ -25,9 +32,15 @@ export class ReviewService {
                 })
     }
 
-    public static async getEmployerReviews(url: string, page: number) {
+    public static async getEmployerReviews(url: string, page: number, employeeId?: number) {
         if (page > 0) {
             url = url + "?page=" + page
+        }
+        if (employeeId && employeeId !== 0) {
+            if(page > 0){
+                url = url + "&except=" + employeeId
+            } else
+                url = url + "?except=" + employeeId
         }
         return await fetch(url, {
             method: 'GET',
@@ -71,7 +84,7 @@ export class ReviewService {
                 })
     }
 
-    public static async getMyEmployeeReview(url: number) {
+    public static async getMyEmployeeReview(url?: string) {
         return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {

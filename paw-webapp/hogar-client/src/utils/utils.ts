@@ -1,8 +1,7 @@
 let BASE_URL = 'http://localhost:8080/';
 let BACK_SLASH = '/';
 let QUERY_PARAM = '?';
-let EMPLOYEES_URL = BASE_URL + 'employees';
-let EMPLOYEE_URL = BASE_URL + 'employee';
+let EMPLOYEE_URL = BASE_URL + 'employees';
 let EMPLOYER_URL = BASE_URL + 'employers';
 let IMAGE_URL = BASE_URL + 'images'
 let JOB_URL = BASE_URL + 'jobs';
@@ -29,7 +28,6 @@ export {
     IDS_URL,
     QUERY_PARAM,
     EMPLOYEE_URL,
-    EMPLOYEES_URL,
     IMAGE_URL,
     EMPLOYER_URL,
     JOB_URL,

@@ -12,7 +12,7 @@ import ar.edu.itba.paw.webapp.dto.ContactDto.ContactDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeCreateDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeEditDto;
-import ar.edu.itba.paw.webapp.dto.ReviewDto.ReviewDto;
+import ar.edu.itba.paw.webapp.dto.ReviewDto.EmployeeReviewDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +25,10 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.ArrayList;
@@ -33,7 +37,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("/employee")
+@Path("/employees")
 @Component
 public class EmployeeController {
     private final int PAGE_SIZE = 8;
@@ -61,17 +65,37 @@ public class EmployeeController {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
 
     @GET
+    @Path("")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response filterEmployees(
+            @QueryParam("name") String name,
+            @QueryParam("experience") @Min(0) @Max(100) Long experienceYears,
+            @QueryParam("location") @Size(max = 7) @Pattern(regexp = "[1-4][,[1-4]]*") String location,
+            @QueryParam("availability") @Size(max = 5) @Pattern(regexp = "[1-3][,[1-3]]*") String availability,
+            @QueryParam("abilities") @Size(max = 11) @Pattern(regexp = "[1-6][,[1-6]]*") String abilities,
+            @QueryParam("page") @DefaultValue("0") Long page,
+            @QueryParam("order") String orderCriteria,
+            @Context HttpServletRequest request
+    ) {
+
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+        LocaleContextHolder.setLocale(locale);
+
+        List<EmployeeDto> employees = employeeService
+                .getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria)
+                .stream()
+                .map(employee -> EmployeeDto.fromEmployee(uriInfo, employee, false))
+                .collect(Collectors.toList());
+        int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
+        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
+        };
+        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
+    }
+
+    @GET
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response employeeProfile(@PathParam("id") long id, @QueryParam("edit") String edit, @Context HttpServletRequest request) throws UserNotFoundException {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        HogarUser user = null;
-
-        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE"))) {
-            user = (HogarUser) auth.getPrincipal();
-        }
 
         Employee employee;
         try {
@@ -86,15 +110,8 @@ public class EmployeeController {
         EmployeeDto dto;
         if (edit != null && edit.equals("true"))
             dto = EmployeeDto.fromEdit(uriInfo, employee);
-        else if (user != null)
-            dto = EmployeeDto.fromMyProfile(uriInfo, employee);
-        else if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-            HogarUser hogarUser = (HogarUser) auth.getPrincipal();
-            Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
-            dto = EmployeeDto.fromProfile(uriInfo, employee, false, hasContact);
-        } else {
-            dto = EmployeeDto.fromProfile(uriInfo, employee, true, false);
-        }
+        else
+            dto = EmployeeDto.fromEmployee(uriInfo, employee, false);
 
         GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto) {
         };
@@ -143,18 +160,14 @@ public class EmployeeController {
     @GET
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getEmployeeReviews(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page) {
+    public Response getEmployeeReviews(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page, @QueryParam("except") Long except) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        HogarUser principal = (HogarUser) auth.getPrincipal();
-
-        List<ReviewDto> reviews = reviewService.getAllReviews(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER")) ? principal.getUserID() : null, page, PAGE_SIZE_REVIEWS)
+        List<EmployeeReviewDto> reviews = reviewService.getAllReviews(id, except, page, PAGE_SIZE_REVIEWS)
                 .stream()
-                .map(r -> ReviewDto.fromEmployeeReview(uriInfo, r))
+                .map(r -> EmployeeReviewDto.fromEmployeeReview(uriInfo, r))
                 .collect(Collectors.toList());
-        int pages = reviewService.getPageNumber(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER")) ? principal.getUserID() : null, PAGE_SIZE_REVIEWS);
-        GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
+        int pages = reviewService.getPageNumber(id, except, PAGE_SIZE_REVIEWS);
+        GenericEntity<List<EmployeeReviewDto>> genericEntity = new GenericEntity<List<EmployeeReviewDto>>(reviews) {
         };
         return Response.status(reviews.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
@@ -163,10 +176,10 @@ public class EmployeeController {
     @Path("/{employeeId}/reviews/{employerId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getMyReviewToEmployee(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId) {
-        Optional<ReviewDto> myReview = reviewService.getMyReview(employeeId, employerId).map(r -> ReviewDto.fromEmployeeReview(uriInfo, r));
+        Optional<EmployeeReviewDto> myReview = reviewService.getMyReview(employeeId, employerId).map(r -> EmployeeReviewDto.fromEmployeeReview(uriInfo, r));
         if (!myReview.isPresent())
             return Response.noContent().build();
-        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()) {
+        GenericEntity<EmployeeReviewDto> genericEntity = new GenericEntity<EmployeeReviewDto>(myReview.get()) {
         };
         return Response.ok(genericEntity).build();
 

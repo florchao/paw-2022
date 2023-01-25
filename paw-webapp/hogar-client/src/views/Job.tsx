@@ -65,7 +65,7 @@ export const Job = () => {
         else {
             localStorage.removeItem("reviewEmployerForm")
             reset()
-            post.json().then((r) => setMyReview(r))
+            ReviewService.getMyEmployeeReview(post.headers.get("Location")!).then((rsp) => setMyReview(rsp))
         }
     }
 
@@ -92,7 +92,8 @@ export const Job = () => {
 
     useEffect(() => {
             if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
-                ReviewService.getEmployerReviews(job.employerId.reviews, 0).then(
+                const employeeID = localStorage.getItem("hogar-uid") != null? localStorage.getItem("hogar-uid") : "0"
+                ReviewService.getEmployerReviews(job.employerId.reviews, 0, employeeID? parseInt(employeeID) : 0).then(
                     (rsp) => {
                         if( rsp !== undefined) {
                             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
@@ -161,7 +162,8 @@ export const Job = () => {
     const changePage = async (page: number) => {
         setReviews(null)
         setCurrent(false)
-        const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page)
+        const employeeID = localStorage.getItem("hogar-uid") != null? localStorage.getItem("hogar-uid") : "0"
+        const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page, employeeID? parseInt(employeeID) : 0)
         if( get !== undefined) {
             get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
             get.json().then((reviews) => {

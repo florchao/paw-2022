@@ -71,11 +71,7 @@ export const ProfileEmployee = () => {
             setShowMessage(true)
         else {
             setShowMessage(false)
-            post.json().then(
-                (r) => {
-                    setMyReview(r)
-                }
-            )
+            ReviewService.getMyEmployeeReview(post.headers.get("Location")!).then((r: any) => setMyReview(r))
         }
     }
 
@@ -117,8 +113,9 @@ export const ProfileEmployee = () => {
 
     useEffect(() => {
             if (employee) {
-                if (localStorage.getItem('hogar-uid') != null)
-                    ReviewService.getEmployeeReviews(employee.reviews, 0).then(
+                if (localStorage.getItem('hogar-uid') != null) {
+                    const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
+                    ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER"? parseInt(userID) : 0).then(
                         (rsp) => {
                             rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
                             if (rsp?.status === 200)
@@ -129,8 +126,9 @@ export const ProfileEmployee = () => {
                                 setReview([])
                         }
                     )
+                }
                 if (localStorage.getItem("hogar-role") === "EMPLOYER")
-                    ReviewService.getMyEmployeeReview(employee.employerReview).then(
+                    ReviewService.getMyEmployeeReview(employee.reviews).then(
                         (rsp) => {
                             setMyReview(rsp)
                             if (rsp != undefined) {
@@ -156,7 +154,8 @@ export const ProfileEmployee = () => {
     const changePage = async (page: number) => {
         setReview(null)
         setCurrent(page)
-        const get = await ReviewService.getEmployeeReviews(employee.reviews, page)
+        const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
+        const get = await ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER"? parseInt(userID) : 0)
         get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
         get?.json().then((reviews) => {
             setReview(reviews)
@@ -181,7 +180,7 @@ export const ProfileEmployee = () => {
         await RatingService.postEmployeeRating(event, employee.id, employerId, rate).then((rsp) => {
             setRating(rsp)
             closeModal()
-        }).catch(error => setRatingError(true))
+        }).catch(setRatingError(true))
     }
 
     const updateImageHandler = async (e: any) => {
@@ -407,7 +406,7 @@ export const ProfileEmployee = () => {
                             <h1 className="pb-3 pt-3 font-semibold">
                                 {t('Profile.reviews')}
                             </h1>
-                            {localStorage.getItem("hogar-role") === "EMPLOYER" && myReview === null && (
+                            {localStorage.getItem("hogar-role") === "EMPLOYER" && !myReview && (
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="">
                                         <label htmlFor="title"

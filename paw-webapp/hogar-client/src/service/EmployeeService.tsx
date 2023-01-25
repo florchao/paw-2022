@@ -1,4 +1,4 @@
-import {EMPLOYEE_URL, EMPLOYEES_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
+import {EMPLOYEE_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees(basicEncoded:string="") {
@@ -19,7 +19,7 @@ export class EmployeeService {
             }
         }
 
-        return await fetch(EMPLOYEES_URL, {
+        return await fetch(EMPLOYEE_URL, {
             method: 'GET',
             headers: header
         })
@@ -45,7 +45,7 @@ export class EmployeeService {
         order?: string
     ) {
 
-        let url = EMPLOYEES_URL + QUERY_PARAM
+        let url = EMPLOYEE_URL + QUERY_PARAM
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
