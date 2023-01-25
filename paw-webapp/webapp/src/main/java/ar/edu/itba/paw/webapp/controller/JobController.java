@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
@@ -43,23 +43,13 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response filterJobs(
             @QueryParam("name") String name,
-            @QueryParam("experience") Long experienceYears,
-            @QueryParam("location") String location,
-            @QueryParam("availability") String availability,
-            @QueryParam("abilities") String abilities,
+            @QueryParam("experience") @Min(0) @Max(100) Long experienceYears,
+            @QueryParam("location") @Pattern(regexp = "[1-4][,[1-4]]*") @Size(max = 7) String location,
+            @QueryParam("availability") @Pattern(regexp = "[1-3][,[1-3]]*") @Size(max = 5) String availability,
+            @QueryParam("abilities") @Pattern(regexp = "[1-6][,[1-6]]*") @Size(max = 11) String abilities,
             @QueryParam("page") @DefaultValue("0") Long page,
             @Context HttpServletRequest request
     ) {
-        if (experienceYears != null && (experienceYears < 0 || experienceYears > 100)) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        if (location != null && (!location.matches("[1-4][,[1-4]]*") || location.length() > 7)) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        if (availability != null && (!availability.matches("[1-3][,[1-3]]*") || availability.length() > 5))
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        if (abilities != null && (!abilities.matches("[1-6][,[1-6]]*") || abilities.length() > 11))
-            return Response.status(Response.Status.BAD_REQUEST).build();
 
         HogarUser principal = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -132,10 +122,8 @@ public class JobController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response deleteJob(@PathParam("id") long id) {
-
-        Job job;
         try {
-            job = jobService.getJobByID(id);
+            jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -155,10 +143,9 @@ public class JobController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response updateJobStatus(@PathParam("id") long id,
                                     @NotNull @FormDataParam("status") Boolean status) throws JobNotFoundException {
-
-        Job job;
+        
         try {
-            job = jobService.getJobByID(id);
+            jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
