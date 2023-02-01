@@ -10,7 +10,6 @@ export class ApplicantService{
         }
         if (linkUrl !== undefined) {
             url = linkUrl
-            console.log("mi link es: " + url)
         }
         return await fetch(url, {
             method: 'GET',
