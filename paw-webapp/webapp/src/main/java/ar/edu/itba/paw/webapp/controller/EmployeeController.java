@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class EmployeeController {
     private final int PAGE_SIZE = 1;
 
-    private final int PAGE_SIZE_REVIEWS = 4;
+    private final int PAGE_SIZE_REVIEWS = 1;
 
     @Autowired
     private EmployeeService employeeService;
@@ -170,9 +170,16 @@ public class EmployeeController {
                 .map(r -> ReviewDto.fromEmployeeReview(uriInfo, r))
                 .collect(Collectors.toList());
         int pages = reviewService.getPageNumber(id, auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER")) ? principal.getUserID() : null, PAGE_SIZE_REVIEWS);
-        GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
-        };
-        return Response.status(reviews.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) { };
+        if (reviews.isEmpty())
+            return Response.status(Response.Status.NO_CONTENT).entity(genericEntity).build();
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        return responseBuilder
+                .entity(genericEntity)
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @GET

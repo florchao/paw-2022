@@ -14,7 +14,7 @@ import ErrorFeedback from "../components/ErrorFeedback";
 import Modal from "react-modal";
 import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
-import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+import {BACK_SLASH, EMPLOYEE_URL, parseLink} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
 import bin from "../assets/bin.png";
 import noEmployees from "../assets/sinEmpleadas.png";
@@ -32,6 +32,9 @@ export const ProfileEmployee = () => {
     const [myReview, setMyReview]: any = useState(null)
     const [pages, setPages]: any = useState(0)
     const [current, setCurrent]: any = useState(0)
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
+
     const [ratingError, setRatingError]: any = useState(false)
     const employeeId = useParams();
     const location = useLocation();
@@ -118,6 +121,10 @@ export const ProfileEmployee = () => {
                     ReviewService.getEmployeeReviews(employee.reviews, 0).then(
                         (rsp) => {
                             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            let linkHeader = rsp.headers.get("link")
+                            if (linkHeader !== null) {
+                                parseLink(linkHeader, setNextPage, setPrevPage)
+                            }
                             if (rsp.status === 200)
                                 rsp.json().then((reviews) => {
                                     setReview(reviews)
@@ -150,11 +157,15 @@ export const ProfileEmployee = () => {
         }, [employee]
     )
 
-    const changePage = async (page: number) => {
+    const changePage = async (page: number, linkUrl?: string) => {
         setReview(null)
         setCurrent(page)
-        const get = await ReviewService.getEmployeeReviews(employee.reviews, page)
+        const get = await ReviewService.getEmployeeReviews(employee.reviews, page, linkUrl)
         get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        let linkHeader = get.headers.get("link")
+        if (linkHeader !== null) {
+            parseLink(linkHeader, setNextPage, setPrevPage)
+        }
         get.json().then((reviews) => {
             setReview(reviews)
         })
@@ -390,7 +401,7 @@ export const ProfileEmployee = () => {
                                     <div>
                                         {review.map((rev: any) =>
                                             <ReviewCard key={rev.employer.id} review={rev}/>)}
-                                        <PaginationButtons pages={pages} changePages={changePage} current={current}/>
+                                        <PaginationButtons pages={pages} changePages={changePage} current={current} nextPage={nextPage} prevPage={prevPage} />
                                     </div>
                                 }
                                 {review.length === 0 && !myReview &&
