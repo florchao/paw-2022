@@ -95,7 +95,7 @@ public class EmployeeController {
     @GET
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response employeeProfile(@PathParam("id") long id, @QueryParam("edit") String edit, @Context HttpServletRequest request) throws UserNotFoundException {
+    public Response employeeProfile(@PathParam("id") long id, @Context HttpServletRequest request) throws UserNotFoundException {
 
         Employee employee;
         try {
@@ -107,11 +107,29 @@ public class EmployeeController {
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
         LocaleContextHolder.setLocale(locale);
 
-        EmployeeDto dto;
-        if (edit != null && edit.equals("true"))
-            dto = EmployeeDto.fromEdit(uriInfo, employee);
-        else
-            dto = EmployeeDto.fromEmployee(uriInfo, employee, false);
+        EmployeeDto dto = EmployeeDto.fromEmployee(uriInfo, employee, false);
+
+        GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto) {
+        };
+        return Response.ok(genericEntity).build();
+    }
+
+    @GET
+    @Path("/{id}/edit")
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response employeeProfileToEdit(@PathParam("id") long id, @Context HttpServletRequest request) throws UserNotFoundException {
+
+        Employee employee;
+        try {
+            employee = employeeService.getEmployeeById(id);
+        } catch (UserNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+        LocaleContextHolder.setLocale(locale);
+
+        EmployeeDto dto = EmployeeDto.fromEdit(uriInfo, employee);
 
         GenericEntity<EmployeeDto> genericEntity = new GenericEntity<EmployeeDto>(dto) {
         };
@@ -122,10 +140,6 @@ public class EmployeeController {
     @Path("{id}/jobs")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response appliedTo(@QueryParam("page") @DefaultValue("0") Long page, @PathParam("id") long id, @Context HttpServletRequest request) {
-//        HogarUser user = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (user.getUserID() != id) {
-//            return Response.status(Response.Status.FORBIDDEN).build();
-//        }
 
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
         LocaleContextHolder.setLocale(locale);

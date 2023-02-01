@@ -88,7 +88,7 @@ export class EmployeeService {
 
     public static async getEmployee(url: string, edit: boolean) {
         if (edit)
-            url = url.concat('?edit=true')
+            url = url.concat('/edit')
         return await fetch(url, {
             method: 'GET',
             headers: localStorage.getItem('hogar-jwt') != null ? {

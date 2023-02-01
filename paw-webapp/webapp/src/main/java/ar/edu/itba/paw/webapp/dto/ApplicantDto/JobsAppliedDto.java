@@ -12,7 +12,7 @@ public class JobsAppliedDto {
     public static JobsAppliedDto fromEmployee(final UriInfo uriInfo, final Applicant applicant){
         final JobsAppliedDto dto = new JobsAppliedDto();
 
-        dto.job = JobDto.fromExplore(uriInfo, applicant.getJobID(), applicant.getStatus());
+        dto.job = JobDto.fromAppliedJob(uriInfo, applicant.getJobID(), applicant.getStatus());
 
         return dto;
     }

@@ -34,7 +34,7 @@ public class JobDto {
 
     private Integer status;
 
-    public static JobDto fromExplore(final UriInfo uriInfo, final Job job, int status) {
+    public static JobDto fromAppliedJob(final UriInfo uriInfo, final Job job, int status) {
         final JobDto dto = new JobDto();
 
         dto.jobId = job.getJobId();
