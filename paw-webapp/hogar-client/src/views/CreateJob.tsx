@@ -61,7 +61,7 @@ export const CreateJob = () => {
 
     const onSubmit = async (data:any, e: any) => {
         const post = await JobService.postJob(e, data.title, data.location, data.experienceYears, data.availability, data.abilities, data.description)
-        if (post.status !== 201) {
+        if (post?.status !== 201) {
             setJobError(true)
         } else {
             localStorage.removeItem("jobForm")

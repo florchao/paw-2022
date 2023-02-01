@@ -1,35 +1,19 @@
-import {useEffect, useState} from "react";
-import {UserService} from "../service/UserService";
+import {useState} from "react";
 import user from "../assets/user.png";
 
 const ReviewCard = (review: any)=> {
-    const [image, setImage]: any = useState()
 
     review = review.review
 
-    useEffect(() => {
-        let img;
-        if (review.employer !== undefined) {
-            img = review.employer.image;
-        }
-        else
-            img = review.employee.image
-        UserService.loadImage(img).then(
-            (img) => {
-                if (img.size == 0)
-                    setImage(user)
-                else
-                    setImage(URL.createObjectURL(img))
-            }
-        )
-    }, [])
+
+    const [image, setImage]: any = useState(review.employer !== undefined? review.employer.image: review.employee.image)
 
     return (
         <li className="py-3 px-3 sm:py-4">
             {review &&
                 <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0 self-start">
-                        <img className="w-8 h-8 rounded-full object-cover" src={image} alt="employer photo"/>
+                        <img className="w-8 h-8 rounded-full object-cover" src={image} alt="user photo" onError={() => setImage(user)}/>
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className="text-xl font-medium text-gray-900 text-ellipsis">

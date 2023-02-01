@@ -64,11 +64,10 @@ public class ReviewJpaDaoTest {
 
     @Test
     public void testCreate(){
-        byte [] image = {};
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
-        final Employer employer = employerJpaDao.create(NAME, user, image);
+        final Employer employer = employerJpaDao.create(NAME, user);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
 
 
         Review review = reviewJpaDao.create(employee, employer, TEXT, DATE, true);
@@ -81,11 +80,10 @@ public class ReviewJpaDaoTest {
 
     @Test
     public void testGetMyReviews(){
-        byte [] image = {};
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
-        final Employer employer = employerJpaDao.create(NAME, user, image);
+        final Employer employer = employerJpaDao.create(NAME, user);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
         reviewJpaDao.create(employee, employer, TEXT, DATE, true);
 
         Optional<Review> reviewList = reviewJpaDao.getMyReview(employee, employer);
@@ -96,11 +94,10 @@ public class ReviewJpaDaoTest {
 
     @Test
     public void testGetAllReviewsEmployer(){
-        byte [] image = {};
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
-        final Employer employer = employerJpaDao.create(NAME, user, image);
+        final Employer employer = employerJpaDao.create(NAME, user);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
         reviewJpaDao.create(employee, employer, TEXT, DATE, false);
 
         List<Review> reviewList = reviewJpaDao.getAllReviewsEmployer(employee, employer, 0L,3 );
@@ -111,11 +108,10 @@ public class ReviewJpaDaoTest {
 
     @Test
     public void testGetMyReviewEmployer(){
-        byte [] image = {};
         final User user = userJpaDao.create(USERNAME, PASSWORD, 2);
-        final Employer employer = employerJpaDao.create(NAME, user, image);
+        final Employer employer = employerJpaDao.create(NAME, user);
         final User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
         Review review = reviewJpaDao.create(employee, employer, TEXT, DATE, true);
 
         Optional<Review> reviewList = reviewJpaDao.getMyReviewEmployer(employee, employer);

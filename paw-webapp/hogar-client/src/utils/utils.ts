@@ -1,4 +1,4 @@
-let BASE_URL = 'http://pawserver.it.itba.edu.ar/paw-2022a-02/api/';
+let BASE_URL = 'http://localhost:8080/';
 let BACK_SLASH = '/';
 let QUERY_PARAM = '?';
 let EMPLOYEE_URL = BASE_URL + 'employees';
@@ -13,7 +13,31 @@ let REVIEWS_URL = BASE_URL + 'reviews';
 let USERS_URL = BASE_URL + 'users';
 let USER_URL = BASE_URL + 'user';
 let JOBS = '/jobs';
-let APPLICANTS = '/applicants';
 let CONTACTS = '/contacts';
 
-export { BASE_URL, IDS_URL, QUERY_PARAM, EMPLOYEE_URL, IMAGE_URL, EMPLOYER_URL, JOB_URL, REVIEWS_URL, RATINGS_URL, APPLICANT_URL, USER_URL, JOBS, APPLICANTS, CONTACT_URL, CONTACTS, USERS_URL,BACK_SLASH };
+export function JWTExpired() {
+    window.location.replace('/login');
+    localStorage.removeItem("hogar-uid");
+    localStorage.removeItem("hogar-role");
+    localStorage.removeItem("hogar-jwt");
+    return undefined
+}
+
+export {
+    BASE_URL,
+    IDS_URL,
+    QUERY_PARAM,
+    EMPLOYEE_URL,
+    IMAGE_URL,
+    EMPLOYER_URL,
+    JOB_URL,
+    REVIEWS_URL,
+    RATINGS_URL,
+    APPLICANT_URL,
+    USER_URL,
+    JOBS,
+    CONTACT_URL,
+    CONTACTS,
+    USERS_URL,
+    BACK_SLASH
+};

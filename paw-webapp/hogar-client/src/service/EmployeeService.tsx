@@ -1,26 +1,20 @@
-import {EMPLOYEE_URL, QUERY_PARAM} from "../utils/utils";
+import {EMPLOYEE_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees(basicEncoded:string="") {
-        console.log("ACACACACAC")
-        console.log(basicEncoded)
-        console.log("ACACACACAC")
         let header
         if (localStorage.getItem('hogar-jwt') != null) {
             header = {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
         } else if (basicEncoded != "") {
             header = {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + basicEncoded
             }
         } else {
             header = {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
         }
@@ -28,15 +22,13 @@ export class EmployeeService {
         return await fetch(EMPLOYEE_URL, {
             method: 'GET',
             headers: header
-            // headers: localStorage.getItem('hogar-jwt') != null ?{
-            //     'Access-Control-Allow-Origin': '*',
-            //     'Content-Type': 'application/json',
-            //     "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
-            // } : {
-            //     'Access-Control-Allow-Origin': '*',
-            //     'Content-Type': 'application/json'
-            // }
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     throw error
@@ -57,7 +49,7 @@ export class EmployeeService {
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        if(page > 0)
+        if (page > 0)
             url = this.concatStringQueries(url, 'page', String(page))
         url = this.concatStringQueries(url, 'name', name)
         url = this.concatStringQueries(url, 'location', location)
@@ -67,15 +59,19 @@ export class EmployeeService {
 
         return await fetch(url, {
             method: 'GET',
-            headers: localStorage.getItem('hogar-jwt') != null ?{
-                'Access-Control-Allow-Origin': '*',
+            headers: localStorage.getItem('hogar-jwt') != null ? {
                 'Content-Type': 'application/json',
                 "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
             } : {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     throw error
@@ -90,20 +86,24 @@ export class EmployeeService {
     }
 
 
-    public static async getEmployee(url: string, edit:boolean) {
-        if(edit)
-            url = url.concat('?edit=true')
+    public static async getEmployee(url: string, edit: boolean) {
+        if (edit)
+            url = url.concat('/edit')
         return await fetch(url, {
             method: 'GET',
             headers: localStorage.getItem('hogar-jwt') != null ? {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
-            }: {
-                "Access-Control-Allow-Origin": "*",
+            } : {
                 "Content-Type": "application/json"
             }
-        }).then((resp) => resp.json())
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            } else if (response.status == 200) {
+                return response.json()
+            }
+        })
             .catch(
                 (error) => {
                     console.log(error)
@@ -111,46 +111,59 @@ export class EmployeeService {
                 })
     }
 
-    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
+    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[]) {
         e.preventDefault();
 
-        const formData:any = new FormData();
-        formData.append("mail", mail)
-        formData.append("password", password)
-        formData.append("confirmPassword", confirmPassword)
-        formData.append("name", name)
-        formData.append("location", location)
-        formData.append("experienceYears", experienceYears)
-        formData.append("hourlyFee", hourlyFee)
-        availabilities.forEach(a => formData.append("availabilities[]", a))
-        abilities.forEach(a => formData.append("abilities[]", a))
-        formData.append("image", image, image.name)
+        const employeeForm = JSON.stringify({
+            name: name,
+            mail: mail,
+            password: password,
+            confirmPassword: confirmPassword,
+            location: location,
+            experienceYears: experienceYears,
+            hourlyFee: hourlyFee,
+            availability: availabilities,
+            abilities: abilities,
+        });
+
+        //TODO: Arreglar lo de las imágenes
 
         return await fetch(EMPLOYEE_URL, {
             method: 'POST',
-            headers: {},
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: employeeForm
         })
     }
 
-    public static async editEmployee(e: any, self:string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
+    public static async editEmployee(e: any, self: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image: File) {
         e.preventDefault();
 
-        const formData:any = new FormData();
-        formData.append("name", name)
-        formData.append("location", location)
-        formData.append("experienceYears", experienceYears)
-        formData.append("hourlyFee", hourlyFee)
-        availabilities.forEach(a => formData.append("availabilities[]", a))
-        abilities.forEach(a => formData.append("abilities[]", a))
-        formData.append("image", image, image.name)
+        const employeeEditForm = JSON.stringify({
+            name: name,
+            location: location,
+            experienceYears: experienceYears,
+            hourlyFee: hourlyFee,
+            availability: availabilities,
+            abilities: abilities,
+            image: image
+        });
+
+        //TODO: Arreglar lo de las imágenes
 
         return await fetch(self, {
             method: 'PUT',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
-        }).then((r) => r.text())
+            body: employeeEditForm
+        }).then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response.text()
+            })
     }
 }

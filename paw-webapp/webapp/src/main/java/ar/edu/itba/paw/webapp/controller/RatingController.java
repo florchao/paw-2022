@@ -3,17 +3,18 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.RaitingService;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import ar.edu.itba.paw.webapp.dto.RatingDto.RatingCretaeDto;
+import ar.edu.itba.paw.webapp.dto.RatingDto.RatingDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.Objects;
+import javax.ws.rs.core.*;
 
-@Path("/api/ratings")
+@Path("/ratings")
 @Component
 public class RatingController {
 
@@ -22,87 +23,36 @@ public class RatingController {
     @Autowired
     private RaitingService ratingService;
 
+    @Context
+    UriInfo uriInfo;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RatingController.class);
+
     @GET
     @Path("/{employeeId}/{employerId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getEmployeeRating(@PathParam("employeeId") long userId, @PathParam("employerId") long employerId) {
         try {
-            Rating rating = new Rating(employeeService.getRating(userId), employeeService.getRatingVoteCount(userId), ratingService.hasAlreadyRated(userId, employerId));
-            GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(rating) {
+            RatingDto rating = RatingDto.fromRating(ratingService.getRating(userId), employeeService.getRatingVoteCount(userId), ratingService.hasAlreadyRated(userId, employerId));
+            GenericEntity<RatingDto> genericEntity = new GenericEntity<RatingDto>(rating) {
             };
             return Response.ok(genericEntity).build();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("an exception occurred:", e);
             return Response.status(Response.Status.CONFLICT).build();
         }
     }
 
     @POST
     @Path("")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response postRating(@FormDataParam("rating") Long rating, @FormDataParam("employeeId") Long employeeId, @FormDataParam("employerId") Long employerId) {
-        if (rating == null)
-            rating = 0L;
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    public Response postRating(@Valid RatingCretaeDto ratingDto) {
 
-        if (Objects.isNull(employeeId) || Objects.isNull(employerId) || Objects.equals(employeeId, employerId))
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (ratingService.hasAlreadyRated(ratingDto.getEmployeeId(), ratingDto.getEmployerId()))
+            return Response.status(Response.Status.CONFLICT).build();
 
-        if (ratingService.hasAlreadyRated(employeeId, employerId))
-            return Response.status(Response.Status.FORBIDDEN).build();
+        ratingService.updateRating(ratingDto.getEmployeeId(), ratingDto.getRating(), ratingDto.getEmployerId());
 
-        float newRating = ratingService.updateRating(employeeId, rating, employerId);
-        Rating r = new Rating(newRating, employeeService.getRatingVoteCount(employeeId), ratingService.hasAlreadyRated(employeeId, employerId));
-        GenericEntity<Rating> genericEntity = new GenericEntity<Rating>(r) {
-        };
-        return Response.status(Response.Status.CREATED).entity(genericEntity).build();
-    }
+        return Response.created(uriInfo.getBaseUriBuilder().path("/ratings/" + ratingDto.getEmployeeId()).build()).header("Access-Control-Expose-Headers", "Location").build();
 
-    static class Rating {
-        float rating;
-        long count;
-
-        boolean hasRated;
-
-
-        public Rating(float rating, long count, boolean hasRated) {
-            this.rating = rating;
-            this.count = count;
-            this.hasRated = hasRated;
-        }
-
-        public Rating() {
-        }
-
-        public float getRating() {
-            return rating;
-        }
-
-        public void setRating(float rating) {
-            this.rating = rating;
-        }
-
-        public long getCount() {
-            return count;
-        }
-
-        public void setCount(long count) {
-            this.count = count;
-        }
-
-        public boolean isHasRated() {
-            return hasRated;
-        }
-
-        public void setHasRated(boolean hasRated) {
-            this.hasRated = hasRated;
-        }
-
-        @Override
-        public String toString() {
-            return "Rating{" +
-                    "rating=" + rating +
-                    ", count=" + count +
-                    '}';
-        }
     }
 }

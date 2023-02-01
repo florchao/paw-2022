@@ -62,9 +62,8 @@ public class JobJpaDaoTest {
                 .setParameter(3, PASSWORD)
                 .setParameter(4, ROLE)
                 .executeUpdate();
-        byte [] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
-        final Employer employer = employerJdbcDao.create(NAME,user.get(), image);
+        final Employer employer = employerJdbcDao.create(NAME,user.get());
         Job job = jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
         Assert.assertNotNull(job);
@@ -86,8 +85,7 @@ public class JobJpaDaoTest {
                 .setParameter(4, ROLE)
                 .executeUpdate();
         Optional<User> user = userJpaDao.getUserById(0);
-        byte [] image = {};
-        Employer employer = employerJdbcDao.create(NAME, user.get(), image );
+        Employer employer = employerJdbcDao.create(NAME, user.get());
         jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
         List<Job> job =  jobJdbcDao.getAllActiveJobs(10);
@@ -105,8 +103,7 @@ public class JobJpaDaoTest {
                 .setParameter(4, ROLE)
                 .executeUpdate();
         Optional<User> user = userJpaDao.getUserById(0);
-        byte [] image = {};
-        Employer employer = employerJdbcDao.create(NAME, user.get(), image );
+        Employer employer = employerJdbcDao.create(NAME, user.get());
         Job job = jobJdbcDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
         jobJdbcDao.deleteJob(job.getJobId());

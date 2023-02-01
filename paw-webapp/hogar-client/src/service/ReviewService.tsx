@@ -1,19 +1,30 @@
-import {BACK_SLASH, REVIEWS_URL} from "../utils/utils";
+import {BACK_SLASH, JWTExpired, REVIEWS_URL} from "../utils/utils";
 
 export class ReviewService {
-
-    public static async getEmployeeReviews(url: string, page:number) {
-        if(page > 0) {
+    public static async getEmployeeReviews(url: string, page: number, employerId?: number) {
+        if (page > 0) {
             url = url + "?page=" + page
+        }
+
+        if (employerId && employerId !== 0) {
+            if(page > 0){
+                url = url + "&except=" + employerId
+            } else
+                url = url + "?except=" + employerId
         }
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     console.log(error)
@@ -21,17 +32,27 @@ export class ReviewService {
                 })
     }
 
-    public static async getEmployerReviews(url: string, page: number) {
-        if(page > 0) {
+    public static async getEmployerReviews(url: string, page: number, employeeId?: number) {
+        if (page > 0) {
             url = url + "?page=" + page
+        }
+        if (employeeId && employeeId !== 0) {
+            if(page > 0){
+                url = url + "&except=" + employeeId
+            } else
+                url = url + "?except=" + employeeId
         }
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
             .catch(
                 (error) => {
@@ -44,12 +65,14 @@ export class ReviewService {
         return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => {
-                if (resp.status == 200) {
+            if (resp.status === 401) {
+                return JWTExpired()
+            }
+            else if (resp.status == 200) {
                     return resp.json()
                 }
             }
@@ -61,17 +84,19 @@ export class ReviewService {
                 })
     }
 
-    public static async getMyEmployeeReview(url: number) {
+    public static async getMyEmployeeReview(url?: string) {
         return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
 
             },
         }).then((resp) => {
-                if (resp.status == 200) {
+            if (resp.status === 401) {
+                return JWTExpired()
+            }
+            else if (resp.status == 200) {
                     return resp.json()
                 }
             }
@@ -85,35 +110,51 @@ export class ReviewService {
 
     public static async postEmployerReview(e: any, employerId: number, message: string) {
         e.preventDefault();
-        const formData: any = new FormData();
-        formData.append("content", message)
-        formData.append("employeeId", localStorage.getItem("hogar-uid"))
-        formData.append("employerId", employerId)
-        formData.append("forEmployee", false)
+
+        const reviewFrom = JSON.stringify({
+            employerId: employerId,
+            employeeId: localStorage.getItem("hogar-uid"),
+            content: message,
+            forEmployee: false
+        })
 
         return await fetch(REVIEWS_URL, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
+            body: reviewFrom
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
     public static async postEmployeeReview(e: any, employeeId: number, message: string) {
         e.preventDefault();
-        const formData: any = new FormData();
-        formData.append("content", message)
-        formData.append("employeeId", employeeId)
-        formData.append("employerId", localStorage.getItem("hogar-uid"))
-        formData.append("forEmployee", true)
+
+        const reviewForm = JSON.stringify({
+            employeeId: employeeId,
+            employerId: localStorage.getItem("hogar-uid"),
+            content: message,
+            forEmployee: true
+        })
 
         return await fetch(REVIEWS_URL, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
+            body: reviewForm
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 }

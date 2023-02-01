@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.config;
 
 import ar.edu.itba.paw.webapp.auth.AuthenticationFilter;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
+import ar.edu.itba.paw.webapp.voters.AntMatcherVoter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,7 +27,7 @@ import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("ar.edu.itba.paw.webapp.auth")
+@ComponentScan({"ar.edu.itba.paw.webapp.auth", "ar.edu.itba.paw.webapp.voters"})
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -50,48 +51,56 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+    @Bean
+    public AntMatcherVoter antMatcherVoter() { return new AntMatcherVoter();}
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource())
+                .and().headers().cacheControl().disable()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/applicants/{employeeId}/{jobId}").access("@antMatcherVoter.canEditEmployee(authentication, #employeeId)")
+                .antMatchers(HttpMethod.POST, "/applicants").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.PUT, "/applicants/{employeeId}/{jobId}").access("@antMatcherVoter.canDeleteJob(authentication, #jobId)")
+                .antMatchers(HttpMethod.DELETE, "/applicants/{employeeId}/{jobId}").access("@antMatcherVoter.canEditEmployee(authentication, #employeeId)")
+                .antMatchers(HttpMethod.POST, "/contacts/us").permitAll()
+                .antMatchers(HttpMethod.POST, "/contacts").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.GET, "/contacts/{employeeId}/{employerId}").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.GET, "/employees").access("hasAuthority('EMPLOYER') or isAnonymous()")
+                .antMatchers(HttpMethod.GET, "/employee/{id}").access("@antMatcherVoter.canAccessEmployeeProfile(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/employee/{id}/jobs").access("@antMatcherVoter.canEditEmployee(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/employee/{id}/contacts").access("@antMatcherVoter.canEditEmployee(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/employee/{id}/reviews").authenticated()
+                .antMatchers(HttpMethod.GET, "/employee/{employeeId}/reviews/{employerId}").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.POST, "/employee").anonymous()
+                .antMatchers(HttpMethod.PUT, "/employee/{id}").access("@antMatcherVoter.canEditEmployee(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/employers/{id}").access("@antMatcherVoter.canAccessEmployerProfile(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/employers/{id}/edit").access("@antMatcherVoter.canEditEmployee(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/employers/{id}/jobs").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.GET, "/employers/{id}/reviews").authenticated()
+                .antMatchers(HttpMethod.GET, "/employers/{employerId}/reviews/{employeeId}").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.POST, "/employers").anonymous()
+                .antMatchers(HttpMethod.GET, "/assets/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/jobs").hasAuthority("EMPLOYEE")
+                .antMatchers(HttpMethod.GET, "/jobs/{id}").authenticated()
+                .antMatchers(HttpMethod.GET, "/applicants/{id}").access("@antMatcherVoter.canDeleteJob(authentication, #id)")
+                .antMatchers(HttpMethod.POST, "/jobs").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.DELETE, "/jobs/{id}").access("@antMatcherVoter.canDeleteJob(authentication, #id)")
+                .antMatchers(HttpMethod.PUT, "/jobs/{id}").access("@antMatcherVoter.canDeleteJob(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/ratings/{employeeId}/{employerId}").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.POST, "/ratings").hasAuthority("EMPLOYER")
+                .antMatchers(HttpMethod.POST, "/reviews").authenticated()
+                .antMatchers(HttpMethod.PUT, "/users").anonymous()
+                .antMatchers(HttpMethod.GET, "/user").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/users/{id}").access("@antMatcherVoter.canDeleteUser(authentication, #id)")
+                .antMatchers(HttpMethod.GET, "/ids").permitAll()
+                .antMatchers(HttpMethod.GET, "/images/{id}").permitAll()
+                .antMatchers(HttpMethod.POST, "/images").authenticated()
+                .antMatchers(HttpMethod.PUT, "/images/{id}").access("@antMatcherVoter.canUploadImage(authentication, #id)")
                 .and().antMatcher("/**").authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/applicants/{employeeId}/{jobId}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.POST, "/api/applicants").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.PUT, "/api/applicants/{employeeId}/{jobId}").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.DELETE, "/api/applicants/{employeeId}/{jobId}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.POST, "/api/contacts/us").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/contacts").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.GET, "/api/contacts/{employeeId}/{employerId}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET, "/api/employees").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/employees/{id}").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/employees/{id}/jobs").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET, "/api/employees/{id}/contacts").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET, "/api/employees/{id}/reviews").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/employees/{employeeId}/reviews/{employerId}").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.POST, "/api/employees").anonymous()
-                .antMatchers(HttpMethod.PUT, "/api/employees/{id}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET, "/api/employers/{id}").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.GET, "/api/employers/{id}/jobs").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.GET, "/api/employers/{id}/reviews").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/employers/{employerId}/reviews/{employeeId}").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.POST, "/api/employers").anonymous()
-                .antMatchers(HttpMethod.GET, "/api/assets/{id}").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/jobs").hasAuthority("EMPLOYEE")
-                .antMatchers(HttpMethod.GET, "/api/jobs/{id}").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/jobs/{id}/applicants").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.POST, "/api/jobs").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.DELETE, "/api/jobs/{id}").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.GET, "/api/ratings/{employeeId}/{employerId}").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.POST, "/api/ratings").hasAuthority("EMPLOYER")
-                .antMatchers(HttpMethod.POST, "/api/reviews").authenticated()
-                .antMatchers(HttpMethod.PUT, "/api/users").anonymous()
-                .antMatchers(HttpMethod.GET, "/api/user").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/users/{id}").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/ids").permitAll()
                 .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
@@ -109,6 +118,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Link", "Location", "ETag"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

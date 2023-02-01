@@ -26,9 +26,10 @@ export const CreatedJobs = () => {
         setCurrent(page)
         let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
         JobService.getCreatedJobs(url, false, page).then( async (j) => {
-            j.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
-            j.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j.json())
+            j?.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
+            j?.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j?.json())
         });
+
     }
 
     return (

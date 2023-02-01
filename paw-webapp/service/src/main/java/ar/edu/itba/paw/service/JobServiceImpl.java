@@ -58,23 +58,32 @@ public class JobServiceImpl implements JobService {
         if (name == null && experienceYears == null && location == null && availability == null && abilities == null && page == 0) {
             return jobDao.getAllActiveJobs(pageSize);
         }
-        List<String> availabilityList = new ArrayList<>();
+        List<String> availabilityList;
         if (availability != null) {
+            availabilityList = new ArrayList<>();
             availabilityList = Arrays.asList(availability.split(","));
+        } else {
+            availabilityList = Collections.emptyList();
         }
-        List<String> abilitiesList = new ArrayList<>();
+        List<String> abilitiesList;
         if (abilities != null) {
+            abilitiesList = new ArrayList<>();
             abilitiesList = Arrays.asList(abilities.split(","));
+        } else {
+            abilitiesList = Collections.emptyList();
         }
-        List<String> locationList = new ArrayList<>();
+        List<String> locationList;
         if (location != null) {
+            locationList = new ArrayList<>();
             locationList = Arrays.asList(location.split(","));
+        } else {
+            locationList = Collections.emptyList();
         }
         return jobDao.getFilteredJobs(name, experienceYears, locationList, availabilityList, abilitiesList, page, pageSize);
     }
 
     @Override
-    public Boolean alreadyApplied(long jobId, long employeeId) {
+    public boolean alreadyApplied(long jobId, long employeeId) {
         Optional<Employee> employee = employeeDao.getEmployeeById(employeeId);
         Optional<Job> job = jobDao.getJobById(jobId);
         if (employee.isPresent() && job.isPresent())
@@ -85,17 +94,26 @@ public class JobServiceImpl implements JobService {
     @Transactional(readOnly = true)
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize) {
-        List<String> availabilityList = new ArrayList<>();
+        List<String> availabilityList;
         if (availability != null) {
+            availabilityList = new ArrayList<>();
             availabilityList = Arrays.asList(availability.split(","));
+        } else {
+            availabilityList = Collections.emptyList();
         }
-        List<String> abilitiesList = new ArrayList<>();
+        List<String> abilitiesList;
         if (abilities != null) {
+            abilitiesList = new ArrayList<>();
             abilitiesList = Arrays.asList(abilities.split(","));
+        } else {
+            abilitiesList = Collections.emptyList();
         }
-        List<String> locationList = new ArrayList<>();
+        List<String> locationList;
         if (location != null) {
+            locationList = new ArrayList<>();
             locationList = Arrays.asList(location.split(","));
+        } else {
+            locationList = Collections.emptyList();
         }
         return jobDao.getPageNumber(name, experienceYears, locationList, availabilityList, abilitiesList, pageSize);
     }

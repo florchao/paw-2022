@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,7 +36,7 @@ public class ApplicantJpaDao implements ApplicantDao{
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         // noinspection JpaQlInspection
         final TypedQuery<Applicant> query = em.createQuery("select a from Applicant a where jobid in :ids and a.employeeID =:employee", Applicant.class);
@@ -62,7 +62,7 @@ public class ApplicantJpaDao implements ApplicantDao{
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         // noinspection JpaQlInspection
         final TypedQuery<Applicant> query = em.createQuery("select u from Applicant u where employeeid in :ids and u.jobID =:jobID order by u.status", Applicant.class);

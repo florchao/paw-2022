@@ -1,6 +1,7 @@
-package ar.edu.itba.paw.webapp.dto;
+package ar.edu.itba.paw.webapp.dto.EmployerDto;
 
 import ar.edu.itba.paw.model.Employer;
+import ar.edu.itba.paw.webapp.dto.DtoUtils;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -17,7 +18,7 @@ public class EmployerDto {
 
     private URI employeeReview;
 
-    private URI delete;
+    private URI users;
 
     private URI jobs;
 
@@ -27,14 +28,14 @@ public class EmployerDto {
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
         dto.id = employer.getId().getId();
 
-        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/api/images").path(String.valueOf(employer.getId().getId()));
-        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
-        final UriBuilder deleteBuilder = uriInfo.getBaseUriBuilder().path("/api/users").path(String.valueOf(employer.getId().getId()));
-        final UriBuilder jobsBuilder = uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(employer.getId().getId())).path("jobs");
+        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
+        final UriBuilder usersBuilder = uriInfo.getBaseUriBuilder().path("/users").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder jobsBuilder = uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(employer.getId().getId())).path("jobs");
 
         dto.image = imageUriBuilder.build();
         dto.reviews = reviewBuilder.build();
-        dto.delete = deleteBuilder.build();
+        dto.users = usersBuilder.build();
         dto.jobs = jobsBuilder.build();
 
         return dto;
@@ -45,7 +46,7 @@ public class EmployerDto {
 
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
         dto.id = employer.getId().getId();
-        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
+        final UriBuilder reviewBuilder = uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(employer.getId().getId())).path("reviews");
         dto.reviews = reviewBuilder.build();
 
         return dto;
@@ -58,7 +59,7 @@ public class EmployerDto {
 
         dto.name = DtoUtils.firstWordsToUpper(employer.getName());
 
-        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/api/images").path(String.valueOf(employer.getId().getId()));
+        final UriBuilder imageUriBuilder = uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(employer.getId().getId()));
         dto.image = imageUriBuilder.build();
 
         return dto;
@@ -119,12 +120,12 @@ public class EmployerDto {
         this.employeeReview = employeeReview;
     }
 
-    public URI getDelete() {
-        return delete;
+    public URI getUsers() {
+        return users;
     }
 
-    public void setDelete(URI delete) {
-        this.delete = delete;
+    public void setUsers(URI users) {
+        this.users = users;
     }
 
     public URI getJobs() {

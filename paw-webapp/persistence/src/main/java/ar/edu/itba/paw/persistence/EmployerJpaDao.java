@@ -17,9 +17,8 @@ public class EmployerJpaDao implements EmployerDao{
     private EntityManager em;
 
     @Override
-    public Employer create(String name, User id, byte[] image) {
+    public Employer create(String name, User id) {
         final Employer employer = new Employer(name.toLowerCase(), id);
-        employer.getId().setImage(image);
         em.persist(employer);
         return employer;
     }

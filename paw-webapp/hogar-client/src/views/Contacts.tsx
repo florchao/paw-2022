@@ -41,8 +41,8 @@ export const Contacts = () => {
         setCurrent(page)
         ContactService.contacts(id, page).then(
             (rsp) => {
-                rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if(rsp.status === 200)
+                rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                if(rsp?.status === 200)
                     rsp.json().then((conts: any) => {
                         setContacts(conts)
                     })

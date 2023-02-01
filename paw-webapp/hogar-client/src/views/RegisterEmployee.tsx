@@ -11,9 +11,10 @@ const RegisterEmployee = () => {
     const {t} = useTranslation();
 
 
-    const onSubmit = async (data: any, e: any, image: File) => {
-        const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.hourlyFee, data.availabilities, data.abilities, image!)
-        if (post.status === 500 || post.status === 400) {
+    const onSubmit = async (data: any, e: any) => {
+        const post = await EmployeeService.registerEmployee(e, data.mail, data.password, data.confirmPassword, data.name, data.location, data.experienceYears, data.hourlyFee, data.availabilities, data.abilities)
+        //TODO: el 400 puede que se mande mal la info, no es solo que ya existe el usuario
+        if (post.status === 500 || post.status === 400 || post.status === 409) {
             setRegisterEmployeeError(true)
         }
 
@@ -30,8 +31,7 @@ const RegisterEmployee = () => {
                 let authHeader = result.headers.get('Authorization')
                 localStorage['hogar-jwt'] = authHeader?.slice(7)
             }
-            let body = await post.json()
-            nav('/profile', {replace: true, state: {self: body.value, status: -1}})
+            nav('/explore')
             window.location.reload()
         }
 

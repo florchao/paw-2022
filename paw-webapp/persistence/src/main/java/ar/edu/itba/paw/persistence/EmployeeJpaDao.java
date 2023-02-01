@@ -24,24 +24,22 @@ public class EmployeeJpaDao implements EmployeeDao {
     List<String> orderCriteriaWhiteList = new ArrayList<>(Arrays.asList("rating", "experienceYears"));
 
     @Override
-    public Employee create(User user, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites, byte[] image) {
+    public Employee create(User user, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites) {
         final Employee employee = new Employee(name.toLowerCase(), location.toLowerCase(), user, availability, experienceYears, hourlyFee, abilites);
         employee.setRating(0);
         employee.setVoteCount(0);
-        employee.getId().setImage(image);
         em.persist(employee);
         return employee;
     }
 
     @Override
-    public void update(Employee employee, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites, byte[] image) {
+    public void update(Employee employee, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites) {
         employee.setName(name);
         employee.setAbilities(abilites);
         employee.setLocation(location);
         employee.setExperienceYears(experienceYears);
         employee.setHourlyFee(hourlyFee);
         employee.setAvailability(availability);
-        employee.getId().setImage(image);
     }
 
     @Override
@@ -52,7 +50,7 @@ public class EmployeeJpaDao implements EmployeeDao {
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
 
         // noinspection JpaQlInspection
@@ -81,8 +79,8 @@ public class EmployeeJpaDao implements EmployeeDao {
         stringBuilder.append("SELECT employeeid FROM employee where ");
 
         if (name != null) {
-            stringBuilder.append("lower(name) like :name ");
-            paramMap.put("name", '%' + name.toLowerCase() + '%');
+            stringBuilder.append("name ilike :name ");
+            paramMap.put("name", '%' + name + '%');
             stringBuilder.append(" and   ");
 
         }
@@ -136,7 +134,7 @@ public class EmployeeJpaDao implements EmployeeDao {
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         if(!orderCriteriaWhiteList.contains(orderCriteria))
             orderCriteria = "rating";

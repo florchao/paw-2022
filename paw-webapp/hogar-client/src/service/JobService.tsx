@@ -1,15 +1,25 @@
-import {BACK_SLASH, BASE_URL, JOB_URL, JOBS, QUERY_PARAM} from "../utils/utils";
+import {BASE_URL, JOB_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
 
 export class JobService {
     public static async getJobs() {
         return await fetch(JOB_URL, {
             method: 'GET',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
+            // .then((response) => {
+            //     if (response.status === 401) {
+            //         return JWTExpired()
+            //     }
+            //     return response
+            // })
             .catch(
                 (error) => {
                     throw error
@@ -29,7 +39,7 @@ export class JobService {
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        if(page > 0)
+        if (page > 0)
             url = this.concatStringQueries(url, 'page', String(page))
         url = this.concatStringQueries(url, 'name', name)
         url = this.concatStringQueries(url, 'location', location)
@@ -39,11 +49,21 @@ export class JobService {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
+            // .then((response) => {
+            //     if (response.status === 401) {
+            //         return JWTExpired()
+            //     }
+            //     return response
+            // })
             .catch(
                 (error) => {
                     throw error
@@ -61,26 +81,31 @@ export class JobService {
         return await fetch(BASE_URL + 'jobs' + '/' + id, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Basic ' + basicEncoded
             },
         }).catch(
-                (error) => {
-                    console.log(error)
-                    throw error
-                })
+            (error) => {
+                console.log(error)
+                throw error
+            })
     }
 
     public static async getJob(url: string) {
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => resp.json())
+        }).then((resp) => {
+            if (resp.status === 401) {
+                return JWTExpired()
+            }
+            else if (resp.status == 200) {
+                return resp.json()
+            }
+        })
             .catch(
                 (error) => {
                     console.log(error)
@@ -90,35 +115,48 @@ export class JobService {
 
     public static async postJob(e: any, title: string, location: string, experienceYears: number, availability: string, abilities: string[], description: string) {
         e.preventDefault();
-        let formData = new FormData();
-        formData.append("title", title);
-        formData.append("location", location);
-        formData.append("experienceYears", experienceYears.toString());
-        formData.append("availability", availability);
-        abilities.forEach(a => formData.append("abilities[]", a))
-        formData.append("description", description);
+
+        const jobForm = JSON.stringify({
+            title: title,
+            location: location,
+            experienceYears: experienceYears,
+            availability: availability,
+            abilities: abilities,
+            description: description
+        });
 
         return await fetch(JOB_URL, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-            body: formData
+            body: jobForm
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
     }
 
     public static async getCreatedJobs(url: string, profile: boolean, page: number) {
-        if(profile)
+        if (profile)
             url = url + QUERY_PARAM + 'profile=true'
-        if(page > 0)
+        if (page > 0)
             url = url + QUERY_PARAM + 'page=' + page.toString()
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
             .catch(
                 (error) => {
@@ -127,17 +165,21 @@ export class JobService {
                 })
     }
 
-    public static async getApplicants(url : string, page: number){
+    public static async getApplicants(url: string, page: number) {
         if (page > 0) {
             url = url + QUERY_PARAM + "page=" + page.toString()
         }
         return await fetch(url, {
             method: 'GET',
             headers: {
-                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
             .catch(
                 (error) => {
@@ -147,28 +189,37 @@ export class JobService {
     }
 
 
-    public static async deleteJob(id: number) {
-        return await fetch(JOB_URL + BACK_SLASH + id, {
+    public static async deleteJob(url: string) {
+        return await fetch(url, {
             method: 'DELETE',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
-    public static async updateJobStatus(id: number, status: boolean){
+    public static async updateJobStatus(url: string, status: boolean) {
 
-        const formData:any = new FormData();
+        const formData: any = new FormData();
         formData.append("status", status)
 
-        return await fetch(JOB_URL + BACK_SLASH + id , {
+        return await fetch(url, {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: formData
-        }).then((r) => r.text())
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response.text()
+        })
     }
 }

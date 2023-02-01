@@ -38,7 +38,7 @@ public class JobJpaDao implements JobDao {
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
 
         // noinspection JpaQlInspection
@@ -53,7 +53,7 @@ public class JobJpaDao implements JobDao {
     }
 
     @Override
-    public Boolean alreadyApplied(Job jobId, Employee employeeId) {
+    public boolean alreadyApplied(Job jobId, Employee employeeId) {
         TypedQuery<Applicant> typedQuery = em.createQuery("select a from Applicant a where a.employeeID =:employee and a.jobID =:job", Applicant.class);
         typedQuery.setParameter("employee", employeeId);
         typedQuery.setParameter("job", jobId);
@@ -73,8 +73,8 @@ public class JobJpaDao implements JobDao {
 
         stringBuilder.append("SELECT jobid FROM jobs where opened=TRUE and ");
         if (name != null) {
-            stringBuilder.append("lower(title) like :title ");
-            paramMap.put("title", '%' + name.toLowerCase() + '%');
+            stringBuilder.append("title like :title ");
+            paramMap.put("title", '%' + name + '%');
             stringBuilder.append(" and ");
 
         }
@@ -120,7 +120,7 @@ public class JobJpaDao implements JobDao {
         @SuppressWarnings("unchecked")
         List<Long> ids = (List<Long>) idQuery.getResultList().stream().map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
 //        noinspection JpaQlInspection
         TypedQuery<Job> filteredQuery = em.createQuery("select j from Job j where jobid in :ids", Job.class);

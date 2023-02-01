@@ -1,9 +1,12 @@
 import './style.css'
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate, useParams} from 'react-router-dom'
 import {ContactService} from "../service/ContactService";
 import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
+import {useEffect, useState} from "react";
+import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+import {EmployeeService} from "../service/EmployeeService";
 
 export const ContactEmployee = () => {
 
@@ -24,7 +27,39 @@ export const ContactEmployee = () => {
         timeout: 1000 * 60 * 2,
     })
 
-    const { id, name } = useLocation().state
+
+    const [name, setName]: any = useState()
+
+    let {employeeId} :any = useState()
+    const params = useParams();
+    const location = useLocation();
+
+    const fetchData = async (url: string) => {
+        await EmployeeService.getEmployee(url, false).then(
+            (rsp) => {
+                if (rsp != undefined) {
+                    setName(rsp.name)
+                } else {
+                    nav("/*")
+                }
+            })
+    }
+
+    useEffect(() => {
+        if(location.state) {
+            setName(location.state.name)
+            employeeId = location.state.id
+        } else {
+            employeeId = params.id
+        }
+        if (name === undefined) {
+            const url = EMPLOYEE_URL + BACK_SLASH + employeeId
+            fetchData(url)
+        }
+    }, [])
+
+
+    const [contactEmployeeError, setContactEmployeeError]: any = useState(false)
 
     const {t} = useTranslation();
     const nav = useNavigate();
@@ -37,14 +72,21 @@ export const ContactEmployee = () => {
     const employerId = localStorage.getItem("hogar-uid") as unknown as number
 
     const onSubmit = async (data: any, e: any) => {
-        const contact = await ContactService.contactEmployee(e, data.phone, data.content, id, employerId)
+        const contact = await ContactService.contactEmployee(e, data.phone, data.content, employeeId, employerId)
         localStorage.removeItem("contactForm")
         let status;
-        if (contact.status === 201)
+        if (contact?.status === 201) {
             status = "0"
-        else
+            setContactEmployeeError(false)
+        }
+        else if (contact?.status === 400)
+            setContactEmployeeError(true)
+        else {
             status = "1"
-        nav("/employee", {replace: true, state: {id: id, status: status}})
+            setContactEmployeeError(false)
+        }
+        if(status)
+            nav("/employee", {replace: true, state: {id: employeeId, status: status}})
     }
 
     return (
@@ -84,6 +126,8 @@ export const ContactEmployee = () => {
                                 <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactEmployee.messageError')}</p>
                             }
                         </div>
+                        {contactEmployeeError &&
+                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('ContactEmployee.genericError')}</p>}
                         <button type="submit"
                                 className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
                             {t('ContactEmployee.submit')}

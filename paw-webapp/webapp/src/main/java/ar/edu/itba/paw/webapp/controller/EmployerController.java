@@ -9,31 +9,26 @@ import ar.edu.itba.paw.service.EmployerService;
 import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.service.ReviewService;
 import ar.edu.itba.paw.service.UserService;
-import ar.edu.itba.paw.webapp.auth.HogarUser;
-import ar.edu.itba.paw.webapp.dto.EmployerDto;
-import ar.edu.itba.paw.webapp.dto.JobDto;
-import ar.edu.itba.paw.webapp.dto.ReviewDto;
-import org.apache.commons.io.IOUtils;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerCreateDto;
+import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerDto;
+import ar.edu.itba.paw.webapp.dto.JobDto.CreatedJobsDto;
+import ar.edu.itba.paw.webapp.dto.ReviewDto.EmployerReviewsDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("/api/employers")
+@Path("/employers")
 @Component
 public class EmployerController {
 
@@ -61,15 +56,6 @@ public class EmployerController {
     @Path(value = "/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response employerProfile(@PathParam("id") long id) {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth != null) {
-            HogarUser user = (HogarUser) auth.getPrincipal();
-            if (user.getUserID() != id) {
-                return Response.status(Response.Status.FORBIDDEN).build();
-            }
-        }
         try {
             Employer employer = employerService.getEmployerById(id);
             EmployerDto employerDto = EmployerDto.fromEmployer(uriInfo, employer);
@@ -89,40 +75,35 @@ public class EmployerController {
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
         LocaleContextHolder.setLocale(locale);
 
-        List<JobDto> jobs = jobService.getUserJobs(id, page, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE)
+        List<CreatedJobsDto> jobs = jobService.getUserJobs(id, page, profile != null && profile.equals("true") ? PAGE_SIZE_PROFILE : PAGE_SIZE)
                 .stream()
-                .map(job -> JobDto.fromCreated(uriInfo, job)).
+                .map(job -> CreatedJobsDto.fromCreated(uriInfo, job)).
                 collect(Collectors.toList());
-
-        if (profile != null && profile.equals("true")) {
-            GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs) {
-            };
-            return Response.ok(genericEntity).build();
-        }
 
         int pages = jobService.getMyJobsPageNumber(id, PAGE_SIZE);
 
-        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs) {
+        GenericEntity<List<CreatedJobsDto>> genericEntity = new GenericEntity<List<CreatedJobsDto>>(jobs) {
         };
+
+
+        if(profile != null && profile.equals("true"))
+            return Response.status(jobs.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).build();
+
         return Response.status(jobs.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
     @GET
     @Path("/{id}/reviews")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getEmployerReviews(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page) {
+    public Response getEmployerReviews(@PathParam("id") long id, @QueryParam("page") @DefaultValue("0") Long page, @QueryParam("except") Long except) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        HogarUser principal = (HogarUser) auth.getPrincipal();
-
-        List<ReviewDto> reviews = reviewService.getAllReviewsEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE")) ? principal.getUserID() : null, id, page, PAGE_SIZE_REVIEWS)
+        List<EmployerReviewsDto> reviews = reviewService.getAllReviewsEmployer(except, id, page, PAGE_SIZE_REVIEWS)
                 .stream()
-                .map(r -> ReviewDto.fromEmployerReview(uriInfo, r))
+                .map(r -> EmployerReviewsDto.fromEmployerReview(uriInfo, r))
                 .collect(Collectors.toList());
-        GenericEntity<List<ReviewDto>> genericEntity = new GenericEntity<List<ReviewDto>>(reviews) {
+        GenericEntity<List<EmployerReviewsDto>> genericEntity = new GenericEntity<List<EmployerReviewsDto>>(reviews) {
         };
-        int pages = reviewService.getPageNumberEmployer(auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYEE")) ? principal.getUserID() : null, id, PAGE_SIZE_REVIEWS);
+        int pages = reviewService.getPageNumberEmployer(except, id, PAGE_SIZE_REVIEWS);
         return Response.status(reviews.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
     }
 
@@ -130,11 +111,11 @@ public class EmployerController {
     @Path("/{employerId}/reviews/{employeeId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getMyReview(@PathParam("employeeId") long employeeId, @PathParam("employerId") long employerId, @QueryParam("type") String type) {
-        Optional<ReviewDto> myReview = reviewService.getMyReviewEmployer(employeeId, employerId).map(r -> ReviewDto.fromEmployerReview(uriInfo, r));
+        Optional<EmployerReviewsDto> myReview = reviewService.getMyReviewEmployer(employeeId, employerId).map(r -> EmployerReviewsDto.fromEmployerReview(uriInfo, r));
 
         if (!myReview.isPresent())
             return Response.noContent().build();
-        GenericEntity<ReviewDto> genericEntity = new GenericEntity<ReviewDto>(myReview.get()) {
+        GenericEntity<EmployerReviewsDto> genericEntity = new GenericEntity<EmployerReviewsDto>(myReview.get()) {
         };
         return Response.ok(genericEntity).build();
     }
@@ -142,33 +123,20 @@ public class EmployerController {
 
     @POST
     @Path("")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
-    public Response createEmployer(@FormDataParam("mail") String mail,
-                                   @FormDataParam("password") String password,
-                                   @FormDataParam("confirmPassword") String confirmPassword,
-                                   @FormDataParam("name") String name,
-                                   @FormDataParam("last") String lastName,
-                                   @FormDataParam("image") InputStream image
-    ) throws UserFoundException, PassMatchException {
+    @Consumes(value = {MediaType.APPLICATION_JSON,})
+    public Response createEmployer(@Valid EmployerCreateDto employerDto) throws UserFoundException, PassMatchException {
 
-        if (!mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || mail.isEmpty() ||
-                password.isEmpty() || confirmPassword.isEmpty() || !confirmPassword.equals(password) ||
-                name.length() > 100 || !name.matches("[a-zA-z\\s'-]+|^$") || name.isEmpty() ||
-                lastName.length() > 100 || !lastName.matches("[a-zA-z\\s'-]+|^$") || lastName.isEmpty()
-                || image == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
         final User u;
         try {
-            u = userService.create(mail, password, confirmPassword, 2);
-            String fullName = name + " " + lastName;
-            employerService.create(fullName.toLowerCase(), u, IOUtils.toByteArray(image));
+            u = userService.create(employerDto.getMail(), employerDto.getPassword(), employerDto.getConfirmPassword(), 2);
+            String fullName = employerDto.getName() + " " + employerDto.getLastname();
+            employerService.create(fullName.toLowerCase(), u);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
 
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/api/employers").path(String.valueOf(u.getId())).build()).build();
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(u.getId())).build()).build();
     }
 }

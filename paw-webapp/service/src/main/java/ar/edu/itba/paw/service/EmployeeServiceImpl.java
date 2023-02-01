@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -31,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, long hourlyFee, String[] abilities, byte[] image) {
+    public void editProfile(String name, String location, Long id, String[] availability, long experienceYears, long hourlyFee, String[] abilities) {
         StringBuilder abilitiesSB = new StringBuilder();
         StringBuilder availabilitySB = new StringBuilder();
         name = name.trim().replaceAll(" +", " ");
@@ -52,20 +49,17 @@ public class EmployeeServiceImpl implements EmployeeService {
             availabilitySB.setLength(availabilitySB.length() - 1);
         Optional<Employee> employee = employeeDao.getEmployeeById(id);
         if (employee.isPresent())
-            if (image.length == 0)
-                employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString(), employee.get().getId().getImage());
-            else
-                employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString(), image);
+            employeeDao.update(employee.get(), name, location, availabilitySB.toString(), experienceYears, hourlyFee, abilitiesSB.toString());
     }
 
     @Transactional
     @Override
-    public Employee create(String name, String location, Long id, String availability, long experienceYears, long hourlyFee, String abilities, byte[] image) {
+    public Employee create(String name, String location, Long id, String availability, long experienceYears, long hourlyFee, String abilities) {
         name = name.trim().replaceAll(" +", " ");
         location = location.trim().replaceAll(" +", " ");
         Optional<User> user = userDao.getUserById(id);
         if (user.isPresent())
-            return employeeDao.create(user.get(), name, location, availability, experienceYears, hourlyFee, abilities, image);
+            return employeeDao.create(user.get(), name, location, availability, experienceYears, hourlyFee, abilities);
         return null;
     }
 
@@ -83,17 +77,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public int getPageNumber(String name, Long experienceYears, String location, String availability, String abilities, long pageSize, String orderCriteria) {
-        List<String> availabilityList = new ArrayList<>();
+        List<String> availabilityList;
         if (availability != null) {
             availabilityList = Arrays.asList(availability.split(","));
+        } else {
+            availabilityList = Collections.emptyList();
         }
-        List<String> abilitiesList = new ArrayList<>();
+        List<String> abilitiesList;
         if (abilities != null) {
             abilitiesList = Arrays.asList(abilities.split(","));
+        } else {
+            abilitiesList = Collections.emptyList();
         }
-        List<String> locationList = new ArrayList<>();
+        List<String> locationList;
         if (location != null) {
             locationList = Arrays.asList(location.split(","));
+        } else {
+            locationList = Collections.emptyList();
         }
         return employeeDao.getPageNumber(name, experienceYears, locationList, availabilityList, abilitiesList, pageSize, orderCriteria);
     }

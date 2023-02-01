@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {JobService} from "../service/JobService";
 import {ReviewService} from "../service/ReviewService";
@@ -15,6 +15,7 @@ import bin from "../assets/bin.png";
 import editing from "../assets/editing.png";
 import editingPurple from "../assets/editing_purple.png";
 import noEmployees from "../assets/sinEmpleadas.png";
+import {BACK_SLASH, JOB_URL} from "../utils/utils";
 
 export const Job = () => {
 
@@ -31,8 +32,13 @@ export const Job = () => {
     let employeeId: number;
     employeeId = localStorage.getItem('hogar-uid') ? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
 
-    const {self} = useLocation().state
+    const jobId = useParams();
+    const location = useLocation();
+    let {self}: any = useState()
 
+    if (location.state) {
+        self = location.state.self
+    }
     const {t} = useTranslation();
     const nav = useNavigate();
 
@@ -54,33 +60,50 @@ export const Job = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployerReview(e, job.employerId.id, data.content)
-        if (post.status != 201)
+        if (post?.status != 201)
             setShowError(true)
         else {
             localStorage.removeItem("reviewEmployerForm")
             reset()
-            post.json().then((r) => setMyReview(r))
+            ReviewService.getMyEmployeeReview(post.headers.get("Location")!).then((rsp) => setMyReview(rsp))
         }
     }
 
     useEffect(() => {
-        JobService.getJob(self).then((e) => {
-            setJob(e)
-            setOpened(e.opened)
-        })
+        let url
+        if (self === undefined && jobId.id !== undefined) {
+            url = JOB_URL + BACK_SLASH + jobId.id
+        } else {
+            url = self
+        }
+        fetchData(url)
     }, [])
+
+    const fetchData = async (url: string) => {
+        await JobService.getJob(url).then((rsp) => {
+            if (rsp != undefined) {
+                setJob(rsp)
+                setOpened(rsp.opened)
+            } else {
+                nav("/*")
+            }
+        })
+    }
 
     useEffect(() => {
             if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
-                ReviewService.getEmployerReviews(job.employerId.reviews, 0).then(
+                const employeeID = localStorage.getItem("hogar-uid") != null? localStorage.getItem("hogar-uid") : "0"
+                ReviewService.getEmployerReviews(job.employerId.reviews, 0, employeeID? parseInt(employeeID) : 0).then(
                     (rsp) => {
-                        rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                        if (rsp.status === 200)
-                            rsp.json().then((reviews) => {
-                                setReviews(reviews)
-                            })
-                        else
-                            setReviews([])
+                        if( rsp !== undefined) {
+                            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            if (rsp.status === 200)
+                                rsp.json().then((reviews) => {
+                                    setReviews(reviews)
+                                })
+                            else
+                                setReviews([])
+                        }
                     }
                 )
                 ReviewService.getMyEmployerReview(job.employerId.reviews).then(
@@ -110,35 +133,43 @@ export const Job = () => {
     }
 
     async function createApplicant() {
-        const newStatus = await ApplicantService.createApplicant(job.jobId)
-        if (newStatus.status === 201)
-            setStatus("0")
+        const newStatus = await ApplicantService.createApplicant(job.applicants, job.jobId)
+        if (newStatus !== undefined) {
+            if (newStatus.status === 201)
+                setStatus("0")
+        }
     }
 
-    function delJob() {
-        JobService.deleteJob(job.jobId).then(() => {
-            nav('/jobs', {replace: true})
-        })
+    async function delJob() {
+        const post = await JobService.deleteJob(job.self)
+        if (post !== undefined) {
+            if (post.status === 204) {
+                nav('/jobs', {replace: true})
+            }
+        }
     }
 
     async function openJob() {
-        await JobService.updateJobStatus(job.jobId, true)
+        await JobService.updateJobStatus(job.self, true)
         setOpened(true)
     }
 
     async function closeJob() {
-        await JobService.updateJobStatus(job.jobId, false)
+        await JobService.updateJobStatus(job.self, false)
         setOpened(false)
     }
 
     const changePage = async (page: number) => {
         setReviews(null)
         setCurrent(false)
-        const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page)
-        get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
-        get.json().then((reviews) => {
-            setReviews(reviews)
-        })
+        const employeeID = localStorage.getItem("hogar-uid") != null? localStorage.getItem("hogar-uid") : "0"
+        const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page, employeeID? parseInt(employeeID) : 0)
+        if( get !== undefined) {
+            get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+            get.json().then((reviews) => {
+                setReviews(reviews)
+            })
+        }
     }
 
 
@@ -337,7 +368,8 @@ export const Job = () => {
                                             <div>
                                                 {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                        review={rev}/>)}
-                                                <PaginationButtons changePages={changePage} pages={pages} current={current}/>
+                                                <PaginationButtons changePages={changePage} pages={pages}
+                                                                   current={current}/>
                                             </div>
                                         }
                                     </ul>

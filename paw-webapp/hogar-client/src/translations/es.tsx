@@ -7,7 +7,8 @@ export const TRANSLATIONS_ES = {
         send:"Enviar",
         nameError: 'Por favor ingrese un nombre válido',
         mailError: 'Por favor ingrese un email válido',
-        messageError: 'Por favor ingrese un mensaje'
+        messageError: 'Por favor ingrese un mensaje',
+        genericError: 'El nombre, el email o el mensaje son inválidos',
     },
 
     RegisterEmployer:{
@@ -103,7 +104,10 @@ export const TRANSLATIONS_ES = {
         reviews: "Opiniones",
         noReviews: "No hay opiniones",
         editProfile: "EDITAR PERFIL",
-        rateUser: "Califica a "
+        rateUser: "Califica a ",
+        editImage: "Editar imagen",
+        addImage: "Agregar imagen",
+        typeError: "La imagen debe ser png, jpg o jpeg"
     },
     LogIn:{
         mail:"E-Mail",
@@ -238,7 +242,8 @@ export const TRANSLATIONS_ES = {
         message: "Mensaje",
         submit: "Enviar",
         phoneError: "Por favor ingrese un número de teléfono válido",
-        messageError: "Por favor ingrese un mensaje"
+        messageError: "Por favor ingrese un mensaje",
+        genericError: "Numero de teléfono o mensaje inválido"
     },
 
     FilterForm:{
@@ -309,6 +314,9 @@ export const TRANSLATIONS_ES = {
         descriptionJob: "Publique una oferta de trabajo y espere a que nuestra comunidad aplique al mismo",
         buttonEmployee: "Buscar empleadas",
         buttonJob: "Mis trabajos publicados"
+    },
+    Rating:{
+        thanks:"¡Gracias!"
     }
 
 }

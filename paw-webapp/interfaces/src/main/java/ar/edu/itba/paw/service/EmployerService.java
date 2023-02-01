@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface EmployerService {
 
-    Employer create(String name, User id, byte[] image);
+    Employer create(String name, User id);
 
     Employer getEmployerById(long id) throws UserFoundException;
 

@@ -45,11 +45,10 @@ public class RaitingJpaDaoTest {
 
     @Test
     public void testhasAlreadyRated() {
-        byte[] image = {};
         User user = userJpaDao.create(USERNAME, PASSWORD, 2);
-        final Employer employer = employerJdbcDao.create(NAME,user, image);
+        final Employer employer = employerJdbcDao.create(NAME,user);
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
         Assert.assertFalse(raitingJpaDao.hasAlreadyRated(employee, employer));
     }
 }

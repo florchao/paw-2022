@@ -1,4 +1,4 @@
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import ApplicantCard from "../components/ApplicantCard";
@@ -6,22 +6,32 @@ import {JobService} from "../service/JobService";
 import PaginationButtons from "../components/PaginationButtons";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {APPLICANT_URL, BACK_SLASH, JOB_URL} from "../utils/utils";
 
 export const Applicants = () => {
 
     const [applicantList, setApplicantList]: any = useState()
 
-    const {applicants, title} = useLocation().state
+    const jobId = useParams();
+    const location = useLocation();
+    const [title, setTitle]: any = useState()
+    let {applicants}: any = useState()
     const {t} = useTranslation();
     const [totalPages, setTotalPages]: any = useState(0)
     const [current, setCurrent]: any = useState(0)
-
+    const nav = useNavigate();
 
     async function setApplicantsByPage(page: number) {
         setCurrent(page)
         setApplicantList(null)
-        const result = await JobService.getApplicants(applicants, page)
-        if (result.status === 200) {
+        let url
+        if (applicants === undefined) {
+            url = APPLICANT_URL + BACK_SLASH + jobId.id
+        } else {
+            url = applicants
+        }
+        const result = await JobService.getApplicants(url, page)
+        if (result?.status === 200) {
             let body = await result.json()
             let pageCountHeader = result.headers.get('X-Total-Count')
             setApplicantList(body)
@@ -29,8 +39,26 @@ export const Applicants = () => {
         }
     }
 
+    const fetchData = async (url: string) => {
+        await JobService.getJob(url).then((rsp) => {
+            if (rsp != undefined) {
+                setTitle(rsp.title)
+            } else {
+                nav("/*")
+            }
+        })
+    }
+
     useEffect(() => {
+        if (location.state) {
+            applicants = location.state.applicants
+            setTitle(location.state.title)
+        }
         setApplicantsByPage(0)
+        if (title === undefined) {
+            const url = JOB_URL + BACK_SLASH + jobId.id
+            fetchData(url)
+        }
     }, [])
 
     return (
@@ -52,8 +80,8 @@ export const Applicants = () => {
                                     ariaLabel="MagnifyingGlass-loading"
                                     wrapperStyle={{}}
                                     wrapperClass="MagnifyingGlass-wrapper"
-                                    glassColor = '#c0efff'
-                                    color = '#e5de00'
+                                    glassColor='#c0efff'
+                                    color='#e5de00'
                                 />
                             </div>
                         }
@@ -71,7 +99,8 @@ export const Applicants = () => {
                                     <ApplicantCard key={applicant.employee.id} applicant={applicant}/>))}
                             </ul>
                         }
-                        <PaginationButtons changePages={setApplicantsByPage} pages={totalPages} current={current}></PaginationButtons>
+                        <PaginationButtons changePages={setApplicantsByPage} pages={totalPages}
+                                           current={current}></PaginationButtons>
 
                     </div>
                 </div>
