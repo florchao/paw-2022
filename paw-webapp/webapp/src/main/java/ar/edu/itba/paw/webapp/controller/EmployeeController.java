@@ -13,6 +13,7 @@ import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeCreateDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeEditDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto.ReviewDto;
+import ar.edu.itba.paw.webapp.helpers.UriHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
 @Path("/api/employee")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 8;
+    private final int PAGE_SIZE = 1;
 
     private final int PAGE_SIZE_REVIEWS = 4;
 
@@ -53,6 +54,9 @@ public class EmployeeController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private UriHelper uriHelper;
 
     @Context
     private UriInfo uriInfo;
@@ -117,9 +121,15 @@ public class EmployeeController {
                 .map(applicant -> JobsAppliedDto.fromEmployee(uriInfo, applicant))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumberForAppliedJobs(id, PAGE_SIZE);
-        GenericEntity<List<JobsAppliedDto>> genericEntity = new GenericEntity<List<JobsAppliedDto>>(list) {
-        };
-        return Response.status(list.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        GenericEntity<List<JobsAppliedDto>> genericEntity = new GenericEntity<List<JobsAppliedDto>>(list) { };
+        if (list.isEmpty())
+            return Response.status(Response.Status.NO_CONTENT).entity(genericEntity).build();
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        return responseBuilder
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @GET
@@ -134,9 +144,16 @@ public class EmployeeController {
 
         List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, page, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
         int pages = contactService.getPageNumber(id, PAGE_SIZE);
-        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
-        };
-        return Response.status(contacts.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) { };
+        if (contacts.isEmpty())
+            return Response.status(Response.Status.NO_CONTENT).entity(genericEntity).build();
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        return Response.status(contacts.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK)
+                .entity(genericEntity)
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @GET

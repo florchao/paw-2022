@@ -5,20 +5,28 @@ import JobCard from "../components/JobCard";
 import PaginationButtons from "../components/PaginationButtons";
 import {MagnifyingGlass} from "react-loader-spinner";
 import noJobs from "../assets/sinTrabajos.png";
+import {parseLink} from "../utils/utils";
 
 export const AppliedJobs = () => {
 
     const [appliedJobs, setAppliedJobs]: any = useState()
     const [pages, setPages]: any = useState(0)
+    const [current, setCurrent]: any = useState(0)
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
-    let id  = localStorage.getItem("hogar-uid") as unknown as number
+    let id = localStorage.getItem("hogar-uid") as unknown as number
 
     useEffect(() => {
-        ApplicantService.getAppliedJobs(id, 0).then( (rsp) => {
+        ApplicantService.getAppliedJobs(id, 0).then((rsp) => {
                 rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if(rsp.status === 200)
+                let linkHeader = rsp.headers.get("link")
+                if (linkHeader !== null) {
+                    parseLink(linkHeader, setNextPage, setPrevPage)
+                }
+                if (rsp.status === 200)
                     rsp.json().then((jobs) => {
                         setAppliedJobs(jobs)
                     })
@@ -28,10 +36,16 @@ export const AppliedJobs = () => {
         );
     }, [])
 
-    const changePage = async (page: number) => {
+    const changePage = async (page: number, linkUrl?: string) => {
         setAppliedJobs(null)
-        const get = await ApplicantService.getAppliedJobs(id, page)
+        setCurrent(page)
+
+        const get = await ApplicantService.getAppliedJobs(id, page, linkUrl)
         get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        let linkHeader = get.headers.get("link")
+        if (linkHeader !== null) {
+            parseLink(linkHeader, setNextPage, setPrevPage)
+        }
         get.json().then((jobs) => {
             setAppliedJobs(jobs)
         })
@@ -52,8 +66,8 @@ export const AppliedJobs = () => {
                         ariaLabel="MagnifyingGlass-loading"
                         wrapperStyle={{}}
                         wrapperClass="MagnifyingGlass-wrapper"
-                        glassColor = '#c0efff'
-                        color = '#e5de00'
+                        glassColor='#c0efff'
+                        color='#e5de00'
                     />
                 </div>
             }
@@ -68,14 +82,15 @@ export const AppliedJobs = () => {
                 </div>
             </div>}
             <div className="flex flex-wrap content-start justify-center">
-            {appliedJobs && appliedJobs.length > 0 &&
-                appliedJobs.map((a: any) => (
-                    <div key={a.job.jobId} className="flex flex-wrap content-start justify-center">
-                        <JobCard job={a.job}/>
-                    </div>
-                ))}
+                {appliedJobs && appliedJobs.length > 0 &&
+                    appliedJobs.map((a: any) => (
+                        <div key={a.job.jobId} className="flex flex-wrap content-start justify-center">
+                            <JobCard job={a.job}/>
+                        </div>
+                    ))}
             </div>
-            <PaginationButtons changePages={changePage} pages={pages}/>
+            <PaginationButtons changePages={changePage} pages={pages} current={current} nextPage={nextPage}
+                               prevPage={prevPage}/>
         </div>
     )
 }

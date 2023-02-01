@@ -3,10 +3,14 @@ import {APPLICANT_URL, BACK_SLASH, EMPLOYEE_URL, JOBS} from "../utils/utils";
 
 export class ApplicantService{
 
-    public static async getAppliedJobs(id : number, page: number){
+    public static async getAppliedJobs(id : number, page: number, linkUrl?: string) {
         let url = EMPLOYEE_URL + BACK_SLASH + id + JOBS
         if(page > 0) {
             url = url + "?page=" + page
+        }
+        if (linkUrl !== undefined) {
+            url = linkUrl
+            console.log("mi link es: " + url)
         }
         return await fetch(url, {
             method: 'GET',
