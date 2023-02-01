@@ -21,6 +21,7 @@ import noEmployees from "../assets/sinEmpleadas.png";
 import user from "../assets/user.png";
 import {MagnifyingGlass} from "react-loader-spinner";
 import editing from "../assets/editing.png";
+import {ContactService} from "../service/ContactService";
 
 export const ProfileEmployee = () => {
 
@@ -38,6 +39,9 @@ export const ProfileEmployee = () => {
     const [ratingError, setRatingError]: any = useState(false)
     const employeeId = useParams();
     const location = useLocation();
+
+    const [contact, setContact] = useState<boolean>()
+
     let {self, status, id}: any = useState()
     if (location.state) {
         id = location.state.id
@@ -147,6 +151,18 @@ export const ProfileEmployee = () => {
                         setRating(rsp)
                     }
                 )
+            }
+        }, [employee]
+    )
+
+    useEffect(() => {
+            if (employee && localStorage.getItem("hogar-role") === "EMPLOYER") {
+                ContactService.getContact(employee.id, employerId).then(r => {
+                    if(r.length > 0)
+                        setContact(true)
+                    else
+                        setContact(false)
+                })
             }
         }, [employee]
     )
@@ -294,7 +310,7 @@ export const ProfileEmployee = () => {
                                 </h1>
                             </div>
                             <div className="ml-3 col-start-5 row-start-2 w-fit">
-                                {localStorage.getItem("hogar-role") === "EMPLOYER" && !employee.contacted &&
+                                {localStorage.getItem("hogar-role") === "EMPLOYER" && !contact &&
                                     <Link to={"/contact/employee/" + employee.id}
                                           state={{id: employee.id, name: employee.name}}>
                                         <button
@@ -303,7 +319,7 @@ export const ProfileEmployee = () => {
                                         </button>
                                     </Link>
                                 }
-                                {localStorage.getItem("hogar-role") === "EMPLOYER" && employee.contacted &&
+                                {localStorage.getItem("hogar-role") === "EMPLOYER" && contact &&
                                     <p className="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2 mb-2">
                                         {t('Profile.alreadyConnected')}
                                     </p>
