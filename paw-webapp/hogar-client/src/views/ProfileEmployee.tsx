@@ -164,6 +164,8 @@ export const ProfileEmployee = () => {
                         setContact(false)
                 })
             }
+            else
+                setContact(false)
         }, [employee]
     )
 

@@ -21,6 +21,8 @@ const EmployeeCard = (employee: any) => {
                         setContact(false)
                 })
             }
+            else
+                setContact(false)
         }, [e]
     )
     return (
