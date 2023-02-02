@@ -1,16 +1,28 @@
 import {Link} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {Rating} from "react-simple-star-rating";
 import user from "../assets/user.png";
+import {ContactService} from "../service/ContactService";
 
 const EmployeeCard = (employee: any) => {
     const e = employee.employee
     const [image, setImage]: any = useState(e.image)
+    const [contact, setContact] = useState<boolean>()
 
     const {t} = useTranslation();
 
-
+    useEffect(() => {
+            if (e && localStorage.getItem("hogar-role") === "EMPLOYER") {
+                ContactService.getContact(e.id, localStorage.getItem("hogar-uid") as unknown as number).then(r => {
+                    if(r.length > 0)
+                        setContact(true)
+                    else
+                        setContact(false)
+                })
+            }
+        }, [e]
+    )
     return (
         <div className="w-full col-span-5">
             <Link to={"/employee/"+e.id} state={{self: e.self, status: -1}}
@@ -31,7 +43,7 @@ const EmployeeCard = (employee: any) => {
                     </p>
                 </div>
 
-                {e.contacted &&
+                {contact &&
                     <div className="col-start-6 col-span-2 w-fit">
                         <p className="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2.5 mb-2">
                             {t('EmployeeCard.connected')}
