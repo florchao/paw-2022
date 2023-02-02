@@ -6,7 +6,6 @@ import user from "../assets/user.png";
 
 const ApplicantCard = (applicant: any) =>{
     const a = applicant.applicant
-    console.log(a)
     const [status, setStatus] = useState<string>(a.status)
     const { t } = useTranslation();
 
