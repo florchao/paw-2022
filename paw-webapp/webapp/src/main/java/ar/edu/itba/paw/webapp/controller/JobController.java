@@ -78,7 +78,11 @@ public class JobController {
         int pages = jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE);
         GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs) { };
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
-        return uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages)
+        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+        if (request.getQueryString() != null) {
+            UriHelper.fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, "rating");
+        }
+        return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
                 .header("Access-Control-Expose-Headers", "X-Total-Count")
                 .header("X-Total-Count", pages)
                 .build();

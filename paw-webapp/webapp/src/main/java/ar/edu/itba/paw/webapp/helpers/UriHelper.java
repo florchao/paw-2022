@@ -39,4 +39,33 @@ public class UriHelper {
         }
         return responseBuilder.header("Access-Control-Expose-Headers", "Link");
     }
+
+    public static void fillQueryParams(
+            UriBuilder uriBuilder,
+            String name,
+            Long experienceYears,
+            String location,
+            String availability,
+            String abilities,
+            String orderCriteria
+    ) {
+        if (name != null && !name.equals("")) {
+            uriBuilder.queryParam("name", name);
+        }
+        if (experienceYears != null) {
+            uriBuilder.queryParam("experience", experienceYears);
+        }
+        if (location != null) {
+            uriBuilder.queryParam("location", location);
+        }
+        if (availability != null && !availability.equals("")) {
+            uriBuilder.queryParam("availability", availability);
+        }
+        if (abilities != null && !abilities.equals("")) {
+            uriBuilder.queryParam("abilities", abilities);
+        }
+        if (orderCriteria != null && !orderCriteria.equals("") && !orderCriteria.equals("null")) {
+            uriBuilder.queryParam("order", orderCriteria);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import FilterForm from "../components/FilterForm";
 import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
@@ -18,7 +18,31 @@ export const ExploreJobs = () => {
     const [nextPage, setNextPage]: any = useState("")
     const [prevPage, setPrevPage]: any = useState("")
 
-    const [linkUrl, setLinkUrl] = useState("")
+    const [linkUrl, setLinkUrl] = useStateCallback("")
+
+
+    function useStateCallback<T>(
+        initialState: T
+    ): [T, (state: T, cb?: (state: T) => void) => void] {
+        const [state, setState] = useState(initialState);
+        const cbRef = useRef<((state: T) => void) | undefined>(undefined); // init mutable ref container for callbacks
+
+        const setStateCallback = useCallback((state: T, cb?: (state: T) => void) => {
+            cbRef.current = cb; // store current, passed callback in ref
+            setState(state);
+        }, []); // keep object reference stable, exactly like `useState`
+
+        useEffect(() => {
+            // cb.current is `undefined` on initial render,
+            // so we only invoke callback on state *updates*
+            if (cbRef.current) {
+                cbRef.current(state);
+                cbRef.current = undefined; // reset callback after execution
+            }
+        }, [state]);
+
+        return [state, setStateCallback];
+    }
 
     const {t} = useTranslation();
 
@@ -59,6 +83,13 @@ export const ExploreJobs = () => {
         timeout: 1000 * 60 * 2,
     })
 
+    useEffect(() => {
+        // if (linkUrl !== "") {
+        //     onSubmit(getValues())
+        // }
+        onSubmit(getValues())
+    }, [linkUrl]);
+
     const onSubmit = (data: any) => {
         setValue("isActive", true)
         JobService.getFilteredJobs(
@@ -95,7 +126,7 @@ export const ExploreJobs = () => {
             setLinkUrl(link)
         }
         setValue("page", page)
-        onSubmit(getValues())
+        // onSubmit(getValues())
     }
 
     useEffect(() => {
@@ -123,7 +154,7 @@ export const ExploreJobs = () => {
             <div className="my-10 w-full"></div>
             <div className="grid grid-cols-4">
                 <FilterForm handleSubmit={handleSubmit} register={register} errors={errors} onSubmit={onSubmit}
-                            reset={reset} setValue={setValue}/>
+                            reset={reset} setValue={setValue} setLinkUrl={setLinkUrl} linkUrl={linkUrl}/>
                 <div className="col-span-3 col-start-2">
                     <h1 className="text-3xl font-bold text-violet-900 mt-2 mb-2 ml-8">{t('Explore.jobs')}</h1>
                     <div className="col-span-3 col-start-2">

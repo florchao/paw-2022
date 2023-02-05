@@ -59,7 +59,7 @@ export class EmployeeService {
         url = this.concatStringQueries(url, 'availability', availability)
         url = this.concatStringQueries(url, 'order', order)
 
-        if (linkUrl !== "" && linkUrl !== undefined) {
+        if (!linkUrl?.startsWith("a") && linkUrl !== "" && linkUrl !== undefined) {
             url = linkUrl
         }
         return await fetch(url, {
