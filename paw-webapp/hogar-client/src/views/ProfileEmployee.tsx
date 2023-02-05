@@ -26,7 +26,7 @@ import {ContactService} from "../service/ContactService";
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
-    const [img, setImg]: any = useState()
+    const [img, setImg]= useState<{image: string, version: number}>()
     const [typeError, setTypeError] = useState(false)
     const [noImage, setNoImage] = useState(false)
     const [rating, setRating]: any = useState()
@@ -108,7 +108,7 @@ export const ProfileEmployee = () => {
                 if (rsp != undefined) {
                     setEmployee(rsp)
                     localStorage.removeItem("reviewEmployeeForm")
-                    setImg(rsp.image)
+                    setImg({image: rsp.image, version: 1})
                 } else {
                     nav("/*")
                 }
@@ -209,7 +209,8 @@ export const ProfileEmployee = () => {
                 const put = await UserService.updateImage(e, e.target.files[0], employee.id)
                 if (put?.status === 200) {
                     put.json().then((rsp) => {
-                        setImg(rsp.image)
+                        setImg({image: rsp.value, version: img!.version + 1})
+                        console.log(img!.version)
                     })
                 }
                 setTypeError(false);
@@ -223,10 +224,8 @@ export const ProfileEmployee = () => {
                 setTypeError(true)
             else {
                 const post = await UserService.addImage(e, e.target.files[0], employee.id)
-                if (post?.status === 200) {
-                    post.json().then((rsp) => {
-                        setImg(rsp.image)
-                    })
+                if (post?.status === 201) {
+                    setImg({image: post.headers.get("Location")!, version: 0})
                 }
                 setNoImage(false)
                 setTypeError(false)
@@ -255,28 +254,34 @@ export const ProfileEmployee = () => {
                     <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                                <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img}
-                                     alt="profile photo" onError={() => {
-                                    setImg(user);
-                                    setNoImage(true)
-                                }}/>
-                                <form>
-                                    <div className={"cursor-pointer grid grid-rows-1 grid-cols-3 text-sm w-full focus:outline-none text-white bg-violet-400 hover:bg-violet-700 font-small rounded-full text-sm px-5 py-2.5 items-center"}>
-                                        <img src={editing} alt="edit" className="mr-3 h-6"/>
-                                        <label htmlFor="upload-button" className=" col-start-2 col-span-2 cursor-pointer">
-                                            {noImage? t('Profile.addImage') : t('Profile.editImage')}
-                                        </label>
-                                    </div>
-                                    <input
-                                        type="file"
-                                        id="upload-button"
-                                        style={{display: "none"}}
-                                        onChange={noImage? addImageHandler : updateImageHandler}
-                                    />
-                                    {typeError &&
-                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('Profile.typeError')}</p>
-                                    }
-                                </form>
+                                {img && img.version >= -1 &&
+                                    <img key={img!.version} className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img!.image}
+                                         alt="profile photo" onError={() => {
+                                        setImg({image: user, version: -1});
+                                        setNoImage(true)
+                                    }}/>
+                                }
+                                {localStorage.getItem("hogar-uid") === id &&
+                                    <form>
+                                        <div
+                                            className={"cursor-pointer grid grid-rows-1 grid-cols-3 text-sm w-full focus:outline-none text-white bg-violet-400 hover:bg-violet-700 font-small rounded-full text-sm px-5 py-2.5 items-center"}>
+                                            <img src={editing} alt="edit" className="mr-3 h-6"/>
+                                            <label htmlFor="upload-button"
+                                                   className=" col-start-2 col-span-2 cursor-pointer">
+                                                {noImage ? t('Profile.addImage') : t('Profile.editImage')}
+                                            </label>
+                                        </div>
+                                        <input
+                                            type="file"
+                                            id="upload-button"
+                                            style={{display: "none"}}
+                                            onChange={noImage ? addImageHandler : updateImageHandler}
+                                        />
+                                        {typeError &&
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('Profile.typeError')}</p>
+                                        }
+                                    </form>
+                                }
                             </div>
                             <div className="ml-3 col-span-2">
                                 <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
