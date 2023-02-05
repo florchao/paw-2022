@@ -17,7 +17,7 @@ import editing from "../assets/editing.png";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
-    const [image, setImage]: any = useState()
+    const [image, setImage] = useState<{image: string, version: number}>()
     const [typeError, setTypeError] = useState(false)
     const [noImage, setNoImage] = useState(false)
     const [reviews, setReviews]: any = useState(new Array(0))
@@ -47,7 +47,7 @@ export const ProfileEmployer = () => {
     useEffect(() => {
         EmployerService.getEmployer(id).then((val) => {
                 setEmployer(val)
-                setImage(val.image)
+                setImage({image: val.image, version: 1})
             }
         );
     }, [])
@@ -99,7 +99,7 @@ export const ProfileEmployer = () => {
                 const put = await UserService.updateImage(e, e.target.files[0], employer.id)
                 if (put?.status === 200) {
                     put.json().then((rsp) => {
-                        setImage(rsp.image)
+                        setImage({image: rsp.value, version: image!.version + 1})
                     })
                 }
                 setTypeError(false);
@@ -113,11 +113,9 @@ export const ProfileEmployer = () => {
                 setTypeError(true)
             else {
                 const post = await UserService.addImage(e, e.target.files[0], employer.id)
-                if (post?.status === 200) {
-                    setImage(null)
-                    post.json().then((rsp) => {
-                        setImage(rsp.image)
-                    })
+                if (post?.status === 201) {
+                   setImage({image: post.headers.get("Location")!, version: 0})
+
                 }
                 setNoImage(false)
                 setTypeError(false)
@@ -147,9 +145,9 @@ export const ProfileEmployer = () => {
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
                                 <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                                    <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" key={image} src={image}
+                                    <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" key={image!.version} src={image!.image}
                                          alt="profile photo" onError={() => {
-                                        setImage(user);
+                                        setImage({image: user, version: -1});
                                         setNoImage(true)
                                     }}/>
                                     <form>
