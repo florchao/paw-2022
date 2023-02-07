@@ -50,6 +50,55 @@ export const employer1 ={
     "users":"http://localhost:8080/users/1"
 }
 
+export const job1={
+        "abilities": [
+            "Cooking"
+        ],
+        "applicants": "http://localhost:8080/applicants",
+        "availability": [
+            "Part Time"
+        ],
+        "description": "que cocine de todo",
+        "employerId": {
+            "id": 1,
+            "name": "Solci Konfe",
+            "reviews": "http://localhost:8080/employers/1/reviews"
+        },
+        "experienceYears": 0,
+        "jobId": 1,
+        "location": "GBA South",
+        "opened": true,
+        "self": "http://localhost:8080/jobs/2",
+        "status": 0,
+        "title": "Cocinero"
+}
+
+export const job2= {
+    "abilities": [
+        "Cooking",
+        "Iron",
+        "Elder Care"
+    ],
+    "applicants": "http://localhost:8080/applicants",
+    "availability": [
+        "Part Time"
+    ],
+    "description": "dsakllc;aslcxa[psl';ls>x",
+    "employerId": {
+        "id": 8,
+        "name": "Maria Maria",
+        "reviews": "http://localhost:8080/employers/8/reviews"
+    },
+    "experienceYears": 3,
+    "jobId": 7,
+    "location": "GBA West",
+    "opened": true,
+    "self": "http://localhost:8080/jobs/7",
+    "status": 1,
+    "title": "Mascotas"
+}
+
+
 export function mockSuccesfulResponse(
     code: number,
     returnBody: any,
