@@ -41,6 +41,15 @@ export const employee2 ={
     "users": "http://localhost:8080/users/9"
 };
 
+export const employer1 ={
+    "id":1,
+    "image":"http://localhost:8080/images/1",
+    "jobs":"http://localhost:8080/employers/1/jobs",
+    "name":"Employer Employer",
+    "reviews":"http://localhost:8080/employers/1/reviews",
+    "users":"http://localhost:8080/users/1"
+}
+
 export function mockSuccesfulResponse(
     code: number,
     returnBody: any,
