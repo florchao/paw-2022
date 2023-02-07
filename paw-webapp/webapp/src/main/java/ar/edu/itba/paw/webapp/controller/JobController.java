@@ -115,7 +115,7 @@ public class JobController {
             return Response.status(Response.Status.CONFLICT).build();
         }
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId())).build()).build();
+        return Response.created(uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId())).build()).header("Access-Control-Expose-Headers", "Location").build();
     }
 
     @DELETE

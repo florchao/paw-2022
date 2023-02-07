@@ -64,9 +64,15 @@ export const CreateJob = () => {
         if (post?.status !== 201) {
             setJobError(true)
         } else {
+            const header = post.headers.get('Location')
+            const id = header?.split('/jobs/')[1]
+            console.log(id)
             localStorage.removeItem("jobForm")
             reset()
-            post.json().then(j => nav('/job', {replace: true, state: {self: j.value}}))
+            if(post?.status === 201 && id!= null){
+                nav('/job/'+id, {replace: true, state: {self: header}})
+
+            }
         }
     }
 
