@@ -214,7 +214,8 @@ public class EmployeeController {
         }
         GenericEntity<UserDto> genericEntity = new GenericEntity<UserDto>(UserDto.fromCrete(u.getRole(), u.getId())) {
         };
-        return Response.created(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).entity(genericEntity).build();
+
+        return Response.created(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).header("Access-Control-Expose-Headers", "Location").build();
     }
 
     @PUT

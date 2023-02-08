@@ -137,6 +137,6 @@ public class EmployerController {
         }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
 
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(u.getId())).build()).build();
+        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(u.getId())).build()).header("Access-Control-Expose-Headers", "Location").build();
     }
 }
