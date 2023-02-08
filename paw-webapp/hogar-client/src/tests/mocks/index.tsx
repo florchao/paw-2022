@@ -98,6 +98,27 @@ export const job2= {
     "title": "Mascotas"
 }
 
+export const contact1 ={
+    "created":"08/02/2023",
+    "employer":{
+        "email":"fchao@itba.edu.ar",
+        "id":1,
+        "image":"http://localhost:8080/images/1",
+        "name":"Employer Employer"},
+    "message":"holaaaaaa",
+    "phoneNumber":"11111111"
+}
+
+export const contact2 ={
+    "created":"08/02/2023",
+    "employer":{
+        "email":"fchao@itba.edu",
+        "id":2,
+        "image":"http://localhost:8080/images/2",
+        "name":"Employer Employer"},
+    "message":"holaaaaaa2",
+    "phoneNumber":"11111111"
+}
 
 export function mockSuccesfulResponse(
     code: number,
