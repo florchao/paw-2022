@@ -16,7 +16,7 @@ export class ContactService {
         })
     }
 
-    public static async contactEmployee(e: any, phone: string, content: string, employee_id: string, employer_id: number) {
+    public static async contactEmployee(e: any, phone: string, content: string, employee_id: number, employer_id: number) {
         e.preventDefault();
 
         const contactForm = JSON.stringify({

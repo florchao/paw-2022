@@ -31,6 +31,7 @@ export const ContactEmployee = () => {
     const [name, setName]: any = useState()
 
     let {employeeId} :any = useState()
+    const [employeeIdForm, setEmployeeIdForm]: any = useState()
     const params = useParams();
     const location = useLocation();
 
@@ -49,8 +50,10 @@ export const ContactEmployee = () => {
         if(location.state) {
             setName(location.state.name)
             employeeId = location.state.id
+            setEmployeeIdForm(location.state.id)
         } else {
             employeeId = params.id
+            setEmployeeIdForm(params.id)
         }
         if (name === undefined) {
             const url = EMPLOYEE_URL + BACK_SLASH + employeeId
@@ -58,21 +61,19 @@ export const ContactEmployee = () => {
         }
     }, [])
 
-
     const [contactEmployeeError, setContactEmployeeError]: any = useState(false)
 
     const {t} = useTranslation();
     const nav = useNavigate();
 
     const invalidPhone = (number : String) => {
-        if( number.length <= 10)
-            return false
+        return !number.match("/^\\d+$/");
     };
 
     const employerId = localStorage.getItem("hogar-uid") as unknown as number
 
     const onSubmit = async (data: any, e: any) => {
-        const contact = await ContactService.contactEmployee(e, data.phone, data.content, employeeId, employerId)
+        const contact = await ContactService.contactEmployee(e, data.phone, data.content, employeeIdForm, employerId)
         localStorage.removeItem("contactForm")
         let status;
         if (contact?.status === 201) {
@@ -86,7 +87,7 @@ export const ContactEmployee = () => {
             setContactEmployeeError(false)
         }
         if(status)
-            nav("/employee", {replace: true, state: {id: employeeId, status: status}})
+            nav("/employee/" + employeeIdForm, {replace: true, state: {id: employeeIdForm, status: status}})
     }
 
     return (
