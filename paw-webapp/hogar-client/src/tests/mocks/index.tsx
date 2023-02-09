@@ -144,6 +144,9 @@ export const job4={
         "title": "Casero"
     }
 }
+
+export const ratings={"count":2,"hasRated":true,"rating":3.5}
+
 export function mockSuccesfulResponse(
     code: number,
     returnBody: any,
