@@ -120,6 +120,30 @@ export const contact2 ={
     "phoneNumber":"11111111"
 }
 
+export const job3=
+    {
+    "job": {
+        "description": "para bruna, yiya y mila",
+        "jobId": 1,
+        "location": "GBA West",
+        "opened": false,
+        "self": "http://localhost:8080/jobs/1",
+        "status": 1,
+        "title": "Cuidado De Perras"
+    }
+}
+
+export const job4={
+    "job": {
+        "description": "tiene que tener mucha buena onda",
+        "jobId": 3,
+        "location": "GBA North",
+        "opened": false,
+        "self": "http://localhost:8080/jobs/3",
+        "status": 0,
+        "title": "Casero"
+    }
+}
 export function mockSuccesfulResponse(
     code: number,
     returnBody: any,
