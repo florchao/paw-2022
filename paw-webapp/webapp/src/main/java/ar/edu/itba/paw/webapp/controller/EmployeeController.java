@@ -6,20 +6,18 @@ import ar.edu.itba.paw.model.exception.PassMatchException;
 import ar.edu.itba.paw.model.exception.UserFoundException;
 import ar.edu.itba.paw.model.exception.UserNotFoundException;
 import ar.edu.itba.paw.service.*;
-import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.JobsAppliedDto;
 import ar.edu.itba.paw.webapp.dto.ContactDto.ContactDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeCreateDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeEditDto;
-import ar.edu.itba.paw.webapp.dto.ReviewDto.ReviewDto;
+import ar.edu.itba.paw.webapp.dto.ReviewDto.EmployeeReviewDto;
+import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.webapp.helpers.UriHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +77,6 @@ public class EmployeeController {
             @QueryParam("order") String orderCriteria,
             @Context HttpServletRequest request
     ) {
-
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
         LocaleContextHolder.setLocale(locale);
 
@@ -91,7 +88,16 @@ public class EmployeeController {
         int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
         GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
         };
-        return Response.ok(genericEntity).header("X-Total-Count", pages).build();
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+        if (request.getQueryString() != null) {
+            UriHelper.fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, orderCriteria);
+        }
+        return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
+
     }
 
     @GET
@@ -120,6 +126,7 @@ public class EmployeeController {
         return Response.ok(genericEntity).build();
     }
 
+
     @GET
     @Path("{id}/jobs")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -137,7 +144,8 @@ public class EmployeeController {
                 .map(applicant -> JobsAppliedDto.fromEmployee(uriInfo, applicant))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumberForAppliedJobs(id, PAGE_SIZE);
-        GenericEntity<List<JobsAppliedDto>> genericEntity = new GenericEntity<List<JobsAppliedDto>>(list) { };
+        GenericEntity<List<JobsAppliedDto>> genericEntity = new GenericEntity<List<JobsAppliedDto>>(list) {
+        };
         if (list.isEmpty())
             return Response.status(Response.Status.NO_CONTENT).entity(genericEntity).build();
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
@@ -160,7 +168,8 @@ public class EmployeeController {
 
         List<ContactDto> contacts = new ArrayList<>(contactService.getAllContacts(id, page, PAGE_SIZE)).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
         int pages = contactService.getPageNumber(id, PAGE_SIZE);
-        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) { };
+        GenericEntity<List<ContactDto>> genericEntity = new GenericEntity<List<ContactDto>>(contacts) {
+        };
         if (contacts.isEmpty())
             return Response.status(Response.Status.NO_CONTENT).entity(genericEntity).build();
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
@@ -182,7 +191,8 @@ public class EmployeeController {
                 .map(r -> EmployeeReviewDto.fromEmployeeReview(uriInfo, r))
                 .collect(Collectors.toList());
         int pages = reviewService.getPageNumber(id, except, PAGE_SIZE_REVIEWS);
-        GenericEntity<List<EmployeeReviewDto>> genericEntity = new GenericEntity<List<EmployeeReviewDto>>(reviews) { };
+        GenericEntity<List<EmployeeReviewDto>> genericEntity = new GenericEntity<List<EmployeeReviewDto>>(reviews) {
+        };
         if (reviews.isEmpty())
             return Response.status(Response.Status.NO_CONTENT).entity(genericEntity).build();
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);

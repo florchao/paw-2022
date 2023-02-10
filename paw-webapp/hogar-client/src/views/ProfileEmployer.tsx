@@ -61,7 +61,7 @@ export const ProfileEmployer = () => {
                 (rsp) => {
                     rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
                     let linkHeader = rsp?.headers.get("link")
-                    if (linkHeader !== null) {
+                    if (linkHeader !== null && linkHeader !== undefined) {
                         parseLink(linkHeader, setNextPage, setPrevPage)
                     }
                     if(rsp?.status === 200)
@@ -90,10 +90,10 @@ export const ProfileEmployer = () => {
     const changePage = async (page: number, linkUrl?: string) => {
         setReviews(null)
         setCurrent(page)
-        const get = await ReviewService.getEmployerReviews(employer.reviews, page, linkUrl)
+        const get = await ReviewService.getEmployerReviews(employer.reviews, page, undefined, linkUrl)
         get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
         let linkHeader = get?.headers.get("link")
-        if (linkHeader !== null) {
+        if (linkHeader !== null && linkHeader !== undefined) {
             parseLink(linkHeader, setNextPage, setPrevPage)
         }
         get?.json().then((reviews) => {

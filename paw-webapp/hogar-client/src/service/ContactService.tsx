@@ -44,9 +44,6 @@ export class ContactService {
 
     public static async contacts(id: number, page: number, linkUrl?: string) {
         let url = EMPLOYEE_URL + BACK_SLASH + id + CONTACTS
-        if (page > 0) {
-            url = url + "?page=" + page
-        }
         if (linkUrl !== undefined) {
             url = linkUrl
         }

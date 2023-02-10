@@ -31,11 +31,11 @@ export const CreatedJobs = () => {
         let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
         JobService.getCreatedJobs(url, false, page, linkUrl).then( async (j) => {
             j?.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
-            let linkHeader = j.headers.get("link")
-            if (linkHeader !== null) {
+            let linkHeader = j?.headers.get("link")
+            if (linkHeader !== null && linkHeader !== undefined) {
                 parseLink(linkHeader, setNextPage, setPrevPage)
             }
-            j?.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j.json())
+            j?.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j?.json())
         });
     }
 

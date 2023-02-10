@@ -53,7 +53,7 @@ export const Applicants = () => {
                 if (linkHeader !== null) {
                     parseLink(linkHeader, setNextPage, setPrevPage)
                 }
-                rsp.json().then((body) => {
+                rsp.json().then((body: any) => {
                     setTitle(body.title)
                 })
             } else {

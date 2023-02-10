@@ -44,7 +44,6 @@ export {
     IDS_URL,
     QUERY_PARAM,
     EMPLOYEE_URL,
-    EMPLOYEES_URL,
     IMAGE_URL,
     EMPLOYER_URL,
     JOB_URL,

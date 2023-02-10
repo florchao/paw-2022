@@ -104,8 +104,8 @@ export const Explore = () => {
             data.orderBy,
             linkUrl
         ).then((rsp?) => {
-            let linkHeader = rsp.headers.get("Link")
-            if (linkHeader !== null) {
+            let linkHeader = rsp?.headers.get("Link")
+            if (linkHeader !== null && linkHeader !== undefined) {
                 parseLink(linkHeader, setNextPage, setPrevPage)
             }
             rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)

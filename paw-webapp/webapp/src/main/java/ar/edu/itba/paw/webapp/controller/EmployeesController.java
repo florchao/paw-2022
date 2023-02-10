@@ -38,62 +38,62 @@ public class EmployeesController {
     @Context
     private UriHelper uriHelper;
 
-    @GET
-    @Path("")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response filterEmployees(
-            @QueryParam("name") String name,
-            @QueryParam("experience") Long experienceYears,
-            @QueryParam("location") String location,
-            @QueryParam("availability") String availability,
-            @QueryParam("abilities") String abilities,
-            @QueryParam("page") @DefaultValue("0") Long page,
-            @QueryParam("order") String orderCriteria,
-            @Context HttpServletRequest request
-    ) {
-        if (experienceYears != null && (experienceYears < 0 || experienceYears > 100)) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        if (location != null && (!location.matches("[1-4][,[1-4]]*") || location.length() > 7)) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        if (availability != null && (!availability.matches("[1-3][,[1-3]]*") || availability.length() > 5))
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        if (abilities != null && (!abilities.matches("[1-6][,[1-6]]*") || abilities.length() > 11))
-            return Response.status(Response.Status.BAD_REQUEST).build();
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        HogarUser hogarUser;
-
-        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-            hogarUser = (HogarUser) auth.getPrincipal();
-        } else {
-            hogarUser = null;
-        }
-
-        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
-        LocaleContextHolder.setLocale(locale);
-
-        List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(employee ->
-        {
-            float rating = ratingService.getRating(employee.getId().getId());
-            if (hogarUser != null) {
-                Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
-                return EmployeeDto.fromExploreContact(uriInfo, employee, rating, hasContact);
-            } else
-                return EmployeeDto.fromExploreRating(uriInfo, employee, rating);
-        }).collect(Collectors.toList());
-        int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
-        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
-        };
-        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
-        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-        if (request.getQueryString() != null) {
-            UriHelper.fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, orderCriteria);
-        }
-        return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
-                .header("Access-Control-Expose-Headers", "X-Total-Count")
-                .header("X-Total-Count", pages)
-                .build();
-    }
+//    @GET
+//    @Path("")
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    public Response filterEmployees(
+//            @QueryParam("name") String name,
+//            @QueryParam("experience") Long experienceYears,
+//            @QueryParam("location") String location,
+//            @QueryParam("availability") String availability,
+//            @QueryParam("abilities") String abilities,
+//            @QueryParam("page") @DefaultValue("0") Long page,
+//            @QueryParam("order") String orderCriteria,
+//            @Context HttpServletRequest request
+//    ) {
+//        if (experienceYears != null && (experienceYears < 0 || experienceYears > 100)) {
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//        }
+//        if (location != null && (!location.matches("[1-4][,[1-4]]*") || location.length() > 7)) {
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//        }
+//        if (availability != null && (!availability.matches("[1-3][,[1-3]]*") || availability.length() > 5))
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//        if (abilities != null && (!abilities.matches("[1-6][,[1-6]]*") || abilities.length() > 11))
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        HogarUser hogarUser;
+//
+//        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
+//            hogarUser = (HogarUser) auth.getPrincipal();
+//        } else {
+//            hogarUser = null;
+//        }
+//
+//        Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
+//        LocaleContextHolder.setLocale(locale);
+//
+//        List<EmployeeDto> employees = employeeService.getFilteredEmployees(name, experienceYears, location, availability, abilities, page, PAGE_SIZE, orderCriteria).stream().map(employee ->
+//        {
+//            float rating = ratingService.getRating(employee.getId().getId());
+//            if (hogarUser != null) {
+//                Boolean hasContact = !contactService.existsContact(employee.getId().getId(), hogarUser.getUserID()).isEmpty();
+//                return EmployeeDto.fromExploreContact(uriInfo, employee, rating, hasContact);
+//            } else
+//                return EmployeeDto.fromExploreRating(uriInfo, employee, rating);
+//        }).collect(Collectors.toList());
+//        int pages = employeeService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE, orderCriteria);
+//        GenericEntity<List<EmployeeDto>> genericEntity = new GenericEntity<List<EmployeeDto>>(employees) {
+//        };
+//        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+//        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+//        if (request.getQueryString() != null) {
+//            UriHelper.fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, orderCriteria);
+//        }
+//        return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
+//                .header("Access-Control-Expose-Headers", "X-Total-Count")
+//                .header("X-Total-Count", pages)
+//                .build();
+//    }
 }
