@@ -13,6 +13,7 @@ import noEmployees from "../assets/sinEmpleadas.png";
 import noJobs from "../assets/sinTrabajos.png";
 import user from "../assets/user.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {parseLink} from "../utils/utils";
 import editing from "../assets/editing.png";
 
 export const ProfileEmployer = () => {
@@ -25,7 +26,8 @@ export const ProfileEmployer = () => {
     const [jobs, setJobs]: any = useState(new Array(0))
     const [current, setCurrent]: any = useState(0)
 
-
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
 
     const nav = useNavigate();
     let id  = localStorage.getItem("hogar-uid") as unknown as number
@@ -58,6 +60,10 @@ export const ProfileEmployer = () => {
             ReviewService.getEmployerReviews(employer.reviews, 0).then(
                 (rsp) => {
                     rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                    let linkHeader = rsp?.headers.get("link")
+                    if (linkHeader !== null && linkHeader !== undefined) {
+                        parseLink(linkHeader, setNextPage, setPrevPage)
+                    }
                     if(rsp?.status === 200)
                         rsp.json().then((reviews) => {
                             setReviews(reviews)
@@ -81,11 +87,15 @@ export const ProfileEmployer = () => {
         }, [employer]
     )
 
-    const changePage = async (page: number) => {
+    const changePage = async (page: number, linkUrl?: string) => {
         setReviews(null)
         setCurrent(page)
-        const get = await ReviewService.getEmployerReviews(employer.reviews, page)
+        const get = await ReviewService.getEmployerReviews(employer.reviews, page, undefined, linkUrl)
         get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        let linkHeader = get?.headers.get("link")
+        if (linkHeader !== null && linkHeader !== undefined) {
+            parseLink(linkHeader, setNextPage, setPrevPage)
+        }
         get?.json().then((reviews) => {
             setReviews(reviews)
         })
@@ -272,7 +282,13 @@ export const ProfileEmployer = () => {
                                         <div >
                                             {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                    review={rev}/>)}
-                                            <PaginationButtons changePages={changePage} pages={pages} current={current}/>
+                                            <PaginationButtons
+                                                changePages={changePage}
+                                                pages={pages}
+                                                current={current}
+                                                nextPage={nextPage}
+                                                prevPage={prevPage}
+                                            />
                                         </div>
                                     }
                                 </div>

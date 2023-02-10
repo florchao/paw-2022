@@ -13,6 +13,7 @@ import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerCreateDto;
 import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerDto;
 import ar.edu.itba.paw.webapp.dto.JobDto.CreatedJobsDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto.EmployerReviewsDto;
+import ar.edu.itba.paw.webapp.helpers.UriHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class EmployerController {
     private JobService jobService;
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private UriHelper uriHelper;
 
     @Context
     private UriInfo uriInfo;
@@ -82,14 +86,15 @@ public class EmployerController {
 
         int pages = jobService.getMyJobsPageNumber(id, PAGE_SIZE);
 
-        GenericEntity<List<CreatedJobsDto>> genericEntity = new GenericEntity<List<CreatedJobsDto>>(jobs) {
-        };
-
-
+        GenericEntity<List<CreatedJobsDto>> genericEntity = new GenericEntity<List<CreatedJobsDto>>(jobs) { };
+        Response.ResponseBuilder responseBuilder = Response.status(jobs.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
         if(profile != null && profile.equals("true"))
             return Response.status(jobs.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).build();
-
-        return Response.status(jobs.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        return responseBuilder
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @GET
@@ -101,10 +106,14 @@ public class EmployerController {
                 .stream()
                 .map(r -> EmployerReviewsDto.fromEmployerReview(uriInfo, r))
                 .collect(Collectors.toList());
-        GenericEntity<List<EmployerReviewsDto>> genericEntity = new GenericEntity<List<EmployerReviewsDto>>(reviews) {
-        };
+        GenericEntity<List<EmployerReviewsDto>> genericEntity = new GenericEntity<List<EmployerReviewsDto>>(reviews) { };
         int pages = reviewService.getPageNumberEmployer(except, id, PAGE_SIZE_REVIEWS);
-        return Response.status(reviews.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        Response.ResponseBuilder responseBuilder = Response.status(reviews.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        return responseBuilder
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @GET

@@ -8,6 +8,7 @@ import Modal from "react-modal";
 import PaginationButtons from "../components/PaginationButtons";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {parseLink} from "../utils/utils";
 
 export const Contacts = () => {
 
@@ -16,6 +17,8 @@ export const Contacts = () => {
     const [pages, setPages]: any = useState(0)
     const [modalData, setModalData]: any = useState()
     const [current, setCurrent]: any = useState(0)
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
 
 
     const {id} = useLocation().state
@@ -36,12 +39,16 @@ export const Contacts = () => {
         changePage(0)
     }, [])
 
-    const changePage = (page: number) => {
+    const changePage = (page: number, linkUrl?: string) => {
         setContacts(null)
         setCurrent(page)
-        ContactService.contacts(id, page).then(
+        ContactService.contacts(id, page, linkUrl).then(
             (rsp) => {
                 rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                let linkHeader = rsp?.headers.get("link")
+                if (linkHeader !== null && linkHeader !== undefined) {
+                    parseLink(linkHeader, setNextPage, setPrevPage)
+                }
                 if(rsp?.status === 200)
                     rsp.json().then((conts: any) => {
                         setContacts(conts)
@@ -95,7 +102,7 @@ export const Contacts = () => {
                                 </div>
                             </button>
                             )}
-                            <PaginationButtons changePages={changePage} pages={pages} current={current}/>
+                            <PaginationButtons changePages={changePage} pages={pages} current={current} nextPage={nextPage} prevPage={prevPage}/>
                         </div>
                     }
                         <Modal

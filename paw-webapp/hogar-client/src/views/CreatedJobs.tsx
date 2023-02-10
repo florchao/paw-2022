@@ -3,15 +3,19 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {JobService} from "../service/JobService";
 import JobCard from "../components/JobCard";
-import {BACK_SLASH, EMPLOYER_URL, JOBS} from "../utils/utils";
+import {BACK_SLASH, EMPLOYER_URL, JOBS, parseLink} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
 import noJobs from "../assets/sinTrabajos.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {union} from "zod";
+
 
 export const CreatedJobs = () => {
     const [createdJobs, setCreatedJobs]: any = useState()
     const [pages, setPages]: any = useState(0)
     const [current, setCurrent]: any = useState(0)
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
 
     const { t } = useTranslation()
 
@@ -21,15 +25,18 @@ export const CreatedJobs = () => {
         changePage(0)
     }, [])
 
-    const changePage = async (page: number) => {
+    const changePage = async (page: number, linkUrl?: string) => {
         setCreatedJobs(null)
         setCurrent(page)
         let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
-        JobService.getCreatedJobs(url, false, page).then( async (j) => {
+        JobService.getCreatedJobs(url, false, page, linkUrl).then( async (j) => {
             j?.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
+            let linkHeader = j?.headers.get("link")
+            if (linkHeader !== null && linkHeader !== undefined) {
+                parseLink(linkHeader, setNextPage, setPrevPage)
+            }
             j?.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j?.json())
         });
-
     }
 
     return (
@@ -85,7 +92,7 @@ export const CreatedJobs = () => {
                         </Link>
                     </div>
                 </div>
-                    <PaginationButtons changePages={changePage} pages={pages} current={current}/>
+                    <PaginationButtons changePages={changePage} pages={pages} current={current} nextPage={nextPage} prevPage={prevPage} />
                 </div>
             }
         </div>

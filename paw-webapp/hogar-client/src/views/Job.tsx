@@ -81,12 +81,14 @@ export const Job = () => {
 
     const fetchData = async (url: string) => {
         await JobService.getJob(url).then((rsp) => {
-            if (rsp != undefined) {
-                setJob(rsp)
-                setOpened(rsp.opened)
-            } else {
-                nav("/*")
-            }
+            rsp.json().then((rsp: any) => {
+                if (rsp !== undefined) {
+                    setJob(rsp)
+                    setOpened(rsp.opened)
+                } else {
+                    nav("/*")
+                }
+            })
         })
     }
 
@@ -368,8 +370,7 @@ export const Job = () => {
                                             <div>
                                                 {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                        review={rev}/>)}
-                                                <PaginationButtons changePages={changePage} pages={pages}
-                                                                   current={current}/>
+                                                <PaginationButtons changePages={changePage} pages={pages} current={current}/>
                                             </div>
                                         }
                                     </ul>

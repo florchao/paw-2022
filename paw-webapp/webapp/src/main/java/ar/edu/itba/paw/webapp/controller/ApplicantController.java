@@ -13,6 +13,7 @@ import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantCreateDto;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantEditDto;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantInJobsDto;
+import ar.edu.itba.paw.webapp.helpers.UriHelper;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +43,14 @@ public class ApplicantController {
     private ContactService contactService;
     @Autowired
     private ApplicantService applicantService;
+
+    @Autowired
+    private UriHelper uriHelper;
+
     @Context
     private UriInfo uriInfo;
-    private static final int PAGE_SIZE = 9;
+
+    private static final int PAGE_SIZE = 1;
 
     @GET
     @Path("/{employeeId}/{jobId}")
@@ -145,9 +151,13 @@ public class ApplicantController {
                 .map(a -> ApplicantInJobsDto.fromJob(uriInfo, a))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
-        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) {
-        };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) { };
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        return responseBuilder
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @DELETE

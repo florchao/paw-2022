@@ -31,7 +31,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 //@EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.auth", "ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
+@ComponentScan({"ar.edu.itba.paw.webapp.helpers","ar.edu.itba.paw.webapp.auth", "ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.service", "ar.edu.itba.paw.persistence"})
 @Configuration
 @EnableAsync
 @PropertySource(value = {"classpath:application.properties"})

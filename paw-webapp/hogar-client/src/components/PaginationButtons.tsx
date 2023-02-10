@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 
-const PaginationButtons = ({changePages, pages, current}: {changePages: any ,pages: number, current?: any}) => {
+const PaginationButtons = ({changePages, pages, current, nextPage, prevPage }: {changePages: any ,pages: number, current?: any, nextPage?: any, prevPage?: any}) => {
     const [page, setPage] = useState(current? current : 0)
 
     const { t } = useTranslation();
@@ -10,7 +10,7 @@ const PaginationButtons = ({changePages, pages, current}: {changePages: any ,pag
         <div className="flex justify-center items-center">
             {page > 0 &&
                 <button onClick={() => {
-                        changePages(page - 1)
+                        changePages(page - 1, prevPage)
                         setPage(page - 1)
                     }
                 }
@@ -31,7 +31,7 @@ const PaginationButtons = ({changePages, pages, current}: {changePages: any ,pag
             }
             {page < pages - 1 &&
                 <button onClick={() => {
-                        changePages(page + 1)
+                        changePages(page + 1, nextPage)
                         setPage(page + 1)
                     }
                 }

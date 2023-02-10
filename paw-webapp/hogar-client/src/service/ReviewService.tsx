@@ -1,9 +1,13 @@
 import {BACK_SLASH, JWTExpired, REVIEWS_URL} from "../utils/utils";
 
 export class ReviewService {
-    public static async getEmployeeReviews(url: string, page: number, employerId?: number) {
+    public static async getEmployeeReviews(url: string, page: number, employerId?: number, linkUrl?: string) {
         if (page > 0) {
             url = url + "?page=" + page
+        }
+
+        if (linkUrl !== undefined) {
+            url = linkUrl
         }
 
         if (employerId && employerId !== 0) {
@@ -32,9 +36,12 @@ export class ReviewService {
                 })
     }
 
-    public static async getEmployerReviews(url: string, page: number, employeeId?: number) {
+    public static async getEmployerReviews(url: string, page: number, employeeId?: number, linkUrl?: string) {
         if (page > 0) {
             url = url + "?page=" + page
+        }
+        if (linkUrl !== "" && linkUrl !== undefined) {
+            url = linkUrl
         }
         if (employeeId && employeeId !== 0) {
             if(page > 0){
