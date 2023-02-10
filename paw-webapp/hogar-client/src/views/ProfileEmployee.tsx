@@ -26,7 +26,7 @@ import {ContactService} from "../service/ContactService";
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
-    const [img, setImg]= useState<{image: string, version: number}>()
+    const [img, setImg] = useState<{ image: string, version: number }>()
     const [typeError, setTypeError] = useState(false)
     const [noImage, setNoImage] = useState(false)
     const [rating, setRating]: any = useState()
@@ -122,7 +122,7 @@ export const ProfileEmployee = () => {
             if (employee) {
                 if (localStorage.getItem('hogar-uid') != null) {
                     const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
-                    ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER"? parseInt(userID) : 0).then(
+                    ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER" ? parseInt(userID) : 0).then(
                         (rsp) => {
                             rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
                             let linkHeader = rsp?.headers.get("link")
@@ -162,26 +162,24 @@ export const ProfileEmployee = () => {
         }, [employee]
     )
 
-    const changePage = async (page: number, linkUrl?: string) => {
     useEffect(() => {
             if (employee && localStorage.getItem("hogar-role") === "EMPLOYER") {
                 ContactService.getContact(employee.id, employerId).then(r => {
-                    if(r.length > 0)
+                    if (r.length > 0)
                         setContact(true)
                     else
                         setContact(false)
                 })
-            }
-            else
+            } else
                 setContact(false)
         }, [employee]
     )
 
-    const changePage = async (page: number) => {
+    const changePage = async (page: number, linkUrl?: string) => {
         setReview(null)
         setCurrent(page)
         const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
-        const get = await ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER"? parseInt(userID) : 0, linkUrl)
+        const get = await ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER" ? parseInt(userID) : 0, linkUrl)
         get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
         let linkHeader = get?.headers.get("link")
         if (linkHeader !== null && linkHeader !== undefined) {
@@ -215,7 +213,7 @@ export const ProfileEmployee = () => {
 
     const updateImageHandler = async (e: any) => {
         if (e.target.files.length) {
-            if(!e.target.files[0].type.match("image/jpeg|image/png|image/jpg"))
+            if (!e.target.files[0].type.match("image/jpeg|image/png|image/jpg"))
                 setTypeError(true)
             else {
                 const put = await UserService.updateImage(e, e.target.files[0], employee.id)
@@ -267,7 +265,9 @@ export const ProfileEmployee = () => {
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
                                 {img && img.version >= -1 &&
-                                    <img key={img!.version} className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img!.image}
+                                    <img key={img!.version}
+                                         className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg"
+                                         src={img!.image}
                                          alt="profile photo" onError={() => {
                                         setImg({image: user, version: -1});
                                         setNoImage(true)
@@ -476,7 +476,8 @@ export const ProfileEmployee = () => {
                                     <div>
                                         {review.map((rev: any) =>
                                             <ReviewCard key={rev.employer.id} review={rev}/>)}
-                                        <PaginationButtons pages={pages} changePages={changePage} current={current} nextPage={nextPage} prevPage={prevPage} />
+                                        <PaginationButtons pages={pages} changePages={changePage} current={current}
+                                                           nextPage={nextPage} prevPage={prevPage}/>
                                     </div>
                                 }
                                 {review.length === 0 && !myReview &&
@@ -537,5 +538,4 @@ export const ProfileEmployee = () => {
         </div>
     )
 }
-
 export default ProfileEmployee;
