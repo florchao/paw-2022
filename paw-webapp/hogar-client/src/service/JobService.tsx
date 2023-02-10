@@ -89,15 +89,16 @@ export class JobService {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
-                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt')
             },
         }).then((resp) => {
             if (resp.status === 401) {
                 return JWTExpired()
             }
-            else if (resp.status == 200) {
-                return resp.json()
-            }
+            // else if (resp.status === 200) {
+                // return resp.json()
+            // }
+            return resp
         })
             .catch(
                 (error) => {
