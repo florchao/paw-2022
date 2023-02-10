@@ -11,7 +11,6 @@ import java.net.URI;
 import java.util.List;
 
 public class JobDto {
-
     private long jobId;
 
     private String title;
@@ -44,29 +43,12 @@ public class JobDto {
         dto.description = job.getDescription();
         dto.status = status;
 
-        UriBuilder jobUriBuilder = uriInfo.getBaseUriBuilder().path("/api/jobs").path(String.valueOf(job.getJobId()));
+        UriBuilder jobUriBuilder = uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId()));
         dto.self = jobUriBuilder.build();
 
         return dto;
     }
 
-    public static JobDto fromCreated(final UriInfo uriInfo, final Job job) {
-        final JobDto dto = new JobDto();
-
-        dto.jobId = job.getJobId();
-        dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
-        dto.location = job.nameLocation(job.getLocation(), LocaleContextHolder.getLocale().getLanguage());
-
-        dto.description = job.getDescription();
-
-        UriBuilder jobUriBuilder = uriInfo.getBaseUriBuilder().path("/api/jobs").path(String.valueOf(job.getJobId()));
-        UriBuilder applicantsUriBuilder = uriInfo.getBaseUriBuilder().path("/api/applicants").path(String.valueOf(job.getJobId()));
-        dto.self = jobUriBuilder.build();
-
-        dto.applicants = applicantsUriBuilder.build();
-
-        return dto;
-    }
 
     public static JobDto fromAppliedJobs(final UriInfo uriInfo, final Job job, String language) {
         final JobDto dto = new JobDto();
@@ -80,8 +62,9 @@ public class JobDto {
         return dto;
     }
 
-    public static JobDto fromJob(final UriInfo uriInfo, final Job job) {
+    public static JobDto fromJob(final UriInfo uriInfo, final Job job, int status) {
         final JobDto dto = new JobDto();
+        dto.status = status;
         dto.jobId = job.getJobId();
         dto.title = DtoUtils.firstWordsToUpper(job.getTitle());
 
@@ -98,6 +81,12 @@ public class JobDto {
         dto.availability = job.getAvailabilityArr(job.getAvailability(), LocaleContextHolder.getLocale().getLanguage());
 
         dto.employerId = EmployerDto.fromJob(uriInfo, job.getEmployerId());
+
+        UriBuilder jobUriBuilder = uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId()));
+        UriBuilder applicantsUriBuilder = uriInfo.getBaseUriBuilder().path("/applicants");
+
+        dto.self = jobUriBuilder.build();
+        dto.applicants = applicantsUriBuilder.build();
 
         return dto;
 
@@ -198,4 +187,5 @@ public class JobDto {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
 }

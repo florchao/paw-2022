@@ -72,11 +72,10 @@ public class ApplicantJpaDaoTest {
                 .setParameter(3, PASSWORD)
                 .setParameter(4, ROLE)
                 .executeUpdate();
-        byte[] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
-        final Employer employer = employerJpaDao.create(NAME, user.get(), image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
+        final Employer employer = employerJpaDao.create(NAME, user.get());
         Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
 
         Applicant applicant = applicantJpaDao.create(job, employee);
@@ -88,9 +87,8 @@ public class ApplicantJpaDaoTest {
 
     @Test
     public void testGetJobsByApplicant() {
-        byte[] image = {};
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
         final List<Applicant> list = applicantJpaDao.getAppliedJobsByApplicant(employee, 0L, 1);
         Assert.assertNotNull(list);
         Assert.assertEquals(0, list.size());
@@ -98,9 +96,8 @@ public class ApplicantJpaDaoTest {
 
     @Test
     public void testGetApplicantsByJob() {
-        byte[] image = {};
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employer employer = employerJpaDao.create(NAME, user2, image);
+        final Employer employer = employerJpaDao.create(NAME, user2);
         Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
         final List<Applicant> list = applicantJpaDao.getApplicantsByJob(job, 0L, 1);
         Assert.assertNotNull(list);
@@ -109,11 +106,10 @@ public class ApplicantJpaDaoTest {
 
     @Test
     public void testExistsApplicant() {
-        byte[] image = {};
         User user1 = userJpaDao.create(USERNAME, PASSWORD, 1);
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
-        final Employer employer = employerJpaDao.create(NAME, user1, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
+        final Employer employer = employerJpaDao.create(NAME, user1);
         final Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
         final Applicant applicant = applicantJpaDao.create(job, employee);
 
@@ -131,11 +127,10 @@ public class ApplicantJpaDaoTest {
 
     @Test
     public void testGetStatus() {
-        byte[] image = {};
         User user1 = userJpaDao.create(USERNAME, PASSWORD, 1);
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
-        final Employer employer = employerJpaDao.create(NAME, user1, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
+        final Employer employer = employerJpaDao.create(NAME, user1);
         final Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
         final Applicant applicant = applicantJpaDao.create(job, employee);
 
@@ -152,11 +147,10 @@ public class ApplicantJpaDaoTest {
 
     @Test
     public void testChangeStatus() {
-        byte[] image = {};
         User user1 = userJpaDao.create(USERNAME, PASSWORD, 1);
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
-        final Employer employer = employerJpaDao.create(NAME, user1, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
+        final Employer employer = employerJpaDao.create(NAME, user1);
         final Job job = jobJpaDao.create(TITLE, LOCATION, employer, AVAILABILITY, EXPERIENCE_YEARS, ABILITIES, DESCRIPTION);
         final Applicant applicant = applicantJpaDao.create(job, employee);
         em.flush();

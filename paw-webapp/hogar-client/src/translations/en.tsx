@@ -105,6 +105,9 @@ export const TRANSLATIONS_EN = {
     noReviews: "There are no reviews",
     editProfile: "EDIT PROFILE",
     rateUser: "Rate ",
+    editImage: "Edit image",
+    addImage: "Add image",
+    typeError: "Image should be png, jpg or jpeg"
   },
   LogIn:{
     mail:"E-Mail",

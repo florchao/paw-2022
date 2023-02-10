@@ -1,28 +1,27 @@
 package ar.edu.itba.paw.webapp.dto.ReviewDto;
 
 import ar.edu.itba.paw.model.Review;
-import ar.edu.itba.paw.webapp.dto.DtoUtils;
-import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
+import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeFromReviewDto;
 import ar.edu.itba.paw.webapp.dto.EmployerDto.EmployerDto;
 
 import javax.ws.rs.core.UriInfo;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class ReviewDto {
+public class EmployeeReviewDto {
     private long reviewId;
 
     private EmployerDto employer;
 
-    private EmployeeDto employee;
+    private EmployeeFromReviewDto employee;
 
     private String created;
 
     private String review;
 
 
-    public static ReviewDto fromEmployeeReview(final UriInfo uriInfo, final Review review) {
-        final ReviewDto dto = new ReviewDto();
+    public static EmployeeReviewDto fromEmployeeReview(final UriInfo uriInfo, final Review review) {
+        final EmployeeReviewDto dto = new EmployeeReviewDto();
 
         dto.reviewId = review.getReviewId();
 
@@ -30,20 +29,6 @@ public class ReviewDto {
 
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         dto.created = formatter.format(review.getCreated());
-
-        dto.review = review.getReview();
-
-        return dto;
-    }
-
-    public static ReviewDto fromEmployerReview(final UriInfo uriInfo, final Review review) {
-        final ReviewDto dto = new ReviewDto();
-
-        dto.reviewId = review.getReviewId();
-
-        dto.employee = EmployeeDto.fromReview(uriInfo, review.getEmployeeId());
-
-        dto.created = DtoUtils.dateToString(review.getCreated());
 
         dto.review = review.getReview();
 
@@ -82,11 +67,11 @@ public class ReviewDto {
         this.review = review;
     }
 
-    public EmployeeDto getEmployee() {
+    public EmployeeFromReviewDto getEmployee() {
         return employee;
     }
 
-    public void setEmployee(EmployeeDto employee) {
+    public void setEmployee(EmployeeFromReviewDto employee) {
         this.employee = employee;
     }
 

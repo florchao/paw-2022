@@ -11,8 +11,6 @@ import {union} from "zod";
 
 
 export const CreatedJobs = () => {
-
-
     const [createdJobs, setCreatedJobs]: any = useState()
     const [pages, setPages]: any = useState(0)
     const [current, setCurrent]: any = useState(0)
@@ -32,12 +30,12 @@ export const CreatedJobs = () => {
         setCurrent(page)
         let url = EMPLOYER_URL + BACK_SLASH + id + JOBS
         JobService.getCreatedJobs(url, false, page, linkUrl).then( async (j) => {
-            j.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
+            j?.headers.get("X-Total-Count") ? setPages(j.headers.get("X-Total-Count")) : setPages(0)
             let linkHeader = j.headers.get("link")
             if (linkHeader !== null) {
                 parseLink(linkHeader, setNextPage, setPrevPage)
             }
-            j.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j.json())
+            j?.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j.json())
         });
     }
 

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface EmployerDao {
 
-    Employer create(String name, User id, byte[] image);
+    Employer create(String name, User id);
 
     Optional<Employer> getEmployerById(long id);
 

@@ -52,9 +52,8 @@ public class EmployerJpaDaoTest {
                 .setParameter(3, PASSWORD)
                 .setParameter(4, ROLE)
                 .executeUpdate();
-        byte[] image = {};
         Optional<User> user = userJpaDao.getUserById(0);
-        final Employer employer = employerJdbcDao.create(NAME, user.get(), image);
+        final Employer employer = employerJdbcDao.create(NAME, user.get());
 
         Assert.assertEquals(ID, employer.getId().getId());
         Assert.assertEquals(NAME, employer.getName());
@@ -70,8 +69,7 @@ public class EmployerJpaDaoTest {
                 .setParameter(4, ROLE)
                 .executeUpdate();
         Optional<User> user = userJpaDao.getUserById(0);
-        byte[] image = {};
-        employerJdbcDao.create(NAME, user.get(), image);
+        employerJdbcDao.create(NAME, user.get());
 
 
         Optional<Employer> employer = employerJdbcDao.getEmployerById(0);

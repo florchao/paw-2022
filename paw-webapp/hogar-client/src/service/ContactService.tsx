@@ -1,4 +1,4 @@
-import {BACK_SLASH, CONTACT_URL, CONTACTS, EMPLOYEE_URL} from "../utils/utils";
+import {BACK_SLASH, CONTACT_URL, CONTACTS, EMPLOYEE_URL, JWTExpired} from "../utils/utils";
 
 export class ContactService {
 
@@ -26,7 +26,6 @@ export class ContactService {
             employerId: employer_id
         });
 
-
         return await fetch(CONTACT_URL, {
             method: 'POST',
             headers: {
@@ -35,6 +34,12 @@ export class ContactService {
             },
             body: contactForm
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
     }
 
     public static async contacts(id: number, page: number, linkUrl?: string) {
@@ -51,7 +56,12 @@ export class ContactService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        })
+        }).then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     console.log(error)
@@ -66,8 +76,11 @@ export class ContactService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => {
-            return resp.json()
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response.json()
         })
             .catch(
                 (error) => {

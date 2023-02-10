@@ -58,11 +58,10 @@ public class ContactJpaDaoTest {
 
     @Test
     public void testCreate() {
-        byte[] image = {};
         User user = userJpaDao.create(USERNAME, PASSWORD, ROLE);
-        final Employer employer = employerJdbcDao.create(NAME, user, image);
+        final Employer employer = employerJdbcDao.create(NAME, user);
         User user2 = userJpaDao.create(USERNAME, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
 
         final Contact contact = contactJpaDao.create(employee, employer, DATE, MESSAGE, PHONE);
 
@@ -75,13 +74,12 @@ public class ContactJpaDaoTest {
 
     @Test
     public void testExistsContact() {
-        byte[] image = {};
         User user = userJpaDao.create(USERNAME, PASSWORD, ROLE);
-        final Employer employer = employerJdbcDao.create(NAME, user, image);
+        final Employer employer = employerJdbcDao.create(NAME, user);
         User user3 = userJpaDao.create(USERNAME3, PASSWORD, ROLE);
-        final Employer employer2 = employerJdbcDao.create(NAME, user3, image);
+        final Employer employer2 = employerJdbcDao.create(NAME, user3);
         User user2 = userJpaDao.create(USERNAME2, PASSWORD, 1);
-        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES, image);
+        final Employee employee = employeeJpaDao.create(user2, NAME, LOCATION, AVAILABILITY, EXPERIENCE_YEARS, HOURLY_FEE, ABILITIES);
 
         final Contact contact = contactJpaDao.create(employee, employer, DATE, MESSAGE, PHONE);
 

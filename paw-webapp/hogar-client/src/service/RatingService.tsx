@@ -1,4 +1,4 @@
-import {BACK_SLASH, RATINGS_URL} from "../utils/utils";
+import {BACK_SLASH, JWTExpired, RATINGS_URL} from "../utils/utils";
 
 export class RatingService {
 
@@ -9,7 +9,12 @@ export class RatingService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((resp) => resp.json())
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response.json()
+        })
             .catch(
                 (error) => {
                     console.log(error)
@@ -25,8 +30,6 @@ export class RatingService {
             employerId: employerId
         });
 
-        //TODO: cambiar lo que hace con el response
-
         return await fetch(RATINGS_URL, {
             method: 'POST',
             headers: {
@@ -34,7 +37,13 @@ export class RatingService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: ratingForm
-        })
+        }).then( r => {
+            if (r.status === 401) {
+                return JWTExpired()
+            }
+            return this.getEmployeeRating(r.headers.get('Location') as string, employerId)
+            }
+        )
     }
 
 }

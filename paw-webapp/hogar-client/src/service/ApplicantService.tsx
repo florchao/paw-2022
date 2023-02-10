@@ -1,4 +1,4 @@
-import {APPLICANT_URL, BACK_SLASH, EMPLOYEE_URL, JOBS} from "../utils/utils";
+import {APPLICANT_URL, BACK_SLASH, EMPLOYEE_URL, JOBS, JWTExpired} from "../utils/utils";
 
 
 export class ApplicantService{
@@ -17,6 +17,11 @@ export class ApplicantService{
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
             .catch(
                 (error) => {
@@ -26,39 +31,51 @@ export class ApplicantService{
     }
 
 
-    public static async createApplicant(jobId: number){
+    public static async createApplicant(url: string, jobId: number){
 
         const applyForm = JSON.stringify({
             jobId: jobId
         });
-
-        return await fetch(APPLICANT_URL, {
+        //TODO: que me pase el url el DTO?
+        return await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: applyForm
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
-    public static async updateStatus(employeeId: number, jobId: number, status: number){
+    public static async updateStatus(url: string, status: number){
 
         const statusForm = JSON.stringify({
             status: status
         });
 
-        return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
+        return await fetch(url , {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: statusForm
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
     public static async deleteApplication(employeeId: number, jobId: number){
+
+        //TODO: que me pase el url el DTO?
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId , {
             method: 'DELETE',
             headers: {
@@ -66,17 +83,30 @@ export class ApplicantService{
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
 
             }
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
     public static async getApplicationStatus(employeeId: number, jobId: number){
+
+        //TODO: que me pase el url el DTO?
         return await fetch(APPLICANT_URL + BACK_SLASH + employeeId + BACK_SLASH + jobId, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
-        }).then((r) => r.text())
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response.text()
+
+        })
     }
 
 

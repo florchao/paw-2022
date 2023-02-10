@@ -104,7 +104,10 @@ export const TRANSLATIONS_ES = {
         reviews: "Opiniones",
         noReviews: "No hay opiniones",
         editProfile: "EDITAR PERFIL",
-        rateUser: "Califica a "
+        rateUser: "Califica a ",
+        editImage: "Editar imagen",
+        addImage: "Agregar imagen",
+        typeError: "La imagen debe ser png, jpg o jpeg"
     },
     LogIn:{
         mail:"E-Mail",

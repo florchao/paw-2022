@@ -21,12 +21,12 @@ export const AppliedJobs = () => {
 
     useEffect(() => {
         ApplicantService.getAppliedJobs(id, 0).then((rsp) => {
-                rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                let linkHeader = rsp.headers.get("link")
+                rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                let linkHeader = rsp?.headers.get("link")
                 if (linkHeader !== null) {
                     parseLink(linkHeader, setNextPage, setPrevPage)
                 }
-                if (rsp.status === 200)
+                if (rsp?.status === 200)
                     rsp.json().then((jobs) => {
                         setAppliedJobs(jobs)
                     })
@@ -41,12 +41,12 @@ export const AppliedJobs = () => {
         setCurrent(page)
 
         const get = await ApplicantService.getAppliedJobs(id, page, linkUrl)
-        get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
         let linkHeader = get.headers.get("link")
         if (linkHeader !== null) {
             parseLink(linkHeader, setNextPage, setPrevPage)
         }
-        get.json().then((jobs) => {
+        get?.json().then((jobs) => {
             setAppliedJobs(jobs)
         })
     }

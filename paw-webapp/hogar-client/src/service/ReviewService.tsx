@@ -1,12 +1,20 @@
-import {BACK_SLASH, REVIEWS_URL} from "../utils/utils";
+import {BACK_SLASH, JWTExpired, REVIEWS_URL} from "../utils/utils";
 
 export class ReviewService {
-    public static async getEmployeeReviews(url: string, page: number, linkUrl?: string) {
+    public static async getEmployeeReviews(url: string, page: number, employerId?: number, linkUrl?: string) {
         if (page > 0) {
             url = url + "?page=" + page
         }
+
         if (linkUrl !== undefined) {
             url = linkUrl
+        }
+
+        if (employerId && employerId !== 0) {
+            if(page > 0){
+                url = url + "&except=" + employerId
+            } else
+                url = url + "?except=" + employerId
         }
         return await fetch(url, {
             method: 'GET',
@@ -15,6 +23,12 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     console.log(error)
@@ -22,12 +36,18 @@ export class ReviewService {
                 })
     }
 
-    public static async getEmployerReviews(url: string, page: number, linkUrl?: string) {
+    public static async getEmployerReviews(url: string, page: number, employeeId?: number, linkUrl?: string) {
         if (page > 0) {
             url = url + "?page=" + page
         }
         if (linkUrl !== "" && linkUrl !== undefined) {
             url = linkUrl
+        }
+        if (employeeId && employeeId !== 0) {
+            if(page > 0){
+                url = url + "&except=" + employeeId
+            } else
+                url = url + "?except=" + employeeId
         }
         return await fetch(url, {
             method: 'GET',
@@ -35,6 +55,11 @@ export class ReviewService {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
             .catch(
                 (error) => {
@@ -51,7 +76,10 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
         }).then((resp) => {
-                if (resp.status == 200) {
+            if (resp.status === 401) {
+                return JWTExpired()
+            }
+            else if (resp.status == 200) {
                     return resp.json()
                 }
             }
@@ -63,7 +91,7 @@ export class ReviewService {
                 })
     }
 
-    public static async getMyEmployeeReview(url: number) {
+    public static async getMyEmployeeReview(url?: string) {
         return await fetch(url + BACK_SLASH + localStorage.getItem("hogar-uid"), {
             method: 'GET',
             headers: {
@@ -72,7 +100,10 @@ export class ReviewService {
 
             },
         }).then((resp) => {
-                if (resp.status == 200) {
+            if (resp.status === 401) {
+                return JWTExpired()
+            }
+            else if (resp.status == 200) {
                     return resp.json()
                 }
             }
@@ -101,6 +132,11 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: reviewFrom
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 
@@ -121,6 +157,11 @@ export class ReviewService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: reviewForm
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
         })
     }
 }

@@ -9,6 +9,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+
 @Component
 public class AntMatcherVoter {
 
@@ -41,6 +45,14 @@ public class AntMatcherVoter {
     }
 
     public boolean canDeleteUser(Authentication auth, Long id) {
+        if (auth.isAuthenticated()) {
+            HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return hogarUser.getUserID() == id;
+        }
+        return false;
+    }
+
+    public boolean canUploadImage(Authentication auth, Long id) throws IOException {
         if (auth.isAuthenticated()) {
             HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return hogarUser.getUserID() == id;

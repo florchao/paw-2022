@@ -19,10 +19,9 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Transactional
     @Override
-    public Employer create(String name, User id, byte[] image) {
+    public Employer create(String name, User id) {
         name = name.trim().replaceAll(" +", " ");
-        imagesDao.insertImage(id, image);
-        return employerDao.create(name, id, image);
+        return employerDao.create(name, id);
     }
 
     @Transactional(readOnly = true)

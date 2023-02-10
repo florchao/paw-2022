@@ -103,13 +103,13 @@ export const Explore = () => {
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
             data.orderBy,
             linkUrl
-        ).then((rsp) => {
+        ).then((rsp?) => {
             let linkHeader = rsp.headers.get("Link")
             if (linkHeader !== null) {
                 parseLink(linkHeader, setNextPage, setPrevPage)
             }
-            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-            if (rsp.status === 200)
+            rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+            if (rsp?.status === 200)
                 rsp.json().then((employees: any) => {
                     setEmployees(employees)
                 })
@@ -138,8 +138,8 @@ export const Explore = () => {
             onSubmit(getValues())
         } else {
             EmployeeService.getEmployees().then((rsp) => {
-                rsp.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if (rsp.status === 200) {
+                rsp?.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                if (rsp?.status === 200) {
                     let linkHeader = rsp.headers.get("Link")
                     if (linkHeader !== null) {
                         parseLink(linkHeader, setNextPage, setPrevPage)

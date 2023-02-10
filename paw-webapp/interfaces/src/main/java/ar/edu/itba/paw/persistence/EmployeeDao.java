@@ -9,9 +9,9 @@ import java.util.Optional;
 public interface EmployeeDao {
     Optional<Employee> getEmployeeById(long id);
 
-    Employee create(User id, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites, byte[] image);
+    Employee create(User id, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites);
 
-    void update(Employee id, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites, byte [] image);
+    void update(Employee id, String name, String location, String availability, long experienceYears, long hourlyFee, String abilites);
 
    List<Employee> getEmployees(long pageSize);
 

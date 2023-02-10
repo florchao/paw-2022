@@ -101,8 +101,8 @@ export const ExploreJobs = () => {
             (data.availabilities.toString() === "") ? undefined : data.availabilities.toString().toString(),
             linkUrl
         ).then((rsp) => {
-            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-            if (rsp.status === 200) {
+            rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+            if (rsp?.status === 200) {
                 let linkHeader = rsp.headers.get("Link")
                 if (linkHeader !== null) {
                     parseLink(linkHeader, setNextPage, setPrevPage)
@@ -134,8 +134,8 @@ export const ExploreJobs = () => {
             onSubmit(getValues())
         } else {
             JobService.getJobs().then(async (rsp) => {
-                rsp.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                if (rsp.status === 200) {
+                rsp?.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                if (rsp?.status === 200) {
                     let linkHeader = rsp.headers.get("Link")
                     if (linkHeader !== null) {
                         parseLink(linkHeader, setNextPage, setPrevPage)

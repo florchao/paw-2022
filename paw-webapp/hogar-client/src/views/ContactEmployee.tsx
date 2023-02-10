@@ -52,7 +52,6 @@ export const ContactEmployee = () => {
         } else {
             employeeId = params.id
         }
-        console.log(name)
         if (name === undefined) {
             const url = EMPLOYEE_URL + BACK_SLASH + employeeId
             fetchData(url)
@@ -76,11 +75,11 @@ export const ContactEmployee = () => {
         const contact = await ContactService.contactEmployee(e, data.phone, data.content, employeeId, employerId)
         localStorage.removeItem("contactForm")
         let status;
-        if (contact.status === 201) {
+        if (contact?.status === 201) {
             status = "0"
             setContactEmployeeError(false)
         }
-        else if (contact.status === 400)
+        else if (contact?.status === 400)
             setContactEmployeeError(true)
         else {
             status = "1"

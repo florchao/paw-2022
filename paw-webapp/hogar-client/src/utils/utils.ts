@@ -1,8 +1,7 @@
-let BASE_URL = 'http://localhost:8080/api/';
+let BASE_URL = 'http://localhost:8080/';
 let BACK_SLASH = '/';
 let QUERY_PARAM = '?';
-let EMPLOYEES_URL = BASE_URL + 'employees';
-let EMPLOYEE_URL = BASE_URL + 'employee';
+let EMPLOYEE_URL = BASE_URL + 'employees';
 let EMPLOYER_URL = BASE_URL + 'employers';
 let IMAGE_URL = BASE_URL + 'images'
 let JOB_URL = BASE_URL + 'jobs';
@@ -15,6 +14,15 @@ let USERS_URL = BASE_URL + 'users';
 let USER_URL = BASE_URL + 'user';
 let JOBS = '/jobs';
 let CONTACTS = '/contacts';
+
+
+export function JWTExpired() {
+    window.location.replace('/login');
+    localStorage.removeItem("hogar-uid");
+    localStorage.removeItem("hogar-role");
+    localStorage.removeItem("hogar-jwt");
+    return undefined
+}
 
 function parseLink(fullLink: string, setNextPage: any, setPrevPage: any) {
     const links = fullLink.split(',')

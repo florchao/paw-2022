@@ -1,4 +1,4 @@
-import {EMPLOYEE_URL, EMPLOYEES_URL, QUERY_PARAM} from "../utils/utils";
+import {EMPLOYEE_URL, JWTExpired, QUERY_PARAM} from "../utils/utils";
 
 export class EmployeeService {
     public static async getEmployees(basicEncoded:string="") {
@@ -19,17 +19,16 @@ export class EmployeeService {
             }
         }
 
-        return await fetch(EMPLOYEES_URL, {
+        return await fetch(EMPLOYEE_URL, {
             method: 'GET',
             headers: header
-            // headers: localStorage.getItem('hogar-jwt') != null ?{
-            //     'Content-Type': 'application/json',
-            //     "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
-            // } : {
-            //     'Access-Control-Allow-Origin': '*',
-            //     'Content-Type': 'application/json'
-            // }
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     throw error
@@ -47,11 +46,11 @@ export class EmployeeService {
         linkUrl?: string
     ) {
 
-        let url = EMPLOYEES_URL + QUERY_PARAM
+        let url = EMPLOYEE_URL + QUERY_PARAM
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        if(page > 0)
+        if (page > 0)
             url = this.concatStringQueries(url, 'page', String(page))
         url = this.concatStringQueries(url, 'name', name)
         url = this.concatStringQueries(url, 'location', location)
@@ -64,13 +63,19 @@ export class EmployeeService {
         }
         return await fetch(url, {
             method: 'GET',
-            headers: localStorage.getItem('hogar-jwt') != null ?{
+            headers: localStorage.getItem('hogar-jwt') != null ? {
                 'Content-Type': 'application/json',
                 "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
             } : {
                 'Content-Type': 'application/json'
             }
         })
+            .then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response
+            })
             .catch(
                 (error) => {
                     throw error
@@ -85,20 +90,22 @@ export class EmployeeService {
     }
 
 
-    public static async getEmployee(url: string, edit:boolean) {
-        if(edit)
+    public static async getEmployee(url: string, edit: boolean) {
+        if (edit)
             url = url.concat('?edit=true')
         return await fetch(url, {
             method: 'GET',
             headers: localStorage.getItem('hogar-jwt') != null ? {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem('hogar-jwt') as string
-            }: {
+            } : {
                 "Content-Type": "application/json"
             }
-        }).then((resp) => {
-            if (resp.status == 200) {
-                return resp.json()
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            } else if (response.status == 200) {
+                return response.json()
             }
         })
             .catch(
@@ -108,7 +115,7 @@ export class EmployeeService {
                 })
     }
 
-    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
+    public static async registerEmployee(e: any, mail: string, password: string, confirmPassword: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[]) {
         e.preventDefault();
 
         const employeeForm = JSON.stringify({
@@ -121,7 +128,6 @@ export class EmployeeService {
             hourlyFee: hourlyFee,
             availability: availabilities,
             abilities: abilities,
-            image: image
         });
 
         //TODO: Arreglar lo de las imágenes
@@ -135,7 +141,7 @@ export class EmployeeService {
         })
     }
 
-    public static async editEmployee(e: any, self:string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image:File) {
+    public static async editEmployee(e: any, self: string, name: string, location: string, experienceYears: number, hourlyFee: number, availabilities: string[], abilities: string[], image: File) {
         e.preventDefault();
 
         const employeeEditForm = JSON.stringify({
@@ -157,6 +163,11 @@ export class EmployeeService {
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             },
             body: employeeEditForm
-        }).then((r) => r.text())
+        }).then((response) => {
+                if (response.status === 401) {
+                    return JWTExpired()
+                }
+                return response.text()
+            })
     }
 }

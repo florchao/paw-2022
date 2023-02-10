@@ -35,7 +35,6 @@ public class EmployeeEditDto {
     @NumberFormat(style = NumberFormat.Style.NUMBER)
     private long hourlyFee;
 
-    private byte[] image;
 
     public long getExperienceYears() {
         return experienceYears;
@@ -85,11 +84,4 @@ public class EmployeeEditDto {
         this.hourlyFee = hourlyFee;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
 }

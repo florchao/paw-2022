@@ -6,18 +6,19 @@ import user from "../assets/user.png";
 
 const ApplicantCard = (applicant: any) =>{
     const a = applicant.applicant
+    console.log(a)
     const [status, setStatus] = useState<string>(a.status)
     const { t } = useTranslation();
 
     async function acceptApplicant(){
-        const s = await ApplicantService.updateStatus(a.employee.id, a.jobId, 1)
-        if(s.status === 200)
+        const s = await ApplicantService.updateStatus(a.self, 1)
+        if(s?.status === 200)
             s.text().then(newStatus => setStatus(newStatus))
     }
 
     async function rejectApplicant(){
-        const s = await ApplicantService.updateStatus(a.employee.id, a.jobId, 2)
-        if(s.status === 200)
+        const s = await ApplicantService.updateStatus(a.self, 2)
+        if(s?.status === 200)
             s.text().then(newStatus => setStatus(newStatus))
     }
     const [image, setImage]: any = useState(a.employee.image)

@@ -5,7 +5,6 @@ import ar.edu.itba.paw.service.EmployeeService;
 import ar.edu.itba.paw.service.RaitingService;
 import ar.edu.itba.paw.webapp.dto.RatingDto.RatingCretaeDto;
 import ar.edu.itba.paw.webapp.dto.RatingDto.RatingDto;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,8 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.Objects;
 
-@Path("/api/ratings")
+@Path("/ratings")
 @Component
 public class RatingController {
 
@@ -52,12 +50,9 @@ public class RatingController {
         if (ratingService.hasAlreadyRated(ratingDto.getEmployeeId(), ratingDto.getEmployerId()))
             return Response.status(Response.Status.CONFLICT).build();
 
-        float newRating = ratingService.updateRating(ratingDto.getEmployeeId(), ratingDto.getRating(), ratingDto.getEmployerId());
-        //TODO: hay que cambiarlo, debería devlver la url para ir a buscar esta info (como esta abajo)
-        //return Response.created(uriInfo.getBaseUriBuilder().path("/api/ratings/" + ratingDto.getEmployeeId() + "/" + ratingDto.getEmployerId()).build()).build();
-        RatingDto r = RatingDto.fromRating(newRating, employeeService.getRatingVoteCount(ratingDto.getEmployeeId()), ratingService.hasAlreadyRated(ratingDto.getEmployeeId(), ratingDto.getEmployerId()));
-        GenericEntity<RatingDto> genericEntity = new GenericEntity<RatingDto>(r) {
-        };
-        return Response.status(Response.Status.CREATED).entity(genericEntity).build();
+        ratingService.updateRating(ratingDto.getEmployeeId(), ratingDto.getRating(), ratingDto.getEmployerId());
+
+        return Response.created(uriInfo.getBaseUriBuilder().path("/ratings/" + ratingDto.getEmployeeId()).build()).header("Access-Control-Expose-Headers", "Location").build();
+
     }
 }

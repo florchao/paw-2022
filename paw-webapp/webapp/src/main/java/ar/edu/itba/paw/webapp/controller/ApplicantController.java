@@ -31,7 +31,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Path("/api/applicants")
+@Path("/applicants")
 @Component
 public class ApplicantController {
     @Autowired

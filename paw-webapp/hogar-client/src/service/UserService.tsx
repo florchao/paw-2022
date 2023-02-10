@@ -1,4 +1,4 @@
-import {USER_URL} from "../utils/utils";
+import {BACK_SLASH, IMAGE_URL, JWTExpired, USER_URL} from "../utils/utils";
 
 export class UserService {
 
@@ -26,6 +26,38 @@ export class UserService {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
             }
+        }).then((response) => {
+            if (response.status === 401) {
+                return JWTExpired()
+            }
+            return response
+        })
+    }
+
+    public static async addImage(e: any, image: File, id: number) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('id', id.toString());
+        formData.append('image', image, image.name);
+        return await fetch(IMAGE_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
+            body: formData
+        })
+    }
+
+    public static async updateImage(e: any, image:File, id:number) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('image', image, image.name);
+        return await fetch(IMAGE_URL + BACK_SLASH + id, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+            },
+            body: formData
         })
     }
 

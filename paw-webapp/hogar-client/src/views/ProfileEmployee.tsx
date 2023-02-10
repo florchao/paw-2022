@@ -20,11 +20,14 @@ import bin from "../assets/bin.png";
 import noEmployees from "../assets/sinEmpleadas.png";
 import user from "../assets/user.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import editing from "../assets/editing.png";
 
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
     const [img, setImg]: any = useState()
+    const [typeError, setTypeError] = useState(false)
+    const [noImage, setNoImage] = useState(false)
     const [rating, setRating]: any = useState()
     const [showMessage, setShowMessage]: any = useState<boolean>(true)
 
@@ -67,21 +70,17 @@ export const ProfileEmployee = () => {
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployeeReview(e, employee.id, data.content)
-        if (post.status !== 201)
+        if (post?.status !== 201)
             setShowMessage(true)
         else {
             setShowMessage(false)
-            post.json().then(
-                (r) => {
-                    setMyReview(r)
-                }
-            )
+            ReviewService.getMyEmployeeReview(post.headers.get("Location")!).then((r: any) => setMyReview(r))
         }
     }
 
     async function delEmployee() {
-        const post = await UserService.deleteUser(employee.delete)
-        if (post.status === 204) {
+        const post = await UserService.deleteUser(employee.users)
+        if (post?.status === 204) {
             localStorage.removeItem("hogar-uid")
             localStorage.removeItem("hogar-jwt")
             localStorage.removeItem("hogar-role")
@@ -117,15 +116,16 @@ export const ProfileEmployee = () => {
 
     useEffect(() => {
             if (employee) {
-                if (localStorage.getItem('hogar-uid') != null)
-                    ReviewService.getEmployeeReviews(employee.reviews, 0).then(
+                if (localStorage.getItem('hogar-uid') != null) {
+                    const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
+                    ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER"? parseInt(userID) : 0).then(
                         (rsp) => {
-                            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
-                            let linkHeader = rsp.headers.get("link")
+                            rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            let linkHeader = rsp?.headers.get("link")
                             if (linkHeader !== null) {
                                 parseLink(linkHeader, setNextPage, setPrevPage)
                             }
-                            if (rsp.status === 200)
+                            if (rsp?.status === 200)
                                 rsp.json().then((reviews) => {
                                     setReview(reviews)
                                 })
@@ -133,8 +133,9 @@ export const ProfileEmployee = () => {
                                 setReview([])
                         }
                     )
+                }
                 if (localStorage.getItem("hogar-role") === "EMPLOYER")
-                    ReviewService.getMyEmployeeReview(employee.employerReview).then(
+                    ReviewService.getMyEmployeeReview(employee.reviews).then(
                         (rsp) => {
                             setMyReview(rsp)
                             if (rsp != undefined) {
@@ -160,13 +161,14 @@ export const ProfileEmployee = () => {
     const changePage = async (page: number, linkUrl?: string) => {
         setReview(null)
         setCurrent(page)
-        const get = await ReviewService.getEmployeeReviews(employee.reviews, page, linkUrl)
-        get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
-        let linkHeader = get.headers.get("link")
+        const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
+        const get = await ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER"? parseInt(userID) : 0, linkUrl)
+        get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        let linkHeader = get?.headers.get("link")
         if (linkHeader !== null) {
             parseLink(linkHeader, setNextPage, setPrevPage)
         }
-        get.json().then((reviews) => {
+        get?.json().then((reviews) => {
             setReview(reviews)
         })
     }
@@ -186,14 +188,43 @@ export const ProfileEmployee = () => {
     }
 
     const handleRating = async (rate: number, index: number, event: any) => {
-        const r = await RatingService.postEmployeeRating(event, employee.id, employerId, rate)
-        if (r.status === 201) {
-            setRating(r)
+        await RatingService.postEmployeeRating(event, employee.id, employerId, rate).then((rsp) => {
+            setRating(rsp)
             closeModal()
-        } else {
-            setRatingError(true)
-        }
+        }).catch(setRatingError(true))
+    }
 
+    const updateImageHandler = async (e: any) => {
+        if (e.target.files.length) {
+            if(!e.target.files[0].type.match("image/jpeg|image/png|image/jpg"))
+                setTypeError(true)
+            else {
+                const put = await UserService.updateImage(e, e.target.files[0], employee.id)
+                if (put?.status === 200) {
+                    put.json().then((rsp) => {
+                        setImg(rsp.image)
+                    })
+                }
+                setTypeError(false);
+            }
+        }
+    }
+
+    const addImageHandler = async (e: any) => {
+        if (e.target.files.length) {
+            if (!e.target.files[0].type.match("image/jpeg|image/png|image/jpg"))
+                setTypeError(true)
+            else {
+                const post = await UserService.addImage(e, e.target.files[0], employee.id)
+                if (post?.status === 200) {
+                    post.json().then((rsp) => {
+                        setImg(rsp.image)
+                    })
+                }
+                setNoImage(false)
+                setTypeError(false)
+            }
+        }
     }
 
     return (
@@ -218,7 +249,27 @@ export const ProfileEmployee = () => {
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
                                 <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img}
-                                     alt="profile photo" onError={() => setImg(user)}/>
+                                     alt="profile photo" onError={() => {
+                                    setImg(user);
+                                    setNoImage(true)
+                                }}/>
+                                <form>
+                                    <div className={"cursor-pointer grid grid-rows-1 grid-cols-3 text-sm w-full focus:outline-none text-white bg-violet-400 hover:bg-violet-700 font-small rounded-full text-sm px-5 py-2.5 items-center"}>
+                                        <img src={editing} alt="edit" className="mr-3 h-6"/>
+                                        <label htmlFor="upload-button" className=" col-start-2 col-span-2 cursor-pointer">
+                                            {noImage? t('Profile.addImage') : t('Profile.editImage')}
+                                        </label>
+                                    </div>
+                                    <input
+                                        type="file"
+                                        id="upload-button"
+                                        style={{display: "none"}}
+                                        onChange={noImage? addImageHandler : updateImageHandler}
+                                    />
+                                    {typeError &&
+                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('Profile.typeError')}</p>
+                                    }
+                                </form>
                             </div>
                             <div className="ml-3 col-span-2">
                                 <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
@@ -366,7 +417,7 @@ export const ProfileEmployee = () => {
                             <h1 className="pb-3 pt-3 font-semibold">
                                 {t('Profile.reviews')}
                             </h1>
-                            {localStorage.getItem("hogar-role") === "EMPLOYER" && myReview === null && (
+                            {localStorage.getItem("hogar-role") === "EMPLOYER" && !myReview && (
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="">
                                         <label htmlFor="title"
