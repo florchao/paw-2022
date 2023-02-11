@@ -25,6 +25,23 @@ public class UriHelper {
         return responseBuilder.header("Access-Control-Expose-Headers", "Link");
     }
 
+    public void addPaginationLinksForReviews(
+            Response.ResponseBuilder responseBuilder,
+            UriBuilder uriBuilder,
+            long page,
+            long maxPage,
+            Long except
+    ) {
+        if (except != null)
+            uriBuilder.queryParam("except", except);
+        if (page > 0) {
+            responseBuilder.link(uriBuilder.replaceQueryParam("page", page - 1).build(), "prev");
+        }
+        if (maxPage - (page + 1) > 0) {
+            responseBuilder.link(uriBuilder.replaceQueryParam("page", page + 1).build(), "next");
+        }
+    }
+
     public Response.ResponseBuilder addPaginationLinksForExplore(
             Response.ResponseBuilder responseBuilder,
             UriBuilder uriBuilder,
