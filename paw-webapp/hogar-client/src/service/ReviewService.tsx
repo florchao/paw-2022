@@ -40,14 +40,16 @@ export class ReviewService {
         if (page > 0) {
             url = url + "?page=" + page
         }
-        if (linkUrl !== "" && linkUrl !== undefined) {
-            url = linkUrl
-        }
+
         if (employeeId && employeeId !== 0) {
             if(page > 0){
                 url = url + "&except=" + employeeId
             } else
                 url = url + "?except=" + employeeId
+        }
+
+        if (linkUrl !== "" && linkUrl !== undefined) {
+            url = linkUrl
         }
         return await fetch(url, {
             method: 'GET',

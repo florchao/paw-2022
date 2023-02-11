@@ -15,7 +15,7 @@ import bin from "../assets/bin.png";
 import editing from "../assets/editing.png";
 import editingPurple from "../assets/editing_purple.png";
 import noEmployees from "../assets/sinEmpleadas.png";
-import {BACK_SLASH, JOB_URL} from "../utils/utils";
+import {BACK_SLASH, JOB_URL, parseLink} from "../utils/utils";
 
 export const Job = () => {
 
@@ -28,6 +28,8 @@ export const Job = () => {
     const [showError, setShowError] = useState<boolean>(false)
     const [current, setCurrent]: any = useState(0)
 
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
 
     let employeeId: number;
     employeeId = localStorage.getItem('hogar-uid') ? parseInt(localStorage.getItem('hogar-uid') as string) : 0;
@@ -99,6 +101,10 @@ export const Job = () => {
                     (rsp) => {
                         if (rsp !== undefined) {
                             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            let linkHeader = rsp?.headers.get("link")
+                            if (linkHeader !== null && linkHeader !== undefined) {
+                                parseLink(linkHeader, setNextPage, setPrevPage)
+                            }
                             if (rsp.status === 200)
                                 rsp.json().then((reviews) => {
                                     setReviews(reviews)
@@ -161,13 +167,17 @@ export const Job = () => {
         setOpened(false)
     }
 
-    const changePage = async (page: number) => {
+    const changePage = async (page: number, linkUrl?: string) => {
         setReviews(null)
-        setCurrent(false)
+        setCurrent(page)
         const employeeID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : "0"
-        const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page, employeeID ? parseInt(employeeID) : 0)
+        const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page, employeeID ? parseInt(employeeID) : 0, linkUrl)
         if (get !== undefined) {
             get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+            let linkHeader = get?.headers.get("link")
+            if (linkHeader !== null && linkHeader !== undefined) {
+                parseLink(linkHeader, setNextPage, setPrevPage)
+            }
             get.json().then((reviews) => {
                 setReviews(reviews)
             })
@@ -371,7 +381,8 @@ export const Job = () => {
                                                 {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                        review={rev}/>)}
                                                 <PaginationButtons changePages={changePage} pages={pages}
-                                                                   current={current}/>
+                                                                   current={current} nextPage={nextPage}
+                                                                   prevPage={prevPage}/>
                                             </div>
                                         }
                                     </ul>
