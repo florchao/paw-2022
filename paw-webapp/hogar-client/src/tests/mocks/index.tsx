@@ -145,6 +145,28 @@ export const job4={
     }
 }
 
+export const review={
+    "created": "11/02/2023",
+    "employer": {
+        "id": 1,
+        "image": "http://localhost:8080/images/1",
+        "name": "Solci Konfe"
+    },
+    "review": "destaco su amabilidad y responsabilidad horaria! super recomendable. ",
+    "reviewId": 4
+}
+
+export const review2={
+    "created": "11/10/2022",
+    "employer": {
+        "id": 9,
+        "image": "http://localhost:8080/images/9",
+        "name": "Flor Chao"
+    },
+    "review": "destaco su amabilidad y responsabilidad  horaria! super recomendable. ",
+    "reviewId": 1
+}
+
 export const ratings={"count":2,"hasRated":true,"rating":3.5}
 
 export function mockSuccesfulResponse(
