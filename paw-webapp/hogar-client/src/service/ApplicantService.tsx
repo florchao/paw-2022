@@ -36,7 +36,6 @@ export class ApplicantService{
         const applyForm = JSON.stringify({
             jobId: jobId
         });
-        //TODO: que me pase el url el DTO?
         return await fetch(url, {
             method: 'POST',
             headers: {

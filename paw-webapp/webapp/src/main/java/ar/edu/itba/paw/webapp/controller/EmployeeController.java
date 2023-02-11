@@ -246,8 +246,6 @@ public class EmployeeController {
             LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
         }
-        GenericEntity<UserDto> genericEntity = new GenericEntity<UserDto>(UserDto.fromCrete(u.getRole(), u.getId())) {
-        };
 
         return Response.created(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).header("Access-Control-Expose-Headers", "Location").build();
     }

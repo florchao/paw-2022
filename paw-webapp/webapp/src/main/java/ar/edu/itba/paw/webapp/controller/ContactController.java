@@ -44,9 +44,6 @@ public class ContactController {
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response contactUs(@Valid ContactUsDto contactUsDto,
                               @Context HttpServletRequest request) {
-//        if( name.isEmpty() || !name.matches("[a-zA-z\\s]+|^$") || name.length() > 100
-//        || mail.isEmpty() || !mail.matches("[\\w-+_.]+@([\\w]+.)+[\\w]{1,100}") || content.isEmpty())
-//            Response.status(Response.Status.BAD_REQUEST).build();
 
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 2));
         LocaleContextHolder.setLocale(locale);
@@ -60,10 +57,6 @@ public class ContactController {
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response contactEmployee(@Valid ContactCreateDto contactCreateDto,
                                     @Context HttpServletRequest request) throws AlreadyExistsException {
-//        if(content.isEmpty() || !phone.matches("[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
-//        || Objects.isNull(employeeId) || Objects.isNull(employerId) || employeeId.equals(employerId)){
-//            Response.status(Response.Status.BAD_REQUEST).build();
-//        }
 
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 2));
         LocaleContextHolder.setLocale(locale);

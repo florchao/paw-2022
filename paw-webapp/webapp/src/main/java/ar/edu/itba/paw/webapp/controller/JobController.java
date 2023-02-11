@@ -107,17 +107,6 @@ public class JobController {
     @Path("")
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response postJob(@Valid JobCreateDto jobCreateDto) {
-//        if (title.isEmpty() || (title.length() > 25) ||
-//                (location.length() > 1) || !location.matches("[1-4]") ||
-//                Objects.isNull(experienceYears) || (experienceYears < 0) || (experienceYears > 100) ||
-//                availability.isEmpty() || !availability.matches("[1-3]") || abilities.isEmpty()
-//                || (abilities.size() > 6))
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-
-//        for (int i = 0; i < abilities.toArray().length; i++) {
-//            if (!abilities.get(i).matches("[1-6]"))
-//                return Response.status(Response.Status.BAD_REQUEST).build();
-//        }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Job job = jobService.create(jobCreateDto.getTitle(), jobCreateDto.getLocation(), hogarUser.getUserID(), jobCreateDto.getAvailability(), jobCreateDto.getExperienceYears(), fromArrayToString(jobCreateDto.getAbilities()), jobCreateDto.getDescription());

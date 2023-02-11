@@ -69,9 +69,6 @@ public class ApplicantController {
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response createApplicant(@Valid ApplicantCreateDto applicantCreateDto, @Context HttpServletRequest request) throws UserNotFoundException {
 
-//        if (Objects.isNull(jobId))
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0,2));
@@ -95,9 +92,6 @@ public class ApplicantController {
                                  @Valid ApplicantEditDto applicantEditDto,
                                  @Context HttpServletRequest request) throws JobNotFoundException, UserNotFoundException {
 
-//        if (Objects.isNull(status)) {
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-//        }
         Job job;
         Employee employee;
 
@@ -130,9 +124,8 @@ public class ApplicantController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page) {
 
-        Job job;
         try {
-            job = jobService.getJobByID(jobId);
+            jobService.getJobByID(jobId);
         } catch (JobNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -141,10 +134,6 @@ public class ApplicantController {
             return Response.status(Response.Status.CONFLICT).build();
         }
 
-//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
-//            return Response.status(Response.Status.FORBIDDEN).build();
-//        }
 
         List<ApplicantInJobsDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
                 .stream()

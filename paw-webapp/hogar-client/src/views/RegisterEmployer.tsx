@@ -76,8 +76,7 @@ const RegisterEmployer = () => {
                 let authHeader = result.headers.get('Authorization')
                 localStorage['hogar-jwt'] = authHeader?.slice(7)
             }
-            let body = await post.json()
-            nav('/', {replace: true, state: {self: body.value, status: -1}})
+            nav('/', {replace: true})
             window.location.reload()
         }
     }
