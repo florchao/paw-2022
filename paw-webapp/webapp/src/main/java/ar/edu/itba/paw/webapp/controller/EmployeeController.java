@@ -210,10 +210,12 @@ public class EmployeeController {
         if (reviews.isEmpty())
             return Response.status(Response.Status.NO_CONTENT).entity(genericEntity).build();
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
-        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+        uriHelper.addPaginationLinksForReviews(responseBuilder, uriBuilder, page, pages, except);
         return responseBuilder
                 .entity(genericEntity)
                 .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("Access-Control-Expose-Headers", "Link")
                 .header("X-Total-Count", pages)
                 .build();
     }
