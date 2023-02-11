@@ -81,7 +81,7 @@ export const Job = () => {
 
     const fetchData = async (url: string) => {
         await JobService.getJob(url).then((rsp) => {
-            rsp.json().then((rsp: any) => {
+            rsp?.json().then((rsp: any) => {
                 if (rsp !== undefined) {
                     setJob(rsp)
                     setOpened(rsp.opened)
@@ -94,10 +94,10 @@ export const Job = () => {
 
     useEffect(() => {
             if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
-                const employeeID = localStorage.getItem("hogar-uid") != null? localStorage.getItem("hogar-uid") : "0"
-                ReviewService.getEmployerReviews(job.employerId.reviews, 0, employeeID? parseInt(employeeID) : 0).then(
+                const employeeID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : "0"
+                ReviewService.getEmployerReviews(job.employerId.reviews, 0, employeeID ? parseInt(employeeID) : 0).then(
                     (rsp) => {
-                        if( rsp !== undefined) {
+                        if (rsp !== undefined) {
                             rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
                             if (rsp.status === 200)
                                 rsp.json().then((reviews) => {
@@ -164,9 +164,9 @@ export const Job = () => {
     const changePage = async (page: number) => {
         setReviews(null)
         setCurrent(false)
-        const employeeID = localStorage.getItem("hogar-uid") != null? localStorage.getItem("hogar-uid") : "0"
-        const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page, employeeID? parseInt(employeeID) : 0)
-        if( get !== undefined) {
+        const employeeID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : "0"
+        const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page, employeeID ? parseInt(employeeID) : 0)
+        if (get !== undefined) {
             get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
             get.json().then((reviews) => {
                 setReviews(reviews)
@@ -370,7 +370,8 @@ export const Job = () => {
                                             <div>
                                                 {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                        review={rev}/>)}
-                                                <PaginationButtons changePages={changePage} pages={pages} current={current}/>
+                                                <PaginationButtons changePages={changePage} pages={pages}
+                                                                   current={current}/>
                                             </div>
                                         }
                                     </ul>

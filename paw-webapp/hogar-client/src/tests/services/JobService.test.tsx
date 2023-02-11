@@ -22,7 +22,9 @@ describe("Fetch job", () => {
         mockSuccesfulResponse(200, job1, headers);
         return JobService.getJob("http://localhost:8080/jobs/1").then(response => {
             // @ts-ignore
-            expect(response).toStrictEqual(job1)
+            expect(response.status).toBe(200);
+            // @ts-ignore
+            expect(response.json()).toStrictEqual(job1)
         })
     });
 });
@@ -34,7 +36,9 @@ describe("Fetch job", () => {
         mockSuccesfulResponse(200, job1, headers);
         return JobService.getJobById(1, "user:pass").then(response => {
             // @ts-ignore
-            expect(response).toStrictEqual(job1)
+            expect(response.status).toBe(200);
+            // @ts-ignore
+            expect(response.json()).toStrictEqual(job1)
         })
     });
 });
