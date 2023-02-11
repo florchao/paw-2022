@@ -47,4 +47,8 @@ public enum Abilities {
             default: return Abilities.PET_CARE;
         }
     }
+
+    public static Abilities[] getAbilities() {
+        return Abilities.class.getEnumConstants();
+    }
 }

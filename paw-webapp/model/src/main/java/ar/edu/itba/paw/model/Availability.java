@@ -43,4 +43,8 @@ public enum Availability {
             default: return Availability.OVERNIGHT;
         }
     }
+
+    public static Availability[] getAvailabilities() {
+        return Availability.class.getEnumConstants();
+    }
 }
