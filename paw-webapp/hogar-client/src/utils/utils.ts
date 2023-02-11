@@ -6,6 +6,9 @@ let EMPLOYER_URL = BASE_URL + 'employers';
 let IMAGE_URL = BASE_URL + 'images'
 let JOB_URL = BASE_URL + 'jobs';
 let IDS_URL = BASE_URL + 'ids';
+let LOCATION_URL = BASE_URL + "locations";
+let AVAIL_URL = BASE_URL + "availabilities";
+let ABIL_URL = BASE_URL + "abilities";
 let APPLICANT_URL = BASE_URL + 'applicants';
 let CONTACT_URL = BASE_URL + 'contacts';
 let RATINGS_URL = BASE_URL + 'ratings';
@@ -56,5 +59,8 @@ export {
     CONTACTS,
     USERS_URL,
     BACK_SLASH,
+    LOCATION_URL,
+    AVAIL_URL,
+    ABIL_URL,
     parseLink
 };

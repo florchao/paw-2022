@@ -45,4 +45,8 @@ public enum Location {
             default: return Location.CABA;
         }
     }
+
+    public static Location[] getLocations() {
+        return Location.class.getEnumConstants();
+    }
 }
