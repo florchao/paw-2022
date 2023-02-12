@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && sed -i 'ls/^/<%@ page session=\"false\" %> /' build/index.html",
+    "build": "react-scripts build && sed -i \"\" '1s/^/<%@ page session=\"false\" %> \\n/' ./build/index.html\n",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
