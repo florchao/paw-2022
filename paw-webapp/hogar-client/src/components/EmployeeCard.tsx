@@ -23,7 +23,7 @@ const EmployeeCard = (employee: any) => {
             }
             else
                 setContact(false)
-        }, [e]
+        }, []
     )
     return (
         <div className="w-full col-span-5">
