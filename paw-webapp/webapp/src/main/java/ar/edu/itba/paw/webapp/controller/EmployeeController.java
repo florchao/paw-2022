@@ -37,9 +37,9 @@ import java.util.stream.Collectors;
 @Path("/employees")
 @Component
 public class EmployeeController {
-    private final int PAGE_SIZE = 1;
+    private final int PAGE_SIZE = 8;
 
-    private final int PAGE_SIZE_REVIEWS = 1;
+    private final int PAGE_SIZE_REVIEWS = 3;
 
     @Autowired
     private EmployeeService employeeService;

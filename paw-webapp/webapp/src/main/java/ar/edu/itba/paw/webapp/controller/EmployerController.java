@@ -51,7 +51,7 @@ public class EmployerController {
     private final static long PAGE_SIZE = 7;
     private final static long PAGE_SIZE_PROFILE = 2;
 
-    private final static int PAGE_SIZE_REVIEWS = 1;
+    private final static int PAGE_SIZE_REVIEWS = 3;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployerController.class);
 

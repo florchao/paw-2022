@@ -50,7 +50,7 @@ public class ApplicantController {
     @Context
     private UriInfo uriInfo;
 
-    private static final int PAGE_SIZE = 1;
+    private static final int PAGE_SIZE = 5;
 
     @GET
     @Path("/{employeeId}/{jobId}")
