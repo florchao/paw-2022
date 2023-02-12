@@ -6,6 +6,9 @@ let EMPLOYER_URL = BASE_URL + 'employers';
 let IMAGE_URL = BASE_URL + 'images'
 let JOB_URL = BASE_URL + 'jobs';
 let IDS_URL = BASE_URL + 'ids';
+let LOCATION_URL = BASE_URL + "locations";
+let AVAIL_URL = BASE_URL + "availabilities";
+let ABIL_URL = BASE_URL + "abilities";
 let APPLICANT_URL = BASE_URL + 'applicants';
 let CONTACT_URL = BASE_URL + 'contacts';
 let RATINGS_URL = BASE_URL + 'ratings';
@@ -15,12 +18,28 @@ let USER_URL = BASE_URL + 'user';
 let JOBS = '/jobs';
 let CONTACTS = '/contacts';
 
+
 export function JWTExpired() {
     window.location.replace('/login');
     localStorage.removeItem("hogar-uid");
     localStorage.removeItem("hogar-role");
     localStorage.removeItem("hogar-jwt");
     return undefined
+}
+
+function parseLink(fullLink: string, setNextPage: any, setPrevPage: any) {
+    const links = fullLink.split(',')
+    for (let i = 0; i < links.length; i++) {
+        const link = links[i].split(';');
+        const url = link[0].substring(i+1, link[0].length - 1);
+        const page = link[1].split('"');
+        if (page[1] === 'next') {
+            setNextPage(url);
+        }
+        if (page[1] === 'prev') {
+            setPrevPage(url);
+        }
+    }
 }
 
 export {
@@ -39,5 +58,9 @@ export {
     CONTACT_URL,
     CONTACTS,
     USERS_URL,
-    BACK_SLASH
+    BACK_SLASH,
+    LOCATION_URL,
+    AVAIL_URL,
+    ABIL_URL,
+    parseLink
 };

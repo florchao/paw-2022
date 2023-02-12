@@ -16,7 +16,7 @@ export class ContactService {
         })
     }
 
-    public static async contactEmployee(e: any, phone: string, content: string, employee_id: string, employer_id: number) {
+    public static async contactEmployee(e: any, phone: string, content: string, employee_id: number, employer_id: number) {
         e.preventDefault();
 
         const contactForm = JSON.stringify({
@@ -42,10 +42,10 @@ export class ContactService {
             })
     }
 
-    public static async contacts(id: number, page: number) {
+    public static async contacts(id: number, page: number, linkUrl?: string) {
         let url = EMPLOYEE_URL + BACK_SLASH + id + CONTACTS
-        if(page > 0) {
-            url = url + "?page=" + page
+        if (linkUrl !== undefined) {
+            url = linkUrl
         }
         return await fetch(url, {
             method: 'GET',

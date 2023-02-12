@@ -1,20 +1,25 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 
-export const FilterForm = ({handleSubmit, register, errors, onSubmit, reset, setValue}: { handleSubmit: any, register: any, errors: any, onSubmit: any, reset: any, setValue: any}) => {
+export const FilterForm = ({handleSubmit, register, errors, onSubmit, reset, setValue, setLinkUrl, linkUrl}: { handleSubmit: any, register: any, errors: any, onSubmit: any, reset: any, setValue: any, setLinkUrl: any, linkUrl: any}) => {
 
     const {t} = useTranslation();
 
     const resetFilter = (e: any) => {
         e.preventDefault();
+        setValue("page", 0)
+        setLinkUrl("")
         reset()
-        handleSubmit(onSubmit)()
+        // handleSubmit(onSubmit)()
     }
 
     const submit = (e: any) => {
         e.preventDefault()
         setValue("page", 0)
-        handleSubmit(onSubmit)()
+        let dummyString = "a" + linkUrl.slice(1)
+        dummyString = dummyString.concat("a")
+        setLinkUrl(dummyString)
+        // handleSubmit(onSubmit)()
     }
 
     return (

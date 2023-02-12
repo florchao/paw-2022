@@ -7,6 +7,7 @@ import ar.edu.itba.paw.service.JobService;
 import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.JobDto.JobCreateDto;
 import ar.edu.itba.paw.webapp.dto.JobDto.JobDto;
+import ar.edu.itba.paw.webapp.helpers.UriHelper;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,13 @@ public class JobController {
     @Autowired
     private ApplicantService applicantService;
 
+    @Autowired
+    private UriHelper uriHelper;
+
     @Context
     UriInfo uriInfo;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
-    private static final int PAGE_SIZE = 9;
+    private static final int PAGE_SIZE = 1;
 
 
     @GET
@@ -62,9 +66,16 @@ public class JobController {
         }).collect(Collectors.toList());
 
         int pages = jobService.getPageNumber(name, experienceYears, location, availability, abilities, PAGE_SIZE);
-        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs) {
-        };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        GenericEntity<List<JobDto>> genericEntity = new GenericEntity<List<JobDto>>(jobs) { };
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+        if (request.getQueryString() != null) {
+            UriHelper.fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, "rating");
+        }
+        return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @GET
@@ -88,8 +99,7 @@ public class JobController {
 
         JobDto jobDto = JobDto.fromJob(uriInfo, job, status);
 
-        GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto) {
-        };
+        GenericEntity<JobDto> genericEntity = new GenericEntity<JobDto>(jobDto) { };
         return Response.ok(genericEntity).build();
     }
 
@@ -97,17 +107,6 @@ public class JobController {
     @Path("")
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response postJob(@Valid JobCreateDto jobCreateDto) {
-//        if (title.isEmpty() || (title.length() > 25) ||
-//                (location.length() > 1) || !location.matches("[1-4]") ||
-//                Objects.isNull(experienceYears) || (experienceYears < 0) || (experienceYears > 100) ||
-//                availability.isEmpty() || !availability.matches("[1-3]") || abilities.isEmpty()
-//                || (abilities.size() > 6))
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-
-//        for (int i = 0; i < abilities.toArray().length; i++) {
-//            if (!abilities.get(i).matches("[1-6]"))
-//                return Response.status(Response.Status.BAD_REQUEST).build();
-//        }
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Job job = jobService.create(jobCreateDto.getTitle(), jobCreateDto.getLocation(), hogarUser.getUserID(), jobCreateDto.getAvailability(), jobCreateDto.getExperienceYears(), fromArrayToString(jobCreateDto.getAbilities()), jobCreateDto.getDescription());
@@ -115,7 +114,7 @@ public class JobController {
             return Response.status(Response.Status.CONFLICT).build();
         }
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
-        return Response.status(Response.Status.CREATED).entity(uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId())).build()).build();
+        return Response.created(uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId())).build()).header("Access-Control-Expose-Headers", "Location").build();
     }
 
     @DELETE

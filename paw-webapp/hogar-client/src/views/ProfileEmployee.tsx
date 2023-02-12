@@ -14,18 +14,19 @@ import ErrorFeedback from "../components/ErrorFeedback";
 import Modal from "react-modal";
 import RatingModal from "../components/RatingModal";
 import {Rating} from "react-simple-star-rating";
-import {BACK_SLASH, EMPLOYEE_URL} from "../utils/utils";
+import {BACK_SLASH, EMPLOYEE_URL, parseLink} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
 import bin from "../assets/bin.png";
 import noEmployees from "../assets/sinEmpleadas.png";
 import user from "../assets/user.png";
 import {MagnifyingGlass} from "react-loader-spinner";
 import editing from "../assets/editing.png";
+import {ContactService} from "../service/ContactService";
 
 export const ProfileEmployee = () => {
 
     const [employee, setEmployee]: any = useState()
-    const [img, setImg]: any = useState()
+    const [img, setImg] = useState<{ image: string, version: number }>()
     const [typeError, setTypeError] = useState(false)
     const [noImage, setNoImage] = useState(false)
     const [rating, setRating]: any = useState()
@@ -35,9 +36,15 @@ export const ProfileEmployee = () => {
     const [myReview, setMyReview]: any = useState(null)
     const [pages, setPages]: any = useState(0)
     const [current, setCurrent]: any = useState(0)
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
+
     const [ratingError, setRatingError]: any = useState(false)
     const employeeId = useParams();
     const location = useLocation();
+
+    const [contact, setContact] = useState<boolean>()
+
     let {self, status, id}: any = useState()
     if (location.state) {
         id = location.state.id
@@ -104,7 +111,7 @@ export const ProfileEmployee = () => {
                 if (rsp != undefined) {
                     setEmployee(rsp)
                     localStorage.removeItem("reviewEmployeeForm")
-                    setImg(rsp.image)
+                    setImg({image: rsp.image, version: 1})
                 } else {
                     nav("/*")
                 }
@@ -115,9 +122,13 @@ export const ProfileEmployee = () => {
             if (employee) {
                 if (localStorage.getItem('hogar-uid') != null) {
                     const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
-                    ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER"? parseInt(userID) : 0).then(
+                    ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER" ? parseInt(userID) : 0).then(
                         (rsp) => {
                             rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            let linkHeader = rsp?.headers.get("link")
+                            if (linkHeader !== null && linkHeader !== undefined) {
+                                parseLink(linkHeader, setNextPage, setPrevPage)
+                            }
                             if (rsp?.status === 200)
                                 rsp.json().then((reviews) => {
                                     setReview(reviews)
@@ -151,12 +162,29 @@ export const ProfileEmployee = () => {
         }, [employee]
     )
 
-    const changePage = async (page: number) => {
+    useEffect(() => {
+            if (employee && localStorage.getItem("hogar-role") === "EMPLOYER") {
+                ContactService.getContact(employee.id, employerId).then(r => {
+                    if (r.length > 0)
+                        setContact(true)
+                    else
+                        setContact(false)
+                })
+            } else
+                setContact(false)
+        }, [employee]
+    )
+
+    const changePage = async (page: number, linkUrl?: string) => {
         setReview(null)
         setCurrent(page)
         const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
-        const get = await ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER"? parseInt(userID) : 0)
+        const get = await ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER" ? parseInt(userID) : 0, linkUrl)
         get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        let linkHeader = get?.headers.get("link")
+        if (linkHeader !== null && linkHeader !== undefined) {
+            parseLink(linkHeader, setNextPage, setPrevPage)
+        }
         get?.json().then((reviews) => {
             setReview(reviews)
         })
@@ -185,13 +213,14 @@ export const ProfileEmployee = () => {
 
     const updateImageHandler = async (e: any) => {
         if (e.target.files.length) {
-            if(!e.target.files[0].type.match("image/jpeg|image/png|image/jpg"))
+            if (!e.target.files[0].type.match("image/jpeg|image/png|image/jpg"))
                 setTypeError(true)
             else {
                 const put = await UserService.updateImage(e, e.target.files[0], employee.id)
                 if (put?.status === 200) {
                     put.json().then((rsp) => {
-                        setImg(rsp.image)
+                        setImg({image: rsp.value, version: img!.version + 1})
+                        console.log(img!.version)
                     })
                 }
                 setTypeError(false);
@@ -205,10 +234,8 @@ export const ProfileEmployee = () => {
                 setTypeError(true)
             else {
                 const post = await UserService.addImage(e, e.target.files[0], employee.id)
-                if (post?.status === 200) {
-                    post.json().then((rsp) => {
-                        setImg(rsp.image)
-                    })
+                if (post?.status === 201) {
+                    setImg({image: post.headers.get("Location")!, version: 0})
                 }
                 setNoImage(false)
                 setTypeError(false)
@@ -237,28 +264,36 @@ export const ProfileEmployee = () => {
                     <div className=" bg-gray-200 rounded-3xl p-5 mt-24 mb-5 shadow-2xl">
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                                <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" src={img}
-                                     alt="profile photo" onError={() => {
-                                    setImg(user);
-                                    setNoImage(true)
-                                }}/>
-                                <form>
-                                    <div className={"cursor-pointer grid grid-rows-1 grid-cols-3 text-sm w-full focus:outline-none text-white bg-violet-400 hover:bg-violet-700 font-small rounded-full text-sm px-5 py-2.5 items-center"}>
-                                        <img src={editing} alt="edit" className="mr-3 h-6"/>
-                                        <label htmlFor="upload-button" className=" col-start-2 col-span-2 cursor-pointer">
-                                            {noImage? t('Profile.addImage') : t('Profile.editImage')}
-                                        </label>
-                                    </div>
-                                    <input
-                                        type="file"
-                                        id="upload-button"
-                                        style={{display: "none"}}
-                                        onChange={noImage? addImageHandler : updateImageHandler}
-                                    />
-                                    {typeError &&
-                                        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('Profile.typeError')}</p>
-                                    }
-                                </form>
+                                {img && img.version >= -1 &&
+                                    <img key={img!.version}
+                                         className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg"
+                                         src={img!.image}
+                                         alt="profile photo" onError={() => {
+                                        setImg({image: user, version: -1});
+                                        setNoImage(true)
+                                    }}/>
+                                }
+                                {localStorage.getItem("hogar-uid") === id &&
+                                    <form>
+                                        <div
+                                            className={"cursor-pointer grid grid-rows-1 grid-cols-3 text-sm w-full focus:outline-none text-white bg-violet-400 hover:bg-violet-700 font-small rounded-full text-sm px-5 py-2.5 items-center"}>
+                                            <img src={editing} alt="edit" className="mr-3 h-6"/>
+                                            <label htmlFor="upload-button"
+                                                   className=" col-start-2 col-span-2 cursor-pointer">
+                                                {noImage ? t('Profile.addImage') : t('Profile.editImage')}
+                                            </label>
+                                        </div>
+                                        <input
+                                            type="file"
+                                            id="upload-button"
+                                            style={{display: "none"}}
+                                            onChange={noImage ? addImageHandler : updateImageHandler}
+                                        />
+                                        {typeError &&
+                                            <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('Profile.typeError')}</p>
+                                        }
+                                    </form>
+                                }
                             </div>
                             <div className="ml-3 col-span-2">
                                 <p className="text-2xl font-semibold whitespace-nowrap text-ellipsis overflow-hidden">
@@ -294,7 +329,7 @@ export const ProfileEmployee = () => {
                                 </h1>
                             </div>
                             <div className="ml-3 col-start-5 row-start-2 w-fit">
-                                {localStorage.getItem("hogar-role") === "EMPLOYER" && !employee.contacted &&
+                                {localStorage.getItem("hogar-role") === "EMPLOYER" && !contact &&
                                     <Link to={"/contact/employee/" + employee.id}
                                           state={{id: employee.id, name: employee.name}}>
                                         <button
@@ -303,7 +338,7 @@ export const ProfileEmployee = () => {
                                         </button>
                                     </Link>
                                 }
-                                {localStorage.getItem("hogar-role") === "EMPLOYER" && employee.contacted &&
+                                {localStorage.getItem("hogar-role") === "EMPLOYER" && contact &&
                                     <p className="h-fit w-full text-xs text-white bg-gray-400 border border-gray-900 font-medium rounded-full px-5 py-2.5 mr-2 mb-2">
                                         {t('Profile.alreadyConnected')}
                                     </p>
@@ -441,7 +476,8 @@ export const ProfileEmployee = () => {
                                     <div>
                                         {review.map((rev: any) =>
                                             <ReviewCard key={rev.employer.id} review={rev}/>)}
-                                        <PaginationButtons pages={pages} changePages={changePage} current={current}/>
+                                        <PaginationButtons pages={pages} changePages={changePage} current={current}
+                                                           nextPage={nextPage} prevPage={prevPage}/>
                                     </div>
                                 }
                                 {review.length === 0 && !myReview &&
@@ -502,5 +538,4 @@ export const ProfileEmployee = () => {
         </div>
     )
 }
-
 export default ProfileEmployee;

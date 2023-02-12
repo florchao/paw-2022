@@ -14,12 +14,6 @@ export class JobService {
             }
             return response
         })
-            // .then((response) => {
-            //     if (response.status === 401) {
-            //         return JWTExpired()
-            //     }
-            //     return response
-            // })
             .catch(
                 (error) => {
                     throw error
@@ -32,19 +26,24 @@ export class JobService {
         name?: string,
         location?: string,
         abilities?: string,
-        availability?: string
+        availability?: string,
+        linkUrl?: string
     ) {
 
         let url = JOB_URL + QUERY_PARAM
 
         if (minimumYears > 0)
             url = this.concatStringQueries(url, 'experience', String(minimumYears))
-        if (page > 0)
+        if(page > 0)
             url = this.concatStringQueries(url, 'page', String(page))
         url = this.concatStringQueries(url, 'name', name)
         url = this.concatStringQueries(url, 'location', location)
         url = this.concatStringQueries(url, 'abilities', abilities)
         url = this.concatStringQueries(url, 'availability', availability)
+
+        if (!linkUrl?.startsWith("a") && linkUrl !== undefined && linkUrl !== "") {
+            url = linkUrl
+        }
 
         return await fetch(url, {
             method: 'GET',
@@ -58,12 +57,6 @@ export class JobService {
             }
             return response
         })
-            // .then((response) => {
-            //     if (response.status === 401) {
-            //         return JWTExpired()
-            //     }
-            //     return response
-            // })
             .catch(
                 (error) => {
                     throw error
@@ -96,15 +89,16 @@ export class JobService {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
-                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt') as string
+                'Authorization': 'Bearer ' + localStorage.getItem('hogar-jwt')
             },
         }).then((resp) => {
             if (resp.status === 401) {
                 return JWTExpired()
             }
-            else if (resp.status == 200) {
-                return resp.json()
-            }
+            // else if (resp.status === 200) {
+                // return resp.json()
+            // }
+            return resp
         })
             .catch(
                 (error) => {
@@ -141,11 +135,14 @@ export class JobService {
             })
     }
 
-    public static async getCreatedJobs(url: string, profile: boolean, page: number) {
-        if (profile)
+    public static async getCreatedJobs(url: string, profile: boolean, page: number, linkUrl?: string) {
+        if(profile)
             url = url + QUERY_PARAM + 'profile=true'
-        if (page > 0)
+        if(page > 0)
             url = url + QUERY_PARAM + 'page=' + page.toString()
+        if (linkUrl !== undefined) {
+            url = linkUrl
+        }
         return await fetch(url, {
             method: 'GET',
             headers: {
@@ -165,9 +162,12 @@ export class JobService {
                 })
     }
 
-    public static async getApplicants(url: string, page: number) {
+    public static async getApplicants(url : string, page: number, linkUrl?: string){
         if (page > 0) {
             url = url + QUERY_PARAM + "page=" + page.toString()
+        }
+        if (linkUrl !== undefined) {
+            url = linkUrl
         }
         return await fetch(url, {
             method: 'GET',

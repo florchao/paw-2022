@@ -13,6 +13,7 @@ import ar.edu.itba.paw.webapp.auth.HogarUser;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantCreateDto;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantEditDto;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantInJobsDto;
+import ar.edu.itba.paw.webapp.helpers.UriHelper;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +43,14 @@ public class ApplicantController {
     private ContactService contactService;
     @Autowired
     private ApplicantService applicantService;
+
+    @Autowired
+    private UriHelper uriHelper;
+
     @Context
     private UriInfo uriInfo;
-    private static final int PAGE_SIZE = 9;
+
+    private static final int PAGE_SIZE = 1;
 
     @GET
     @Path("/{employeeId}/{jobId}")
@@ -62,9 +68,6 @@ public class ApplicantController {
     @Path("")
     @Consumes(value = {MediaType.APPLICATION_JSON,})
     public Response createApplicant(@Valid ApplicantCreateDto applicantCreateDto, @Context HttpServletRequest request) throws UserNotFoundException {
-
-//        if (Objects.isNull(jobId))
-//            return Response.status(Response.Status.BAD_REQUEST).build();
 
         HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -89,9 +92,6 @@ public class ApplicantController {
                                  @Valid ApplicantEditDto applicantEditDto,
                                  @Context HttpServletRequest request) throws JobNotFoundException, UserNotFoundException {
 
-//        if (Objects.isNull(status)) {
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-//        }
         Job job;
         Employee employee;
 
@@ -124,9 +124,8 @@ public class ApplicantController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page) {
 
-        Job job;
         try {
-            job = jobService.getJobByID(jobId);
+            jobService.getJobByID(jobId);
         } catch (JobNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -135,19 +134,19 @@ public class ApplicantController {
             return Response.status(Response.Status.CONFLICT).build();
         }
 
-//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
-//            return Response.status(Response.Status.FORBIDDEN).build();
-//        }
 
         List<ApplicantInJobsDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
                 .stream()
                 .map(a -> ApplicantInJobsDto.fromJob(uriInfo, a))
                 .collect(Collectors.toList());
         int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
-        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) {
-        };
-        return Response.ok(genericEntity).header("Access-Control-Expose-Headers", "X-Total-Count").header("X-Total-Count", pages).build();
+        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) { };
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        return responseBuilder
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("X-Total-Count", pages)
+                .build();
     }
 
     @DELETE

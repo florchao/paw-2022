@@ -42,7 +42,8 @@ export class EmployeeService {
         location?: string,
         abilities?: string,
         availability?: string,
-        order?: string
+        order?: string,
+        linkUrl?: string
     ) {
 
         let url = EMPLOYEE_URL + QUERY_PARAM
@@ -57,6 +58,9 @@ export class EmployeeService {
         url = this.concatStringQueries(url, 'availability', availability)
         url = this.concatStringQueries(url, 'order', order)
 
+        if (!linkUrl?.startsWith("a") && linkUrl !== "" && linkUrl !== undefined) {
+            url = linkUrl
+        }
         return await fetch(url, {
             method: 'GET',
             headers: localStorage.getItem('hogar-jwt') != null ? {

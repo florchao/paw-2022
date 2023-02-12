@@ -39,7 +39,9 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
         timeout: 1000 * 60 * 2,
     })
 
-    const [ids, setIds] = useState<any>();
+    const [locations, setLocations] = useState<any>();
+    const [availabilities, setAvailabilities] = useState<any>();
+    const [abilities, setAbilities] = useState<any>();
 
     const {t} = useTranslation();
 
@@ -85,18 +87,15 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
         }
     }
 
-    const getBase64 = (file: File) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
-
     useEffect(() => {
-        IdsService.getIds().then((i) => {
-            setIds(i)
+        IdsService.getLocations().then((l) => {
+            setLocations(l)
+        });
+        IdsService.getAbilities().then((a) => {
+            setAbilities(a)
+        });
+        IdsService.getAvail().then((a) => {
+            setAvailabilities(a)
         });
     }, [])
 
@@ -128,47 +127,6 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                         </p>
                         <div className="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                             <div className="grid grid-cols-6 gap-6">
-                                {/*<div className="row-span-4 col-span-2 m-6">*/}
-                                {/*    <div className="overflow-hidden bg-gray-100 rounded-full">*/}
-                                {/*        {updatedImage?*/}
-                                {/*            <img id="picture"*/}
-                                {/*                 src={image? URL.createObjectURL(image) : user}*/}
-                                {/*                 alt="user photo"*/}
-                                {/*                 onError={() => {*/}
-                                {/*                     setUpdatedImage(true)*/}
-
-                                {/*                 }}*/}
-                                {/*            />*/}
-                                {/*            :*/}
-                                {/*            <img id="picture"*/}
-                                {/*                 src={imageURL? imageURL : user}*/}
-                                {/*                 alt="user photo"*/}
-                                {/*                 onError={() => {*/}
-                                {/*                     setImageURL(user)*/}
-                                {/*                 }}*/}
-                                {/*            />*/}
-                                {/*        }*/}
-
-                                {/*    </div>*/}
-                                {/*    <label htmlFor="image-input" id="image-label"*/}
-                                {/*           className="mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer">*/}
-                                {/*        {t('EmployeeForm.image')}*/}
-                                {/*    </label>*/}
-                                {/*    <input id="image-input"*/}
-                                {/*           type="file"*/}
-                                {/*           accept="image/png, image/jpeg"*/}
-                                {/*           onChange={(e) => {*/}
-                                {/*               if (e.target.files != null) {*/}
-                                {/*                   setImage(e.target.files[0])*/}
-                                {/*                   setUpdatedImage(true)*/}
-                                {/*                   imageUpload(e)*/}
-                                {/*               }*/}
-                                {/*           }}*/}
-                                {/*           style={{visibility: "hidden"}}/>*/}
-                                {/*    {!image &&*/}
-                                {/*        <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.imageError')}</p>*/}
-                                {/*    }*/}
-                                {/*</div>*/}
                                 <div className="ml-3 col-span-3 w-4/5 justify-self-center">
                                     <label htmlFor="name"
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
@@ -245,18 +203,22 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                            className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('EmployeeForm.location')}
                                     </label>
-                                    {ids &&
+                                    {locations &&
                                         <select
                                             {...register("location", {required: true})}
                                             className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500">
-                                            <option value={ids.locations[0]}
-                                                    label={t('Locations.west')}/>
-                                            <option value={ids.locations[1]}
-                                                    label={t('Locations.north')}/>
-                                            <option value={ids.locations[2]}
-                                                    label={t('Locations.south')}/>
-                                            <option value={ids.locations[3]}
-                                                    label={t('Locations.caba')}/>
+                                            {locations.locations && locations.locations.length > 0 && locations.locations.map((l: any) => (
+                                                <option value={l.id}
+                                                        label={l.name}/>
+                                            ))}
+                                            {/*<option value={ids.locations[0]}*/}
+                                            {/*        label={t('Locations.west')}/>*/}
+                                            {/*<option value={ids.locations[1]}*/}
+                                            {/*        label={t('Locations.north')}/>*/}
+                                            {/*<option value={ids.locations[2]}*/}
+                                            {/*        label={t('Locations.south')}/>*/}
+                                            {/*<option value={ids.locations[3]}*/}
+                                            {/*        label={t('Locations.caba')}/>*/}
                                         </select>
                                     }
                                     {errors.location &&
@@ -293,117 +255,28 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                     {t('EmployeeForm.abilities')}
                                 </h1>
                             </div>
-                            {ids &&
+                            {abilities &&
                                 <div className="flex flex-wrap ml-8">
+                                    {abilities.abilities && abilities.abilities.length > 0 &&
+                                        abilities.abilities.map((a: any) =>
                                     <div className="mb-8">
-                                        <label htmlFor="cocinar-cb" id="cocinar-label"
+                                        <label htmlFor={a.name + "-cb"} id={a.name + "-label"}
                                                onClick={() => {
-                                                   setColorAb('cocinar', ids.abilities[0])
+                                                   setColorAb(a.name, a.id)
                                                }}
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[0].toString()) ?
+                                               className={getValues("abilities") && getValues("abilities").toString().includes(a.id.toString()) ?
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
                                                    "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Abilities.cook')}
+                                            {a.name}
                                         </label>
                                         <input type="checkbox"
                                                {...register("abilities", {required: true})}
-                                            // onChange={(e) => console.log(getValues("abilities"))}
-                                               id="cocinar-cb"
-                                               value={ids.abilities[0]}
+                                               id={a.name + "-cb"}
+                                               value={a.id}
                                                style={{visibility: "hidden"}}
                                         />
                                     </div>
-                                    <div>
-                                        <label htmlFor="planchar-cb" id="planchar-label"
-                                               onClick={() =>
-                                                   setColorAb('planchar', ids.abilities[1])
-                                               }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[1].toString()) ?
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Abilities.iron')}
-                                        </label>
-                                        <input type="checkbox"
-                                               id="planchar-cb"
-                                               {...register("abilities", {required: true})}
-                                            // onChange={(e) => console.log(getValues("abilities"))}
-                                               value={ids.abilities[1]}
-                                               style={{visibility: "hidden"}}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="menores-cb"
-                                               id="menores-label"
-                                               onClick={() =>
-                                                   setColorAb('menores', ids.abilities[2])
-                                               }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[2].toString()) ?
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Abilities.child')}
-                                        </label>
-                                        <input type="checkbox"
-                                               {...register("abilities", {required: true})}
-                                            // onChange={(e) => console.log(getValues("abilities"))}
-                                               id="menores-cb"
-                                               value={ids.abilities[2]}
-                                               style={{visibility: "hidden"}}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="mayores-cb" id="mayores-label"
-                                               onClick={() =>
-                                                   setColorAb('mayores', ids.abilities[3])
-
-                                               }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[3].toString()) ?
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Abilities.older')}
-                                        </label>
-                                        <input type="checkbox"
-                                               {...register("abilities", {required: true})}
-                                            // onChange={(e) => console.log(getValues("abilities"))}
-                                               id="mayores-cb"
-                                               value={ids.abilities[3]}
-                                               style={{visibility: "hidden"}}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="especiales-cb" id="especiales-label"
-                                               onClick={() =>
-                                                   setColorAb('especiales', ids.abilities[4])
-                                               }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[4].toString()) ?
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Abilities.specialNeeds')}
-                                        </label>
-                                        <input type="checkbox"
-                                               {...register("abilities", {required: true})}
-                                               id="especiales-cb"
-                                               value={ids.abilities[4]}
-                                               style={{visibility: "hidden"}}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="mascotas-cb" id="mascotas-label"
-                                               onClick={() =>
-                                                   setColorAb('mascotas', ids.abilities[5])
-                                               }
-                                               className={getValues("abilities") && getValues("abilities").toString().includes(ids.abilities[5].toString()) ?
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Abilities.pets')}
-                                        </label>
-                                        <input type="checkbox"
-                                               {...register("abilities", {required: true})}
-                                            // onChange={(e) => console.log(getValues("abilities"))}
-                                               id="mascotas-cb"
-                                               value={ids.abilities[5]}
-                                               style={{visibility: "hidden"}}
-                                        />
-                                    </div>
+                                        )}
                                 </div>
                             }
                             {errors.abilities &&
@@ -414,53 +287,26 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                     {t('EmployeeForm.availability')}
                                 </h1>
                             </div>
-                            {ids &&
+                            {availabilities &&
                                 <div className="flex flex-wrap ml-8">
-                                    <div className="mb-8">
-                                        <label htmlFor="media-cb" id="media-label"
-                                               onClick={() => {
-                                                   setColorAv('media', ids.availabilities[0])
-                                               }}
-                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[0].toString()) ?
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Availabilities.half')}
-                                        </label>
-                                        <input type="checkbox"
-                                               {...register("availabilities", {required: true})}
-                                               id="media-cb" value={ids.availabilities[0]}
-                                               style={{visibility: "hidden"}}/>
-                                    </div>
-                                    <div>
-                                        <label htmlFor="completa-cb" id="completa-label"
-                                               onClick={() => {
-                                                   setColorAv('completa', ids.availabilities[1])
-                                               }}
-                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[1].toString()) ?
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Availabilities.complete')}
-                                        </label>
-                                        <input type="checkbox"
-                                               {...register("availabilities", {required: true})}
-                                               id="completa-cb" value={ids.availabilities[1]}
-                                               style={{visibility: "hidden"}}/>
-                                    </div>
-                                    <div>
-                                        <label htmlFor="cama-cb" id="cama-label"
-                                               onClick={() => {
-                                                   setColorAv('cama', ids.availabilities[2])
-                                               }}
-                                               className={getValues("availabilities") && getValues("availabilities").toString().includes(ids.availabilities[2].toString()) ?
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
-                                                   "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
-                                            {t('Availabilities.bed')}
-                                        </label>
-                                        <input type="checkbox"
-                                               {...register("availabilities", {required: true})}
-                                               id="cama-cb" value={ids.availabilities[2]}
-                                               style={{visibility: "hidden"}}/>
-                                    </div>
+                                    {availabilities.availability && availabilities.availability.length > 0 &&
+                                        availabilities.availability.map((a: any) =>
+                                            <div className="mb-8">
+                                                <label htmlFor={a.name + "-cb"} id={a.name + "-label"}
+                                                       onClick={() => {
+                                                           setColorAv(a.name, a.id)
+                                                       }}
+                                                       className={getValues("availabilities") && getValues("availabilities").toString().includes(a.id.toString()) ?
+                                                           "mt-1 h-fit w-fit text-xs text-gray-900 bg-violet-300 border border-gray-300 focus:outline-none hover:bg-white focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer" :
+                                                           "mt-1 h-fit w-fit text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-violet-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 cursor-pointer"}>
+                                                    {a.name}
+                                                </label>
+                                                <input type="checkbox"
+                                                       {...register("availabilities", {required: true})}
+                                                       id={a.name + "-cb"} value={a.id}
+                                                       style={{visibility: "hidden"}}/>
+                                            </div>
+                                        )}
                                 </div>
                             }
                             {errors.availabilities &&

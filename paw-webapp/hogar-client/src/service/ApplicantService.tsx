@@ -3,10 +3,13 @@ import {APPLICANT_URL, BACK_SLASH, EMPLOYEE_URL, JOBS, JWTExpired} from "../util
 
 export class ApplicantService{
 
-    public static async getAppliedJobs(id : number, page: number){
+    public static async getAppliedJobs(id : number, page: number, linkUrl?: string) {
         let url = EMPLOYEE_URL + BACK_SLASH + id + JOBS
         if(page > 0) {
             url = url + "?page=" + page
+        }
+        if (linkUrl !== undefined) {
+            url = linkUrl
         }
         return await fetch(url, {
             method: 'GET',
@@ -33,7 +36,6 @@ export class ApplicantService{
         const applyForm = JSON.stringify({
             jobId: jobId
         });
-        //TODO: que me pase el url el DTO?
         return await fetch(url, {
             method: 'POST',
             headers: {

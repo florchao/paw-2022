@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 
 public class ContactCreateDto {
 
-    @Pattern(regexp = "[+]*[(]?[0-9]{1,4}[)]?[-\\s./0-9]*")
+    @Pattern(regexp = "^\\d+$")
     private String phone;
     @NotBlank
     private String content;

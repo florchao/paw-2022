@@ -13,11 +13,12 @@ import noEmployees from "../assets/sinEmpleadas.png";
 import noJobs from "../assets/sinTrabajos.png";
 import user from "../assets/user.png";
 import {MagnifyingGlass} from "react-loader-spinner";
+import {parseLink} from "../utils/utils";
 import editing from "../assets/editing.png";
 
 export const ProfileEmployer = () => {
     const [employer, setEmployer]: any = useState()
-    const [image, setImage]: any = useState()
+    const [image, setImage] = useState<{image: string, version: number}>()
     const [typeError, setTypeError] = useState(false)
     const [noImage, setNoImage] = useState(false)
     const [reviews, setReviews]: any = useState(new Array(0))
@@ -25,7 +26,8 @@ export const ProfileEmployer = () => {
     const [jobs, setJobs]: any = useState(new Array(0))
     const [current, setCurrent]: any = useState(0)
 
-
+    const [nextPage, setNextPage]: any = useState("")
+    const [prevPage, setPrevPage]: any = useState("")
 
     const nav = useNavigate();
     let id  = localStorage.getItem("hogar-uid") as unknown as number
@@ -47,7 +49,7 @@ export const ProfileEmployer = () => {
     useEffect(() => {
         EmployerService.getEmployer(id).then((val) => {
                 setEmployer(val)
-                setImage(val.image)
+                setImage({image: val.image, version: 1})
             }
         );
     }, [])
@@ -58,6 +60,10 @@ export const ProfileEmployer = () => {
             ReviewService.getEmployerReviews(employer.reviews, 0).then(
                 (rsp) => {
                     rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                    let linkHeader = rsp?.headers.get("link")
+                    if (linkHeader !== null && linkHeader !== undefined) {
+                        parseLink(linkHeader, setNextPage, setPrevPage)
+                    }
                     if(rsp?.status === 200)
                         rsp.json().then((reviews) => {
                             setReviews(reviews)
@@ -81,11 +87,15 @@ export const ProfileEmployer = () => {
         }, [employer]
     )
 
-    const changePage = async (page: number) => {
+    const changePage = async (page: number, linkUrl?: string) => {
         setReviews(null)
         setCurrent(page)
-        const get = await ReviewService.getEmployerReviews(employer.reviews, page)
+        const get = await ReviewService.getEmployerReviews(employer.reviews, page, undefined, linkUrl)
         get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        let linkHeader = get?.headers.get("link")
+        if (linkHeader !== null && linkHeader !== undefined) {
+            parseLink(linkHeader, setNextPage, setPrevPage)
+        }
         get?.json().then((reviews) => {
             setReviews(reviews)
         })
@@ -99,7 +109,7 @@ export const ProfileEmployer = () => {
                 const put = await UserService.updateImage(e, e.target.files[0], employer.id)
                 if (put?.status === 200) {
                     put.json().then((rsp) => {
-                        setImage(rsp.image)
+                        setImage({image: rsp.value, version: image!.version + 1})
                     })
                 }
                 setTypeError(false);
@@ -113,11 +123,9 @@ export const ProfileEmployer = () => {
                 setTypeError(true)
             else {
                 const post = await UserService.addImage(e, e.target.files[0], employer.id)
-                if (post?.status === 200) {
-                    setImage(null)
-                    post.json().then((rsp) => {
-                        setImage(rsp.image)
-                    })
+                if (post?.status === 201) {
+                   setImage({image: post.headers.get("Location")!, version: 0})
+
                 }
                 setNoImage(false)
                 setTypeError(false)
@@ -147,9 +155,9 @@ export const ProfileEmployer = () => {
                         <div className="grid grid-cols-5 justify-center">
                             <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
                                 <div className="row-span-3 col-span-2 ml-6 mr-6 mb-6 justify-self-center">
-                                    <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" key={image} src={image}
+                                    <img className="object-cover mb-3 w-52 h-52 rounded-full shadow-lg" key={image!.version} src={image!.image}
                                          alt="profile photo" onError={() => {
-                                        setImage(user);
+                                        setImage({image: user, version: -1});
                                         setNoImage(true)
                                     }}/>
                                     <form>
@@ -274,7 +282,13 @@ export const ProfileEmployer = () => {
                                         <div >
                                             {reviews.map((rev: any) => <ReviewCard key={rev.employee.id}
                                                                                    review={rev}/>)}
-                                            <PaginationButtons changePages={changePage} pages={pages} current={current}/>
+                                            <PaginationButtons
+                                                changePages={changePage}
+                                                pages={pages}
+                                                current={current}
+                                                nextPage={nextPage}
+                                                prevPage={prevPage}
+                                            />
                                         </div>
                                     }
                                 </div>
