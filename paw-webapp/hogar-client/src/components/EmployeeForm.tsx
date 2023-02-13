@@ -133,7 +133,9 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         {t('EmployeeForm.name')}
                                     </label>
                                     <input type="text"
-                                           {...register("name", {required: true, maxLength: 100})}
+                                           {...register("name", {required: true, maxLength: 100,  pattern:{
+                                                   value: /^[a-zA-z\s'-]+|^$/, message:""
+                                               }})}
 
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"/>
                                     {errors.name &&
@@ -231,7 +233,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                     </label>
                                     <input type="number"
                                            id="expYears"
-                                           {...register("experienceYears", {required: true, max: 100})}
+                                           {...register("experienceYears", {required: true, max: 100, min: 0})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                     {errors.experienceYears &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.expYearsError')}</p>
@@ -243,7 +245,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                     </label>
                                     <input type="number"
                                            id="hourlyFee"
-                                           {...register("hourlyFee", {required: true})}
+                                           {...register("hourlyFee", {required: true, min: 0})}
                                            className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-violet-500 focus:border-violet-500"/>
                                     {errors.hourlyFee &&
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.hourlyFeeError')}</p>
