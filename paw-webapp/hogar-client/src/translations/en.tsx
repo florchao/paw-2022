@@ -307,7 +307,8 @@ export const TRANSLATIONS_EN = {
     buttonJob: "My published jobs"
   },
   Rating:{
-    thanks:"Thanks!"
+    thanks:"Thanks!",
+    rate:"Rate"
   }
 
 }

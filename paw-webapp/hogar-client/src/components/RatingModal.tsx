@@ -9,7 +9,7 @@ const RatingModal = ({employee, handleRating}: {employee: any, handleRating: any
         <div className="modal w-96 justify-items-stretch">
             <div className="flex justify-center">
                 <p className="text-lg font-semibold">
-                    Rate_ {employee.name}
+                    {t('Rating.rate')} {employee.name}
                 </p>
             </div>
             <br></br>

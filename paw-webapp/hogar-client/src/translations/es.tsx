@@ -316,7 +316,8 @@ export const TRANSLATIONS_ES = {
         buttonJob: "Mis trabajos publicados"
     },
     Rating:{
-        thanks:"¡Gracias!"
+        thanks:"¡Gracias!",
+        rate:"Calificá a",
     }
 
 }
