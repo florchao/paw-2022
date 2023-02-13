@@ -120,7 +120,9 @@ const RegisterEmployer = () => {
                                     <input
                                         type="text"
                                         value={getValues("name")}
-                                        {...register("name", {required: true, maxLength: 100})}
+                                        {...register("name", {required: true, maxLength: 100, pattern:{
+                                            value: /^[a-zA-z\s'-]+|^$/, message:""
+                                            }})}
                                         className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                     />
                                 {errors.name &&
@@ -132,7 +134,9 @@ const RegisterEmployer = () => {
                                 <input
                                     type="text"
                                     value={getValues("lastName")}
-                                    {...register("lastName", {required: true, maxLength: 100})}
+                                    {...register("lastName", {required: true, maxLength: 100, pattern:{
+                                            value: /^[a-zA-z\s'-]+|^$/, message:""
+                                        }})}
                                     className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                                 />
                                 {errors.lastName &&
