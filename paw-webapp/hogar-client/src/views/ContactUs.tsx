@@ -12,7 +12,7 @@ export const invalidEmail = (email : String) => {
     return !!String(email)
         .toLowerCase()
         .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
 };
 
@@ -74,7 +74,9 @@ export const ContactUs = () => {
                                minLength={1}
                                value= {getValues("name")}
                                aria-invalid={errors.name ? "true" : "false"}
-                               {...register("name", {required: true, maxLength: 100})}
+                               {...register("name", {required: true, maxLength: 100,  pattern:{
+                                       value: /^[a-zA-z\s'-]+|^$/, message:""
+                                   }})}
                                className="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-violet-300 sm:text-xs focus:ring-blue-500 focus:border-violet-500"
                         />
                         {errors.name &&
