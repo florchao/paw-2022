@@ -71,7 +71,7 @@ export const AppliedJobs = () => {
                     />
                 </div>
             }
-            {appliedJobs && appliedJobs.length == 0 && <div
+            {appliedJobs && appliedJobs.length === 0 && <div
                 className="grid content-center justify-center h-5/6 mt-16">
                 <div className="grid justify-items-center">
                     <img src={noJobs} alt="sinTrabajos"

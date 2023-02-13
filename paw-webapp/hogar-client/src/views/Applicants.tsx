@@ -48,7 +48,7 @@ export const Applicants = () => {
 
     const fetchData = async (url: string) => {
         await JobService.getJob(url).then(async (rsp) => {
-            if (rsp != undefined) {
+            if (rsp !== undefined) {
                 let linkHeader = rsp.headers.get("Link")
                 if (linkHeader !== null) {
                     parseLink(linkHeader, setNextPage, setPrevPage)
@@ -98,7 +98,7 @@ export const Applicants = () => {
                                 />
                             </div>
                         }
-                        {applicantList && applicantList.length == 0 ?
+                        {applicantList && applicantList.length === 0 ?
                             <div className="grid content-center justify-center h-5/6 mt-16">
                                 <div className="grid justify-items-center">
                                     <img src={noEmployees} alt="sinEmpleadas"

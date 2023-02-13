@@ -32,7 +32,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
     watch("abilities")
 
 
-    useFormPersist(from == "create" ? "employeeForm" : "employeeEditForm", {
+    useFormPersist(from === "create" ? "employeeForm" : "employeeEditForm", {
         watch,
         setValue,
         storage: window.localStorage,
@@ -56,11 +56,11 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
     };
 
     const validatePassword = (password: string) => {
-        return password == getValues("confirmPassword")
+        return password === getValues("confirmPassword")
     };
 
     const validateConfPassword = (confPassword: string) => {
-        return confPassword == getValues("password")
+        return confPassword === getValues("password")
     };
 
     const setColorAb = (name: string, id: number) => {
@@ -123,7 +123,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                 <div className="grid grid-cols-6">
                     <div className="grid grid-row-4 col-span-4 col-start-2 mt-20 ">
                         <p className="text-3xl font-semibold text-violet-900 mb-4 mt-4 text-center">
-                            {from == "create" ? t('EmployeeForm.title_register') : t('EmployeeForm.title_edit')}
+                            {from === "create" ? t('EmployeeForm.title_register') : t('EmployeeForm.title_edit')}
                         </p>
                         <div className="bg-gray-200 rounded-3xl p-5 shadow-2xl">
                             <div className="grid grid-cols-6 gap-6">
@@ -142,7 +142,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.nameError')}</p>
                                     }
                                 </div>
-                                {from == "create" &&
+                                {from === "create" &&
                                     <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                         <label htmlFor="mail"
                                                className="text-sm font-medium text-gray-900">
@@ -157,7 +157,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         }
                                     </div>
                                 }
-                                {from == "create" &&
+                                {from === "create" &&
                                     <div className="ml-3 col-span-3 w-4/5 justify-self-center">
                                         <label htmlFor="password"
                                                className="text-sm font-medium text-gray-900">
@@ -175,7 +175,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         }
                                     </div>
                                 }
-                                {from == "create" &&
+                                {from === "create" &&
                                     <div className="ml-3 col-span-3 col-start-4 w-4/5 justify-self-center">
                                         <label htmlFor="confirmPassword"
                                                className="text-sm font-medium text-gray-900">
@@ -196,7 +196,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         }
                                     </div>
                                 }
-                                <div className={from == "create" ?
+                                <div className={from === "create" ?
                                     "ml-3 col-span-3 w-4/5 justify-self-center" :
                                     "ml-3 col-span-3 col-start-4 w-4/5 justify-self-center"
                                 }>
@@ -227,7 +227,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.locationError')}</p>
                                     }
                                 </div>
-                                <div className={from == "create"? "ml-3 col-span-2 col-start-4 w-4/5 justify-self-center" : "ml-3 col-span-3 w-4/5 justify-self-center"}>
+                                <div className={from === "create"? "ml-3 col-span-2 col-start-4 w-4/5 justify-self-center" : "ml-3 col-span-3 w-4/5 justify-self-center"}>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('EmployeeForm.experienceYears')}
                                     </label>
@@ -239,7 +239,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                                         <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.expYearsError')}</p>
                                     }
                                 </div>
-                                <div className={from == "create"? "ml-3 col-span-1 col-start-6 w-4/5 justify-self-center" : "ml-3 col-span-3 col-start-4 w-4/5 justify-self-center" }>
+                                <div className={from === "create"? "ml-3 col-span-1 col-start-6 w-4/5 justify-self-center" : "ml-3 col-span-3 col-start-4 w-4/5 justify-self-center" }>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 ">
                                         {t('EmployeeForm.hourlyFee')}
                                     </label>
@@ -317,7 +317,7 @@ export const EmployeeForm = ({onSubmit, from, self, onEdit, errorFromRequest}: {
                             <div className="mt-5 col-start-2 col-span-4 row-span-3">
                                 <button type="submit"
                                         className="text-lg w-full focus:outline-none text-violet-900 bg-purple-900 bg-opacity-30 hover:bg-purple-900 hover:bg-opacity-50 font-small rounded-lg text-sm px-5 py-2.5">
-                                    {from == "create" ? t('EmployeeForm.button_register') : t('EmployeeForm.button_edit')}
+                                    {from === "create" ? t('EmployeeForm.button_register') : t('EmployeeForm.button_edit')}
                                 </button>
                                 {errorFromRequest &&
                                     <p className="block mb-2 text-sm font-medium text-red-700 margin-top: 1.25rem">{t('EmployeeForm.emailUsedError')}</p>}

@@ -7,8 +7,6 @@ import {BACK_SLASH, EMPLOYER_URL, JOBS, parseLink} from "../utils/utils";
 import PaginationButtons from "../components/PaginationButtons";
 import noJobs from "../assets/sinTrabajos.png";
 import {MagnifyingGlass} from "react-loader-spinner";
-import {union} from "zod";
-
 
 export const CreatedJobs = () => {
     const [createdJobs, setCreatedJobs]: any = useState()
@@ -35,7 +33,7 @@ export const CreatedJobs = () => {
             if (linkHeader !== null && linkHeader !== undefined) {
                 parseLink(linkHeader, setNextPage, setPrevPage)
             }
-            j?.status == 204 ? setCreatedJobs([]) : setCreatedJobs(await j?.json())
+            j?.status === 204 ? setCreatedJobs([]) : setCreatedJobs(await j?.json())
         });
     }
 

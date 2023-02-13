@@ -86,9 +86,6 @@ export const Explore = () => {
     })
 
     useEffect(() => {
-        // if (linkUrl !== "") {
-        //     onSubmit(getValues())
-        // }
         onSubmit(getValues())
     }, [linkUrl]);
 

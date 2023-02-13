@@ -104,7 +104,7 @@ export class EmployeeService {
         }).then((response) => {
             if (response.status === 401) {
                 return JWTExpired()
-            } else if (response.status == 200) {
+            } else if (response.status === 200) {
                 return response.json()
             }
         })

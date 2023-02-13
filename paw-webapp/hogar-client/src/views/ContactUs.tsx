@@ -7,7 +7,7 @@ import useFormPersist from "react-hook-form-persist";
 import OkFeedback from "../components/OkFeedback";
 
 export const invalidEmail = (email : String) => {
-    if( email.length == 0)
+    if( email.length === 0)
         return false
     return !!String(email)
         .toLowerCase()

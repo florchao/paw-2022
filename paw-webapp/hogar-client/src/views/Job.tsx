@@ -56,13 +56,13 @@ export const Job = () => {
     useFormPersist("reviewEmployerForm", {
         watch,
         setValue,
-        storage: localStorage.getItem('hogar-role') == "EMPLOYEE" ? window.localStorage : undefined,
+        storage: localStorage.getItem('hogar-role') === "EMPLOYEE" ? window.localStorage : undefined,
         timeout: 1000 * 60 * 2,
     })
 
     const onSubmit = async (data: any, e: any) => {
         const post = await ReviewService.postEmployerReview(e, job.employerId.id, data.content)
-        if (post?.status != 201)
+        if (post?.status !== 201)
             setShowError(true)
         else {
             localStorage.removeItem("reviewEmployerForm")
@@ -95,7 +95,7 @@ export const Job = () => {
     }
 
     useEffect(() => {
-            if (job !== undefined && localStorage.getItem("hogar-role") == "EMPLOYEE") {
+            if (job !== undefined && localStorage.getItem("hogar-role") === "EMPLOYEE") {
                 const employeeID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : "0"
                 ReviewService.getEmployerReviews(job.employerId.reviews, 0, employeeID ? parseInt(employeeID) : 0).then(
                     (rsp) => {
@@ -117,7 +117,7 @@ export const Job = () => {
                 ReviewService.getMyEmployerReview(job.employerId.reviews).then(
                     (rsp) => {
                         setMyReview(rsp)
-                        if (rsp != undefined) {
+                        if (rsp !== undefined) {
                             localStorage.removeItem("reviewEmployerForm")
                         }
                     }
@@ -127,7 +127,7 @@ export const Job = () => {
     )
 
     useEffect(() => {
-        if (job && localStorage.getItem("hogar-role") == "EMPLOYEE")
+        if (job && localStorage.getItem("hogar-role") === "EMPLOYEE")
             ApplicantService.getApplicationStatus(employeeId, job.jobId).then((s) => {
                 setStatus(s)
             })
@@ -283,7 +283,7 @@ export const Job = () => {
                                 <h1 className="block ml-2 mb-2 text-sm font-medium text-gray-600 text-ellipsis overflow-hidden">{job.description}</h1>
                             </div>
                         </div>
-                        {localStorage.getItem("hogar-role") == "EMPLOYER" &&
+                        {localStorage.getItem("hogar-role") === "EMPLOYER" &&
                             <div className="grid grid-rows-3 grid-cols-5">
                                 <div className="col-start-2 row-start-3">
                                     <button type="submit" onClick={delJob}
@@ -314,12 +314,12 @@ export const Job = () => {
                                         </button>}
                                 </div>
                             </div>}
-                        {localStorage.getItem("hogar-role") == "EMPLOYEE" &&
+                        {localStorage.getItem("hogar-role") === "EMPLOYEE" &&
                             <h1 className="pb-3 pt-3 font-semibold text-purple-900">
                                 {t('Job.reviewsFor')} {job.employerId.name}
                             </h1>
                         }
-                        {localStorage.getItem("hogar-role") == "EMPLOYEE" && (
+                        {localStorage.getItem("hogar-role") === "EMPLOYEE" && (
                             !reviews ?
                                 <div className={'flex items-center justify-center h-1/4'}>
                                     <MagnifyingGlass
@@ -334,7 +334,7 @@ export const Job = () => {
                                     /></div>
                                 :
                                 <div className="flow-root">
-                                    {myReview == null && (
+                                    {myReview === null && (
                                         <form onSubmit={handleSubmit(onSubmit)}>
                                             <div className="">
                                                 <label htmlFor="title"

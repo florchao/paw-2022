@@ -48,13 +48,13 @@ const ApplicantCard = (applicant: any) =>{
                         </p>
                     </div>
                     <div className="flex flex-1 justify-end">
-                    {status == '1' &&
+                    {status === '1' &&
                         <p className="font-semibold text-lg text-green-400 px-8">{t('Applicants.accepted')}</p>
                     }
-                    {status == '2' &&
+                    {status === '2' &&
                         <p className="font-semibold text-lg text-rose-400 px-8">{t('Applicants.rejected')}</p>
                     }
-                    {status == '0' &&
+                    {status === '0' &&
                         <div>
                             <button onClick={acceptApplicant} className="h-fit w-fit text-xs text-purple-900 bg-green-300 border border-purple-900 hover:bg-green-200 focus:outline-none focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">
                                 {t('Applicants.accept')}

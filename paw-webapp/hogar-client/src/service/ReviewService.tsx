@@ -81,7 +81,7 @@ export class ReviewService {
             if (resp.status === 401) {
                 return JWTExpired()
             }
-            else if (resp.status == 200) {
+            else if (resp.status === 200) {
                     return resp.json()
                 }
             }
@@ -105,7 +105,7 @@ export class ReviewService {
             if (resp.status === 401) {
                 return JWTExpired()
             }
-            else if (resp.status == 200) {
+            else if (resp.status === 200) {
                     return resp.json()
                 }
             }

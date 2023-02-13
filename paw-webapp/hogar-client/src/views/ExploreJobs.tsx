@@ -84,9 +84,6 @@ export const ExploreJobs = () => {
     })
 
     useEffect(() => {
-        // if (linkUrl !== "") {
-        //     onSubmit(getValues())
-        // }
         onSubmit(getValues())
     }, [linkUrl]);
 

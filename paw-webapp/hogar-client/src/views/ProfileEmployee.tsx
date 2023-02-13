@@ -108,7 +108,7 @@ export const ProfileEmployee = () => {
     const fetchData = async (url: string) => {
         await EmployeeService.getEmployee(url, false).then(
             (rsp) => {
-                if (rsp != undefined) {
+                if (rsp !== undefined) {
                     setEmployee(rsp)
                     localStorage.removeItem("reviewEmployeeForm")
                     setImg({image: rsp.image, version: 1})
@@ -142,7 +142,7 @@ export const ProfileEmployee = () => {
                     ReviewService.getMyEmployeeReview(employee.reviews).then(
                         (rsp) => {
                             setMyReview(rsp)
-                            if (rsp != undefined) {
+                            if (rsp !== undefined) {
                                 localStorage.removeItem("reviewEmployeeForm")
                             }
                         }
