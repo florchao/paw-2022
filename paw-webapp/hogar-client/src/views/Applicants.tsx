@@ -36,7 +36,7 @@ export const Applicants = () => {
         const result = await JobService.getApplicants(url, page, linkUrl)
         if (result?.status === 200) {
             let body = await result.json()
-            let pageCountHeader = result.headers.get('X-Total-Count')
+            let pageCountHeader = result.headers.get('Total-Count')
             let linkHeader = result.headers.get("link")
             if (linkHeader !== null) {
                 parseLink(linkHeader, setNextPage, setPrevPage)

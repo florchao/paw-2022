@@ -100,7 +100,7 @@ export const Job = () => {
                 ReviewService.getEmployerReviews(job.employerId.reviews, 0, employeeID ? parseInt(employeeID) : 0).then(
                     (rsp) => {
                         if (rsp !== undefined) {
-                            rsp.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            rsp.headers.get("Total-Count") ? setPages(rsp.headers.get("Total-Count")) : setPages(0)
                             let linkHeader = rsp?.headers.get("link")
                             if (linkHeader !== null && linkHeader !== undefined) {
                                 parseLink(linkHeader, setNextPage, setPrevPage)
@@ -173,7 +173,7 @@ export const Job = () => {
         const employeeID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : "0"
         const get = await ReviewService.getEmployerReviews(job.employerId.reviews, page, employeeID ? parseInt(employeeID) : 0, linkUrl)
         if (get !== undefined) {
-            get.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+            get.headers.get("Total-Count") ? setPages(get.headers.get("Total-Count")) : setPages(0)
             let linkHeader = get?.headers.get("link")
             if (linkHeader !== null && linkHeader !== undefined) {
                 parseLink(linkHeader, setNextPage, setPrevPage)

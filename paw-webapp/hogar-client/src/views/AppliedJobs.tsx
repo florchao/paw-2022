@@ -21,7 +21,7 @@ export const AppliedJobs = () => {
 
     useEffect(() => {
         ApplicantService.getAppliedJobs(id, 0).then((rsp) => {
-                rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                rsp?.headers.get("Total-Count") ? setPages(rsp.headers.get("Total-Count")) : setPages(0)
                 let linkHeader = rsp?.headers.get("link")
                 if (linkHeader !== null && linkHeader !== undefined) {
                     parseLink(linkHeader, setNextPage, setPrevPage)
@@ -41,7 +41,7 @@ export const AppliedJobs = () => {
         setCurrent(page)
 
         const get = await ApplicantService.getAppliedJobs(id, page, linkUrl)
-        get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        get?.headers.get("Total-Count") ? setPages(get.headers.get("Total-Count")) : setPages(0)
         let linkHeader = get?.headers.get("link")
         if (linkHeader !== null && linkHeader !== undefined) {
             parseLink(linkHeader, setNextPage, setPrevPage)

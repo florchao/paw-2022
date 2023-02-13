@@ -117,7 +117,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeaderContent = httpServletRequest.getHeader("Authorization");
-        httpServletResponse.addHeader("Access-Control-Expose-Headers", "X-Total-Count");
+        httpServletResponse.addHeader("Access-Control-Expose-Headers", "Total-Count");
         httpServletResponse.addHeader("Access-Control-Expose-Headers", "Link");
         if (authHeaderContent == null) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);

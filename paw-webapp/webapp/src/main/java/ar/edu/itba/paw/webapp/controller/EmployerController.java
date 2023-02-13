@@ -92,8 +92,8 @@ public class EmployerController {
         if(profile != null && profile.equals("true"))
             return Response.status(jobs.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).build();
         return responseBuilder
-                .header("Access-Control-Expose-Headers", "X-Total-Count")
-                .header("X-Total-Count", pages)
+                .header("Access-Control-Expose-Headers", "Total-Count")
+                .header("Total-Count", pages)
                 .build();
     }
 
@@ -115,9 +115,9 @@ public class EmployerController {
         uriHelper.addPaginationLinksForReviews(responseBuilder, uriBuilder, page, pages, except);
         return responseBuilder
                 .entity(genericEntity)
-                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .header("Access-Control-Expose-Headers", "Total-Count")
                 .header("Access-Control-Expose-Headers", "Link")
-                .header("X-Total-Count", pages)
+                .header("Total-Count", pages)
                 .build();
     }
 

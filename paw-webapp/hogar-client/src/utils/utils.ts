@@ -1,3 +1,5 @@
+import {useEffect, useRef} from "react";
+
 let BASE_URL = 'http://localhost:8080/';
 let BACK_SLASH = '/';
 let QUERY_PARAM = '?';
@@ -42,6 +44,15 @@ function parseLink(fullLink: string, setNextPage: any, setPrevPage: any) {
     }
 }
 
+// It works like a normal useEffect but doesnt trigger on first render
+const useDidMountEffect = (func: any, deps: any) => {
+    const didMount = useRef(false);
+    useEffect(() => {
+        if (didMount.current) func();
+        else didMount.current = true;
+    }, deps);
+}
+
 export {
     BASE_URL,
     IDS_URL,
@@ -62,5 +73,6 @@ export {
     LOCATION_URL,
     AVAIL_URL,
     ABIL_URL,
-    parseLink
+    parseLink,
+    useDidMountEffect
 };

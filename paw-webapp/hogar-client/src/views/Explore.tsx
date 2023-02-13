@@ -8,7 +8,7 @@ import useFormPersist from "react-hook-form-persist";
 import PaginationButtonsExplore from "../components/PaginationButtonsExplore";
 import noEmployees from "../assets/sinEmpleadas.png";
 import {MagnifyingGlass} from "react-loader-spinner";
-import {parseLink} from "../utils/utils";
+import {parseLink, useDidMountEffect} from "../utils/utils";
 
 
 export const Explore = () => {
@@ -85,7 +85,7 @@ export const Explore = () => {
         timeout: 1000 * 60 * 2,
     })
 
-    useEffect(() => {
+    useDidMountEffect(() => {
         onSubmit(getValues())
     }, [linkUrl]);
 
@@ -105,7 +105,7 @@ export const Explore = () => {
             if (linkHeader !== null && linkHeader !== undefined) {
                 parseLink(linkHeader, setNextPage, setPrevPage)
             }
-            rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+            rsp?.headers.get("Total-Count") ? setPages(rsp.headers.get("Total-Count")) : setPages(0)
             if (rsp?.status === 200)
                 rsp.json().then((employees: any) => {
                     setEmployees(employees)
@@ -135,7 +135,7 @@ export const Explore = () => {
             onSubmit(getValues())
         } else {
             EmployeeService.getEmployees().then((rsp) => {
-                rsp?.headers.get("X-Total-Count") != null ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                rsp?.headers.get("Total-Count") != null ? setPages(rsp.headers.get("Total-Count")) : setPages(0)
                 if (rsp?.status === 200) {
                     let linkHeader = rsp.headers.get("Link")
                     if (linkHeader !== null) {

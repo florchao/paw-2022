@@ -44,7 +44,7 @@ export const Contacts = () => {
         setCurrent(page)
         ContactService.contacts(id, page, linkUrl).then(
             (rsp) => {
-                rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                rsp?.headers.get("Total-Count") ? setPages(rsp.headers.get("Total-Count")) : setPages(0)
                 let linkHeader = rsp?.headers.get("link")
                 if (linkHeader !== null && linkHeader !== undefined) {
                     parseLink(linkHeader, setNextPage, setPrevPage)

@@ -124,7 +124,7 @@ export const ProfileEmployee = () => {
                     const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
                     ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER" ? parseInt(userID) : 0).then(
                         (rsp) => {
-                            rsp?.headers.get("X-Total-Count") ? setPages(rsp.headers.get("X-Total-Count")) : setPages(0)
+                            rsp?.headers.get("Total-Count") ? setPages(rsp.headers.get("Total-Count")) : setPages(0)
                             let linkHeader = rsp?.headers.get("link")
                             if (linkHeader !== null && linkHeader !== undefined) {
                                 parseLink(linkHeader, setNextPage, setPrevPage)
@@ -180,7 +180,7 @@ export const ProfileEmployee = () => {
         setCurrent(page)
         const userID = localStorage.getItem("hogar-uid") != null ? localStorage.getItem("hogar-uid") : 0
         const get = await ReviewService.getEmployeeReviews(employee.reviews, 0, userID && localStorage.getItem("hogar-role") === "EMPLOYER" ? parseInt(userID) : 0, linkUrl)
-        get?.headers.get("X-Total-Count") ? setPages(get.headers.get("X-Total-Count")) : setPages(0)
+        get?.headers.get("Total-Count") ? setPages(get.headers.get("Total-Count")) : setPages(0)
         let linkHeader = get?.headers.get("link")
         if (linkHeader !== null && linkHeader !== undefined) {
             parseLink(linkHeader, setNextPage, setPrevPage)
