@@ -58,7 +58,6 @@ public class ApplicantServiceImpl implements ApplicantService {
         return employee.map(value -> applicantDao.getPageNumberForAppliedJobs(value, pageSize)).orElse(0);
     }
 
-    //todo hay que adaptarla con los parmetros
     @Transactional(readOnly = true)
     @Override
     public List<Applicant> getApplicantsByJob(long jobID, Long page, int pageSize) {

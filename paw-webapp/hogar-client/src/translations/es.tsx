@@ -53,7 +53,7 @@ export const TRANSLATIONS_ES = {
         abilitiesError: "Por favor seleccione al menos una habilidad",
         expYearsError: "Por favor ingrese la cantidad de años de experiencia",
         hourlyFeeError: "Por favor ingrese una tarifa por hora válida",
-        emailUsedError: " Un usuario ya se encuentra registrado bajo ese email"
+        emailUsedError: "Ocurrió un error, por favor verificar los datos ingresados"
 
     },
 

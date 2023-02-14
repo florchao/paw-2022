@@ -130,8 +130,6 @@ export class EmployeeService {
             abilities: abilities,
         });
 
-        //TODO: Arreglar lo de las imágenes
-
         return await fetch(EMPLOYEE_URL, {
             method: 'POST',
             headers: {
@@ -154,7 +152,6 @@ export class EmployeeService {
             image: image
         });
 
-        //TODO: Arreglar lo de las imágenes
 
         return await fetch(self, {
             method: 'PUT',
