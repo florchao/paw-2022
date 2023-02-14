@@ -72,8 +72,8 @@ export const Navbar = () => {
                                         localStorage.removeItem("hogar-uid");
                                         localStorage.removeItem("hogar-role");
                                         localStorage.removeItem("hogar-jwt");
+                                        window.dispatchEvent(new Event("hogar"));
                                         nav("/", {replace: true})
-                                        window.location.reload()
                                     }
                                 }>
                                     <h1 className="self-center text-xl font-semibold whitespace-nowrap text-white">{t('Navbar.logout')}</h1>

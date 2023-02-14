@@ -74,9 +74,9 @@ const RegisterEmployer = () => {
                 localStorage['hogar-uid'] = body.uid
                 let authHeader = result.headers.get('Authorization')
                 localStorage['hogar-jwt'] = authHeader?.slice(7)
+                window.dispatchEvent(new Event("hogar"));
             }
             nav('/', {replace: true})
-            window.location.reload()
         }
     }
 

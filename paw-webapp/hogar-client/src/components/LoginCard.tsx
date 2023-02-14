@@ -2,10 +2,7 @@ import {useTranslation} from "react-i18next";
 import {useForm} from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 import {Link, useNavigate} from "react-router-dom";
-import {UserService} from "../service/UserService";
 import {useState} from "react";
-import {ApplicantService} from "../service/ApplicantService";
-import {EmployeeService} from "../service/EmployeeService";
 import {JobService} from "../service/JobService";
 
 export const LoginCard = () => {
@@ -37,6 +34,7 @@ export const LoginCard = () => {
     const [loginError, setLoginError]: any = useState("")
 
     const onSubmit = async (data: any, e: any) => {
+        e.preventDefault()
         let result = undefined
         try {
             let encoded = btoa(data.email + ":" + data.password)
@@ -54,12 +52,12 @@ export const LoginCard = () => {
             localStorage['hogar-role'] = payload.role
             localStorage['hogar-uid'] = payload.uid
             localStorage.removeItem("loginForm")
+            window.dispatchEvent(new Event("hogar"));
             if (payload.role === "EMPLOYER") {
                 nav("/", {replace: true})
             } else {
                 nav("/explore")
             }
-            window.location.reload()
         } else if (result?.status === 401) {
             setLoginError(t("LogIn.error"))
         } else {
