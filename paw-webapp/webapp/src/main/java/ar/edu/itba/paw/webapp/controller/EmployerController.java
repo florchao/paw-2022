@@ -92,7 +92,6 @@ public class EmployerController {
         if(profile != null && profile.equals("true"))
             return Response.status(jobs.isEmpty() ? Response.Status.NO_CONTENT : Response.Status.OK).entity(genericEntity).build();
         return responseBuilder
-                .header("Access-Control-Expose-Headers", "Total-Count")
                 .header("Total-Count", pages)
                 .build();
     }
@@ -115,8 +114,6 @@ public class EmployerController {
         uriHelper.addPaginationLinksForReviews(responseBuilder, uriBuilder, page, pages, except);
         return responseBuilder
                 .entity(genericEntity)
-                .header("Access-Control-Expose-Headers", "Total-Count")
-                .header("Access-Control-Expose-Headers", "Link")
                 .header("Total-Count", pages)
                 .build();
     }
@@ -151,6 +148,11 @@ public class EmployerController {
         }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
 
-        return Response.created(uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(u.getId())).build()).header("Access-Control-Expose-Headers", "Location").build();
+        return Response.
+                created(uriInfo.getBaseUriBuilder()
+                        .path("/employers")
+                        .path(String.valueOf(u.getId()))
+                        .build())
+                .build();
     }
 }

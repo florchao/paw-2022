@@ -85,7 +85,6 @@ public class ApplicantController {
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
         uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
         return responseBuilder
-                .header("Access-Control-Expose-Headers", "Total-Count")
                 .header("Total-Count", pages)
                 .build();
     }

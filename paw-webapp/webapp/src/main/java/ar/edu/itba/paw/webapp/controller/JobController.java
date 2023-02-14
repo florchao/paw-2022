@@ -73,7 +73,6 @@ public class JobController {
             UriHelper.fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, "rating");
         }
         return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
-                .header("Access-Control-Expose-Headers", "Total-Count")
                 .header("Total-Count", pages)
                 .build();
     }
@@ -114,7 +113,12 @@ public class JobController {
             return Response.status(Response.Status.CONFLICT).build();
         }
         LOGGER.debug(String.format("job created under jobid %d", job.getJobId()));
-        return Response.created(uriInfo.getBaseUriBuilder().path("/jobs").path(String.valueOf(job.getJobId())).build()).header("Access-Control-Expose-Headers", "Location").build();
+        return Response
+                .created(uriInfo.getBaseUriBuilder()
+                        .path("/jobs")
+                        .path(String.valueOf(job.getJobId()))
+                        .build())
+                .build();
     }
 
     @DELETE

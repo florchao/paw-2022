@@ -45,7 +45,7 @@ public class ImageController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA,})
     public Response postImage(@FormDataParam("image") byte[] image, @FormDataParam("id") long id) {
         imagesService.insertImage(id, image);
-        return Response.created(uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(id)).build()).header("Access-Control-Expose-Headers", "Location").build();
+        return Response.created(uriInfo.getBaseUriBuilder().path("/images").path(String.valueOf(id)).build()).build();
     }
 
     @PUT

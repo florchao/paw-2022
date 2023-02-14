@@ -60,7 +60,9 @@ public class ReviewController {
         else
             location = location.path("/employers").path(String.valueOf(reviewCreateDto.getEmployerId())).path("/reviews");
 
-        return Response.created(location.build()).header("Access-Control-Expose-Headers", "Location").build();
+        return Response.
+                created(location.build())
+                .build();
     }
 
 }
