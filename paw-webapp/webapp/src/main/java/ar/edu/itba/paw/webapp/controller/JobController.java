@@ -73,7 +73,6 @@ public class JobController {
             UriHelper.fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, "rating");
         }
         return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
-                .header("Access-Control-Expose-Headers", "Total-Count")
                 .header("Total-Count", pages)
                 .build();
     }

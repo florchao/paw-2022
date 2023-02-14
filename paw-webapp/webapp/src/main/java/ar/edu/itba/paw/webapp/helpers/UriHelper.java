@@ -22,7 +22,7 @@ public class UriHelper {
         if (maxPage - (page + 1) > 0) {
             responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page + 1).build(), "next");
         }
-        return responseBuilder.header("Access-Control-Expose-Headers", "Link");
+        return responseBuilder;
     }
 
     public void addPaginationLinksForReviews(
@@ -54,7 +54,7 @@ public class UriHelper {
         if (maxPage - (page + 1) > 0) {
             responseBuilder.link(uriBuilder.replaceQueryParam("page", page + 1).build(), "next");
         }
-        return responseBuilder.header("Access-Control-Expose-Headers", "Link");
+        return responseBuilder;
     }
 
     public static void fillQueryParams(

@@ -94,7 +94,6 @@ public class EmployeeController {
             UriHelper.fillQueryParams(uriBuilder, name, experienceYears, location, availability, abilities, orderCriteria);
         }
         return uriHelper.addPaginationLinksForExplore(responseBuilder, uriBuilder, page, pages)
-                .header("Access-Control-Expose-Headers", "Total-Count")
                 .header("Total-Count", pages)
                 .build();
 
@@ -165,7 +164,6 @@ public class EmployeeController {
         Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
         uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
         return responseBuilder
-                .header("Access-Control-Expose-Headers", "Total-Count")
                 .header("Total-Count", pages)
                 .build();
     }
@@ -185,7 +183,6 @@ public class EmployeeController {
         uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
         return responseBuilder
                 .entity(genericEntity)
-                .header("Access-Control-Expose-Headers", "Total-Count")
                 .header("Total-Count", pages)
                 .build();
     }
@@ -209,8 +206,6 @@ public class EmployeeController {
         uriHelper.addPaginationLinksForReviews(responseBuilder, uriBuilder, page, pages, except);
         return responseBuilder
                 .entity(genericEntity)
-                .header("Access-Control-Expose-Headers", "Total-Count")
-                .header("Access-Control-Expose-Headers", "Link")
                 .header("Total-Count", pages)
                 .build();
     }
