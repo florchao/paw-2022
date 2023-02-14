@@ -88,8 +88,8 @@ export const ProfileEmployee = () => {
             localStorage.removeItem("hogar-uid")
             localStorage.removeItem("hogar-jwt")
             localStorage.removeItem("hogar-role")
+            window.dispatchEvent(new Event("hogar"));
             nav('/', {replace: true})
-            window.location.reload()
         }
     }
 
