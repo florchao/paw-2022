@@ -1,7 +1,7 @@
 import {useEffect, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 
-let BASE_URL = 'http://localhost:8080/';
+let BASE_URL =  'http://pawserver.it.itba.edu.ar/paw-2022a-02/';
 let BACK_SLASH = '/';
 let QUERY_PARAM = '?';
 let EMPLOYEE_URL = BASE_URL + 'employees';

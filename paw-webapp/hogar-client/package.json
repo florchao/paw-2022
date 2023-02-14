@@ -1,5 +1,6 @@
 {
   "name": "hogar-client",
+  "homepage": "paw-2022a-02",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

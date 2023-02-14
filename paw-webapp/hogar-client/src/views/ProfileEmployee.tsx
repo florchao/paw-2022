@@ -211,8 +211,9 @@ export const ProfileEmployee = () => {
         }
         await RatingService.postEmployeeRating(event, employee.id, employerId, rate).then((rsp) => {
             setRating(rsp)
-            closeModal()
-        }).catch(setRatingError(true))
+        })
+
+        closeModal()
     }
 
     const updateImageHandler = async (e: any) => {

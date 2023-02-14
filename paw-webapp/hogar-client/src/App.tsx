@@ -36,7 +36,6 @@ export default function App() {
         "ANONYMOUS")
 
     window.addEventListener('hogar', () => {
-        console.log(localStorage.getItem("hogar-role"))
         setRole(localStorage.getItem("hogar-role")?
             localStorage.getItem("hogar-role") as string
             :
@@ -44,8 +43,8 @@ export default function App() {
     })
 
     return (
-        <Router>
-            <Navbar />
+        <Router basename={"paw-2022a-02"}>
+        <Navbar />
             <Background />
             {role &&
                 <Routes>
