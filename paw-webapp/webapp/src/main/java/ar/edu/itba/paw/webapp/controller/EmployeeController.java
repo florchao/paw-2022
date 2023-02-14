@@ -237,7 +237,12 @@ public class EmployeeController {
             return Response.status(Response.Status.CONFLICT).build();
         }
 
-        return Response.created(uriInfo.getBaseUriBuilder().path("/api/employees").path(String.valueOf(u.getId())).build()).header("Access-Control-Expose-Headers", "Location").build();
+        return Response.
+                created(uriInfo.getBaseUriBuilder()
+                        .path("/api/employees")
+                        .path(String.valueOf(u.getId()))
+                        .build())
+                .build();
     }
 
     @PUT

@@ -148,6 +148,11 @@ public class EmployerController {
         }
         LOGGER.debug(String.format("employer created under userid %d", u.getId()));
 
-        return Response.created(uriInfo.getBaseUriBuilder().path("/employers").path(String.valueOf(u.getId())).build()).header("Access-Control-Expose-Headers", "Location").build();
+        return Response.
+                created(uriInfo.getBaseUriBuilder()
+                        .path("/employers")
+                        .path(String.valueOf(u.getId()))
+                        .build())
+                .build();
     }
 }

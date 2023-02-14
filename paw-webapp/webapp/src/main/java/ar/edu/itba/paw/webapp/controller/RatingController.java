@@ -52,7 +52,11 @@ public class RatingController {
 
         ratingService.updateRating(ratingDto.getEmployeeId(), ratingDto.getRating(), ratingDto.getEmployerId());
 
-        return Response.created(uriInfo.getBaseUriBuilder().path("/ratings/" + ratingDto.getEmployeeId()).build()).header("Access-Control-Expose-Headers", "Location").build();
+        return Response
+                .created(uriInfo.getBaseUriBuilder()
+                        .path("/ratings/" + ratingDto.getEmployeeId())
+                        .build())
+                .build();
 
     }
 }
