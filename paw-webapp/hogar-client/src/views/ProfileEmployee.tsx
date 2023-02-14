@@ -205,6 +205,10 @@ export const ProfileEmployee = () => {
     }
 
     const handleRating = async (rate: number, index: number, event: any) => {
+        if(rate < 0 || rate > 5) {
+            setRatingError(true)
+            return
+        }
         await RatingService.postEmployeeRating(event, employee.id, employerId, rate).then((rsp) => {
             setRating(rsp)
             closeModal()
