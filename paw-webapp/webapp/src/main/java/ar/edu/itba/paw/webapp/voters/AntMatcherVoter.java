@@ -45,15 +45,15 @@ public class AntMatcherVoter {
     }
 
     public boolean canDeleteUser(Authentication auth, Long id) {
-        if (auth.isAuthenticated()) {
+        if (!auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
             HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return hogarUser.getUserID() == id;
         }
         return false;
     }
 
-    public boolean canUploadImage(Authentication auth, Long id) throws IOException {
-        if (auth.isAuthenticated()) {
+    public boolean canUploadImage(Authentication auth, Long id) {
+        if (!auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
             HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return hogarUser.getUserID() == id;
         }
@@ -67,5 +67,12 @@ public class AntMatcherVoter {
             return hogarUser.getUserID() == job.getEmployerId().getId().getId();
         }
         return false;
+    }
+
+    public boolean canViewReview(Authentication authentication, Long employeeId, Long employerId){
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS")))
+            return false;
+        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return employerId == hogarUser.getUserID() || employeeId == hogarUser.getUserID();
     }
 }

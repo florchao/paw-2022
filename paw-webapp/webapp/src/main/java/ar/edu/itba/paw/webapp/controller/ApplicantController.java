@@ -56,12 +56,38 @@ public class ApplicantController {
     @Path("/{employeeId}/{jobId}")
     public Response getStatusApplication(@PathParam("employeeId") long employeeId,
                                          @PathParam("jobId") long jobId) {
-//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (hogarUser.getUserID() != employeeId) {
-//            return Response.status(Response.Status.FORBIDDEN).build();
-//        }
         int status = applicantService.getStatus(employeeId, jobId);
         return Response.ok(status).build();
+    }
+
+    @GET
+    @Path("/{jobId}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page) {
+
+        try {
+            jobService.getJobByID(jobId);
+        } catch (JobNotFoundException exception) {
+            LOGGER.error("an exception occurred:", exception);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception exception) {
+            LOGGER.error("an exception occurred:", exception);
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+
+
+        List<ApplicantInJobsDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
+                .stream()
+                .map(a -> ApplicantInJobsDto.fromJob(uriInfo, a))
+                .collect(Collectors.toList());
+        int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
+        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) { };
+        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
+        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
+        return responseBuilder
+                .header("Access-Control-Expose-Headers", "Total-Count")
+                .header("Total-Count", pages)
+                .build();
     }
 
     @POST
@@ -101,10 +127,6 @@ public class ApplicantController {
         try {
             job = jobService.getJobByID(jobId);
             employee = employeeService.getEmployeeById(employeeId);
-//            HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            if (hogarUser.getUserID() != job.getEmployerId().getId().getId()) {
-//                return Response.status(Response.Status.FORBIDDEN).build();
-//            }
 
             int finalStatus = applicantService.changeStatus(applicantEditDto.getStatus(), employeeId, jobId);
             contactService.changedStatus(applicantEditDto.getStatus(), job, employee);
@@ -119,45 +141,10 @@ public class ApplicantController {
         }
     }
 
-    @GET
-    @Path("/{jobId}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response applicants(@PathParam("jobId") long jobId, @QueryParam("page") @DefaultValue("0") Long page) {
-
-        try {
-            jobService.getJobByID(jobId);
-        } catch (JobNotFoundException exception) {
-            LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception exception) {
-            LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.CONFLICT).build();
-        }
-
-
-        List<ApplicantInJobsDto> list = applicantService.getApplicantsByJob(jobId, page, PAGE_SIZE)
-                .stream()
-                .map(a -> ApplicantInJobsDto.fromJob(uriInfo, a))
-                .collect(Collectors.toList());
-        int pages = applicantService.getPageNumber(jobId, PAGE_SIZE);
-        GenericEntity<List<ApplicantInJobsDto>> genericEntity = new GenericEntity<List<ApplicantInJobsDto>>(list) { };
-        Response.ResponseBuilder responseBuilder = Response.ok(genericEntity);
-        uriHelper.addPaginationLinks(responseBuilder, uriInfo, page, pages);
-        return responseBuilder
-                .header("Access-Control-Expose-Headers", "Total-Count")
-                .header("Total-Count", pages)
-                .build();
-    }
-
     @DELETE
     @Path("/{employeeId}/{jobId}")
     public Response deleteApplication(@PathParam("employeeId") long employeeId,
                                       @PathParam("jobId") long jobId) {
-
-//        HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (hogarUser.getUserID() != employeeId) {
-//            return Response.status(Response.Status.FORBIDDEN).build();
-//        }
 
         applicantService.withdrawApplication(employeeId, jobId);
         return Response.noContent().build();

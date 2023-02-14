@@ -93,6 +93,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/ratings/{employeeId}/{employerId}").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.POST, "/ratings").hasAuthority("EMPLOYER")
                 .antMatchers(HttpMethod.POST, "/reviews").authenticated()
+                .antMatchers(HttpMethod.GET, "/reviews/{employeeId}/{employerId}/{forEmployee}").access("@antMatcherVoter.canViewReview(authentication, #employeeId, #employerId)")
                 .antMatchers(HttpMethod.PUT, "/users").anonymous()
                 .antMatchers(HttpMethod.GET, "/user").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/users/{id}").access("@antMatcherVoter.canDeleteUser(authentication, #id)")

@@ -13,8 +13,6 @@ public class EmployeeReviewDto {
 
     private EmployerDto employer;
 
-    private EmployeeFromReviewDto employee;
-
     private String created;
 
     private String review;
@@ -65,14 +63,6 @@ public class EmployeeReviewDto {
 
     public void setReview(String review) {
         this.review = review;
-    }
-
-    public EmployeeFromReviewDto getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(EmployeeFromReviewDto employee) {
-        this.employee = employee;
     }
 
 
