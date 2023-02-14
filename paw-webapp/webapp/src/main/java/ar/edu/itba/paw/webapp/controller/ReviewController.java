@@ -26,6 +26,8 @@ public class ReviewController {
     @Context
     UriInfo uriInfo;
 
+    //forEmployee: 0 will get the review done by {employer} to {employee}
+    //             1 will get the review done by {employee} to {employer}
     @GET
     @Path("/{employeeId}/{employerId}/{forEmployee}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
