@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
 
-import ar.edu.itba.paw.model.Abilities;
-import ar.edu.itba.paw.model.Availability;
-import ar.edu.itba.paw.model.Location;
 import ar.edu.itba.paw.webapp.dto.IdsDto.AbilitiesDto;
 import ar.edu.itba.paw.webapp.dto.IdsDto.AvailabilitiesDto;
 import ar.edu.itba.paw.webapp.dto.IdsDto.LocationDto;
@@ -11,7 +8,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Pattern;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

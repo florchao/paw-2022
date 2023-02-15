@@ -67,7 +67,7 @@ public class EmployerController {
             };
             return Response.ok(genericEntity).build();
         } catch (UserNotFoundException u) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         }
     }
 

@@ -86,7 +86,7 @@ public class JobController {
             job = jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         } catch (Exception ex) {
             LOGGER.error("an exception occurred:", ex);
             return Response.status(Response.Status.CONFLICT).build();
@@ -129,7 +129,7 @@ public class JobController {
             jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         }
 
         jobService.deleteJob(id);
@@ -146,7 +146,7 @@ public class JobController {
             jobService.getJobByID(id);
         } catch (JobNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         }
 
         if (status) {

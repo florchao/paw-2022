@@ -12,7 +12,6 @@ import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeCreateDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeDto;
 import ar.edu.itba.paw.webapp.dto.EmployeeDto.EmployeeEditDto;
 import ar.edu.itba.paw.webapp.dto.ReviewDto.EmployeeReviewDto;
-import ar.edu.itba.paw.webapp.dto.UserDto;
 import ar.edu.itba.paw.webapp.helpers.UriHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +107,7 @@ public class EmployeeController {
         try {
             employee = employeeService.getEmployeeById(id);
         } catch (UserNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         }
 
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));
@@ -130,7 +129,7 @@ public class EmployeeController {
         try {
             employee = employeeService.getEmployeeById(id);
         } catch (UserNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         }
 
         Locale locale = new Locale(request.getHeader("Accept-Language").substring(0, 5));

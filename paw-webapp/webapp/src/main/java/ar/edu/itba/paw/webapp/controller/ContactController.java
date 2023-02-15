@@ -68,7 +68,7 @@ public class ContactController {
            employer = employerService.getEmployerById(contactCreateDto.getEmployerId());
         }catch (UserNotFoundException u){
             LOGGER.error("User not found", u);
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         }
         String name = employer.firstWordsToUpper();
         boolean exists = contactService.contact(employee.getId(), employer.getId(), contactCreateDto.getContent(), name, contactCreateDto.getPhone());
@@ -89,7 +89,7 @@ public class ContactController {
             exists = contactService.existsContact(employeeId, employerId).stream().map(c -> ContactDto.fromContact(uriInfo, c)).collect(Collectors.toList());
         } catch (UserNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         } catch (Exception exception) {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.CONFLICT).build();

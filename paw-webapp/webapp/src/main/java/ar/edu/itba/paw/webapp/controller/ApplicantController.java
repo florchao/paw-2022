@@ -14,7 +14,6 @@ import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantCreateDto;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantEditDto;
 import ar.edu.itba.paw.webapp.dto.ApplicantDto.ApplicantInJobsDto;
 import ar.edu.itba.paw.webapp.helpers.UriHelper;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +68,7 @@ public class ApplicantController {
             jobService.getJobByID(jobId);
         } catch (JobNotFoundException exception) {
             LOGGER.error("an exception occurred:", exception);
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         } catch (Exception exception) {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.CONFLICT).build();
@@ -133,7 +132,7 @@ public class ApplicantController {
 
         } catch (UserNotFoundException | JobNotFoundException ex) {
             LOGGER.error("an exception occurred:", ex);
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("404 - Not Found").build();
         } catch (Exception exception) {
             LOGGER.error("an exception occurred:", exception);
             return Response.status(Response.Status.CONFLICT).build();
