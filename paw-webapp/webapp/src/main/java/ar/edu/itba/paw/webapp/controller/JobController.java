@@ -81,6 +81,8 @@ public class JobController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response verTrabajo(@PathParam("id") long id, @Context HttpServletRequest request) throws JobNotFoundException {
+        if(id == 0)
+            return Response.ok().build();
         Job job;
         try {
             job = jobService.getJobByID(id);

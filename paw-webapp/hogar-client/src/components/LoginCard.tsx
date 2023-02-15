@@ -38,7 +38,7 @@ export const LoginCard = () => {
         let result = undefined
         try {
             let encoded = btoa(data.email + ":" + data.password)
-            result = await JobService.getJobById(1, encoded)
+            result = await JobService.getJobById(0, encoded)
         } catch (error: any) {
             setLoginError(t("Feedback.genericError"))
         }
