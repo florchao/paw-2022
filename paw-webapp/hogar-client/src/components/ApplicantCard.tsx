@@ -6,7 +6,7 @@ import user from "../assets/user.png";
 
 const ApplicantCard = (applicant: any) =>{
     const a = applicant.applicant
-    const [status, setStatus] = useState<string>(a.status)
+    const [status, setStatus] = useState<string>(a.status.toString)
     const { t } = useTranslation();
 
     async function acceptApplicant(){
