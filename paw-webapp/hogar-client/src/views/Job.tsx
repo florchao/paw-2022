@@ -67,7 +67,7 @@ export const Job = () => {
         else {
             localStorage.removeItem("reviewEmployerForm")
             reset()
-            ReviewService.getMyEmployeeReview(post.headers.get("Location")!).then((rsp) => setMyReview(rsp))
+            ReviewService.getMyEmployerReview(post.headers.get("Location")!).then((rsp) => setMyReview(rsp))
         }
     }
 
@@ -337,7 +337,7 @@ export const Job = () => {
                                     /></div>
                                 :
                                 <div className="flow-root">
-                                    {myReview === null && (
+                                    {!myReview && (
                                         <form onSubmit={handleSubmit(onSubmit)}>
                                             <div className="">
                                                 <label htmlFor="title"
@@ -366,7 +366,7 @@ export const Job = () => {
                                                 </div>
                                             </div>
                                         </form>)}
-                                    {reviews === 0 && !myReview &&
+                                    {reviews && reviews.length === 0 && !myReview &&
                                         (<div className="grid content-center justify-center h-5/6 mt-16">
                                                 <div className="grid justify-items-center">
                                                     <img src={noEmployees} alt="sinEmpleadas"
