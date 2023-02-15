@@ -83,14 +83,17 @@ export const Job = () => {
 
     const fetchData = async (url: string) => {
         await JobService.getJob(url).then((rsp) => {
-            rsp?.json().then((rsp: any) => {
-                if (rsp !== undefined) {
-                    setJob(rsp)
-                    setOpened(rsp.opened)
-                } else {
-                    nav("/*")
-                }
-            })
+            if(rsp?.status === 404)
+                nav("/*", {replace:true})
+            else if (rsp?.status === 200)
+                rsp?.json().then((rsp: any) => {
+                    if (rsp !== undefined) {
+                        setJob(rsp)
+                        setOpened(rsp.opened)
+                    } else {
+                        nav("/*")
+                    }
+                })
         })
     }
 

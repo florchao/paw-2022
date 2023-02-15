@@ -62,7 +62,12 @@ public class AntMatcherVoter {
 
     public boolean canDeleteJob(Authentication authentication, Long id) {
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("EMPLOYER"))) {
-            Job job = jobService.getJobByID(id);
+            Job job;
+            try {
+                job = jobService.getJobByID(id);
+            } catch (Exception exception) {
+                return true;
+            }
             HogarUser hogarUser = (HogarUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return hogarUser.getUserID() == job.getEmployerId().getId().getId();
         }
