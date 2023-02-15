@@ -29,7 +29,7 @@ const ApplicantCard = (applicant: any) =>{
                         <img className="w-8 h-8 rounded-full object-cover" src={image} alt="employee photo" onError={() => setImage(user)}/>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <Link to={"/employee"} state={{self: a.employee.self, image: a.employee.image}}>
+                        <Link to={"/employee/"+a.employee.id} state={{self: a.employee.self, image: a.employee.image}}>
                         <p className="text-xl font-medium text-gray-900 truncate">
                             {a.employee.name}
                         </p>
