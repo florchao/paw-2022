@@ -135,7 +135,7 @@ public class JobController {
         }
 
         jobService.deleteJob(id);
-        return Response.ok().build();
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @PUT
