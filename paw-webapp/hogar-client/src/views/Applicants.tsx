@@ -43,6 +43,10 @@ export const Applicants = () => {
             }
             setApplicantList(body)
             setTotalPages(pageCountHeader)
+        } else if (result?.status === 404) {
+            nav("/*", {replace:true})
+        } else {
+            setApplicantList([])
         }
     }
 
